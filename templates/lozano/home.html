@@ -9,6 +9,7 @@
         background-color: black;
     }
     h1{
+        text-align: center;
         color: skyblue;
         font-weight: 900;
     }
@@ -23,8 +24,13 @@
 </style>
 <body>
     <h1>{{ titulo }}</h1>
-    <h3>Aqui debe decir "Hola mundo":</h3>
-    <marquee style="width: 10%"><p>{{ holaMundo }}</p></marquee>
-
+    <table style="background-color: rgba(76, 175, 80, 0.3); padding: 1%">
+        <tr>
+            <td>
+                <h3>Aqui debe decir "Hola mundo":</h3>
+                <marquee style="width: 250px; background-color: red"><p>{{ holaMundo }}</p></marquee>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>
