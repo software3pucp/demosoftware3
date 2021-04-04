@@ -2,10 +2,22 @@ import requests
 from django.shortcuts import render
 
 # Create your views here.
-from leon.models import Language
+from Jhonatan.models import Language
 
 
 def PolarHome(request):
+    print("-----------------------------------------------------------------------")
+    print(request.POST)
+    print("-----------------------------------------------------------------------")
+    if request.POST:
+        Language.objects.create(name=request.POST["username"], habloElIdioma=False,
+                                longitud=len(request.POST["username"]))
+
+        context = {
+            'titulo': "Has guardado en BBDD a " + request.POST["username"] + "!!",
+            'capital': "POST"
+        }
+        return render(request, 'jhonatan/home.html', context)
 
     langList = Language.objects.filter(habloElIdioma=False)
     print("=======================================================================")
@@ -20,7 +32,7 @@ def PolarHome(request):
     capital = response.json()[0]["capital"]
 
     context = {
-        'titulo': 'Hola mundo',
+        'titulo': 'Hola mundo, soy Jhonatan',
         'listaIdiomas': langList,
         'capital' : capital
     }
