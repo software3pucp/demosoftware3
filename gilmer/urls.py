@@ -16,8 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from gilmer import views
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('leon/', include('leon.urls')),
-    path('gilmer/', include('gilmer.urls'))
+    # path( 'URL A LA CUAL APUNTO', BACKEND, name= Nombre de la variable)
+    path('home/', views.gilmerHome, name='gilmerHome')
+
 ]
