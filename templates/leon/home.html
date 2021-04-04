@@ -11,28 +11,45 @@
 {#Aqui coloco el HTML PARTICULAR de la web#}
 {% block body %}
     <div>
+        <h1>{{ titulo }}</h1>
+
+        <form action="{% url 'leonHome' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <input id="username" type="text" name="username" value="">
+            </div>
+
+            <div class="form-group">
+                <input id="passoword" type="text" name="passoword" value="">
+            </div>
+            <input type="submit" value="Ingresar">
+        </form>
 
 
-        <input id="btnAccion" type="button" value="Accion" onclick="show()">
-        <input id="campoTexto" type="text">
-        <input id="campoTexto1" type="text">
-        <input id="campoTexto2" type="text">
-        <input id="campoTexto3" type="text">
+    </div>
+    <div>
 
-    {{ capital }}
+    {% if request.POST %}
+        <h2> ESTO HA SIDO INVOCADO PORQUE EXISTE request.POST</h2>
+    {% endif %}
 
-    {% for item in listaIdiomas %}
+    {% for idioma in listaIdiomas %}
 
-           <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6CV3zumQZe_8AIgP6RcID-s4tFnTGdlmhxcM2YhXjmc9hn8lDc2XdkVfybGmt5FuO6ik&usqp=CAU" alt="Card image cap">
+
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="https://th.bing.com/th/id/OIP.MuxdorIkpf3qY2dfDByMHgHaHa?pid=ImgDet&rs=1" alt="Card image cap">
             <div class="card-body">
-                <h5 class="card-title">{{ item.name }}</h5>
-                <p class="card-text"> Longitud: {{ item.longitud }}</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <h5 class="card-title">{{ idioma.name }}</h5>
+                <p class="card-text">.</p>
+                <a href="{% url 'idiomaDetalle' pk=idioma.pk %}" class="btn btn-primary">ver detalle</a>
             </div>
         </div>
         <br>
-    {% endfor %}
+
+
+        {% endfor %}
+
+
 
 
     </div>
@@ -44,7 +61,7 @@
 {#Aquí coloco el JS particular de la web#}
 {% block extrajs %}
     <script>
-        function show(){
+        function show() {
 
             {#Por javascript#}
             let element = document.getElementById("campoTexto");
