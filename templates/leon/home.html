@@ -1,10 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-     <h1>{{ titulo }}</h1>
-</body>
-</html>
+{% extends 'leon/base/base.html' %}
+
+
+{#Aqui coloco el CSS particular de la web#}
+{% block extrastyle %}
+
+
+{% endblock %}
+
+
+{#Aqui coloco el HTML PARTICULAR de la web#}
+{% block body %}
+    <div>
+
+
+        <input id="btnAccion" type="button" value="Accion" onclick="show()">
+        <input id="campoTexto" type="text">
+        <input id="campoTexto1" type="text">
+        <input id="campoTexto2" type="text">
+        <input id="campoTexto3" type="text">
+
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6CV3zumQZe_8AIgP6RcID-s4tFnTGdlmhxcM2YhXjmc9hn8lDc2XdkVfybGmt5FuO6ik&usqp=CAU" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+
+{#Aquí coloco el JS particular de la web#}
+{% block extrajs %}
+    <script>
+        function show(){
+
+            {#Por javascript#}
+            let element = document.getElementById("campoTexto");
+            console.log(element.value)
+
+            {#Por Jquery#}
+            console.log($("#campoTexto").val())
+            $("#campoTexto").val("TEXTO HARDCODEADO")
+            $("#campoTexto1").hide()
+            $("#campoTexto2").hide()
+            $("#campoTexto3").hide()
+
+
+        }
+
+    </script>
+{% endblock %}
+
+
