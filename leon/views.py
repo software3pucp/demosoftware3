@@ -7,7 +7,20 @@ from leon.models import Language
 
 def leonHome(request):
 
-    langList = Language.objects.filter(habloElIdioma=False)
+    print("-----------------------------------------------------------------------")
+    print(request.POST)
+    print("-----------------------------------------------------------------------")
+    if request.POST:
+
+        Language.objects.create(name=request.POST["username"], habloElIdioma=False, longitud= len(request.POST["username"]))
+
+        context = {
+            'titulo': "Has guardado en BBDD :" + request.POST["username"],
+            'capital': "POST"
+        }
+        return render(request, 'leon/home.html', context)
+
+    langList = Language.objects.filter()
     print("=======================================================================")
     print(langList)
     print("=======================================================================")
@@ -20,12 +33,17 @@ def leonHome(request):
     capital = response.json()[0]["capital"]
 
     context = {
-        'titulo': 'Hola mundo',
+        'titulo': 'HE ENTADO POR URL',
         'listaIdiomas': langList,
         'capital' : capital
     }
     return render(request, 'leon/home.html', context)
 
 
+def idiomaDetalle(request, pk):
+    idioma = Language.objects.get(pk=pk)
 
-
+    context = {
+        "idiomaDetalle": idioma
+    }
+    return render(request, 'leon/idiomas/idioma_detalle.html', context)

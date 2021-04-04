@@ -7,7 +7,8 @@ from leon import views
 
 urlpatterns = [
     # path( 'URL A LA CUAL APUNTO', BACKEND, name= Nombre de la variable)
-    path('home/', views.leonHome, name='leonHome' )
+    path('home/', views.leonHome, name='leonHome' ),
+    path('idioma/<pk>', views.idiomaDetalle, name='idiomaDetalle'),
 ]
 
 
