@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{titulo}}</title>
+</head>
+<style>
+    body{
+        background-color: black;
+    }
+    h1{
+        text-align: center;
+        color: skyblue;
+        font-weight: 900;
+    }
+    h3{
+        color: #0d95e8;
+        font-weight: 450;
+    }
+    p{
+        font-size: 24px;
+        color: white;
+    }
+</style>
+<body>
+    <h1>{{ titulo }}</h1>
+    <center>
+    <table style="background-color: rgba(30,144,255, 0.3); padding: 1%">
+        <tr>
+            <td>
+                <h3>Aqui debe decir "Hola mundo":</h3>
+                <marquee style="width: 250px; background-color: red"><p>{{ holaMundo }}</p></marquee>
+            </td>
+        </tr>
+    </table>
+    </center>
+</body>
+</html>

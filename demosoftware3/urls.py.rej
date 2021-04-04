@@ -1,0 +1,9 @@
+diff a/demosoftware3/urls.py b/demosoftware3/urls.py	(rejected hunks)
+@@ -19,5 +19,6 @@
+ urlpatterns = [
+     path('admin/', admin.site.urls),
+     path('leon/', include('leon.urls')),
+-    path('raul/', include('raul.urls'))
++    path('raul/', include('raul.urls')),
++    path('lozano/', include('lozano.urls'))
+ ]
