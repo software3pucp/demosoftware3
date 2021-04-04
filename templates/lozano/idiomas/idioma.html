@@ -1,0 +1,23 @@
+{% extends 'lozano/base/base.html' %}
+
+
+{#Aqui coloco el CSS particular de la web#}
+{% block extrastyle %}
+
+{% endblock %}
+
+
+{#Aqui coloco el HTML PARTICULAR de la web#}
+{% block body %}
+    <div style="padding-top: 3%; padding-left: 2%;">
+        <h1>{{ idiomaDetalle.name }}</h1>
+        <p>{{ idiomaDetalle.longitud }}</p>
+        <p>{{ idiomaDetalle.habloElIdioma }}</p>
+    </div>
+{% endblock %}
+
+
+{#Aquí coloco el JS particular de la web#}
+{% block extrajs %}
+
+{% endblock %}

@@ -11,14 +11,14 @@
 {% block body %}
 
     <div style="padding-top: 3%">
-        <h3>Buscar Pais:</h3>
+        <h3>Buscar Idioma:</h3>
     </div>
 
     <div style="">
-        <form action="{% url 'lozanoHome' %}" method="post">
+        <form action="{% url 'lozanoIdiomas' %}" method="post">
             {% csrf_token %}
             <div class="form-group">
-                <input id="nombrePais" type="text" name="nombrePais" value="">
+                <input id="nombreIdioma" type="text" name="nombreIdioma" value="">
             </div>
             <input type="submit" value="Buscar">
         </form>
@@ -29,19 +29,18 @@
             <div style="padding: 1% 5% 5% 0%;">
                 <div class="card" style="width: 20; ">
                     <div class="card-body">
-                        <h5 class="card-title">{{ pais }}</h5>
-                        <p class="card-text">Capital: {{ capital }}</p>
-                        <a href="{% url 'lozanoPais' pk=key %}" class="btn btn-primary">Ver Mas</a>
+                        <h5 class="card-title">{{ idioma.name }}</h5>
+                        <p class="card-text">Longitud: {{ idioma.longitud }}</p>
+                        <a href="{% url 'lozanoIdioma' pk=idioma.pk %}" class="btn btn-primary">Ver Mas</a>
                     </div>
                 </div>
             </div>
         {% else %}
             <div style="padding: 1% 5% 5% 0%;">
-                <p>Pais no encontrado!</p>
+                <p>Idioma no encontrado!</p>
             </div>
         {% endif %}
     {% endif %}
-
 {% endblock %}
 
 
@@ -49,5 +48,3 @@
 {% block extrajs %}
 
 {% endblock %}
-
-
