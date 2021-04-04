@@ -20,7 +20,7 @@ def PolarHome(request):
     capital = response.json()[0]["capital"]
 
     context = {
-        'titulo': 'Hola mundo',
+        'titulo': 'Hola mundo, soy Jhonatan',
         'listaIdiomas': langList,
         'capital' : capital
     }

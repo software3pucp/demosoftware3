@@ -1,3 +1,54 @@
+{% block extrastyle %}
+<style>
+body{
+    background-color:#83FCC1;
+}
+
+.Caja{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    background-color: #F5C598;
+}
+.contenedor{
+    display: flex;
+	align-content: center;
+	align-items: center;
+	justify-content: center;
+}
+
+.contenedor2{
+   display: flex;
+	align-content: center;
+	align-items: center;
+	justify-content: center;
+}
+
+h1 {
+    display: block;
+	justify-content: center;
+	text-align: center;
+    color: #D44333;
+}
+
+h2 {
+    display: block;
+	justify-content: center;
+	text-align: center;
+    color: #7171D9;
+}
+
+img {
+    display: block;
+    margin: auto;
+}
+
+</style>
+
+{% endblock %}
+
+{% block body %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +56,15 @@
     <title>Title</title>
 </head>
 <body>
-     <h1>{{ titulo }}</h1>
+    <img src="https://i.pinimg.com/originals/f5/80/4a/f5804a456af1f8bb619956e903164159.jpg">
+    <div class="Caja">
+        <div class="contenedor">
+            <h1>{{ titulo }}</h1>
+        </div>
+        <div class="contenedor2">
+            <h2>Soy de la ciudad de {{ capital }}</h2>
+        </div>
+    </div>
 </body>
 </html>
+{% endblock %}
