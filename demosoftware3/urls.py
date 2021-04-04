@@ -20,5 +20,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('leon/', include('leon.urls')),
     path('lozano/', include('lozano.urls')),
-    path('gilmer/', include('gilmer.urls'))
+    path('gilmer/', include('gilmer.urls')),
+    path('raul/', include('raul.urls')),
+    path('aaron/', include('aaron.urls'))
+    path('ale/', include('ale.urls'))
+    path('cali/', include('cali.urls'))
+    path('Jhonatan/', include('Jhonatan.urls'))
+    path('juan/', include('juan.urls'))
+    path('leandro/', include('leandro.urls'))
+    path('murillo/', include('murillo.urls'))
 ]
