@@ -10,15 +10,26 @@
 
 {#Aqui coloco el HTML PARTICULAR de la web#}
 {% block body %}
-   <div>
-    <input id="Hola"  type="button" class="btn-falcon-primary" name="Hola" value="Hola" >
-    <input type="text" id="campoDeTexto">
-    <input type="button" class="btn-falcon-primary" name="Accion2" value="Accion2" >
-    <input type="button" class="btn-falcon-primary" name="Accion3" value="Accion3" >
-    <a><span href="{% url 'lozanoHome' %}" class="btn btn-primary btn-sm" > Lozano </span></a>
-   <img id="foto" src="http://www.ip2location.com/assets/img/icon.png">
-   
-   </div>
+    <div>
+
+
+        <input id="btnAccion" type="button" value="Accion" onclick="show()">
+        <input id="campoTexto" type="text">
+        <input id="campoTexto1" type="text">
+        <input id="campoTexto2" type="text">
+        <input id="campoTexto3" type="text">
+
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6CV3zumQZe_8AIgP6RcID-s4tFnTGdlmhxcM2YhXjmc9hn8lDc2XdkVfybGmt5FuO6ik&usqp=CAU" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+
+    </div>
 
 
 {% endblock %}
@@ -27,8 +38,21 @@
 {#Aquí coloco el JS particular de la web#}
 {% block extrajs %}
     <script>
+        function show(){
+
+            {#Por javascript#}
+            let element = document.getElementById("campoTexto");
+            console.log(element.value)
+
+            {#Por Jquery#}
+            console.log($("#campoTexto").val())
+            $("#campoTexto").val("TEXTO HARDCODEADO")
+            $("#campoTexto1").hide()
+            $("#campoTexto2").hide()
+            $("#campoTexto3").hide()
 
 
+        }
 
     </script>
 {% endblock %}
