@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'raul/base/base.html' %}
+{% block body %}
+    <div class="card" style="width: 30rem;">
+        <img class="card-img-top" src="{{ champion.foto }}" alt="Card image cap">
+        <div class="card-body">
+            <label for="price">Nombre:</label><h5 class="card-title">{{ champion.name }}</h5>
+            <label for="price">Carril:</label><h5 class="card-title">{{ champion.tipo }}</h5>
+            <label for="price">Precio EA:</label><h5 class="card-title">{{ champion.price }}</h5>
+        </div>
+    </div>
+{% endblock %}
+
