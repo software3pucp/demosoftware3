@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'Jhonatan',
     'ale',
     'raul',
-    'cali'
+    'cali',
+    'moduloL'
 ]
 
 MIDDLEWARE = [
