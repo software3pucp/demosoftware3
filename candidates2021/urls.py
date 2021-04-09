@@ -11,5 +11,6 @@ urlpatterns = [
     # path('<pk>/', views., name='candidatos'),
     path('register/', views.Register, name='register'),
     path('delete/<pk>', views.Delete, name='delete'),
+    path('edit/<pk>', views.Edit, name='edit'),
 ]
 
