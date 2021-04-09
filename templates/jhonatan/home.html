@@ -71,20 +71,7 @@ img {
 </head>
 <body>
     <img src="https://i.pinimg.com/originals/f5/80/4a/f5804a456af1f8bb619956e903164159.jpg">
-    <div class="Caja">
-        <div class="contenedor">
-            <h1>{{ titulo }}</h1>
-        </div>
-        {% if request.POST %}
 
-
-        {% else %}
-            <div class="contenedor2">
-            <h2>Soy de la ciudad de {{ capital }}</h2>
-        </div>
-        {% endif %}
-
-    </div>
 
     {% if request.POST %}
 
@@ -95,19 +82,29 @@ img {
                 {% csrf_token %}
                 <h1>Completar Formulario</h1>
                 <div class="form-group">
-                    <input id="username" type="text" name="username" value="">
+                    <input id="username" type="text" name="username" value="" placeholder="Usuario">
                 </div>
 
                 <div class="form-group">
-                    <input id="passoword" type="text" name="passoword" value="">
+                    <input id="passoword" type="text" name="passoword" value="" placeholder="Password">
                 </div>
                 <input type="submit" value="Ingresar">
             </form>
         </div>
 
     {% endif %}
-
-
+    <!--
+    <div class="Caja">
+        <div class="contenedor">
+            <h1>{{ titulo }}</h1>
+        </div>
+    -->
+        {% if request.POST %}
+        <div class="Caja">
+        <div class="contenedor">
+            <h1>{{ titulo }}</h1>
+        </div>
+        {% endif %}
 
 </body>
 </html>

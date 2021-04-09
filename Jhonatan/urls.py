@@ -4,5 +4,7 @@ from django.urls import path, include
 from Jhonatan import views
 
 urlpatterns = [
-    path('home/', views.PolarHome, name='PolarHome')
+    path('home/', views.PolarHome, name='PolarHome'),
+    path('UserList/', views.usuario_list, name='UserList')
+
 ]

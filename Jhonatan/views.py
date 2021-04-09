@@ -5,6 +5,13 @@ from django.shortcuts import render
 from Jhonatan.models import Language
 
 
+def usuario_list(request):
+    usuario = Language.objects.all()
+    return render(request, 'jhonatan/Listado.html', {'usuario':usuario})
+
+
+
+
 def PolarHome(request):
     print("-----------------------------------------------------------------------")
     print(request.POST)
