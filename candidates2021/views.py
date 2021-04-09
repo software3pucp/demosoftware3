@@ -24,19 +24,3 @@ def Delete(request,pk):
     print(request.POST)
     return redirect(ListCandidates)
 
-def Edit(request,pk):
-
-    if request.POST:
-        candidato = Candidate.objects.get(pk=pk)
-        candidato.name = request.POST["name"]
-        candidato.partido = request.POST["partido"]
-        candidato.save()
-        return redirect(ListCandidates)
-
-    context = {
-         'candidato':  Candidate.objects.get(pk=pk)
-    }
-    return render(request, 'Candidatos/formulario.html',context)
-
-
-

@@ -32,22 +32,18 @@
 
 </head>
 <body>
-{% if candidato.pk is not None %}
-    <form action="{% url 'edit' pk=candidato.pk %}" method="post">
-{% else %}
-    <form action="{% url 'register'  %}" method="post">
-{%  endif %}
+<form action="{% url 'register' %}" method="post">
   {% csrf_token %}
   <div class="form-group">
     <label for="name">Name</label>
-    <input name="name" class="form-control" id="name" type="text" placeholder="Name" value="{{ candidato.name }}" >
+    <input name="name" class="form-control" id="name" type="text" placeholder="Name">
   </div>
   <div class="form-group">
     <input name="formtype" class="form-control" id="formtype" type="text" hidden value="1">
   </div>
   <div class="form-group">
     <label for="partido">Partido</label>
-    <input name="partido" class="form-control" id="partido" type="text" placeholder="Partido" value="{{ candidato.partido }}">
+    <input name="partido" class="form-control" id="partido" type="text" placeholder="Partido">
   </div>
   <div class="form-group">
     <label for="exampleFormControlFile1">Example file input</label>s
