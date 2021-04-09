@@ -33,7 +33,7 @@ def leandroHome(request):
     capital = response.json()[0]["capital"]
 
     context = {
-        'titulo': 'HE ENTADO POR URL',
+        'titulo': 'ELECCIONES 2021',
         'listaIdiomas': langList,
         'capital' : capital,
         'body':'soy un string',
