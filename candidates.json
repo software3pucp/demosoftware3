@@ -1,0 +1,25 @@
+[{
+    "model": "candidates2021.candidate",
+    "pk": 1,
+    "fields": {
+      "name": "Julio Guzman",
+      "partido": "Partido Morado"
+    }
+  },
+  {
+    "model": "candidates2021.candidate",
+    "pk": 2,
+    "fields": {
+      "name": "Veronika Mendoza",
+      "partido": "Patria Roja"
+    }
+  },
+  {
+    "model": "candidates2021.candidate",
+    "pk": 3,
+    "fields": {
+      "name": "Porky",
+      "partido": "Renovacion Medieval"
+    }
+  }
+]
