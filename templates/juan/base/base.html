@@ -13,20 +13,9 @@
     <!-- ===============================================-->
     <!--    Document Title-->
     <!-- ===============================================-->
-    <title>Home</title>
+    <title>Genshin Impact</title>
+     <link rel="shortcut icon" href="https://pbs.twimg.com/profile_images/1313783661221875712/dH9He_-P.jpg" />
 
-
-    <!-- ===============================================-->
-    <!--    Favicons-->
-    <!-- ===============================================-->
-
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicons/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicons/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicons/favicon-16x16.png' %}">
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicons/favicon.ico' %}">
-    <link rel="manifest" href="{% static 'img/favicons/manifest.json' %}">
-    <meta name="msapplication-TileImage" content="{% static 'img/favicons/mstile-150x150.png' %}">
-    <meta name="theme-color" content="#ffffff">
 
 
     <!-- ===============================================-->
@@ -45,9 +34,29 @@
 
 </head>
 <style>
-    body  {
-  background-image: url(https://fondosmil.com/fondo/34273.jpg);
-}
+    body {
+        background-image: url(https://fondosmil.com/fondo/34273.jpg);
+    }
+    footer{
+        background: rgba(17,17,17,0.75);
+        opacity: 0.8;
+        aling-items: center;
+        justify-content: center;
+        margin-top : 40px;
+        text-align: center;
+        vertical-align: middle;
+
+    }
+    #logo {
+        height: 60px;
+        aling-items: center;
+        justify-content: center;
+    }
+
+    h6{
+        color: whitesmoke;
+    }
+
 </style>
 <body>
 
@@ -71,8 +80,16 @@
         {#       BODY#}
 		{% block body %}{% endblock %}
 
+        <footer>
+          <img id="logo" src="https://i.pinimg.com/200x150/a3/14/40/a314406562db35953d70cd58f5c5e58a.jpg">
+            <h6>LosOnichan®</h6>
+
+        </footer>
+
+
+
 	</div>
-</div>
+    </div>
 
 </main>
 <!-- ===============================================-->

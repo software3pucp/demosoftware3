@@ -8,6 +8,7 @@ class Characters(models.Model):
     type = models.CharField(max_length=100)
     gender = models.CharField(max_length=100)
     weapon = models.CharField(max_length=100)
+    image = models.CharField(max_length=300 , null=True)
 
 
 

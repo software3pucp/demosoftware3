@@ -1,0 +1,97 @@
+{% extends 'juan/base/base.html' %}
+
+
+{#Aqui coloco el CSS particular de la web#}
+{% block extrastyle %}
+<style>
+    h1{
+        color:  #f1f3f1;
+        text-align:center;
+    }
+
+
+    label{
+        color:  #f1f3f1;
+    }
+	#detalle{
+		height: 600px;
+	}
+
+
+</style>
+
+{% endblock %}
+
+
+{#Aqui coloco el HTML PARTICULAR de la web#}
+
+{% block body %}
+
+
+<div class="container-fluid" id="detalle" >
+	<div class="row">
+		<div class="col-md-6">
+			<img id="foto" src="{{personajeDetalle.image}}" />
+		</div>
+		<div class="col-md-6">
+			<form  action="{% url 'actualizar' personajeDetalle.pk %}" method="post">
+				{% csrf_token %}
+                <div class="form-group">
+
+					<label for="nombre">
+						NOMBRE
+					</label>
+					<input id="nombre" type="text" class="form-control" name="nombre" value=" {{personajeDetalle.name}}" />
+				</div>
+
+                <div class="form-group">
+
+					<label for="elemento">
+						ELEMENTO
+					</label>
+					<input id="elemento" type="text" class="form-control" name="elemento" value=" {{personajeDetalle.type}}" />
+				</div>
+
+                <div class="form-group">
+
+					<label for="sexo">
+						SEXO
+					</label>
+					<input id="sexo" type="text" class="form-control"  name="sexo" value=" {{personajeDetalle.gender}}"/>
+				</div>
+
+                <div class="form-group">
+
+					<label for="arma">
+						ARMA
+					</label>
+					<input id="arma" type="text" class="form-control" name="arma" value=" {{personajeDetalle.weapon}}"/>
+				</div>
+
+				<input type="submit" class="btn btn-primary" value="Modificar">
+			</form>
+			<br>
+			<form  action="{% url 'eliminar' personajeDetalle.pk %}" method="post">
+				{% csrf_token %}
+				<input type="submit" class="btn btn-danger" value="Eliminar">
+			</form>
+
+		</div>
+	</div>
+</div>
+
+
+    {% if request.POST %}
+        <br>
+        <div class="alert alert-success">Guardado con Exito</div>
+    {% endif %}
+
+
+{% endblock %}
+
+{#Aquí coloco el JS particular de la web#}
+{% block extrajs %}
+
+
+
+{% endblock %}
