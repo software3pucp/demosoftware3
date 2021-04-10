@@ -1,10 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    {{variable}}
-</body>
-</html>
+{% extends 'juan/base/base.html' %}
+
+
+{#Aqui coloco el CSS particular de la web#}
+{% block extrastyle %}
+<style>
+    h4{
+        color:  #f1f3f1;
+
+    }
+    #contenedor{
+        text-align:center;
+
+    }
+    div{
+        aling-items: center;
+        justify-content: center;
+    }
+    .label{
+        color:  #f1f3f1;
+    }
+
+
+
+
+</style>
+
+{% endblock %}
+
+
+{#Aqui coloco el HTML PARTICULAR de la web#}
+{% block body %}
+    <div id="contenedor">
+        <h4> REGISTRO DE PERSONAJES GENSHIN IMPACT</h4>
+
+        <form action="{% url 'juanHome' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="label">Nombre de personaje:</div>
+                <input id="nombre" type="text" name="nombre" placeholder="Ejemplo: Venti" value="">
+            </div>
+
+            <div class="form-group">
+                <div class="label">Elemento del personaje:</div>
+                <input id="tipo" type="text" name="tipo" placeholder="Ejemplo: Anemo" value="">
+            </div>
+
+            <div class="form-group">
+                <div class="label">Sexo del personaje:</div>
+                <input id="sexo" type="text" name="sexo" placeholder="Ejemplo: Hombre" value="">
+            </div>
+
+            <div class="form-group">
+                <div class="label">Tipo de arma del personaje:</div>
+                <input id="arma" type="text" name="arma" placeholder="Ejemplo: Arco" value="">
+            </div>
+
+            <input type="submit" value="Registrar">
+        </form>
+
+
+    </div>
+    <br>
+    <div class="row align-items-end">
+
+    {% if request.POST %}
+
+        <div class="alert alert-success">{{guardado}}</div>
+    {% endif %}
+
+    </div>
+
+
+{% endblock %}
+
+{#Aquí coloco el JS particular de la web#}
+{% block extrajs %}
+
+{% endblock %}

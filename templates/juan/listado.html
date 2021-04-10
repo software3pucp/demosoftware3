@@ -1,0 +1,53 @@
+{% extends 'juan/base/base.html' %}
+
+
+{#Aqui coloco el CSS particular de la web#}
+{% block extrastyle %}
+<style>
+    h4{
+        color:  #f1f3f1;
+        text-align:center;
+
+    }
+    h5{
+        text-align:center;
+
+    }
+    div{
+        aling-items: center;
+        justify-content: center;
+    }
+
+
+
+</style>
+
+{% endblock %}
+
+
+{#Aqui coloco el HTML PARTICULAR de la web#}
+{% block body %}
+        <h4> LISTADO DE PERSONAJES</h4>
+
+{% for personaje in listaPersonajes %}
+
+        <div class="card-deck" style="width: 18rem;">
+            <div class="card" >
+                <img class="card-img-top" src={{personaje.imagen}} alt="image">
+                <div class="card-body" >
+                    <h5 class="card-title">{{ personaje.name }}</h5>
+                    <h5 class ="card-subtitle">{{ personaje.type }} </h5>
+                </div>
+            </div>
+        </div>
+        <br>
+
+
+{% endfor %}
+
+{% endblock %}
+
+{#Aquí coloco el JS particular de la web#}
+{% block extrajs %}
+
+{% endblock %}
