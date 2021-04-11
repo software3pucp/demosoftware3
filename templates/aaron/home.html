@@ -1,10 +1,176 @@
+<style>
+    .main {
+        text-align: center;
+    }
+    .card-form{
+        text-align: center;
+    }
+    .custom-select{
+        font-size: 8px;
+    }
+    .card-form{
+        margin-left: 200px;
+        padding-right: 200px;
+    }
+    #precio{
+
+        margin-bottom: 15px;
+    }
+    .select-menu-waffle{
+        font-size: 5px;
+    }
+</style>
+
+
+{% load static %}
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US" dir="ltr">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- ===============================================-->
+    <!--    Document Title-->
+    <!-- ===============================================-->
+    <title>Falcon | Dashboard &amp; WebApp Template</title>
+
+
+    <!-- ===============================================-->
+    <!--    Favicons-->
+    <!-- ===============================================-->
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicons/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicons/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicons/favicon-16x16.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicons/favicon.ico' %}">
+    <link rel="manifest" href="{% static 'img/favicons/manifest.json' %}">
+    <meta name="msapplication-TileImage" content="{% static 'img/favicons/mstile-150x150.png' %}">
+    <meta name="theme-color" content="#ffffff">
+
+
+    <!-- ===============================================-->
+    <!--    Stylesheets-->
+    <!-- ===============================================-->
+    <script src="{% static 'js/config.navbar-vertical.js' %}"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="{% static 'lib/perfect-scrollbar/perfect-scrollbar.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/datatables-bs4/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/datatables.net-responsive-bs4/responsive.bootstrap4.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/leaflet/leaflet.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/leaflet.markercluster/MarkerCluster.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/leaflet.markercluster/MarkerCluster.Default.css' %}" rel="stylesheet">
+    <link href="{% static 'css/theme.css' %}" rel="stylesheet">
+
 </head>
+
+
 <body>
-     <h1>{{ titulo }}</h1>
+
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+<main class="main" id="top">
+
+    <div>
+        <h1>Bienvenido </h1>
+
+        <div class="card-form d-flex justify-content-center">
+            <div class="card col-md-3" >
+
+                <div class="card-body">
+
+                    <form action="{% url 'aaronHome' %}" method="post">
+                        {% csrf_token %}
+                        <input type="text" value="1" hidden name="tipoform">
+                        <div class="form-group">
+                            <p>Coloca el nombre a quien se hará el pedido</p>
+
+                            <input id="name" type="text" name="name" value="">
+                        </div>
+                        <p>Dirección del pedido</p>
+
+                        <h3>{{ listaWaffles.1.name }}</h3>
+
+                         <p>Escoge el sabor de el waffle</p>
+                        <select class="custom-select custom-select-lg mb-3" id="namse">
+                            <option  class="select-menu-waffle" >Escoge el sabor</option>
+                            {% for item in listaWaffles %}
+
+                                <option value="{{ item.pk }}">{{ item.name }}</option>
+                            {% endfor %}
+
+                        </select>
+
+                         <p>Precio </p>
+                        <input id="precio" type="number" name="precio" value="">
+                        <br>
+
+                        <a href="/listaWaffles">Ver los sabores de Waffles</a>
+
+
+                        <input type="submit" value="Ingresar" class="btn btn-outline-primary">
+                    </form>
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+</main>
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
+
+
+<!-- ===============================================-->
+<!--    JavaScripts-->
+<!-- ===============================================-->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'lib/@fortawesome/all.min.js' %}"></script>
+<script src="{% static 'lib/stickyfilljs/stickyfill.min.js' %}"></script>
+<script src="{% static 'lib/sticky-kit/sticky-kit.min.js' %}"></script>
+<script src="{% static 'lib/is_js/is.min.js' %}"></script>
+<script src="{% static 'lib/lodash/lodash.min.js' %}"></script>
+<script src="{% static 'lib/perfect-scrollbar/perfect-scrollbar.js' %}"></script>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:100,200,300,400,500,600,700,800,900&amp;display=swap"
+      rel="stylesheet">
+<script src="{% static 'lib/chart.js/Chart.min.js' %}"></script>
+<script src="{% static 'lib/datatables/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'lib/datatables-bs4/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'lib/datatables.net-responsive/dataTables.responsive.js' %}"></script>
+<script src="{% static 'lib/datatables.net-responsive-bs4/responsive.bootstrap4.js' %}"></script>
+<script src="{% static 'lib/leaflet/leaflet.js' %}"></script>
+<script src="{% static 'lib/leaflet.markercluster/leaflet.markercluster.js' %}"></script>
+<script src="{% static 'lib/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js' %}"></script>
+<script src="{% static 'js/theme.js' %}"></script>
+
 </body>
+
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
