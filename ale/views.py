@@ -6,6 +6,9 @@ from ale.models import Personaje
 # Create your views here.
 
 
+def usuario_list(request):
+    usuario = Personaje.objects.all()
+    return render(request, 'ale/base/lista.html', {'usuario':usuario})
 
 def aleHome(request):
     print(request.POST)
