@@ -1,0 +1,126 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- ===============================================-->
+    <!--    Document Title-->
+    <!-- ===============================================-->
+    <title>Genshin Impact</title>
+     <link rel="shortcut icon" href="https://pbs.twimg.com/profile_images/1313783661221875712/dH9He_-P.jpg" />
+
+
+
+    <!-- ===============================================-->
+    <!--    Stylesheets-->
+    <!-- ===============================================-->
+    <script src="{% static 'js/config.navbar-vertical.js' %}"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="{% static 'lib/perfect-scrollbar/perfect-scrollbar.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/datatables-bs4/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/datatables.net-responsive-bs4/responsive.bootstrap4.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/leaflet/leaflet.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/leaflet.markercluster/MarkerCluster.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/leaflet.markercluster/MarkerCluster.Default.css' %}" rel="stylesheet">
+    <link href="{% static 'css/theme.css' %}" rel="stylesheet">
+    {% block extrastyle %}{% endblock %}
+
+</head>
+<style>
+    body {
+        background-image: url(https://fondosmil.com/fondo/34273.jpg);
+    }
+    footer{
+        background: rgba(17,17,17,0.75);
+        opacity: 0.8;
+        aling-items: center;
+        justify-content: center;
+        margin-top : 40px;
+        text-align: center;
+        vertical-align: middle;
+
+    }
+    #logo {
+        height: 60px;
+        aling-items: center;
+        justify-content: center;
+    }
+
+    h6{
+        color: whitesmoke;
+    }
+
+</style>
+<body>
+
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+<main class="main" id="top">
+
+
+    <div class="container-fluid">
+
+        {#      NAVBAR#}
+	    {% include 'juan/base/navbar.html' %}
+
+
+	<div>
+        {#      SIDE BAR#}
+		{% include 'juan/base/sidebar.html' %}
+
+
+        {#       BODY#}
+		{% block body %}{% endblock %}
+
+        <footer>
+          <img id="logo" src="https://i.pinimg.com/200x150/a3/14/40/a314406562db35953d70cd58f5c5e58a.jpg">
+            <h6>LosOnichan®</h6>
+
+        </footer>
+
+
+
+	</div>
+    </div>
+
+</main>
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
+
+
+<!-- ===============================================-->
+<!--    JavaScripts-->
+<!-- ===============================================-->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'lib/@fortawesome/all.min.js' %}"></script>
+<script src="{% static 'lib/stickyfilljs/stickyfill.min.js' %}"></script>
+<script src="{% static 'lib/sticky-kit/sticky-kit.min.js' %}"></script>
+<script src="{% static 'lib/is_js/is.min.js' %}"></script>
+<script src="{% static 'lib/lodash/lodash.min.js' %}"></script>
+<script src="{% static 'lib/perfect-scrollbar/perfect-scrollbar.js' %}"></script>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:100,200,300,400,500,600,700,800,900&amp;display=swap"
+      rel="stylesheet">
+<script src="{% static 'lib/chart.js/Chart.min.js' %}"></script>
+<script src="{% static 'lib/datatables/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'lib/datatables-bs4/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'lib/datatables.net-responsive/dataTables.responsive.js' %}"></script>
+<script src="{% static 'lib/datatables.net-responsive-bs4/responsive.bootstrap4.js' %}"></script>
+<script src="{% static 'lib/leaflet/leaflet.js' %}"></script>
+<script src="{% static 'lib/leaflet.markercluster/leaflet.markercluster.js' %}"></script>
+<script src="{% static 'lib/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js' %}"></script>
+<script src="{% static 'js/theme.js' %}"></script>
+{% block extrajs %}{% endblock %}
+</body>
+
+</html>

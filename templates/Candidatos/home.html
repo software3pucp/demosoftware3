@@ -1,0 +1,121 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- ===============================================-->
+    <!--    Favicons-->
+    <!-- ===============================================-->
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicons/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicons/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicons/favicon-16x16.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicons/favicon.ico' %}">
+    <link rel="manifest" href="{% static 'img/favicons/manifest.json' %}">
+    <meta name="msapplication-TileImage" content="{% static 'img/favicons/mstile-150x150.png' %}">
+    <meta name="theme-color" content="#ffffff">
+
+
+    <!-- ===============================================-->
+    <!--    Stylesheets-->
+    <!-- ===============================================-->
+    <script src="{% static 'js/config.navbar-vertical.js' %}"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="{% static 'lib/perfect-scrollbar/perfect-scrollbar.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/datatables-bs4/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/datatables.net-responsive-bs4/responsive.bootstrap4.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/leaflet/leaflet.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/leaflet.markercluster/MarkerCluster.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/leaflet.markercluster/MarkerCluster.Default.css' %}" rel="stylesheet">
+    <link href="{% static 'css/theme.css' %}" rel="stylesheet">
+
+</head>
+<body>
+<div class="card mb-3">
+            <div class="card-header">
+              <div class="row align-items-center justify-content-between">
+                <div class="col-6 col-sm-auto d-flex align-items-center pr-0">
+                  <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Candidatos 2021</h5>
+                </div>
+                <div class="col-6 col-sm-auto ml-auto text-right pl-0">
+                  <div class="d-none" id="purchases-actions">
+                    <div class="input-group input-group-sm">
+                      <select class="custom-select cus" aria-label="Bulk actions">
+                        <option selected="">Bulk actions</option>
+                        <option value="Refund">Refund</option>
+                        <option value="Delete">Delete</option>
+                        <option value="Archive">Archive</option>
+                      </select>
+                      <button class="btn btn-falcon-default btn-sm ml-2" type="button">Apply</button>
+                    </div>
+                  </div>
+                  <div id="dashboard-actions">
+                    <a href="{% url 'register' %}" class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ml-1">New</span></a>
+                    <button class="btn btn-falcon-default btn-sm mx-2" type="button"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ml-1">Filter</span></button>
+                    <button class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-external-link-alt" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ml-1">Export</span></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body px-0 pt-0">
+              <div class="dashboard-data-table">
+                <table class="table table-sm table-dashboard fs--1 data-table border-bottom" data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
+                  <thead class="bg-200 text-900">
+                    <tr>
+
+                      <th class="sort pr-1 align-middle">#</th>
+                      <th class="sort pr-1 align-middle">Nombre</th>
+                      <th class="sort pr-1 align-middle">Partido</th>
+                      <th class="sort pr-1 align-middle text-center">Opciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="purchases">
+                    {% for c in lista %}
+                    <tr class="btn-reveal-trigger">
+
+                      <th class="align-middle">{{c.id}}</th>
+                      <td class="align-middle">{{c.name}}</td>
+                      <td class="align-middle">{{c.partido}}</td>
+                      <td class="align-middle text-center fs-0">
+                                          <button type="button" class="btn btn-warning btn-xs btn-flat">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <a href="{% url 'delete' pk=c.pk %}" type="button" class="btn btn-danger btn-xs btn-flat">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'lib/@fortawesome/all.min.js' %}"></script>
+<script src="{% static 'lib/stickyfilljs/stickyfill.min.js' %}"></script>
+<script src="{% static 'lib/sticky-kit/sticky-kit.min.js' %}"></script>
+<script src="{% static 'lib/is_js/is.min.js' %}"></script>
+<script src="{% static 'lib/lodash/lodash.min.js' %}"></script>
+<script src="{% static 'lib/perfect-scrollbar/perfect-scrollbar.js' %}"></script>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:100,200,300,400,500,600,700,800,900&amp;display=swap"
+      rel="stylesheet">
+<script src="{% static 'lib/chart.js/Chart.min.js' %}"></script>
+<script src="{% static 'lib/datatables/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'lib/datatables-bs4/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'lib/datatables.net-responsive/dataTables.responsive.js' %}"></script>
+<script src="{% static 'lib/datatables.net-responsive-bs4/responsive.bootstrap4.js' %}"></script>
+<script src="{% static 'lib/leaflet/leaflet.js' %}"></script>
+<script src="{% static 'lib/leaflet.markercluster/leaflet.markercluster.js' %}"></script>
+<script src="{% static 'lib/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js' %}"></script>
+<script src="{% static 'js/theme.js' %}"></script>
+
+
+</body>
+ <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+</html>

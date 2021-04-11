@@ -2,10 +2,29 @@ import requests
 from django.shortcuts import render
 
 # Create your views here.
-from leon.models import Language
+from Jhonatan.models import Language
+
+
+def usuario_list(request):
+    usuario = Language.objects.all()
+    return render(request, 'jhonatan/Listado.html', {'usuario':usuario})
+
+
 
 
 def PolarHome(request):
+    print("-----------------------------------------------------------------------")
+    print(request.POST)
+    print("-----------------------------------------------------------------------")
+    if request.POST:
+        Language.objects.create(name=request.POST["username"], habloElIdioma=False,
+                                longitud=len(request.POST["username"]))
+
+        context = {
+            'titulo': "Has guardado en BBDD a " + request.POST["username"] + "!!",
+            'capital': "POST"
+        }
+        return render(request, 'jhonatan/home.html', context)
 
     langList = Language.objects.filter(habloElIdioma=False)
     print("=======================================================================")
