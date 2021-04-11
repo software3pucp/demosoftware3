@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'cali',
     'candidates2021',
     'juan',
+    'aaron',
 ]
 
 MIDDLEWARE = [
