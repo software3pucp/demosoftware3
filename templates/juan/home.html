@@ -9,12 +9,12 @@
 
     }
 
-    /*#contenedor{*/
-    /*    text-align:center;*/
-    /*    height: 570px;*/
-    /*    transform: translate(0,10%);*/
+    #contenedor{
+        text-align:center;
+        height: 570px;
+        transform: translate(0,10%);
 
-    /*}*/
+    }
 
     form{
          vertical-align: middle;
@@ -38,43 +38,43 @@
 {#Aqui coloco el HTML PARTICULAR de la web#}
 {% block body %}
     <div id="contenedor" class="row align-center">
-        <h4> REGISTRO DE PERSONAJES GENSHIN IMPACT</h4>
-        <br>
-        <form action="{% url 'juanHome' %}" method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <div class="label">Nombre de personaje:</div>
-                <input id="nombre" type="text" name="nombre" placeholder="Ejemplo: Venti" value="" required>
-            </div>
+        <div class="col align-center">
+            <h4>REGISTRO DE PERSONAJES GENSHIN IMPACT</h4>
+            <br>
+            <form action="{% url 'juanHome' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="label">Nombre de personaje:</div>
+                    <input id="nombre" type="text" name="nombre" placeholder="Ejemplo: Venti" value="" required>
+                </div>
 
-            <div class="form-group">
-                <div class="label">Elemento del personaje:</div>
-                <input id="tipo" type="text" name="tipo" placeholder="Ejemplo: Anemo" value="" required>
-            </div>
+                <div class="form-group">
+                    <div class="label">Elemento del personaje:</div>
+                    <input id="tipo" type="text" name="tipo" placeholder="Ejemplo: Anemo" value="" required>
+                </div>
 
-            <div class="form-group">
-                <div class="label">Sexo del personaje:</div>
-                <input id="sexo" type="text" name="sexo" placeholder="Ejemplo: Hombre" value="" required>
-            </div>
+                <div class="form-group">
+                    <div class="label">Sexo del personaje:</div>
+                    <input id="sexo" type="text" name="sexo" placeholder="Ejemplo: Hombre" value="" required>
+                </div>
 
-            <div class="form-group">
-                <div class="label">Tipo de arma del personaje:</div>
-                <input id="arma" type="text" name="arma" placeholder="Ejemplo: Arco" value="" required>
-            </div>
+                <div class="form-group">
+                    <div class="label">Tipo de arma del personaje:</div>
+                    <input id="arma" type="text" name="arma" placeholder="Ejemplo: Arco" value="" required>
+                </div>
 
-            <div class="form-group">
-                <div class="label">Imagen del personaje:</div>
-                <input id="imagen" type="text" name="imagen" placeholder="URL de imagen" value="" required>
-            </div>
+                <div class="form-group">
+                    <div class="label">Imagen del personaje:</div>
+                    <input id="imagen" type="text" name="imagen" placeholder="URL de imagen" value="" required>
+                </div>
 
-            <input type="submit" value="Registrar">
+                <input type="submit" value="Registrar">
 
-        </form>
-
-
-
+            </form>
+        </div>
     </div>
     <br>
+
     <div class="row align-items-end">
 
     {% if request.POST %}
