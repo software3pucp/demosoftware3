@@ -35,6 +35,7 @@ def personajeDetalle(request,pk):
 
 def actualizar(request,pk):
     if request.POST:
+        print(request.POST)
         personaje = Characters.objects.get(pk=pk)
         personaje.name = request.POST["nombre"]
         personaje.type = request.POST["elemento"]

@@ -1,0 +1,58 @@
+[
+  {
+    "id": 35,
+    "name": "  Venti",
+    "type": "  Anemo",
+    "gender": "  Hombre",
+    "weapon": "  Arco",
+    "image": "https://i2.wp.com/www.korosenai.es/wp-content/uploads/2020/10/venti-genshin-impact.jpg?fit=640%2C480&ssl=1"
+  },
+  {
+    "id": 36,
+    "name": "  Zhongli",
+    "type": "  Geo",
+    "gender": "  Hombre",
+    "weapon": "  Lanza",
+    "image": "https://i1.wp.com/www.korosenai.es/wp-content/uploads/2020/12/zhongli-genshin-impact.jpg?resize=628%2C471&ssl=1"
+  },
+  {
+    "id": 39,
+    "name": "Kaeya",
+    "type": "Cryo",
+    "gender": "Hombre",
+    "weapon": "Espada Ligera",
+    "image": "https://i0.wp.com/www.korosenai.es/wp-content/uploads/2020/12/kaeya-genshin-impact.jpg?fit=640%2C480&ssl=1"
+  },
+  {
+    "id": 40,
+    "name": "Noelle",
+    "type": "Geo",
+    "gender": "Mujer",
+    "weapon": "Claymore",
+    "image": "https://i0.wp.com/www.korosenai.es/wp-content/uploads/2020/10/noelle-genshin-impact.jpg?fit=640%2C480&ssl=1"
+  },
+  {
+    "id": 44,
+    "name": "Jean",
+    "type": "Anemo",
+    "gender": "Mujer",
+    "weapon": "Espada Ligera",
+    "image": "https://i0.wp.com/www.korosenai.es/wp-content/uploads/2021/01/jean-genshin-impact.jpg?fit=640%2C480&ssl=1"
+  },
+  {
+    "id": 45,
+    "name": "Lisa",
+    "type": "Electro",
+    "gender": "Mujer",
+    "weapon": "Canalizador",
+    "image": "https://i1.wp.com/www.korosenai.es/wp-content/uploads/2021/01/lisa-genshin-impact.jpg?fit=640%2C480&ssl=1"
+  },
+  {
+    "id": 46,
+    "name": "Diluc",
+    "type": "Pyro",
+    "gender": "Hombre",
+    "weapon": "Claymore",
+    "image": "https://i2.wp.com/www.korosenai.es/wp-content/uploads/2020/10/diluc-genshin-impact.jpg?fit=640%2C480&ssl=1"
+  }
+]

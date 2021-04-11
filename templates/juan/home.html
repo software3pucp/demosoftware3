@@ -8,12 +8,14 @@
         color:  #f1f3f1;
 
     }
-    #contenedor{
-        text-align:center;
-        height: 570px;
-        transform: translate(0,10%);
 
-    }
+    /*#contenedor{*/
+    /*    text-align:center;*/
+    /*    height: 570px;*/
+    /*    transform: translate(0,10%);*/
+
+    /*}*/
+
     form{
          vertical-align: middle;
     }
@@ -35,9 +37,9 @@
 
 {#Aqui coloco el HTML PARTICULAR de la web#}
 {% block body %}
-    <div id="contenedor">
+    <div id="contenedor" class="row align-center">
         <h4> REGISTRO DE PERSONAJES GENSHIN IMPACT</h4>
-
+        <br>
         <form action="{% url 'juanHome' %}" method="post">
             {% csrf_token %}
             <div class="form-group">
