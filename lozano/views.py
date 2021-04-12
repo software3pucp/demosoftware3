@@ -1,88 +1,74 @@
 import requests
 from django.shortcuts import render
 
-# Create your views here.
-from lozano.models import Language, Pais, PaisIdioma
+from lozano.models import Tipo, Pokemon
 
 
 def lozanoHome(request):
-    pais = ""
-    capital = ""
-    key = ""
-    found = False
-    if request.POST:
-        print(request.POST["nombrePais"])
-        response = requests.get('https://restcountries.eu/rest/v2/name/' + request.POST["nombrePais"])
-        if response.status_code != 404:
-            pais = response.json()[0]["name"]
-            capital = response.json()[0]["capital"]
-            paises = Pais.objects.filter(name=pais)
-            if len(paises) == 0:
-                Pais.objects.create(name=pais,capital=capital)
-                key = Pais.objects.filter(name=pais)[0].pk
-            else:
-                key = Pais.objects.filter(name=pais)[0].pk
-            found = True
+    print('*************************************************')
+    print(request.POST)
+    print('*************************************************')
 
+    flag = False
+    if request.POST:
+        pokemon = Pokemon.objects.get(pk = request.POST['pokemonPk'])
+        pokemon.estado = 0
+        pokemon.save()
+        flag = True
+    pokemons = Pokemon.objects.filter(estado=1)
     context = {
-        'titulo': 'Modulo Lozano',
-        'holaMundo': 'Hola mundo',
-        'key': key,
-        'pais': pais,
-        'capital': capital,
-        'found': found
+        'lPokemon' : pokemons,
+        'flag' : flag,
     }
     return render(request, 'lozano/home.html', context)
 
-def lozanoIdiomas(request):
-    idioma = ""
-    insert = False
-    found = False
+
+def lozanoInsertarPokemon(request):
+    print('*************************************************')
+    print(request.POST)
+    print('*************************************************')
+
+    flag = False
     if request.POST:
-        print(request.POST["nombreIdioma"])
-        idiomas = Language.objects.filter(name=request.POST["nombreIdioma"])
-        if len(idiomas) != 0:
-            idioma = Language.objects.filter(name=request.POST["nombreIdioma"])[0]
-            found = True
+        Pokemon.objects.create(nombre=request.POST['nombre'],tipo_id=request.POST['tipo'],altura=request.POST['altura'],peso=request.POST['peso'],imagen=request.POST['link-imagen'])
+        flag = True
 
+    #Body
+    tipos = Tipo.objects.filter()
     context = {
-        'titulo': 'Modulo Lozano',
-        'idioma': idioma,
-        'found': found,
-        'inser': insert
+        'lTipo' : tipos,
+        'flag' : flag,
     }
-    return render(request, 'lozano/idiomas/idiomas.html', context)
+    return render(request, 'lozano/insertarPokemon.html', context)
 
-def lozano404(request):
-    return render(request, 'lozano/404.html')
+def lozanoEditarPokemon(request, pk):
+    print('*************************************************')
+    print(request.POST)
+    print('*************************************************')
 
-def lozanoIdioma(request,pk):
-
-    idioma = Language.objects.get(pk=pk)
-
-    context = {
-        "idiomaDetalle": idioma
-    }
-    return render(request, 'lozano/idiomas/idioma.html',context)
-
-def lozanoPais(request, pk):
+    flag = False
     if request.POST:
-        idiomas = Language.objects.filter(name=request.POST["idioma"])
-        if len(idiomas) == 0:
-            Language.objects.create(name=request.POST["idioma"], habloElIdioma=False,longitud=len(request.POST["idioma"]))
-            lenguaje = Language.objects.get(name=request.POST["idioma"])
-            PaisIdioma.objects.create(idLanguage=lenguaje.pk, idPais=pk)
-        else:
-            lenguaje = Language.objects.filter(name=request.POST["idioma"])[0]
-            PaisIdioma.objects.create(idLanguage=lenguaje.pk, idPais=pk)
-    pais = Pais.objects.get(pk=pk)
-    langList = PaisIdioma.objects.filter(idPais=pk)
-    print(langList)
-    lista = []
-    for idioma in langList:
-        lista.append(Language.objects.get(pk=idioma.idLanguage))
+        pokemon = Pokemon.objects.get(pk=pk)
+        pokemon.nombre = request.POST['nombre']
+        pokemon.tipo_id = request.POST['tipo']
+        pokemon.altura = request.POST['altura']
+        pokemon.peso = request.POST['peso']
+        pokemon.imagen = request.POST['link-imagen']
+        pokemon.save()
+        flag = True
+    pokemon = Pokemon.objects.get(pk=pk)
+    tipos = Tipo.objects.filter()
     context = {
-        "pais": pais,
-        'listaIdiomas': lista
+        'pokemon' : pokemon,
+        'lTipo': tipos,
+        'flag': flag,
     }
-    return render(request, 'lozano/paises/pais.html', context)
+    return render(request, 'lozano/editarPokemon.html', context)
+
+def lozanoPokemonDetalle(request, pk):
+    pokemon = Pokemon.objects.get(pk=pk)
+
+    context = {
+        'pokemon' : pokemon,
+    }
+    return render(request, 'lozano/pokemonDetalle.html', context)

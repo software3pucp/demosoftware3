@@ -26,7 +26,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicons/favicon.ico' %}">
     <link rel="manifest" href="{% static 'img/favicons/manifest.json' %}">
     <meta name="msapplication-TileImage" content="{% static 'img/favicons/mstile-150x150.png' %}">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#ffffff">
 
 
     <!-- ===============================================-->
@@ -41,7 +41,9 @@
     <link href="{% static 'lib/leaflet.markercluster/MarkerCluster.css' %}" rel="stylesheet">
     <link href="{% static 'lib/leaflet.markercluster/MarkerCluster.Default.css' %}" rel="stylesheet">
     <link href="{% static 'css/theme-dark.css' %}" rel="stylesheet">
-    {% block extrastyle %}{% endblock %}
+    {% block extrastyle %}
+
+    {% endblock %}
 
 </head>
 
@@ -51,36 +53,14 @@
 <!--    Main Content-->
 <!-- ===============================================-->
 <main class="main" id="top">
-
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
-
-                {#      HEADER#}
-                {% include 'lozano/base/header.html' %}
-
-                <div class="row" style="background-color: #132238;">
-
-                    {#      NAVBAR#}
-                    {% include 'lozano/base/navbar.html' %}
-
-                </div>
-                <div class="row" style="height: 100%">
-
-                    {#      SIDE BAR#}
-		            {% include 'lozano/base/sidebar.html' %}
-
-                    <div id="content" class="col-md-11">
-
-                        {#      BODY#}
-		                {% block body %}{% endblock %}
-
-                    </div>
-                </div>
-            </div>
+            {% include 'lozano/base/header.html' %}
+        </div>
+        <div class="row">
+            {% block body %}{% endblock %}
         </div>
     </div>
-
 </main>
 <!-- ===============================================-->
 <!--    End of Main Content-->
@@ -110,13 +90,6 @@
 <script src="{% static 'lib/leaflet.markercluster/leaflet.markercluster.js' %}"></script>
 <script src="{% static 'lib/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js' %}"></script>
 <script src="{% static 'js/theme.js' %}"></script>
-{# Nav button #}
-<script>
-    $("#sb-btn").click(function(){
-        $("#sb-menu").toggle();
-        $("#content").toggleClass("col-md-12")
-    });
-</script>
 {% block extrajs %}{% endblock %}
 </body>
 

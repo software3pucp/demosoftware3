@@ -1,16 +1,13 @@
 from django.db import models
 
-# Create your models here.
+class Tipo(models.Model):
+    nombre = models.CharField(max_length=100)
+    color = models.CharField(max_length=7,null=True)
 
-class Language(models.Model):
-    name = models.CharField(max_length=100)
-    longitud = models.IntegerField(default=0)
-    habloElIdioma = models.BooleanField(default=False, null=True, blank=True)
-
-class Pais(models.Model):
-    name = models.CharField(max_length=100)
-    capital = models.CharField(max_length=100, null=True, blank=True)
-
-class PaisIdioma(models.Model):
-    idPais = models.IntegerField()
-    idLanguage = models.IntegerField()
+class Pokemon(models.Model):
+    nombre = models.CharField(max_length=100)
+    tipo = models.ForeignKey(Tipo,on_delete=models.CASCADE)
+    altura = models.FloatField()
+    peso = models.FloatField()
+    estado = models.IntegerField(default=1)
+    imagen = models.CharField(max_length=140,null=True)
