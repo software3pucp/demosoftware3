@@ -11,8 +11,8 @@ def leonHome(request):
     print(request.POST)
     print("-----------------------------------------------------------------------")
     if request.POST:
-
-        Language.objects.create(name=request.POST["username"], habloElIdioma=False, longitud= len(request.POST["username"]))
+        Language.objects.create(name=request.POST["username"], habloElIdioma=False,
+                                longitud=len(request.POST["username"]))
 
         context = {
             'titulo': "Has guardado en BBDD :" + request.POST["username"],

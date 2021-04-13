@@ -1,0 +1,37 @@
+{% extends 'murillo/base/base.html' %}
+
+{#CSS adicional#}
+{% block extrastyle %}
+
+{% endblock %}
+
+{#BODY#}
+{% block body %}
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4" style="padding-top: 1%">
+        <div class="card" style="padding-top: 1%; padding-left: 1%;">
+            <h2>{{ pokemon.nombre }}</h2>
+            <img class="card-img-top" src="{{ pokemon.imagen }}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">N.º{{ pokemon.pk }}</h5>
+                <p class="card-text" style="color: white;">Peso: {{ pokemon.peso }}</p>
+                <p class="card-text" style="color: white;">Altura: {{ pokemon.altura }}</p>
+                <p class="card-text" style="color: white;">Tipo: {{ pokemon.tipo.nombre }}</p>
+                <a href="{% url 'murilloPokemonEditar' pk=pokemon.pk %}" class="btn btn-primary">Editar</a>
+                <form action="{% url 'murilloHome' %}" method="post" style="padding-top: 1%">
+                    {% csrf_token %}
+                    <input type="hidden" id="pokemonPk" name="pokemonPk" value="{{ pokemon.pk }}">
+                    <input type="submit" class="btn btn-primary" value="Eliminar">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+    </div>
+{% endblock %}
+
+{#JAVASCRIPT adicional#}
+{% block extrajs %}
+
+{% endblock %}
