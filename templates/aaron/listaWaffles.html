@@ -1,10 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Lista de Waffles</title>
-</head>
-<body>
+{% extends "aaron/base.html" %}
 
-</body>
-</html>
+{% block extrastyle %}
+
+{% endblock %}
+{% block body %}
+
+    <h2 class="d-flex justify-content-center"> Lista de Waffles </h2>
+
+
+    <div class="row d-flex justify-content-center m-2">
+        {% for sabor in listaWaffles %}
+
+            <div class=" col-xl-3 col-md-4 col-sm-6 mb-4 ">
+                <div class="card">
+                    <div class="card-img-top">
+                        <img class="img-fluid"
+                             src="https://universo-nintendo.com.mx/my_uploads/2020/09/Universo-Nintendo-Kanojo-Okarishimasu-Chizuru-Mizuhara-Sonrisa.jpg"
+                             alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ sabor.name }}</h5>
+                        <p class="card-text"> Precio : {{ sabor.precio }}</p>
+
+                        <a class="btn btn-primary btn-sm" href="{% url 'detalleWaffles' pk=sabor.pk %}">Ver detalle</a>
+                        <a class="btn btn-outline-primary btn-sm"
+                           href="{% url 'editarWaffles' pk=sabor.pk %}">Editar</a>
+                        <a class="btn btn-outline-primary btn-sm" href="{% url 'eliminarWaffles' pk=sabor.pk %}">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+
+
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+
+    </script>
+{% endblock %}

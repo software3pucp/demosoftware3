@@ -1,10 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "aaron/base.html" %}
+
+{% block extrastyle %}
+
+{% endblock %}
+{% block body %}
+
+    <h2 class="d-flex justify-content-center"> Lista de Waffles </h2>
+
+
+    <div class="row d-flex justify-content-center m-2" >
+
+                <div class="card">
+                    <div class="card-img-top">
+                        <img class="img-fluid" src="https://universo-nintendo.com.mx/my_uploads/2020/09/Universo-Nintendo-Kanojo-Okarishimasu-Chizuru-Mizuhara-Sonrisa.jpg"
+                                                   alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ waffle.name }}</h5>
+                        <p class="card-text" >Precio : {{ waffle.precio }}</p>
+
+
+                        <a class="btn btn-outline-primary btn-sm" href="{% url 'listaWaffles' %}">Volver a la lista</a>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+
+    </script>
+{% endblock %}
