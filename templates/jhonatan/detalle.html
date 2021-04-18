@@ -1,0 +1,34 @@
+{% extends "jhonatan/base2/base.html" %}
+{% block extrastyle %}
+<style>
+
+</style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row d-flex justify-content-center m-2">
+
+        <div class="card" style="width: 20rem;">
+            <img src="https://media.tenor.com/images/7b2c159090e6919c5a84bbaaed1ff73a/tenor.gif" class="brand-image" />
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="name">Nombre: </label>
+                    <label for="name"> {{ osito.name }}</label>
+                    <br>
+                    <label for="name">Tamaño del osito(m): </label>
+                    <label for="name"> {{ osito.longitud }}</label>
+                    <br>
+                    <label for="name">Comida: </label>
+                    <label for="name"> {{ osito.comida }}</label>
+                </div>
+            </div>
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'UserList' %}">Regresar</a>
+        </div>
+    </div>
+
+    </div>
+
+    </div>
+
+{% endblock %}

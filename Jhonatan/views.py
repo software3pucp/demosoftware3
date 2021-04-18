@@ -1,5 +1,5 @@
 import requests
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from Jhonatan.models import Language
@@ -44,3 +44,39 @@ def PolarHome(request):
         'capital' : capital
     }
     return render(request, 'jhonatan/home.html', context)
+
+def editarOsitos(request, pk):
+    osito = Language.objects.get(pk=pk)
+    if request.POST:
+        print(request.POST)
+        newname = request.POST["name"]
+        newprecio = request.POST["longitud"]
+        newcomida = request.POST["comida"]
+
+        osito.name = newname
+        osito.longitud = newprecio
+        osito.comida = newcomida
+        osito.save()
+
+        return redirect(usuario_list)
+
+    context = {
+        'osito': osito
+    }
+    return render(request, 'jhonatan/editar.html', context)
+
+def muerteOsito(request,pk):
+
+    osito = Language.objects.get(pk=pk)
+    osito.delete()
+    return redirect(usuario_list)
+
+def detalleOsitos(request, pk):
+    osito = Language.objects.get(pk=pk)
+
+    print(osito)
+
+    context = {
+        'osito': osito
+    }
+    return render(request, 'jhonatan/detalle.html', context)

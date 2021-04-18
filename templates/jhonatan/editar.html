@@ -1,0 +1,45 @@
+{% extends "jhonatan/base2/base.html" %}
+{% block extrastyle %}
+<style>
+input{
+    margin: 10px;
+    padding: 5px;
+}
+
+</style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row d-flex justify-content-center m-2">
+
+        <div class="card" style="width: 20rem;">
+            <img src="https://media.tenor.com/images/7b2c159090e6919c5a84bbaaed1ff73a/tenor.gif" class="brand-image" />
+            <div class="card-body">
+
+                <form action="{% url 'editarOsitos' pk=osito.pk %}"  method="post">
+                    {% csrf_token %}
+                    <input name="name" class="form-control" id="name" type="text" value="{{ osito.name }}"
+                           placeholder="Coloca el nuevo nombre">
+
+
+                    <input name="longitud" class="form-control" id="longitud" type="number" value="{{ osito.longitud }}"
+                           placeholder="Coloca la nueva longitud">
+
+                    <input name="comida" class="form-control" id="comida" type="text" value="{{ osito.comida }}"
+                           placeholder="Coloca su comida">
+
+                    <input type="submit" value="Guardar" class="btn btn-primary">
+                </form>
+
+
+            </div>
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'UserList' %}">Regresar</a>
+        </div>
+    </div>
+
+    </div>
+
+    </div>
+
+{% endblock %}

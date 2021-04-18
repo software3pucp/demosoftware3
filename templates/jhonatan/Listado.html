@@ -26,11 +26,15 @@
             <div class="form-group">
                 <label for="name">Nombre:</label>
                 <label for="name"> {{ user.name }}</label>
-            </div>
-           <div class="form-group">
-                <label for="name">Longitud del nombre de usuario:</label>
+                <br>
+                <label for="name">Tamaño del osito(m):</label>
                 <label for="name"> {{ user.longitud }}</label>
             </div>
+
+            <a class="btn btn-outline-primary btn-sm"
+                           href="{% url 'editarOsitos' pk=user.pk %}">Editar</a>
+            <a class="btn btn-primary btn-sm" href="{% url 'detalleOsitos' pk=user.pk %}">Ver detalle</a>
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'muerteOsito' pk=user.pk %}">X</a>
 
         </div>
     </div>
