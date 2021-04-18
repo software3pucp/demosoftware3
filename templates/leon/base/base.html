@@ -58,18 +58,18 @@
     <div class="container-fluid">
 
         {#      NAVBAR#}
-	    {% include 'leon/base/navbar.html' %}
+{% comment %}	    {% include 'leon/base/navbar.html' %}{% endcomment %}
 
 
-	<div class="row">
+
         {#      SIDE BAR#}
-		{% include 'leon/base/sidebar.html' %}
+	{% comment %}	{% include 'leon/base/sidebar.html' %}{% endcomment %}
 
 
         {#       BODY#}
 		{% block body %}{% endblock %}
 
-	</div>
+
 </div>
 
 </main>
