@@ -1,14 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-     <h1>{{ titulo }}</h1>
+{% extends 'gilmer/base/base.html' %}
 
-     <h1>Carlos</h1>>
-     <h2>Cabrera</h2>
+{#Aqui coloco el CSS particular de la web#}
+{% block extrastyle %}
 
-</body>
-</html>
+{% endblock %}
+
+
+{#Aqui coloco el HTML PARTICULAR de la web#}
+{% block body %}
+    <div class="col-md-12">
+        {% if flag %}
+            <b><p>Equipo Eliminado</p></b>
+        {% endif %}
+
+        <div class="row" style="padding-left: 1%; padding-right: 1%" >
+            {% for team in teamsList %}
+                <div style="margin: 1%;">
+                    <div class="card" style="width: 18rem; background-color: {{ pokemon.tipo.color }} ;">
+                        <img class="card-img-top" src="https://www.notebookcheck.org/fileadmin/_processed_/0/3/csm_PUBGF_Mobile_indian_ban_ae1ae4c89f.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ team.name }}</h5>
+                            <p class="card-text"></p>
+                            <a href="{% url 'detallePubgmTeam' pk=team.pk %}" class="btn btn-primary">ver detalle</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{#Aquí coloco el JS particular de la web#}
+{% block extrajs %}
+{% endblock %}
+
+

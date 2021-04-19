@@ -1,0 +1,45 @@
+{% extends 'gilmer/base/base.html' %}
+
+{#CSS adicional#}
+{% block extrastyle %}
+{% endblock %}
+
+{#BODY#}
+{% block body %}
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4" style="padding-top: 1%">
+        <div class="card" style="padding-top: 1%; padding-left: 1%;">
+            <h2>{{ pubgmTeam.name }}</h2>
+            <div class="card-body">
+                <h5 class="card-title">N.º{{ pubgmTeam.pk }}</h5>
+                <p class="card-text" style="color: black;">Region: {{ pubgmTeam.region }}</p>
+                <p class="card-text" style="color: black;">Numero de jugadores: {{ pubgmTeam.numPlayers }}</p>
+                <p class="card-text" style="color: black;">Igl: {{ pubgmTeam.igl }}</p>
+                <p class="card-text" style="color: black;">Scout: {{ pubgmTeam.scout }}</p>
+                <p class="card-text" style="color: black;">Carry: {{ pubgmTeam.carry }}</p>
+                <p class="card-text" style="color: black;">Support: {{ pubgmTeam.support }}</p>
+                <p class="card-text" style="color: black;">Sniper: {{ pubgmTeam.sniper }}</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="{% url 'editarPubgmTeam' pk=pubgmTeam.pk %}" class="btn btn-primary">Editar</a>
+                    </div>
+                    <div class="col-md-6">
+                        <form action="{% url 'gilmerHome' %}" method="post" style="padding-top: 1%">
+                            {% csrf_token %}
+                            <input type="hidden" id="pubgmTeampk" name="pubgmTeampk" value="{{ pubgmTeam.pk }}">
+                            <input type="submit" class="btn btn-primary" value="Eliminar">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+    </div>
+{% endblock %}
+
+{#JAVASCRIPT adicional#}
+{% block extrajs %}
+
+{% endblock %}
