@@ -1,0 +1,51 @@
+{% extends "ale/base/base.html" %}
+{% block body %}
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+    <h1 class="titulo">Editar Personaje</h1>
+    <div class="card-form d-flex justify-content-center">
+        <div class="card">
+
+            <form action="{% url 'editarPersonajes' pk=usuario.pk %}" method="post">
+                {% csrf_token %}
+                <div>
+                    <label>Nombre</label>
+                    <input type="text" class="form-control" id="btn_nombre" aria-describedby="emailHelp"
+                           placeholder="Ingrese Nombre" name="nombre" value="{{ usuario.name }}">
+
+                </div>
+                <div>
+                    <label>Edad</label>
+                    <input type="text" class="form-control" id="btn_edad" placeholder="Ingrese Edad"
+                           name="edad" value="{{ usuario.edad }}">
+                </div>
+                <p>Seleccione su sexo:</p>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="check1" name="c1">
+                    <label class="form-check-label" for="exampleCheck1">Masculino</label>
+                </div>
+
+
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="check2" name="c2">
+                    <label class="form-check-label" for="exampleCheck1">Femenino</label>
+                </div>
+                <input type="submit" class="btn btn-dark btn-outline-light" value="Guardar"> </input>
+
+
+
+
+            </form>
+            <a href="{% url 'aleList' %}" class="btn btn-dark btn-outline-light">Cancelar</a>
+        </div>
+    </div>
+    </body>
+    </html>
+
+{% endblock %}
