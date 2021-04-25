@@ -56,10 +56,9 @@
                         seleccion: $("#selection").val(),
                     },
                     success: function (response) {
+
                         var instance = JSON.parse(response["newLanguage"]);
-                        console.log(instance)
                         var fields = instance[0]["fields"];
-                        console.log(fields)
 
                         data = '<div class="col">'+
                            '<div class="card" style="width: 18rem;">'+
@@ -71,7 +70,7 @@
                         '</div>'
 
                         $("#aquiMetemosData").append(data);
-                        
+
                     },
                     error: function (response) {
                         // alert the error if any error occured
