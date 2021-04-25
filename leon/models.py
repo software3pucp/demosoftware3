@@ -9,8 +9,9 @@ class Language(models.Model):
     habloElIdioma = models.BooleanField(default=False, null=True, blank=True)
 
 
-
-
+class LanguageLearned(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.DO_NOTHING)
+    state = models.IntegerField(default=0)
 
 
 

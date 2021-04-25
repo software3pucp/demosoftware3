@@ -1,41 +1,30 @@
 import requests
+from django.http import JsonResponse
 from django.shortcuts import render
 
 # Create your views here.
-from leon.models import Language
+from django.core import serializers
+
+from leon.models import Language, LanguageLearned
 
 
 def leonHome(request):
 
-    print("-----------------------------------------------------------------------")
-    print(request.POST)
-    print("-----------------------------------------------------------------------")
-    if request.POST:
-        Language.objects.create(name=request.POST["username"], habloElIdioma=False,
-                                longitud=len(request.POST["username"]))
-
-        context = {
-            'titulo': "Has guardado en BBDD :" + request.POST["username"],
-            'capital': "POST"
-        }
-        return render(request, 'leon/home.html', context)
-
     langList = Language.objects.filter()
-    print("=======================================================================")
-    print(langList)
-    print("=======================================================================")
+    learnedlist = LanguageLearned.objects.filter(state=0)
 
-    pais = "peru"
-    response = requests.get('https://restcountries.eu/rest/v2/name/'+ pais)
-    print(response.json())
-    print("======================")
-    print(response.json()[0]["capital"])
-    capital = response.json()[0]["capital"]
+    if request.POST:
+        selectedLanguage = Language.objects.get(pk=request.POST["seleccion"])
+        state = 0
+        LanguageLearned.objects.create(language_id=selectedLanguage.pk, state=state)
+        ser_instance = serializers.serialize('json', [selectedLanguage, ])
+        print(ser_instance)
+        return JsonResponse({"newLanguage": ser_instance}, status=200)
+
 
     context = {
-        'titulo': 'HE ENTADO POR URL',
         'listaIdiomas': langList,
-        'capital' : capital
+        'learnedlist': learnedlist
     }
     return render(request, 'leon/home.html', context)
 

@@ -12,53 +12,73 @@
 {% block body %}
 
     <div>
-        <h1>Bienvenido </h1>
 
-        <div class="row d-flex justify-content-center">
+        <select id="selection" name="seleccion" class="form-control">
+            {% for idioma in listaIdiomas %}
+                <option value="{{ idioma.pk }}">{{ idioma.name }}</option>
+            {% endfor %}
+        </select>
+        <button class="btn btn-primary" onclick="accion()" value="Holaaa"> BOTON </button>
 
-            <div class="col-xl-2 col-lg-6 col-md-4 col-sm-12">
-                <div class="card">
-                    <div class="card-body"> Hola</div>
+
+    <div id="aquiMetemosData" class="row">
+        {% for item in learnedlist %}
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title"> {{ item.language.name }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ item.language.longitud }}</h6>
+                    </div>
                 </div>
             </div>
-            <div class="col-xl-2 col-lg-6 col-md-4 col-sm-12">
-                <div class="card">
-                    <div class="card-body"> Hola</div>
-                </div>
-            </div>
-            <div class="col-xl-2 col-lg-6 col-md-4 col-sm-12">
-                <div class="card">
-                    <div class="card-body"> Hola</div>
-                </div>
-            </div>
-
-        </div>
-
-
+        {% endfor %}
     </div>
-
 {% endblock %}
 
 
 {#Aquí coloco el JS particular de la web#}
 {% block extrajs %}
     <script>
-        function show() {
 
-            {#Por javascript#}
-            let element = document.getElementById("campoTexto");
-            console.log(element.value)
+        $(document).ready(function () {
+            console.log("ready!");
 
-            {#Por Jquery#}
-            console.log($("#campoTexto").val())
-            $("#campoTexto").val("TEXTO HARDCODEADO")
-            $("#campoTexto1").hide()
-            $("#campoTexto2").hide()
-            $("#campoTexto3").hide()
+        });
+            function accion(){
 
+                console.log($("#selection").val())
 
-        }
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'leonHome'%}",
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        seleccion: $("#selection").val(),
+                    },
+                    success: function (response) {
+                        var instance = JSON.parse(response["newLanguage"]);
+                        console.log(instance)
+                        var fields = instance[0]["fields"];
+                        console.log(fields)
 
+                        data = '<div class="col">'+
+                           '<div class="card" style="width: 18rem;">'+
+                            '    <div class="card-body">'+
+                             '       <h5 class="card-title">'+ fields.name +'</h5>'+
+                              '      <h6 class="card-subtitle mb-2 text-muted">'+ fields.longitud +'</h6>'+
+                               ' </div>'+
+                            '</div>'+
+                        '</div>'
+
+                        $("#aquiMetemosData").append(data);
+                        
+                    },
+                    error: function (response) {
+                        // alert the error if any error occured
+                        alert(response["responseJSON"]["error"]);
+                    }
+                });
+            }
     </script>
 {% endblock %}
 
