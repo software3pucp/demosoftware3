@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-import os
+import os, platform, logging
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,19 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'leandro',
-    'leon',
-    'gilmer',
-    'lozano',
-    'Jhonatan',
-    'ale',
-    'raul',
-    'cali',
-    'candidates2021',
-    'juan',
-    'aaron',
-    'jherson',
-    'murillo',
+    'authentication',
+    'home'
 ]
 
 MIDDLEWARE = [
@@ -144,3 +133,20 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+if platform.platform().startswith('Windows'):
+    fichero_log = os.path.join(os.getenv('HOMEDRIVE'),
+                               os.getenv("HOMEPATH"),
+                               'test.log')
+else:
+    fichero_log = os.path.join(os.getenv('HOME'), 'test.log')
+
+print('Archivo Log en ', fichero_log)
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s : %(levelname)s : %(message)s',
+                    filename = fichero_log,
+                    filemode = 'w',)
+logging.debug('Comienza el programa')
+logging.info('Procesando con normalidad')
+logging.warning('Advertencia')
