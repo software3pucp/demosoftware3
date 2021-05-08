@@ -47,27 +47,12 @@
 <main class="main" id="top">
     {% csrf_token %}
     {% include 'home/components/home_top_navbar.html' %}
-    <div >
-
+    <div>
         <div class="content">
-
-
             {% block body %}{% endblock %}
-
-            <footer>
-                <div class="row g-0 justify-content-between fs--1 mt-4 mb-3">
-                    <div class="col-12 col-sm-auto text-center">
-                        <p class="mb-0 text-600 text-color-custom">
-                            <img src="{% static 'img/logos/japiyop_logo_color.png' %}" alt="" width="80"/>
-                            <span class="d-none d-sm-inline-block">| </span><br
-                                class="d-sm-none"/> 2021 &copy; </p>
-                    </div>
-                    <div class="col-12 col-sm-auto text-center">
-                        <p class="mb-0 text-600">v1.0</p>
-                    </div>
-                </div>
-            </footer>
-
+        </div>
+        <div>
+            {% include 'home/components/footer.html' %}
         </div>
     </div>
 </main>
