@@ -12,6 +12,6 @@ class RenderHome(CreateView):
     def get_context_data(self, **kwargs):
         return
 
-def base(request):
-    return render(request, 'home/base/home_base.html')
+def ejemplo(request):
+    return render(request, 'ejemplo.html')
 

@@ -7,5 +7,5 @@ from home import views
 urlpatterns = [
     # path( url hijo, backend, nombre de la variable)
     path('', views.RenderHome.as_view(), name="home"),
-    path('home_base',views.base, name="base")
+    path('ejemplo',views.ejemplo, name="ejemplo")
 ]
