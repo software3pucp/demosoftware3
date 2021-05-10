@@ -14,4 +14,4 @@ def listarFacultad(request):
     context = {
 
     }
-    return render(request,'gestionarFacultad/listarFacultad.html',context)
+    return render(request,'gestionarFacultad/listarEspecialidad.html',context)

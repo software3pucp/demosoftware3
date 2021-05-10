@@ -7,7 +7,7 @@ from django.shortcuts import render
 
 
 
-def gestionarEspecialidad(request):
+def listarEspecialidad(request):
 
     # AQUI HAGO COSAS
 
