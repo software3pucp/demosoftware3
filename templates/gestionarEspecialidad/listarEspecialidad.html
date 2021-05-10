@@ -9,113 +9,52 @@
 {#Bloque de extra body -> HTML#}
 {% block body %}
 
-{#AQUI COLOQUEN EL CÓDIGO#}
+    {#AQUI COLOQUEN EL CÓDIGO#}
 
-<div class="col-12">
-              <div class="card mb-3">
-                <div class="card-header">
-                  <h5 class="mb-0">Event Details</h5>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <select class="form-control" id="exampleFormControlSelect1" type="Seleccione una Facultad">
+                    </select>
                 </div>
-                <div class="card-body bg-light">
-                  <form>
-                    <div class="form-row">
-                      <div class="col-12">
-                        <div class="form-group">
-                          <label for="event-name">Event Title</label>
-                          <input class="form-control" id="event-name" type="text" placeholder="Event Title">
-                        </div>
-                      </div>
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                          <label for="start-date">Start Date</label>
-                          <input class="form-control datetimepicker" id="start-date" type="text">
-                        </div>
-                      </div>
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                          <label for="start-time">Start Time</label>
-                          <input class="form-control datetimepicker" id="start-time" type="text" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i"}'>
-                        </div>
-                      </div>
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                          <label for="end-date">End Date</label>
-                          <input class="form-control datetimepicker" id="end-date" type="text">
-                        </div>
-                      </div>
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                          <label for="end-time">End Time</label>
-                          <input class="form-control datetimepicker" id="end-time" type="text" data-options='{"enableTime":true,"noCalendar":true,"dateFormat":"H:i"}'>
-                        </div>
-                      </div>
-                      <div class="col-sm-6">
-                        <div class="form-group mb-0">
-                          <label for="registration-deadline">Registration Deadline</label>
-                          <input class="form-control datetimepicker" id="registration-deadline" type="text">
-                        </div>
-                      </div>
-                      <div class="col-sm-6">
-                        <div class="form-group mb-0">
-                          <label for="time-zone">Timezone</label>
-                          <select class="custom-select" id="time-zone">
-                            <option>GMT-12:00 Etc/GMT-12</option>
-                            <option>GMT-11:00 Etc/GMT-11</option>
-                            <option>GMT-11:00 Pacific/Midway</option>
-                            <option>GMT-10:00 America/Adak</option>
-                            <option>GMT-09:00 America/Anchorage</option>
-                            <option>GMT-09:00 Pacific/Gambier</option>
-                            <option>GMT-08:00 America/Dawson_Creek</option>
-                            <option>GMT-08:00 America/Ensenada</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-12">
-                        <hr class="border-dashed border-bottom-0">
-                      </div>
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                          <label for="event-venue">Venue</label>
-                          <input class="form-control" id="event-venue" type="text" placeholder="Venue">
-                          <button class="btn btn-link btn-sm btn p-0" type="button">Online Event</button>
-                        </div>
-                      </div>
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                          <label for="event-address">Address</label>
-                          <input class="form-control" id="event-address" type="text" placeholder="Address">
-                        </div>
-                      </div>
-                      <div class="col-sm-4">
-                        <div class="form-group">
-                          <label for="event-city">City</label>
-                          <input class="form-control" id="event-city" type="text" placeholder="City">
-                        </div>
-                      </div>
-                      <div class="col-sm-4">
-                        <div class="form-group">
-                          <label for="event-state">State</label>
-                          <input class="form-control" id="event-state" type="text" placeholder="state">
-                        </div>
-                      </div>
-                      <div class="col-sm-4">
-                        <div class="form-group">
-                          <label for="event-country">Country</label>
-                          <input class="form-control" id="event-country" type="text" placeholder="country">
-                        </div>
-                      </div>
-                      <div class="col-12">
-                        <div class="form-group">
-                          <label for="event-description">Description</label>
-                          <textarea class="form-control" id="event-description" rows="6"> </textarea>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-
             </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card-deck">
+                    <div class="card">
+                        <div class="card-img-top"><img class="img-fluid"
+                                                       src="http://descubre.pucp.edu.pe/imagesv2/dep021/pabellon%20v%20telecomunicaciones%20informatica.jpg"
+                                                       alt="Card image cap"></div>
+                        <div class="card-body">
+                            <a class="btn btn-primary btn-sm" href="#!">Editar</a>
+                            <a class="btn btn-primary btn-sm" href="#!">Estado</a>
+                            <h5 class="card-title">Ingeniería Informática</h5></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-img-top"><img class="img-fluid"
+                                                       src="http://descubre.pucp.edu.pe/imagesv2/lug025/IMG_4580.jpg"
+                                                       alt="Card image cap"></div>
+                        <div class="card-body">
+                            <a class="btn btn-primary btn-sm" href="#!">Editar</a>
+                            <a class="btn btn-primary btn-sm" href="#!">Estado</a>
+                            <h5 class="card-title">Ingeniería Industrial</h5>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-img-top"><img class="img-fluid" src="../assets/img/generic/8.jpg"
+                                                       alt="Card image cap"></div>
+                        <div class="card-body">
+                            <a class="btn btn-primary btn-sm" href="#!">Editar</a>
+                            <a class="btn btn-primary btn-sm" href="#!">Estado</a>
+                            <h5 class="card-title">Nueva Especialidad</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 {% endblock %}
