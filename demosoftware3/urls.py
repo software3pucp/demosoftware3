@@ -21,5 +21,6 @@ urlpatterns = [
     path('', include('home.urls')),
     path('auth/', include('authentication.urls')),
     path('gestionarFacultad', include('gestionarFacultad.urls')),
+    path('gestionarEspecialidad', include('gestionarEspecialidad.urls')),
     path('gestionarRE', include('gestionarRE.urls')),
 ]

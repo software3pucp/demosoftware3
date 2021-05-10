@@ -7,11 +7,11 @@ from django.shortcuts import render
 
 
 
-def listarFacultad(request):
+def gestionarEspecialidad(request):
 
     # AQUI HAGO COSAS
 
     context = {
 
     }
-    return render(request,'gestionarFacultad/listarFacultad.html',context)
+    return render(request,'gestionarEspecialidad/listarEspecialidad.html',context)
