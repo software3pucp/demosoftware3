@@ -23,6 +23,32 @@
 
 
                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'listarFacultad' %}">
+                        <div class="d-flex align-items-center">
+                        <span class="nav-link-icon">
+                            <span class="fas fa-poll"></span>
+                        </span>
+                            <span class="nav-link-text">
+                            Facultades
+                        </span>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'listarEspecialidad' %}">
+                        <div class="d-flex align-items-center">
+                        <span class="nav-link-icon">
+                            <span class="fas fa-poll"></span>
+                        </span>
+                            <span class="nav-link-text">
+                            Especialidades
+                        </span>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'home' %}">
                         <div class="d-flex align-items-center">
                         <span class="nav-link-icon">
@@ -34,6 +60,7 @@
                         </div>
                     </a>
                 </li>
+
 
 
                 <li class="nav-item"><a class="nav-link dropdown-indicator" href="#home" data-toggle="collapse"

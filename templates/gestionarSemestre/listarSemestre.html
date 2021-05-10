@@ -1,0 +1,47 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+<style>
+#Titulo{
+    color: #5DADE2
+}
+</style>
+
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+
+{#AQUI COLOQUEN EL CÓDIGO#}
+<div class="row d-flex justify-content-center m-2">
+    <div class="col-8">
+        <h4 id="Titulo">Creación de Semestre</h4>
+    </div>
+    <div class="col-4">
+        <a><h5 id="Retroceder">Volver</h5></a>
+    </div>
+
+    <div class="row d-flex justify-content-center m-2">
+        {% for semestre in ListaSemestre %}
+
+            <div class=" col-xl-3 col-md-4 col-sm-6 mb-4 ">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ semestre.nombreCodigo }}</h5>
+                        <p class="card-text"> Del : {{ semestre.inicio }}</p>
+                        <p class="card-text"> hasta : {{ semestre.fin }}</p>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+
+
+</div>
+
+
+
+{% endblock %}
