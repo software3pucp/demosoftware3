@@ -20,7 +20,7 @@ class RenderLogin(CreateView):
 
 class RegisterUser(CreateView):
     model = User
-    template = 'auth/register.html'
+    template = 'authentication/User_Add.html'
 
     def get(self, request, *args, **kwargs):
         user_form = UserForm()

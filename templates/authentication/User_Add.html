@@ -1,0 +1,237 @@
+{% extends 'authentication/base/auth_base.html' %}
+{% load static %}
+
+{% block extrastyle %}
+  <link href="{% static 'lib/select2/select2.min.css' %}" rel="stylesheet">
+  <style>
+  label.error {
+      font-style: italic;
+      color: #ca3d36;
+  }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <div class="col-md-5 text-white text-center bg-card-gradient">
+    <div class="position-relative p-4 pt-md-5 pb-md-7">
+      <div class="bg-holder bg-auth-card-shape"
+           style="background-image:url(../../static/img/illustrations/half-circle.png);"></div>
+      <!--/.bg-holder-->
+
+      <div class="z-index-1 position-relative">
+        <a class="text-white mb-4 text-sans-serif font-weight-extra-bold fs-4 d-inline-block"
+           href="">
+          <img src="{% static 'img/logos/japiyop_logo.png' %}" alt="" width="230" style="max-width: 100%"></a>
+        <p class="opacity-75 text-white">Contrata con confianza al experto que necesitas e incrementa tus
+          oportunidades
+          de empleo frente al Covid</p>
+      </div>
+    </div>
+    <div class="mt-3 mb-4 mt-md-4 mb-md-5">
+
+      <p class="py-3">¿Tienes cuenta?<br>
+        <a class="btn btn-outline-light mt-2 px-4" href="">Iniciar sesión</a></p>
+      {% comment %}<p class="text-white">O regístrate como:
+      </p>
+      <div class=" text-center">
+        <a class="btn btn-falcon-default btn-sm ml-1" href="{% url 'jobhunter_register' %}"><span class="fas fa-crosshairs mr-1" data-fa-transform="shrink-3"></span>Job
+          Hunter</a>
+      </div>{% endcomment %}
+    </div>
+  </div>
+
+  <div class="col-md-7 d-flex flex-center">
+    <div class="p-4 p-md-5 flex-grow-1  col-12">
+      <h3>Registro de Usuario</h3>
+      <form id="applicantForm" {% comment %}action="{% url 'applicant_register' %}"{% endcomment %} method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3 text-center">
+          <div class="avatar avatar-5xl shadow-sm img-thumbnail rounded-circle">
+            <div class="h-100 w-100 rounded-circle overflow-hidden position-relative">
+              <img src="{% static 'img/team/avatar.png' %}" width="200" alt="" id="image_preview" data-dz-thumbnail/>
+              <input class="d-none" id="photo" name="photo" type="file" accept="image/png,image/jpeg,image/jpg"/>
+              <label class="mb-0 overlay-icon d-flex flex-center" for="photo">
+                <span class="bg-holder overlay overlay-0"></span>
+                <span class="z-index-1 text-white text-center fs--1">
+                  <span class="fas fa-camera"></span>
+                  <span class="d-block">Agregar foto</span>
+                </span>
+              </label>
+            </div>
+          </div>
+          {% if "photo" in errors %}
+            {% for e in errors.photo %}
+              <label class=" error mt-2">{{ e }}</label>
+            {% endfor %}
+          {% endif %}
+        </div>
+        <legend>Información general</legend>
+        <!-- BLOQUE DE CAMPOS -->
+        <div class="form-group">
+          <label for="first_name">{{ user_form.first_name.label }}</label>
+          <abbr class="ml-1 text-danger" data-toggle="tooltip" data-placement="top" title="Campo requerido">*</abbr>
+          {{ user_form.first_name }}
+          {% if "first_name" in errors %}
+            {% for e in errors.first_name %}
+              <label class=" error">{{ e }}</label>
+            {% endfor %}
+          {% endif %}
+        </div>
+        <div class="form-group">
+          <label for="username">{{ user_form.last_name.label }}</label>
+          <abbr class="ml-1 text-danger" data-toggle="tooltip" data-placement="top" title="Campo requerido">*</abbr>
+          {{ user_form.last_name }}
+          {% if "last_name" in errors %}
+            {% for e in errors.email %}
+              <label class=" error">{{ e }}</label>
+            {% endfor %}
+          {% endif %}
+        </div>
+        <div class="form-group">
+          <label for="email">{{ user_form.email.label }}</label>
+          <abbr class="ml-1 text-danger" data-toggle="tooltip" data-placement="top" title="Campo requerido">*</abbr>
+          {{ user_form.email }}
+          {% if "email" in errors %}
+            {% for e in errors.email %}
+              <label class=" error">{{ e }}</label>
+            {% endfor %}
+          {% endif %}
+        </div>
+        <div class="form-group">
+          <label for="password">{{ user_form.password.label }}</label>
+          <abbr class="ml-1 text-danger" data-toggle="tooltip" data-placement="top" title="Campo requerido">*</abbr>
+          {{ user_form.password }}
+          {% if "password" in errors %}
+            {% for e in errors.password %}
+              <label class=" error">{{ e }}</label>
+            {% endfor %}
+          {% endif %}
+        </div>
+        <div class="form-group">
+          <label for="celular">{{ user_form.celular.label }}</label>
+          <abbr class="ml-1 text-danger" data-toggle="tooltip" data-placement="top" title="Campo requerido">*</abbr>
+          {{ user_form.celular }}
+          {% if "celular" in errors %}
+            {% for e in errors.celular %}
+              <label class=" error">{{ e }}</label>
+            {% endfor %}
+          {% endif %}
+        </div>
+
+        <div class="custom-control custom-checkbox mb-2">
+          <input required class="custom-control-input" type="checkbox" id="card_register_checkbox"
+                 name="checkbox_conditions"/>
+          <label class="custom-control-label" for="card_register_checkbox">Acepto los <a
+              {% comment %}href="{% url 'terms_conditions' %}"{% endcomment %}>Términos y condiciones</a></label>
+        </div>
+        <div id="conditions_alert"></div>
+        <div class="form-group">
+          <button class="btn btn-primary btn-block mt-3" type="submit" name="submit">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extrajs %}
+  <script src="{% static 'lib/select2/select2.min.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/connectycube@3.7.7/dist/connectycube.min.js"></script>
+  <script>
+    $(document).ready(function () {
+
+      {% comment %}$("form[id='applicantForm']").validate({
+        rules: {
+          photo: {
+            extension: "jpeg|jpg|png"
+          },
+        },
+        messages: {
+          photo: {
+            extension: "Solo se aceptan archivos jpeg o png"
+          },
+          first_name: {
+            required: "Debe ingresar nombre y apellido",
+            maxlength: "Nombre y apellido fuera del máximo de caracteres"
+          },
+          mobile_phone: {
+            required: "Debe ingresar un celular",
+            digits: "Debe ingresar números",
+            maxlength: "Teléfono fuera de rango",
+            minlength: "Debe tener mínimo 9 dígitos",
+            min: 'Ingrese un celular válido'
+          },
+          email: {
+            required: "Debe ingresar un correo",
+            email: "Debe ingresar un correo válido",
+            maxlength: "Correo fuera de rango"
+          },
+          password: {
+            required: "Debe ingresar una contraseña",
+            minlength: "Tamaño mínimo de contraseña: 6",
+          },
+          identification_number: {
+            required: "Debe ingresar DNI",
+            digits: "Debe ingresar números",
+            minlength: "Debe tener 8 dígitos",
+            rangelength: "Debe tener 8 dígitos",
+            min: 'Ingrese un DNI válido'
+          },
+          department: {
+            required: "Debe seleccionar un departamento",
+          },
+          province: {
+            required: "Debe seleccionar una provincia",
+          },
+          location: {
+            required: "Debe seleccionar un distrito",
+          },
+          checkbox_conditions: {
+            required: "* Debe aceptar los <strong>términos y condiciones</strong>",
+          }
+        },
+        wrapper: 'div',
+        errorPlacement: function (error, element) {
+          console.log(error)
+          if (element.attr("name") === "department") {
+            error.appendTo(".errorTxtDepartment");
+          } else if (element.attr("name") === "province") {
+            error.appendTo(".errorTxtProvince");
+          } else if (element.attr("name") === "location") {
+            error.appendTo(".errorTxtLocation");
+          } else if (element.attr("name") === "checkbox_conditions") {
+            error.addClass('alert alert-danger')
+            error.appendTo("#conditions_alert");
+          } else {
+            error.insertAfter(element);
+          }
+        },
+      });{% endcomment %}
+
+
+      {% comment %}Se visualiza la imagen que se selecciona{% endcomment %}
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          let reader = new FileReader();
+
+          reader.onload = function (e) {
+            $('#image_preview').attr('src', e.target.result);
+          }
+
+          reader.readAsDataURL(input.files[0]);
+          console.log(input.files[0].name.split(".")[1])
+          let extensions = ['jpg', 'jpeg', 'png']
+          if (!(extensions.includes(input.files[0].name.split(".")[1]))) {
+            $('#photo_error').text('Debe adjuntar archivos con extensión png, jpeg o jpg').removeAttr('hidden')
+          } else {
+            $('#photo_error').attr('hidden', 'true')
+          }
+        }
+      }
+
+      $("#photo").change(function () {
+        readURL(this);
+      });
+    })
+
+  </script>
+{% endblock %}
