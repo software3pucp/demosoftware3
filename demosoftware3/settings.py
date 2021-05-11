@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'authentication',
     'home',
     'gestionarFacultad',
-    'gestionarEspecialidad'
+    'gestionarEspecialidad',
+    'gestionarSemestre'
 ]
 
 MIDDLEWARE = [
