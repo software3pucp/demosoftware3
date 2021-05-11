@@ -1,0 +1,177 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+<script type="text/javascript">
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#imageResult')
+                    .attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $(function () {
+        $('#upload').on('change', function () {
+            readURL(input);
+        });
+    });
+
+    /*  ==========================================
+        SHOW UPLOADED IMAGE NAME
+    * ========================================== */
+    var input = document.getElementById('upload');
+    var infoArea = document.getElementById('upload-label');
+
+    input.addEventListener('change', showFileName);
+
+    function showFileName(event) {
+        var input = event.srcElement;
+        var fileName = input.files[0].name;
+        infoArea.textContent = 'File name: ' + fileName;
+    }
+</script>
+<style media="screen">
+
+</style>
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+    <style>
+        html {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+
+        #img-upload {
+            width: 100%;
+        }
+
+    </style>
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document).on('change', '.btn-file :file', function () {
+                var input = $(this),
+                    label = input.val().replace(/\/g, '/
+                ').replace(/.*//, '
+                ');
+                input.trigger('fileselect', [label]);
+            });
+
+            $('.btn-file :file').on('fileselect', function (event, label) {
+
+                var input = $(this).parents('.input-group').find(':text'),
+                    log = label;
+
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+
+            });
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#img-upload').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#imgInp").change(function () {
+                readURL(this);
+            });
+        });
+    </script>
+    <div class="container-fluid">
+
+        <form>
+
+            <div class="card p-5">
+
+                <h3 class="mb-0">Agregar Facultad</h3>
+                <hr>
+                <p></p>
+
+                <div class="form-group">
+                    <div class="container-fluid">
+                        <div class="row">
+
+                            <label for="name">Nombre</label>
+                            <input class="form-control p-3" id="name" type="text"
+                                   placeholder="Ingrese el nombre de la facultad">
+                        </div>
+                    </div>
+                    <p></p>
+                    <label for="name">Descripción</label>
+                    <input class="form-control" id="name" type="text"
+                           placeholder="Ingrese una descripción para la facultad">
+                    <p></p>
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1">Ingrese una imagen para la facultad</label>
+                        <div class="container">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Upload Image</label>
+                                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="btn btn-default btn-file">
+                                Browse… <input type="file" id="imgInp">
+                            </span>
+                        </span>
+                                        <input type="text" class="form-control" readonly>
+                                    </div>
+                                    <img id='img-upload'/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <button class="btn btn-outline-primary ml-11 mr-4 mb-1" type="button">Cancelar
+                    </button>
+                    <button class="btn btn-primary mr-1 mb-1" type="button">Agregar
+                    </button>
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+{% endblock %}

@@ -15,3 +15,11 @@ def listarFacultad(request):
 
     }
     return render(request,'gestionarFacultad/listarFacultad.html',context)
+
+def crearFacultad(request):
+    # AQUI HAGO COSAS
+
+    context = {
+
+    }
+    return render(request, 'gestionarFacultad/crearFacultad.html', context)
