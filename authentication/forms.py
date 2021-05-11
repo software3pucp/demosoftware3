@@ -5,18 +5,18 @@ from authentication.models import User
 
 class UserForm(forms.ModelForm):
     first_name = forms.CharField(
-        label='Nombres',
+        label='Nombre',
         required=True,
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'id': 'first_name', 'placeholder': 'Ingrese su nombre...'})
+            attrs={'class': 'form-control', 'id': 'first_name', 'placeholder': 'Ingrese su nombres y apellidos...'})
 
     )
 
-    last_name = forms.CharField(
-        label='Apellidos',
+    codigo = forms.CharField(
+        label='Codigo',
         required=True,
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'id': 'last_name', 'placeholder': 'Ingrese sus apellidos...'})
+            attrs={'class': 'form-control', 'id': 'codigo', 'placeholder': 'Ingrese su codigo PUCP...'})
 
     )
     email = forms.CharField(
@@ -27,22 +27,21 @@ class UserForm(forms.ModelForm):
 
     )
 
-    password = forms.CharField(
-        label='Contraseña',
+    genero = forms.CharField(
+        label='Genero',
         required=True,
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'id': 'password', 'placeholder': 'Ingrese su contraseña...',
-                   'type': 'password'})
+            attrs={'class': 'form-control', 'id': 'genero', 'placeholder': 'Ingrese su genero...', })
     )
 
-    celular = forms.CharField(
-        label='Celular',
+
+    estado = forms.CharField(
+        label='Estado',
         required=True,
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'id': 'celular', 'placeholder': 'Ingrese su celular...'})
-
+            attrs={'class': 'form-control', 'id': 'estado', 'placeholder': 'Ingrese su estado...',})
     )
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'password', 'celular']
+        fields = ['first_name', 'codigo', 'email', 'genero','estado']
