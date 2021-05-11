@@ -3,33 +3,64 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
-<style>
-#Titulo{
-    color: #5DADE2
-}
-</style>
+    <style>
+        #Titulo{
+            color: #0154ae
+        }
+
+        p{
+            line-height: 20%;
+            text-align: center;
+
+        }
+
+        label{
+            color: #f9fafd;
+        }
+
+    </style>
 
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
 {% block body %}
 
-{#AQUI COLOQUEN EL CÓDIGO#}
-<div class="row d-flex justify-content-center m-2">
-    <div class="col-8">
-        <h4 id="Titulo">Creación de Semestre</h4>
-    </div>
-    <div class="col-4">
-        <a><h5 id="Retroceder">Volver</h5></a>
+    {#AQUI COLOQUEN EL CÓDIGO#}
+    <div class="row d-flex justify-content-center ">
+
+        <div class="col-10">
+            <h4 id="Titulo">Creación de Semestre</h4>
+        </div>
+        <div class="col-2">
+            <a href="#Titulo"><h5 id="Retroceder">
+                <img class="img-fluid" style="height: 20px"
+                     src="https://www.flaticon.es/svg/vstatic/svg/17/17699.svg?token=exp=1620699331~hmac=16ebe1d9fc5f697d28d04d988fedb34d">
+
+                <u>Volver</u></h5></a>
+        </div>
     </div>
 
-    <div class="row d-flex justify-content-center m-2">
+    <hr style="background-color: #0154ae;">
+
+    <div class="row d-flex justify-content-center mt-4">
+
+        <div class=" col-xl-3 col-md-4 col-sm-5 ">
+            <div class="card justify-content-center m-1">
+                <div class="card-img-top m-3">
+                    <a class=" btn-link pl-0 btn-sm" href="#agregarSemestreNuevo" data-toggle="modal">
+                        <img class="img-fluid" style="height: 50px"
+                             src="https://www.flaticon.es/svg/vstatic/svg/1828/1828925.svg?token=exp=1620697889~hmac=6471bd0dbd9cccde4a2d67aca3072c6e"
+                             alt="Card image cap">
+                    </a>
+                </div>
+            </div>
+        </div>
+
         {% for semestre in ListaSemestre %}
-
-            <div class=" col-xl-3 col-md-4 col-sm-6 mb-4 ">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ semestre.nombreCodigo }}</h5>
+            <div class=" col-xl-3 col-md-4 col-sm-5 ">
+                <div class="card m-2">
+                    <div class="card-body" >
+                        <p class="card-title">{{ semestre.nombreCodigo }}</p>
                         <p class="card-text"> Del : {{ semestre.inicio }}</p>
                         <p class="card-text"> hasta : {{ semestre.fin }}</p>
                     </div>
@@ -40,8 +71,72 @@
     </div>
 
 
-</div>
+    <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
+         id="agregarSemestreNuevo" tabindex="-1" role="dialog"
+         aria-labelledby="settings-modal-label" aria-hidden="true"
+         data-options='{"autoShow":false,"autoShowDelay":10,"showOnce":false}'>
+
+        <div class="modal-dialog modal-dialog-vertical" style="opacity: 0.90" role="document">
+            <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar" style="background-color: #017ECD;" >
+
+                <div class="modal-body">
+                    <div class="row d-flex justify-content-center">
+                        <h5 style="color: #f9fafd">Agregar Semestre</h5>
+                        <hr  style="background-color: #f9fafd; width: 70%">
+                    </div>
+
+                    <div class="row d-flex justify-content-center m-2">
+                        <form>
+
+                            <div class="form-group row">
+                                <label for="boxSemestre" class="col-sm-3 col-form-label">Semestre</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="boxSemestre" placeholder="20XX-X">
+                                </div>
+                            </div>
+
+                            <br>
+
+                            <div class="form-group row">
+                                <label for="dateInicio" class="col-sm-3 col-form-label">Inicio</label>
+                                <div class="col-sm-9">
+                                    <input type="date" class="form-control" id="dateInicio" >
+                                </div>
+                            </div>
+
+                            <br>
+
+                            <div class="form-group row">
+                                <label for="dateFin" class="col-sm-3 col-form-label">Fin</label>
+                                <div class="col-sm-9">
+                                    <input type="date" class="form-control" id="dateFin" >
+                                </div>
+                            </div>
+
+                            <br>
+
+                            <div class="form-group row m-3 p-2">
+                                <div class="col-sm-6">
 
 
+                                    <button class="btn btn-secondary" type="button"
+                                            data-dismiss="modal" aria-label="Close">Cancelar
+                                    </button>
+
+                                </div>
+                                <div class="col-sm-6">
+                                    <button type="submit" class="btn btn-primary">Aceptar</button>
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
