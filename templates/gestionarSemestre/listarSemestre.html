@@ -35,21 +35,21 @@
             <a href="#Titulo"><h5 id="Retroceder">
                 <img class="img-fluid" style="height: 20px"
                      src="https://www.flaticon.es/svg/vstatic/svg/17/17699.svg?token=exp=1620699331~hmac=16ebe1d9fc5f697d28d04d988fedb34d">
-
-                <u>Volver</u></h5></a>
+                <u>Volver</u>
+            </h5></a>
         </div>
     </div>
 
     <hr style="background-color: #0154ae;">
 
-    <div class="row d-flex justify-content-center mt-4">
+    <div id="Semestres" class="row d-flex  mt-4">
 
-        <div class=" col-xl-3 col-md-4 col-sm-5 ">
-            <div class="card justify-content-center m-1">
-                <div class="card-img-top m-3">
-                    <a class=" btn-link pl-0 btn-sm" href="#agregarSemestreNuevo" data-toggle="modal">
+        <div id="Anadir" class=" col-xl-3 col-md-4 col-sm-5 ">
+            <div class="card m-1">
+                <div class="card-img-top d-flex justify-content-center m-3">
+                    <a class=" btn-link  pl-0 btn-sm" href="#agregarSemestreNuevo" data-toggle="modal">
                         <img class="img-fluid" style="height: 50px"
-                             src="https://www.flaticon.es/svg/vstatic/svg/1828/1828925.svg?token=exp=1620697889~hmac=6471bd0dbd9cccde4a2d67aca3072c6e"
+                             src="https://t4.ftcdn.net/jpg/01/26/10/59/240_F_126105961_6vHCTRX2cPOnQTBvx9OSAwRUapYTEmYA.jpg"
                              alt="Card image cap">
                     </a>
                 </div>
@@ -74,7 +74,7 @@
     <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
          id="agregarSemestreNuevo" tabindex="-1" role="dialog"
          aria-labelledby="settings-modal-label" aria-hidden="true"
-         data-options='{"autoShow":false,"autoShowDelay":10,"showOnce":false}'>
+         data-options='{"autoShow":true,"autoShowDelay":10,"showOnce":false}'>
 
         <div class="modal-dialog modal-dialog-vertical" style="opacity: 0.90" role="document">
             <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar" style="background-color: #017ECD;" >
@@ -91,7 +91,7 @@
                             <div class="form-group row">
                                 <label for="boxSemestre" class="col-sm-3 col-form-label">Semestre</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="boxSemestre" placeholder="20XX-X">
+                                    <input type="text" class="form-control" id="boxSemestre" placeholder="20XX-X" maxlength="6" required>
                                 </div>
                             </div>
 
@@ -100,7 +100,7 @@
                             <div class="form-group row">
                                 <label for="dateInicio" class="col-sm-3 col-form-label">Inicio</label>
                                 <div class="col-sm-9">
-                                    <input type="date" class="form-control" id="dateInicio" >
+                                    <input type="text" class="form-control" id="dateInicio" placeholder="dd de mm" maxlength="16" required>
                                 </div>
                             </div>
 
@@ -109,7 +109,7 @@
                             <div class="form-group row">
                                 <label for="dateFin" class="col-sm-3 col-form-label">Fin</label>
                                 <div class="col-sm-9">
-                                    <input type="date" class="form-control" id="dateFin" >
+                                    <input type="text" class="form-control" id="dateFin" placeholder="dd de mm" maxlength="16" required>
                                 </div>
                             </div>
 
@@ -117,26 +117,63 @@
 
                             <div class="form-group row m-3 p-2">
                                 <div class="col-sm-6">
-
-
                                     <button class="btn btn-secondary" type="button"
                                             data-dismiss="modal" aria-label="Close">Cancelar
                                     </button>
-
                                 </div>
                                 <div class="col-sm-6">
-                                    <button type="submit" class="btn btn-primary">Aceptar</button>
-                                </div>
 
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close" onclick="accion()">Aceptar</button>
+                                </div>
                             </div>
 
                         </form>
-
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 
+{% endblock %}
+
+{#Aquí coloco el JS particular de la web#}
+{% block extrajs %}
+    <script>
+
+        $(document).ready(function () {
+            console.log("ready!");
+        });
+        function accion(){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'agregarSemestre'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    nombreCodigo: $("#boxSemestre").val(),
+                    inicio: $("#dateInicio").val(),
+                    fin: $("#dateFin").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["nuevoSemestre"]);
+                    var fields = instance[0]["fields"];
+
+                    data = '<div class=" col-xl-3 col-md-4 col-sm-5 ">'+
+                        '<div class="card m-2">'+
+                        '    <div class="card-body">'+
+                        '       <p class="card-title">'+fields.nombreCodigo+'</p>'+
+                        '       <p class="card-text">Del : '+fields.inicio+'</p>'+
+                        '       <p class="card-text">hasta : '+fields.fin+'</p>'+
+                        '    </div>'+
+                        '</div>'+
+                        '</div>'
+
+                    $(data).insertAfter($("#Anadir"));
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+    </script>
 {% endblock %}
