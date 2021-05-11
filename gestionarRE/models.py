@@ -17,6 +17,7 @@ class ResultadoAcreditadora(models.Model):
         ('0','Eliminado'),
         ('1','Activo'),
     ]
+    codigo = models.CharField(max_length=10,default=None,null=True,blank=True)
     descripcion = models.CharField(max_length=150,default=None,null=True,blank=True)
     estado = models.CharField(max_length=2,choices=ESTADOS,default=None,null=True,blank=True)
     acreditadora = models.ForeignKey(Acreditadora,on_delete=models.RESTRICT)

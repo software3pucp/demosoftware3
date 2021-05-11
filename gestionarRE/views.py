@@ -1,11 +1,16 @@
 from django.shortcuts import render,redirect
 
+from gestionarRE.models import ResultadoAcreditadora
+
 # Create your views here.
 
 
 def listarRE(request):
-
+    pk = 1
+    resultados = ResultadoAcreditadora.objects.filter(acreditadora=1)
+    print(resultados)
     context = {
+        'resultados' : resultados,
     }
     return render(request,'gestionarRE/listarRE.html',context)
 

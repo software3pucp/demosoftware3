@@ -4,6 +4,31 @@
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
 <style>
+
+    .bg-primary{
+        background-color: #0154AE !important;
+    }
+
+    .btn-primary{
+        background-color: #0154AE;
+        border-width: 1px;
+        border-color: #fff;
+    }
+
+    .btn-primary:hover{
+        background-color: #017ECD;
+        border-width: 1px;
+        border-color: #fff;
+    }
+
+    .btn-primary:focus{
+        color: #0154AE;
+        background-color: #F9FAFD;
+        border-width: 1px;
+        border-color: #fff;
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+
     .nav-link{
         font-family: Montserrat;
         color:#CACACA;
@@ -353,21 +378,26 @@
                     </div>
                 </div>
                 <div class="tab-content">
-                    <div class="card text-white bg-primary">
-                        <div class="row no-gutters">
-                            <div class="col-md-3">
-                                <p style="border-color: #000;">AB01</p>
-                            </div>
-                            <div class="col-md-6">
+                    {% for resultado in resultados %}
+                        <div style="margin: 1%;">
+                            <div class="card text-white bg-primary">
                                 <div class="card-body">
+                                    <div class="row no-gutters">
+                                        <div class="col-md-1">
+                                            <h2 style="color: #fff;">{{ resultado.codigo }}</h2>
+                                        </div>
+                                        <div class="col-md-9" style="border-left: 1px solid #fff;border-right: 1px solid #fff;padding-left: 2%;">
+                                            <p>{{ resultado.descripcion }}</p>
+                                        </div>
+                                        <div class="col-md-2" style="text-align: center;padding-left: 2%;">
+                                            <button class="btn btn-primary mr-1 mb-1" type="button">Editar</button>
+                                            <button class="btn btn-primary mr-1 mb-1" type="button">Activar</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <button class="btn btn-primary mr-1 mb-1" type="button">Editar</button>
-                                <button class="btn btn-primary mr-1 mb-1" type="button">Activar</button>
-                            </div>
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
