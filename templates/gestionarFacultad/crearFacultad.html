@@ -33,6 +33,15 @@
 
             width: 100%;
         }
+
+        .wrapper {
+            text-align: center;
+        }
+
+        .button {
+            position: absolute;
+            top: 50%;
+        }
     </style>
 
 {% endblock %}
@@ -110,32 +119,26 @@
                     <p></p>
                     <div class="form-group">
                         <label for="exampleFormControlFile1">Ingrese una imagen para la facultad</label>
-                        <div class=" col-md-12">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <input type="text" class="form-control  px-0" readonly>
-                                    <span class="input-group-btn pb-3">
-                <span class="btn btn-primary btn-file ml-3 " type="button">
-                    Buscar… <input type="file" id="imgInp">
-                </span>
-            </span>
-                                </div>
-                                <img id='img-upload'/>
-                            </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" readonly>
+                            <span class="input-group-btn pb-3">
+                                        <span class="btn btn-primary btn-file ml-3 " type="button">
+                                            Buscar… <input type="file" id="imgInp">
+                                        </span>
+                                    </span>
                         </div>
+                        <img id='img-upload'/>
                     </div>
                 </div>
-                <div>
-                    <a class="btn btn-outline-primary ml-11 mr-4 mb-1" type="button" href="{% url 'listarFacultad' %}">Cancelar
+                <div class="wrapper">
+                    <a class="btn btn-outline-primary mr-3 mb-1" type="button"
+                       href="{% url 'listarEspecialidad' %}">Cancelar
                     </a>
-                    <button class="btn btn-primary mr-1 mb-1" type="button">Agregar
-                    </button>
+                    <a class="btn btn-primary mr-1 mb-1" type="button">Agregar
+                    </a>
                 </div>
-
             </div>
-
         </form>
-
     </div>
 
 {% endblock %}

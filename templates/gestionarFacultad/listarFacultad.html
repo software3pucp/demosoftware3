@@ -3,7 +3,32 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
+    <style>
+        html {
+            font-family: 'Open Sans', sans-serif;
+        }
 
+        .vertical-center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+
+        .center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .iconSize{
+             font-size: 23px;
+        }
+    </style>
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
@@ -19,7 +44,7 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <select class="form-control" id="exampleFormControlSelect1" aria-label="Seleccione una Facultad">
+                    <select class="form-control" style="height: 25px" id="exampleFormControlSelect1" aria-label="Seleccione una Facultad">
                     </select>
                 </div>
             </div>
@@ -38,19 +63,19 @@
                                 <div class="col-md-6">
                                     <a class="nav-link px-0 icon-indicator" href="listar" role="button">
                                         <div style="text-align: center;">
-                                        <span class="fas fa-pen"><span>
+                                        <span class="fas fa-pen iconSize"><span>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-md-6">
                                     <a class="nav-link px-0 icon-indicator" href="listar" role="button">
                                         <div style="text-align: center;">
-                                            <span class="fas fa-power-off"><span>
+                                            <span class="fas fa-power-off iconSize"><span>
                                         </div>
                                     </a>
                                 </div>
                             </div>
-                            <h5 class="card-title">Ciencias e Ingeniería</h5>
+                            <h5 class="card-title mt-3" style="text-align: center">Ciencias e Ingeniería</h5>
                         </div>
                     </div>
                     <div class="card">
@@ -64,29 +89,29 @@
                                 <div class="col-md-6">
                                     <a class="nav-link px-0 icon-indicator" href="listar" role="button">
                                         <div style="text-align: center;">
-                                        <span class="fas fa-pen"><span>
+                                        <span class="fas fa-pen iconSize"><span>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-md-6">
                                     <a class="nav-link px-0 icon-indicator" href="listar" role="button">
                                         <div style="text-align: center;">
-                                            <span class="fas fa-power-off"><span>
+                                            <span class="fas fa-power-off iconSize"><span>
                                         </div>
                                     </a>
                                 </div>
                             </div>
-                            <h5 class="card-title">Arquitectura y Urbanismo</h5>
+                            <h5 class="card-title mt-3" style="text-align: center">Arquitectura y Urbanismo</h5>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="col-md-12">
+                        <div class="col-md-12 center">
                             <a class="nav-link px-0 icon-indicator" href="{% url 'crearFacultad' %}" role="button">
-                                <div style="text-align: center">
+                                <div class="mt-4" style="text-align: center;">
                                             <span class="fas fa-plus fa-10x" style="text-align: center"><span>
                                 </div>
                             </a>
-                            <h5 class="card-title" style="text-align: center">Nueva Facultad</h5>
+                            <h5 class="card-title mt-5" style="text-align: center">Nueva Facultad</h5>
                         </div>
                     </div>
                 </div>
