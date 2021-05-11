@@ -2,11 +2,14 @@ from django.shortcuts import render,redirect
 
 # Create your views here.
 
-def listarRE(request):
-    context = {
 
+def listarRE(request):
+
+    context = {
     }
     return render(request,'gestionarRE/listarRE.html',context)
+
+
 def editarRE(request):
     if request.POST:
         #Candidate.objects.create(name=request.POST["name"], partido=request.POST["partido"])
