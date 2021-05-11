@@ -11,25 +11,70 @@
 
 {#AQUI COLOQUEN EL CÓDIGO#}
 
-<div class="col-12">
-    <div class="fancy-tab">
-        <div class="nav-bar nav-bar-center">
-            <div class="nav-bar-item px-3 px-sm-4 active"><span class="fas fa-home fs-2"></span>
-                <div class="mt-1">Informacion</div>
-        </div>
-        <div class="nav-bar-item px-3 px-sm-4"><span class="fas fa-user-circle fs-2"></span>
-            <div class="mt-1">Resultados</div>
-        </div>
-        </div>
-        <div class="tab-contents">
-            <div class="tab-content active">
-                <p class="lead">Duis ac facilisis mauris. Pellentesque leo tortor, maximus sed gravida dapibus, suscipit non nisi. Duis ultrices diam a maximus imperdiet. Nam eu purus a erat tristique ornare. Donec condimentum tristique diam eu congue.</p>
-            </div>
-            <div class="tab-content">
-                <p class="lead">Nullam sed tempus mauris, vitae pretium nibh. Nam pretium diam id massa mollis pretium. Aenean lacus massa, tristique id mauris ac, sollicitudin auctor neque. Cras laoreet nunc nibh, ac tristique orci rutrum quis. Nam luctus, sapien ligula finibus turpis.</p>
-            </div>
-        </div>
-    </div>
-</div>
+<form action="{% url 'editarRE' %}" method="post">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="codigo">Código</label>
+    <input name="codigo" class="form-control" id="codigo" type="text" placeholder="Código">
+  </div>
+  <div class="form-group">
+    <label for="descripcion">Descripción</label>
+    <input name="descripcion" class="form-control" id="descripcion" type="text" placeholder="Descripción">
+  </div>
+  <form class="form-inline">
+    <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+        <option selected>Facultad</option>
+        <option value="1">Facultad de Derecho</option>
+        <option value="2">Facultad de Ciencias e Ingeniería</option>
+        <option value="3">Facultad de Ciencias Sociales</option>
+    </select>
+      <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+        <option selected>Especialidad</option>
+        <option value="1">Ingeniería Geológica</option>
+        <option value="2">Ingeniería Industrial</option>
+        <option value="3">Ingeniería Industrial con Teclado</option>
+      </select>
+      <table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Código</th>
+      <th scope="col">Descripción</th>
+      <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ID001</td>
+      <td>Otto</td>
+      <td>
+           <div class="radio">
+               <label>Seleccionar</label><input type="radio" name="optradio">
+           </div>
+      </td>
+    </tr>
+    <tr>
+      <td>ID002</td>
+      <td>Thornton</td>
+      <td>
+           <div class="radio">
+               <label>Seleccionar</label><input type="radio" name="optradio">
+           </div>
+      </td>
+    </tr>
+    <tr>
+      <td>ID003</td>
+      <td>the Bird</td>
+      <td>
+           <div class="radio">
+               <label>Seleccionar</label><input type="radio" name="optradio">
+           </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
+  </form>
+
+<button class="btn btn-primary mb-3" type="submit">Save</button>
+</form>
 {% endblock %}
