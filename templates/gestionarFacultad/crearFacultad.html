@@ -1,42 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-<script type="text/javascript">
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('#imageResult')
-                    .attr('src', e.target.result);
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    $(function () {
-        $('#upload').on('change', function () {
-            readURL(input);
-        });
-    });
-
-    /*  ==========================================
-        SHOW UPLOADED IMAGE NAME
-    * ========================================== */
-    var input = document.getElementById('upload');
-    var infoArea = document.getElementById('upload-label');
-
-    input.addEventListener('change', showFileName);
-
-    function showFileName(event) {
-        var input = event.srcElement;
-        var fileName = input.files[0].name;
-        infoArea.textContent = 'File name: ' + fileName;
-    }
-</script>
-<style media="screen">
-
-</style>
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
     <style>
@@ -68,21 +32,19 @@
         #img-upload {
             width: 100%;
         }
-
     </style>
+
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
 {% block body %}
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript">
+    <script>
         $(document).ready(function () {
             $(document).on('change', '.btn-file :file', function () {
                 var input = $(this),
-                    label = input.val().replace(/\/g, '/
-                ').replace(/.*//, '
-                ');
+                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
                 input.trigger('fileselect', [label]);
             });
 
@@ -142,24 +104,20 @@
                     <p></p>
                     <div class="form-group">
                         <label for="exampleFormControlFile1">Ingrese una imagen para la facultad</label>
-                        <div class="container">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Upload Image</label>
-                                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <span class="btn btn-default btn-file">
-                                Browse… <input type="file" id="imgInp">
-                            </span>
-                        </span>
-                                        <input type="text" class="form-control" readonly>
-                                    </div>
-                                    <img id='img-upload'/>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" readonly>
+                                    <span class="input-group-btn">
+                <span class="btn btn-default btn-file">
+                    Buscar… <input type="file" id="imgInp">
+                </span>
+            </span>
                                 </div>
+                                <img id='img-upload'/>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div>
                     <button class="btn btn-outline-primary ml-11 mr-4 mb-1" type="button">Cancelar
