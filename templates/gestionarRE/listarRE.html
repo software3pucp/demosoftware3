@@ -3,7 +3,33 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
+<style>
+    .nav-link{
+        font-family: Montserrat;
+        color:#CACACA;
+    }
+    .nav-link:hover{
+        font-family: Montserrat;
+        background-color: #CEE3FF;
+        color: black;
+    }
 
+    .nav-link:focus{
+        font-family: Montserrat;
+        color: #2F5496;
+    }
+
+    hr{
+        height: .5px;
+        background-color: #2F5496;
+    }
+
+    h3{
+        font-family: Montserrat;
+        color: #2F5496;
+    }
+
+</style>
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
@@ -39,6 +65,7 @@
                         </div>
                         <div class="col">
                             <h3 id="v-pills-home">Home </h3>
+                            <hr>
                             <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium,
                                 alias
                                 autem beatae blanditiis corporis debitis eligendi, enim error excepturi exercitationem
