@@ -3,5 +3,7 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class User(AbstractUser):
-    celular = models.CharField(max_length=9)
-
+    estado = models.BooleanField(default=False)
+    codigo = models.CharField(max_length=15)
+    genero = models.CharField(max_length=2)
+    foto = models.ImageField(upload_to='usuarios/', null=True)

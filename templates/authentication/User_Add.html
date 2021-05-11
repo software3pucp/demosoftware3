@@ -78,11 +78,11 @@
           {% endif %}
         </div>
         <div class="form-group">
-          <label for="username">{{ user_form.last_name.label }}</label>
+          <label for="codigo">{{ user_form.codigo.label }}</label>
           <abbr class="ml-1 text-danger" data-toggle="tooltip" data-placement="top" title="Campo requerido">*</abbr>
-          {{ user_form.last_name }}
-          {% if "last_name" in errors %}
-            {% for e in errors.email %}
+          {{ user_form.codigo }}
+          {% if "codigo" in errors %}
+            {% for e in errors.codigo %}
               <label class=" error">{{ e }}</label>
             {% endfor %}
           {% endif %}
@@ -98,25 +98,26 @@
           {% endif %}
         </div>
         <div class="form-group">
-          <label for="password">{{ user_form.password.label }}</label>
+          <label for="genero">{{ user_form.genero.label }}</label>
           <abbr class="ml-1 text-danger" data-toggle="tooltip" data-placement="top" title="Campo requerido">*</abbr>
-          {{ user_form.password }}
-          {% if "password" in errors %}
-            {% for e in errors.password %}
+          {{ user_form.genero }}
+          {% if "genero" in errors %}
+            {% for e in errors.genero %}
               <label class=" error">{{ e }}</label>
             {% endfor %}
           {% endif %}
         </div>
         <div class="form-group">
-          <label for="celular">{{ user_form.celular.label }}</label>
+          <label for="estado">{{ user_form.estado.label }}</label>
           <abbr class="ml-1 text-danger" data-toggle="tooltip" data-placement="top" title="Campo requerido">*</abbr>
-          {{ user_form.celular }}
-          {% if "celular" in errors %}
-            {% for e in errors.celular %}
+          {{ user_form.estado }}
+          {% if "estado" in errors %}
+            {% for e in errors.estado %}
               <label class=" error">{{ e }}</label>
             {% endfor %}
           {% endif %}
         </div>
+
 
         <div class="custom-control custom-checkbox mb-2">
           <input required class="custom-control-input" type="checkbox" id="card_register_checkbox"
