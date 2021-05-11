@@ -15,3 +15,11 @@ def listarEspecialidad(request):
 
     }
     return render(request,'gestionarEspecialidad/listarEspecialidad.html',context)
+
+def crearEspecialidad(request):
+    # AQUI HAGO COSAS
+
+    context = {
+
+    }
+    return render(request, 'gestionarEspecialidad/crearEspecialidad.html', context)
