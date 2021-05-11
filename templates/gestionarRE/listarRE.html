@@ -54,6 +54,31 @@
         color: #2F5496;
     }
 
+    .btn-success{
+        float: right;
+        background-color: #EDF2F9;
+        border-color: #EDF2F9;
+    }
+
+    .btn-success:hover{
+        background-color: #CEE3FF;
+        border-color: #CEE3FF;
+    }
+
+    .btn-success:focus{
+        background-color: #CEE3FF;
+        border-color: #CEE3FF;
+    }
+
+    .btn-success:active{
+        background-color: #CEE3FF !important;
+        border-color: #CEE3FF !important;
+    }
+
+    .fa-ellipsis-v{
+        color: #2F5496;
+    }
+
 </style>
 {% endblock %}
 
@@ -80,7 +105,7 @@
                                 <div class="nav flex-column nav-pills" id="v-pills"><a class="nav-link"
                                                                                        href="#v-pills-home"
                                                                                        data-fancyscroll data-offset="80"
-                                                                                       style="font-family: Montserrat;color:#2F5496">Home</a><a
+                                                                                       >Home</a><a
                                         class="nav-link" href="#v-pills-profile" data-fancyscroll
                                         data-offset="80">Profile</a><a class="nav-link" href="#v-pills-messages"
                                                                        data-fancyscroll data-offset="80">Messages</a><a
@@ -89,6 +114,17 @@
                             </div>
                         </div>
                         <div class="col">
+                             <div class="dropdown">
+                                <button class="btn btn-success" type="button" id="dropdownMenuButton"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </div>
                             <h3 id="v-pills-home">Home </h3>
                             <hr>
                             <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium,
