@@ -24,6 +24,5 @@ urlpatterns = [
     path('gestionarEspecialidad', include('gestionarEspecialidad.urls')),
     path('gestionarRE', include('gestionarRE.urls')),
     path('gestionarSemestre', include('gestionarSemestre.urls')),
-    path('gestionarNivel', include('gestionarNivel.urls'))
 
 ]
