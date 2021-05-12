@@ -2,6 +2,18 @@ from django import forms
 
 from authentication.models import User
 
+# temporal
+gen_aux = [
+    (1, "Masculino"),
+    (2, "Femenino"),
+    (3, "No especifica")
+]
+
+estatus_aux = [
+    (1, "Activo"),
+    (2, "Inactivo")
+]
+
 
 class UserForm(forms.ModelForm):
     first_name = forms.CharField(
@@ -27,21 +39,22 @@ class UserForm(forms.ModelForm):
 
     )
 
-    genero = forms.CharField(
+    genero = forms.ChoiceField(
+        choices=gen_aux,
         label='Genero',
         required=True,
-        widget=forms.TextInput(
-            attrs={'class': 'form-control', 'id': 'genero', 'placeholder': 'Ingrese su genero...', })
+        widget=forms.Select(
+            attrs={'class': 'form-control selectpicker', 'id': 'genero'})
     )
 
-
-    estado = forms.CharField(
+    estado = forms.ChoiceField(
+        choices=estatus_aux,
         label='Estado',
         required=True,
-        widget=forms.TextInput(
-            attrs={'class': 'form-control', 'id': 'estado', 'placeholder': 'Ingrese su estado...',})
+        widget=forms.Select(
+            attrs={'class': 'form-control selectpicker', 'id': 'estado' })
     )
 
     class Meta:
         model = User
-        fields = ['first_name', 'codigo', 'email', 'genero','estado']
+        fields = ['first_name', 'codigo', 'email', 'genero', 'estado']

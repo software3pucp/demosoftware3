@@ -41,3 +41,13 @@ class RegisterUser(CreateView):
                 'errors': errors
             }
             return render(request, self.template, context)
+
+#temporal list
+class RenderListar(CreateView):
+    template_name = 'authentication/User_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = {
+
+        }
+        return context

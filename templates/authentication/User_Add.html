@@ -1,4 +1,4 @@
-{% extends 'authentication/base/auth_base.html' %}
+{% extends 'base/base.html' %}
 {% load static %}
 
 {% block extrastyle %}
@@ -12,33 +12,6 @@
 {% endblock %}
 
 {% block body %}
-  <div class="col-md-5 text-white text-center bg-card-gradient">
-    <div class="position-relative p-4 pt-md-5 pb-md-7">
-      <div class="bg-holder bg-auth-card-shape"
-           style="background-image:url(../../static/img/illustrations/half-circle.png);"></div>
-      <!--/.bg-holder-->
-
-      <div class="z-index-1 position-relative">
-        <a class="text-white mb-4 text-sans-serif font-weight-extra-bold fs-4 d-inline-block"
-           href="">
-          <img src="{% static 'img/logos/japiyop_logo.png' %}" alt="" width="230" style="max-width: 100%"></a>
-        <p class="opacity-75 text-white">Contrata con confianza al experto que necesitas e incrementa tus
-          oportunidades
-          de empleo frente al Covid</p>
-      </div>
-    </div>
-    <div class="mt-3 mb-4 mt-md-4 mb-md-5">
-
-      <p class="py-3">¿Tienes cuenta?<br>
-        <a class="btn btn-outline-light mt-2 px-4" href="">Iniciar sesión</a></p>
-      {% comment %}<p class="text-white">O regístrate como:
-      </p>
-      <div class=" text-center">
-        <a class="btn btn-falcon-default btn-sm ml-1" href="{% url 'jobhunter_register' %}"><span class="fas fa-crosshairs mr-1" data-fa-transform="shrink-3"></span>Job
-          Hunter</a>
-      </div>{% endcomment %}
-    </div>
-  </div>
 
   <div class="col-md-7 d-flex flex-center">
     <div class="p-4 p-md-5 flex-grow-1  col-12">
@@ -118,14 +91,6 @@
           {% endif %}
         </div>
 
-
-        <div class="custom-control custom-checkbox mb-2">
-          <input required class="custom-control-input" type="checkbox" id="card_register_checkbox"
-                 name="checkbox_conditions"/>
-          <label class="custom-control-label" for="card_register_checkbox">Acepto los <a
-              {% comment %}href="{% url 'terms_conditions' %}"{% endcomment %}>Términos y condiciones</a></label>
-        </div>
-        <div id="conditions_alert"></div>
         <div class="form-group">
           <button class="btn btn-primary btn-block mt-3" type="submit" name="submit">Registrar</button>
         </div>
