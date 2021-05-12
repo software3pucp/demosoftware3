@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+    <div class="col-md-12">
+        {% if flag %}
+            <b><p>Nivel Eliminado</p></b>
+        {% endif %}
+        <h3 class="mb-0">Lista de niveles</h3>
+        <hr>
+        <p></p>
+        <div class="row" style="padding-left: 1%; padding-right: 1%">
+            {% for nivel in nivelesList %}
+                <div style="margin: 1%;">
+                    <div class="card text-center" style="width: 12rem">
+                        <img class="card-img-top"
+                             src="http://www.inclusivacomunicaciones.cl/wp-content/uploads/2016/08/512-icono.png"
+                             alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ nivel.name }}</h5>
+                            <p class="card-text">{{ nivel.value }} </p>
+                            <div class="card-footer">
+                                <div class="d-flex flex-row align-items-center">
+                                    <a href="{% url 'editarNiv' pk=nivel.pk %}" class="btn btn-primary">Editar</a>
+                                </div>
+                                <div class="d-flex flex-row align-items-center">
+                                    <form action="{% url 'listarNiv' %}" method="post" style="padding-top: 1%">
+                                        {% csrf_token %}
+                                        <input type="hidden" id="nivelPk" name="nivelPk"
+                                               value="{{ nivel.pk }}">
+                                        <input type="submit" class="btn btn-primary" value="Eliminar">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div style="margin: 1%;">
+                <div class="card text-center" style="width: 12rem">
+                    <div class="col-md-12">
+                        <a class="nav-link px-0 icon-indicator" href="{% url 'crearNiv' %}" role="button">
+                            <div style="text-align: center">
+                                <span class="fas fa-plus fa-10x" style="text-align: center"></span>
+                            </div>
+                        </a>
+                        <h5 class="card-title" style="text-align:center">Nuevo Nivel</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
