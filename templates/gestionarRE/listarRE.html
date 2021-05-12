@@ -91,7 +91,7 @@
         <div class="fancy-tab">
             <div class="nav-bar nav-bar-center">
                 <div class="nav-bar-item px-3 px-sm-4 active"><span class="fas fa-home fs-2"></span>
-                    <div class="mt-1">Informacion</div>
+                    <div class="mt-1">Información</div>
                 </div>
                 <div class="nav-bar-item px-3 px-sm-4"><span class="fas fa-user-circle fs-2"></span>
                     <div class="mt-1">Resultados</div>
@@ -426,7 +426,7 @@
                                             <p>{{ resultado.descripcion }}</p>
                                         </div>
                                         <div class="col-md-2" style="text-align: center;padding-left: 2%;">
-                                            <button class="btn btn-primary mr-1 mb-1" type="button">Editar</button>
+                                            <a href="{% url 'editarRE' pk=resultado.pk %}"><button class="btn btn-primary mr-1 mb-1" type="button">Editar</button></a>
                                             <button class="btn btn-primary mr-1 mb-1" type="button">Activar</button>
                                         </div>
                                     </div>
