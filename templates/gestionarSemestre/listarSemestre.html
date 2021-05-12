@@ -113,10 +113,10 @@
                     </div>
 
                     <div class="row d-flex justify-content-center m-2">
-                        <form id="formAgregar">
+                        <form name= "agregarSemes" id="formAgregar">
 
                             <div class="form-group row">
-                                <label for="boxSemestre" class="col-sm-3 col-form-label">Semestre</label>
+                                <label name = "boxSemestre" for="boxSemestre" class="col-sm-3 col-form-label">Semestre</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" id="boxSemestre" name="boxSemestre" placeholder="20XX-X" maxlength="6" >
                                 </div>
@@ -149,7 +149,7 @@
                                     </button>
                                 </div>
                                 <div class="col-sm-6">
-                                    <button type="submit" class="btn btn-primary" data-dismiss="modal" aria-label="Close" onclick="accion()">Aceptar</button>
+                                    <button id="agr" type="submit" class="btn btn-primary"  onclick="validar();accion()">Aceptar</button>
                                 </div>
                             </div>
 
@@ -166,28 +166,45 @@
 {% block extrajs %}
     <script>
 
-        $(document).submit(function () {
-            $("#formAgregar").validate({
+        function validar(){
+            $("form[name='agregarSemes']").validate({
                 rules: {
-                    boxSemestre: {
-                        required: true
+                    boxSemestre : {
+                        required: true,
+                        minlength: 6
                     },
                     dateInicio: {
-                        required: true
+                        required: true,
+                        min: 7
                     },
                     dateFin: {
-                        required: true
-                    },
-
+                        required: {
+                            depends: function(elem) {
+                                return $("#dateInicio").val() < $("#dateFin").val()
+                            }
+                        },min: 7
+                    }
                 },
-                message:{
+                messages : {
                     boxSemestre: {
-                        required: "Por favor, ingresar ciclo"
+                        required: "Por favor ingrese el semestre"
+                    },
+                    dateInicio: {
+                        required: "Por favor ingrese la fecha de inicio"
+                    },
+                    dateFin: {
+                        required: "Por favor ingrese la fecha de fin"
                     }
                 }
-            }
-        );
-        });
+            });
+            $('#agr').on('click', function() {
+                $("#formAgregar").valid();
+            });
+        };
+
+
+
+
         function accion(){
 
 
