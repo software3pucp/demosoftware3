@@ -48,6 +48,63 @@
 
 {#Bloque de extra body -> HTML#}
 {% block body %}
+    <div class="container-fluid">
+        <div class="card p-5">
+            <form action="{% url 'agregarEspecialidad' %}" method="POST">
+                {% csrf_token %}
+                <h3 class="mb-0">Agregar Especialidad</h3>
+                <hr>
+                <p></p>
+                <div class="form-group">
+                    <div class="container-fluid">
+                        <div class="row">
+
+                            <label for="name">Nombre</label>
+                            <input name="name" class="form-control p-3" id="name" type="text"
+                                   placeholder="Ingrese el nombre de la especialidad">
+                        </div>
+                    </div>
+                    <p></p>
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Seleccione responsable(s)</label>
+                        <select name="responsable" class="form-control" id="exampleFormControlSelect1">
+                            {% comment %}{% for item in responsables %}
+                                <option value="item.pk">{{ item.name }}</option>
+                            {% endfor %}{% endcomment %}
+
+                            <option value="1">Alejandro Zapata</option>
+                            <option value="2">Jhonatan Cueva</option>
+                            <option value="3">Raúl Jeri</option>
+                        </select>
+                    </div>
+                    <p></p>
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1">Ingrese una imagen para la especialidad</label>
+                        <div class="input-group">
+                            <input name="photo_name" type="text" class="form-control" readonly>
+                            <span class="input-group-btn pb-3">
+                                        <span class="btn btn-primary btn-file ml-3 " type="button">
+                                            Buscar… <input name="photo" type="file" id="imgInp">
+                                        </span>
+                                    </span>
+                        </div>
+                        <img id='img-upload'/>
+                    </div>
+                </div>
+                <div class="wrapper">
+                    <a class="btn btn-outline-primary mr-3 mb-1" type="button"
+                       href="{% url 'listarEspecialidad' %}">Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary mr-3 mb-1" type="button">Agregar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extrajs %}
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script>
@@ -88,53 +145,4 @@
             });
         });
     </script>
-    <div class="container-fluid">
-        <form>
-            <div class="card p-5">
-                <h3 class="mb-0">Agregar Especialidad</h3>
-                <hr>
-                <p></p>
-                <div class="form-group">
-                    <div class="container-fluid">
-                        <div class="row">
-
-                            <label for="name">Nombre</label>
-                            <input class="form-control p-3" id="name" type="text"
-                                   placeholder="Ingrese el nombre de la especialidad">
-                        </div>
-                    </div>
-                    <p></p>
-                    <div class="form-group">
-                        <label for="exampleFormControlSelect1">Seleccione responsable(s)</label>
-                        <select class="form-control" id="exampleFormControlSelect1">
-                            <option>Alejandro Zapata</option>
-                            <option>Jhonatan Cueva</option>
-                            <option>Raúl Jeri</option>
-                        </select>
-                    </div>
-                    <p></p>
-                    <div class="form-group">
-                        <label for="exampleFormControlFile1">Ingrese una imagen para la especialidad</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" readonly>
-                            <span class="input-group-btn pb-3">
-                                        <span class="btn btn-primary btn-file ml-3 " type="button">
-                                            Buscar… <input type="file" id="imgInp">
-                                        </span>
-                                    </span>
-                        </div>
-                        <img id='img-upload'/>
-                    </div>
-                </div>
-                <div class="wrapper">
-                    <a class="btn btn-outline-primary mr-3 mb-1" type="button"
-                       href="{% url 'listarEspecialidad' %}">Cancelar
-                    </a>
-                    <a class="btn btn-primary mr-3 mb-1" type="button">Agregar
-                    </a>
-                </div>
-            </div>
-        </form>
-    </div>
-
 {% endblock %}
