@@ -3,6 +3,9 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
+
+    <link href="{% static 'lib/flatpickr/flatpickr.min.css'%}" rel="stylesheet">
+
     <style>
         #Titulo{
             color: #0154ae
@@ -43,7 +46,9 @@
             cursor: pointer;
         }
 
-
+        .datetimepicker {
+            changeYear: false !important;
+        }
 
 
     </style>
@@ -62,7 +67,7 @@
         <div class="col-2">
             <a href="#Titulo"><h5 id="Retroceder">
                 <img class="img-fluid" style="height: 20px"
-                     src="https://www.flaticon.es/svg/vstatic/svg/709/709624.svg?token=exp=1620796942~hmac=ab13dcd2f4d2dfa02ca9b2515f178199">
+                     src="https://image.flaticon.com/icons/png/512/60/60577.png">
                 <u>Volver</u>
             </h5></a>
         </div>
@@ -70,11 +75,11 @@
 
     <hr style="background-color: #0154ae;">
 
-    <div id="Semestres" class="row d-flex  mt-3">
+    <div id="Semestres" class="row d-flex  mt-1">
 
-        <div id="Anadir" class=" col-xl-3 col-md-4 col-sm-5 ">
-            <div class="card m-1">
-                <div class="card-body-top pb-1 d-flex justify-content-center">
+        <div id="Anadir" class=" col-xl-3 col-md-4 col-sm-6 p-2">
+            <div class="card ">
+                <div class="card-body-top pb-0 d-flex justify-content-center">
                     <a class=" btn-link   btn-sm" href="#agregarSemestreNuevo" data-toggle="modal">
                         <div class="plus alt">
                         </div>
@@ -84,12 +89,12 @@
         </div>
 
         {% for semestre in ListaSemestre %}
-            <div class=" col-xl-3 col-md-4 col-sm-5 ">
-                <div class="card m-1">
+            <div class=" col-xl-3 col-md-4 col-sm-6 p-2">
+                <div class="card">
                     <div class="card-body" >
-                        <p class="card-title">{{ semestre.nombreCodigo }}</p>
-                        <p class="card-text"> Del : {{ semestre.inicio }}</p>
-                        <p class="card-text"> hasta : {{ semestre.fin }}</p>
+                        <p class="card-title">{{semestre.nombreCodigo}}</p>
+                        <p class="card-text">Del {{semestre.inicio}}</p>
+                        <p class="card-text">hasta {{semestre.fin}}</p>
                     </div>
                 </div>
             </div>
@@ -113,31 +118,27 @@
                     </div>
 
                     <div class="row d-flex justify-content-center m-2">
-                        <form name= "agregarSemes" id="formAgregar">
+                        <form name= "formAgregar" id="formAgregar">
 
                             <div class="form-group row">
-                                <label name = "boxSemestre" for="boxSemestre" class="col-sm-3 col-form-label">Semestre</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="boxSemestre" name="boxSemestre" placeholder="20XX-X" maxlength="6" >
-                                </div>
+                                <label name = "boxSemestre" for="boxSemestre" class="col-sm-4 col-form-label">Semestre</label>
+
+                                    <input type="text" class="form-control col-sm-8" id="boxSemestre" name="boxSemestre" placeholder="20XX-X" maxlength="6" >
+
                             </div>
 
                             <br>
 
                             <div class="form-group row">
-                                <label for="dateInicio" class="col-sm-3 col-form-label">Inicio</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="dateInicio" name="dateInicio" placeholder="dd de mm" maxlength="16" >
-                                </div>
+                                <label for="dateInicio" class="col-sm-4 col-form-label">Inicio</label>
+                                    <input type="text" class="form-control datetimepicker col-sm-8" id="dateInicio" name="dateInicio" data-options='{"dateFormat":"d/m"}' >
                             </div>
 
                             <br>
 
                             <div class="form-group row">
-                                <label for="dateFin" class="col-sm-3 col-form-label">Fin</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="dateFin" name="dateFin" placeholder="dd de mm" maxlength="16" >
-                                </div>
+                                <label for="dateFin" class="col-sm-4 col-form-label">Fin   </label>
+                                <input type="text" class="form-control datetimepicker col-sm-8" id="dateFin" name="dateFin" data-options='{"dateFormat":"d/m"}' >
                             </div>
 
                             <br>
@@ -149,7 +150,7 @@
                                     </button>
                                 </div>
                                 <div class="col-sm-6">
-                                    <button id="agr" type="submit" class="btn btn-primary"  onclick="validar();accion()">Aceptar</button>
+                                    <button id="agr" type="button" class="btn btn-primary"  onclick="validar()">Aceptar</button>
                                 </div>
                             </div>
 
@@ -164,26 +165,26 @@
 
 {#Aquí coloco el JS particular de la web#}
 {% block extrajs %}
-    <script>
+    <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
+    <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
 
+
+    <script>
         function validar(){
-            $("form[name='agregarSemes']").validate({
+            $("form[name='formAgregar']").validate({
                 rules: {
                     boxSemestre : {
                         required: true,
-                        minlength: 6
                     },
                     dateInicio: {
                         required: true,
-                        min: 7
                     },
+
                     dateFin: {
-                        required: {
-                            depends: function(elem) {
-                                return $("#dateInicio").val() < $("#dateFin").val()
-                            }
-                        },min: 7
-                    }
+                        required: true,
+
+                    },
+
                 },
                 messages : {
                     boxSemestre: {
@@ -197,19 +198,17 @@
                     }
                 }
             });
-            $('#agr').on('click', function() {
-                $("#formAgregar").valid();
-            });
+
         };
+    $("#agr").on('click',function (){
+       if($("#formAgregar").valid()){
+           agregar();
+       }
+    });
 
-
-
-
-        function accion(){
-
-
-
-
+    </script>
+    <script>
+        function agregar(){
             $.ajax({
                 type: 'POST',
                 url: "{% url 'agregarSemestre'%}",
@@ -223,12 +222,12 @@
                     var instance = JSON.parse(response["nuevoSemestre"]);
                     var fields = instance[0]["fields"];
 
-                    data = '<div class=" col-xl-3 col-md-4 col-sm-5 ">'+
-                        '<div class="card m-1">'+
+                    data = '<div class=" col-xl-3 col-md-4 col-sm-6 p-2">'+
+                        '<div class="card">'+
                         '    <div class="card-body">'+
                         '       <p class="card-title">'+fields.nombreCodigo+'</p>'+
-                        '       <p class="card-text">Del : '+fields.inicio+'</p>'+
-                        '       <p class="card-text">hasta : '+fields.fin+'</p>'+
+                        '       <p class="card-text">Del: '+fields.inicio+'</p>'+
+                        '       <p class="card-text">hasta: '+fields.fin+'</p>'+
                         '    </div>'+
                         '</div>'+
                         '</div>'
@@ -243,4 +242,5 @@
             });
         }
     </script>
+
 {% endblock %}
