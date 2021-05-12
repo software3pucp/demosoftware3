@@ -102,15 +102,13 @@
                     <div class="row">
                         <div class="col-auto">
                             <div class="sticky-top sticky-kit pt-7">
-                                <div class="nav flex-column nav-pills" id="v-pills"><a class="nav-link"
-                                                                                       href="#v-pills-home"
-                                                                                       data-fancyscroll data-offset="80"
-                                                                                       >Home</a><a
-                                        class="nav-link" href="#v-pills-profile" data-fancyscroll
-                                        data-offset="80">Profile</a><a class="nav-link" href="#v-pills-messages"
-                                                                       data-fancyscroll data-offset="80">Messages</a><a
-                                        class="nav-link" href="#v-pills-settings" data-fancyscroll
-                                        data-offset="80">Settings</a></div>
+                                <div class="nav flex-column nav-pills" id="v-pills">
+                                    <a class="nav-link" href="#top" data-fancyscroll data-offset="80">All</a>
+                                    <a class="nav-link" href="#v-pills-home" data-fancyscroll data-offset="80">Home</a>
+                                    <a class="nav-link" href="#v-pills-profile" data-fancyscroll data-offset="80">Profile</a>
+                                    <a class="nav-link" href="#v-pills-messages" data-fancyscroll data-offset="80">Messages</a>
+                                    <a class="nav-link" href="#v-pills-settings" data-fancyscroll data-offset="80">Settings</a>
+                                </div>
                             </div>
                         </div>
                         <div class="col">
@@ -414,6 +412,12 @@
                     </div>
                 </div>
                 <div class="tab-content">
+                    <form action="{% url 'editarRE' pk='0' %}" method="post" style="text-align: right; margin: 1%;">
+                        {% csrf_token %}
+                        <input type="hidden" name="operacion" value="entrada">
+                        <input type="hidden" name="acreditadora" value="1">
+                        <input type="submit" class="btn btn-primary mr-1 mb-1" value="Añadir">
+                    </form>
                     {% for resultado in resultados %}
                         <div style="margin: 1%;">
                             <div class="card text-white bg-primary">
@@ -426,7 +430,12 @@
                                             <p>{{ resultado.descripcion }}</p>
                                         </div>
                                         <div class="col-md-2" style="text-align: center;padding-left: 2%;">
-                                            <a href="{% url 'editarRE' pk=resultado.pk %}"><button class="btn btn-primary mr-1 mb-1" type="button">Editar</button></a>
+                                            <form action="{% url 'editarRE' pk=resultado.pk %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="operacion" value="entrada">
+                                                <input type="hidden" name="acreditadora" value="1">
+                                                <input type="submit" class="btn btn-primary mr-1 mb-1" value="Editar">
+                                            </form>
                                             <button class="btn btn-primary mr-1 mb-1" type="button">Activar</button>
                                         </div>
                                     </div>

@@ -3,34 +3,36 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
-<style>
-    hr{
-        height: .5px;
-        background-color: #2F5496;
-    }
+    <style>
+        hr {
+            height: .5px;
+            background-color: #2F5496;
+        }
 
-    h3{
-        font-family: Montserrat;
-        color: #2F5496;
-    }
+        h3 {
+            font-family: Montserrat;
+            color: #2F5496;
+        }
 
-    label{
-        font-family: Montserrat;
-        color: black;
-    }
+        label {
+            font-family: Montserrat;
+            color: black;
+        }
 
-</style>
+    </style>
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
 {% block body %}
 
     {#AQUI COLOQUEN EL CÓDIGO#}
-
     <form action="{% url 'editarRE' pk=resultadoAcreditadora.pk %}" method="post">
         {% csrf_token %}
         <div class="row">
             <div class="col-md-12">
+                <div style="float: right;">
+                    <a class="btn btn-outline-primary" type="button" href="{% url 'listarRE' %}">Volver</a>
+                </div>
                 <h3>ABET - Editar Resultado del Estudiante </h3>
                 <hr>
             </div>
@@ -44,7 +46,8 @@
             </div>
             <div class="col-md-8">
                 <div class="form-group">
-                    <input name="codigo" class="form-control" id="codigo" type="text" placeholder="Ingrese un código" value="{{ resultadoAcreditadora.codigo }}">
+                    <input name="codigo" class="form-control" id="codigo" type="text" placeholder="Ingrese un código"
+                           value="{{ resultadoAcreditadora.codigo }}">
                 </div>
             </div>
         </div>
@@ -57,7 +60,9 @@
             </div>
             <div class="col-md-8">
                 <div class="form-group">
-                    <textarea name = "descripcion" class="form-control" id="descripcion" placeholder="Ingrese una descripción" rows="4">{{ resultadoAcreditadora.descripcion }}</textarea>
+                    <textarea name="descripcion" class="form-control" id="descripcion"
+                              placeholder="Ingrese una descripción"
+                              rows="4">{{ resultadoAcreditadora.descripcion }}</textarea>
                 </div>
             </div>
         </div>
@@ -70,24 +75,22 @@
         </div>
 
         <div class="row">
-            <form class="form-inline">
-                <div class="col-md-6">
-                    <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
-                        <option selected>Facultad</option>
-                        <option value="1">Facultad de Derecho</option>
-                        <option value="2">Facultad de Ciencias e Ingeniería</option>
-                        <option value="3">Facultad de Ciencias Sociales</option>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelect">
-                        <option selected>Especialidad</option>
-                        <option value="1">Ingeniería Geológica</option>
-                        <option value="2">Ingeniería Industrial</option>
-                        <option value="3">Ingeniería Industrial con Teclado</option>
-                    </select>
-                </div>
-            </form>
+            <div class="col-md-6">
+                <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+                    <option selected>Facultad</option>
+                    <option value="1">Facultad de Derecho</option>
+                    <option value="2">Facultad de Ciencias e Ingeniería</option>
+                    <option value="3">Facultad de Ciencias Sociales</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelect">
+                    <option selected>Especialidad</option>
+                    <option value="1">Ingeniería Geológica</option>
+                    <option value="2">Ingeniería Industrial</option>
+                    <option value="3">Ingeniería Industrial con Teclado</option>
+                </select>
+            </div>
         </div>
         <p></p>
         <div class="row">
@@ -106,13 +109,14 @@
                             <td>{{ resultado.codigo }}</td>
                             <td>{{ resultado.descripcion }}</td>
                             <td>
-                                <div class="radio">
-                                    {% if resultado in resultadosSelec %}
-                                        <label>Seleccionar</label> <input type="checkbox" name="select" value="1" checked>
-                                    {% else %}
-                                        <label>Seleccionar</label> <input type="checkbox" name="selec" value="1">
-                                    {% endif %}
-                                </div>
+                                <input type="hidden" name="select{{ resultado.pk }}" value="0">
+                                {% if resultado in resultadosSelec %}
+                                    <label>Seleccionar</label>
+                                    <input type="checkbox" name="select{{ resultado.pk }}" value="1" checked>
+                                {% else %}
+                                    <label>Seleccionar</label>
+                                    <input type="checkbox" name="select{{ resultado.pk }}" value="1">
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
@@ -120,11 +124,28 @@
                 </table>
             </div>
         </div>
+        {% if flag == 1 %}
+            <div class="row" style="background-color: #017ecd; color: #fff; margin: 1%;">
+                <div class="col-md-12">
+                    <p style="margin: 1%;">Se ha editado correctamente</p>
+                </div>
+            </div>
+        {% elif flag == 2 %}
+            <div class="row" style="background-color: #017ecd; color: #fff; margin: 1%;">
+                <div class="col-md-12">
+                    <p style="margin: 1%;">Se ha insertado correctamente</p>
+                </div>
+            </div>
+        {% endif %}
         <div class="row">
             <div class="col-md-12" style="text-align: right;">
-                <a class="btn btn-outline-primary" type="button"
-                   href="#">Cancelar
-                </a>
+                <a class="btn btn-outline-primary" type="button" href="{% url 'listarRE' %}">Cancelar</a>
+                {% if resultadoAcreditadora.pk == "0" %}
+                    <input type="hidden" name="operacion" value="insertar">
+                {% else %}
+                    <input type="hidden" name="operacion" value="editar">
+                {% endif %}
+                <input type="hidden" name="acreditadora" value="{{ resultadoAcreditadora.acreditadora_id }}">
                 <input type="submit" class="btn btn-primary" value="Guardar">
             </div>
         </div>
