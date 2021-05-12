@@ -5,7 +5,7 @@
 {% block extrastyle %}
     <style>
         #Titulo{
-            color: #d01a3b
+            color: #0154ae
         }
 
         p{
@@ -17,6 +17,34 @@
         label{
             color: #f9fafd;
         }
+        .plus {
+
+            display: inline-block;
+            color: #000;
+            font-size: 80px;
+            line-height: 80px;
+
+        }
+
+        .plus::before {
+            content: "+";
+        }
+
+        .card:hover .plus{
+            background-color: #0154ae;
+            color: #f9fafd  !important;
+            cursor: pointer;
+
+        }
+
+        .card:hover{
+            background-color: #0154ae;
+            color: #f9fafd  !important;
+            cursor: pointer;
+        }
+
+
+
 
     </style>
 
@@ -34,7 +62,7 @@
         <div class="col-2">
             <a href="#Titulo"><h5 id="Retroceder">
                 <img class="img-fluid" style="height: 20px"
-                     src="https://www.flaticon.es/svg/vstatic/svg/17/17699.svg?token=exp=1620699331~hmac=16ebe1d9fc5f697d28d04d988fedb34d">
+                     src="https://www.flaticon.es/svg/vstatic/svg/709/709624.svg?token=exp=1620796942~hmac=ab13dcd2f4d2dfa02ca9b2515f178199">
                 <u>Volver</u>
             </h5></a>
         </div>
@@ -42,15 +70,14 @@
 
     <hr style="background-color: #0154ae;">
 
-    <div id="Semestres" class="row d-flex  mt-4">
+    <div id="Semestres" class="row d-flex  mt-3">
 
         <div id="Anadir" class=" col-xl-3 col-md-4 col-sm-5 ">
             <div class="card m-1">
-                <div class="card-img-top d-flex justify-content-center m-3">
-                    <a class=" btn-link  pl-0 btn-sm" href="#agregarSemestreNuevo" data-toggle="modal">
-                        <img class="img-fluid" style="height: 50px"
-                             src="https://t4.ftcdn.net/jpg/01/26/10/59/240_F_126105961_6vHCTRX2cPOnQTBvx9OSAwRUapYTEmYA.jpg"
-                             alt="Card image cap">
+                <div class="card-body-top pb-1 d-flex justify-content-center">
+                    <a class=" btn-link   btn-sm" href="#agregarSemestreNuevo" data-toggle="modal">
+                        <div class="plus alt">
+                        </div>
                     </a>
                 </div>
             </div>
@@ -58,7 +85,7 @@
 
         {% for semestre in ListaSemestre %}
             <div class=" col-xl-3 col-md-4 col-sm-5 ">
-                <div class="card m-2">
+                <div class="card m-1">
                     <div class="card-body" >
                         <p class="card-title">{{ semestre.nombreCodigo }}</p>
                         <p class="card-text"> Del : {{ semestre.inicio }}</p>
@@ -180,7 +207,7 @@
                     var fields = instance[0]["fields"];
 
                     data = '<div class=" col-xl-3 col-md-4 col-sm-5 ">'+
-                        '<div class="card m-2">'+
+                        '<div class="card m-1">'+
                         '    <div class="card-body">'+
                         '       <p class="card-title">'+fields.nombreCodigo+'</p>'+
                         '       <p class="card-text">Del : '+fields.inicio+'</p>'+
