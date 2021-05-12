@@ -3,78 +3,144 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
+<style>
+    hr{
+        height: .5px;
+        background-color: #2F5496;
+    }
 
+    h3{
+        font-family: Montserrat;
+        color: #2F5496;
+    }
+
+    label{
+        font-family: Montserrat;
+        color: black;
+    }
+
+</style>
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
 {% block body %}
 
-{#AQUI COLOQUEN EL CÓDIGO#}
+    {#AQUI COLOQUEN EL CÓDIGO#}
 
-<form action="{% url 'editarRE' %}" method="post">
-  {% csrf_token %}
-  <div class="form-group">
-    <label for="codigo">Código</label>
-    <input name="codigo" class="form-control" id="codigo" type="text" placeholder="Código">
-  </div>
-  <div class="form-group">
-    <label for="descripcion">Descripción</label>
-    <input name="descripcion" class="form-control" id="descripcion" type="text" placeholder="Descripción">
-  </div>
-  <form class="form-inline">
-    <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
-        <option selected>Facultad</option>
-        <option value="1">Facultad de Derecho</option>
-        <option value="2">Facultad de Ciencias e Ingeniería</option>
-        <option value="3">Facultad de Ciencias Sociales</option>
-    </select>
-      <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-        <option selected>Especialidad</option>
-        <option value="1">Ingeniería Geológica</option>
-        <option value="2">Ingeniería Industrial</option>
-        <option value="3">Ingeniería Industrial con Teclado</option>
-      </select>
-      <table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Código</th>
-      <th scope="col">Descripción</th>
-      <th scope="col">Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>ID001</td>
-      <td>Otto</td>
-      <td>
-           <div class="radio">
-               <label>Seleccionar</label><input type="radio" name="optradio">
-           </div>
-      </td>
-    </tr>
-    <tr>
-      <td>ID002</td>
-      <td>Thornton</td>
-      <td>
-           <div class="radio">
-               <label>Seleccionar</label><input type="radio" name="optradio">
-           </div>
-      </td>
-    </tr>
-    <tr>
-      <td>ID003</td>
-      <td>the Bird</td>
-      <td>
-           <div class="radio">
-               <label>Seleccionar</label><input type="radio" name="optradio">
-           </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
+    <form action="{% url 'editarRE' %}" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <h3>ABET - Editar Resultado del Estudiante </h3>
+                <hr>
+            </div>
+        </div>
 
-  </form>
+        <div class="row" style="padding-left: 1%;padding-right: 1%">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="codigo">Código:</label>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <input name="codigo" class="form-control" id="codigo" type="text" placeholder="Ingrese un código">
+                </div>
+            </div>
+        </div>
 
-<button class="btn btn-primary mb-3" type="submit">Save</button>
-</form>
+        <div class="row" style="padding-left: 1%;padding-right: 1%">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="descripcion">Descripción:</label>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <!--<input name="descripcion" class="form-control" id="descripcion" type="text" placeholder="Ingrese una descripción">-->
+                    <textarea name = "descripcion" class="form-control" id="descripcion" placeholder="Ingrese una descripción" rows="4"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Asociación ABET - PUCP</h3>
+                <hr>
+            </div>
+        </div>
+
+        <div class="row">
+            <form class="form-inline">
+                <div class="col-md-6">
+                    <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+                        <option selected>Facultad</option>
+                        <option value="1">Facultad de Derecho</option>
+                        <option value="2">Facultad de Ciencias e Ingeniería</option>
+                        <option value="3">Facultad de Ciencias Sociales</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelect">
+                        <option selected>Especialidad</option>
+                        <option value="1">Ingeniería Geológica</option>
+                        <option value="2">Ingeniería Industrial</option>
+                        <option value="3">Ingeniería Industrial con Teclado</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <p></p>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Código</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>ID001</td>
+                        <td>Otto</td>
+                        <td>
+                            <div class="radio">
+                                <label>Seleccionar</label><input type="radio" name="optradio">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ID002</td>
+                        <td>Thornton</td>
+                        <td>
+                            <div class="radio">
+                                <label>Seleccionar</label><input type="radio" name="optradio">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ID003</td>
+                        <td>the Bird</td>
+                        <td>
+                            <div class="radio">
+                                <label>Seleccionar</label><input type="radio" name="optradio">
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" style="text-align: right;">
+                <a class="btn btn-outline-primary" type="button"
+                   href="#">Cancelar
+                </a>
+                <input type="submit" class="btn btn-primary" value="Guardar">
+            </div>
+        </div>
+        <!--<button class="btn btn-primary mb-3" type="submit">Save</button>-->
+    </form>
 {% endblock %}
