@@ -35,6 +35,10 @@
             z-index: 9999;
         }
 
+        .equal {
+            margin-top: 20px;
+        }
+
         .light-300 {
             font-family: 'Open Sans', sans-serif !important;
             font-weight: 300;
@@ -186,97 +190,101 @@
 {% block body %}
 
     {#AQUI COLOQUEN EL CÓDIGO#}
-
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <select class="form-control" style="height: 25px" id="exampleFormControlSelect1"
-                            aria-label="Seleccione una Facultad">
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-4">
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <select class="form-control" style="height: 25px" id="exampleFormControlSelect1"
-                            aria-label="Seleccione una Facultad">
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-md-12">
-                <div class="card-deck">
-                    <a class="recent-work card border-0 shadow-lg overflow-hidden">
-                        <div class="card-img-top recent-work-img ">
-                            <img class="img-fluid" style="height: 200px; width: 100%; "
-                                 src="http://descubre.pucp.edu.pe/imagesv2/dep021/pabellon%20v%20telecomunicaciones%20informatica.jpg"
-                                 alt="Card image cap">
-                        </div>
-                        <div class="recent-work-vertical card-img-overlay d-flex align-items-end">
-                            <div class="service-work-content text-left text-light">
-                                <div class="row alignRight">
-                                    <div class="nav-link icon-indicator" href="{% url 'listarFacultad' %}"
-                                         role="button">
-                                        <div style="text-align: center;">
+                <div class="row">
+                    <div class="col-md-4">
+                        <select class="form-control" style="height: 25px" id="exampleFormControlSelect1"
+                                aria-label="Seleccione una Facultad">
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-control" style="height: 25px" id="exampleFormControlSelect1"
+                                aria-label="Seleccione una Facultad">
+                        </select>
+                    </div>
+                </div>
+                <div class="row" style="width: 100%">
+                    {% for especialidad in ListaEspecialidad %}
+                        <div class="col-md-4 equal">
+                            <a class="recent-work card border-0 shadow-lg overflow-hidden">
+                                <div class="card-img-top recent-work-img ">
+                                    <img class="img-fluid" style="height: 100%; width: 100%; "
+                                         src="{{ especialidad.foto }}"
+                                         alt="Card image cap">
+                                </div>
+                                <div class="recent-work-vertical card-img-overlay d-flex align-items-end">
+                                    <div class="service-work-content text-left text-light">
+                                        <div class="row alignRight">
+                                            <div class="nav-link icon-indicator" href="{% url 'listarFacultad' %}"
+                                                 role="button">
+                                                <div style="text-align: center;">
                                         <span class="fas fa-pen iconSize iconColorNBorder"><span>
-                                        </div>
-                                    </div>
-                                    <div class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
-                                         role="button">
-                                        <div style="text-align: center;">
+                                                </div>
+                                            </div>
+                                            <div class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
+                                                 role="button">
+                                                <div style="text-align: center;">
                                             <span class="fas fa-power-off iconSize iconColorNBorder"><span>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <h5 class="card-title mt-6"
+                                            style="text-align: center">{{ especialidad.nombre }}</h5>
                                     </div>
                                 </div>
-                                <h5 class="card-title mt-6" style="text-align: center">Ingeniería Informática</h5>
+                            </a>
+                        </div>
+                    {% endfor %}
+
+                    <div class="col-md-4 equal">
+                        <a class="recent-work card border-0 shadow-lg overflow-hidden">
+                            <div class="card-img-top recent-work-img ">
+                                <img class="img-fluid" style="height: 200px; width: 100%; "
+                                     src="http://descubre.pucp.edu.pe/imagesv2/dep021/pabellon%20v%20telecomunicaciones%20informatica.jpg"
+                                     alt="Card image cap">
                             </div>
-                        </div>
-                    </a>
-                    <a class="recent-work card border-0 shadow-lg overflow-hidden">
-                        <div class="card-img-top recent-work-img ">
-                            <img class="img-fluid" style="height: 200px; width: 100%; "
-                                 src="http://descubre.pucp.edu.pe/imagesv2/lug025/IMG_4580.jpg"
-                                 alt="Card image cap">
-                        </div>
-                        <div class="recent-work-vertical card-img-overlay d-flex align-items-end">
-                            <div class="service-work-content text-left text-light">
-                                <div class="row alignRight">
-                                    <div class="nav-link icon-indicator" href="{% url 'listarFacultad' %}"
-                                         role="button">
-                                        <div style="text-align: center;">
+                            <div class="recent-work-vertical card-img-overlay d-flex align-items-end">
+                                <div class="service-work-content text-left text-light">
+                                    <div class="row alignRight">
+                                        <div class="nav-link icon-indicator" href="{% url 'listarFacultad' %}"
+                                             role="button">
+                                            <div style="text-align: center;">
                                         <span class="fas fa-pen iconSize iconColorNBorder"><span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
-                                         role="button">
-                                        <div style="text-align: center;">
+                                        <div class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
+                                             role="button">
+                                            <div style="text-align: center;">
                                             <span class="fas fa-power-off iconSize iconColorNBorder"><span>
+                                            </div>
                                         </div>
                                     </div>
+                                    <h5 class="card-title mt-6" style="text-align: center">Ingeniería Informática</h5>
                                 </div>
-                                <h5 class="card-title mt-6" style="text-align: center">Ingeniería Informática</h5>
                             </div>
-                        </div>
-                    </a>
-                    <a class="recent-work card border-0 shadow-lg overflow-hidden" href="{% url 'crearEspecialidad' %}">
-                        <div class="nav-link icon-indicator" role="button">
-                            <div class="mt-4" style="text-align: center;">
+                        </a>
+                    </div>
+                    <div class="col-md-4 equal">
+                        <a class="recent-work card border-0 shadow-lg overflow-hidden"
+                           href="{% url 'agregarEspecialidad' %}">
+                            <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
+                                <div class="mt-4" style="text-align: center;">
                                             <span class="fas fa-plus fa-9x" style="text-align: center"><span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="recent-work-vertical card-img-overlay d-flex align-items-end">
-                            <div class="service-work-content text-left text-light">
-                                <h5 class="card-title mt-6" style="text-align: center">Agregar Especialidad</h5>
+                            <div class="recent-work-vertical card-img-overlay d-flex align-items-end">
+                                <div class="service-work-content text-left text-light">
+                                    <h5 class="card-title mt-6" style="text-align: center">Agregar Especialidad</h5>
+                                </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
 
 {% endblock %}
