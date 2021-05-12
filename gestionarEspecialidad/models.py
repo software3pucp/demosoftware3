@@ -5,6 +5,4 @@ from django.db import models
 class Especialidad(models.Model):
     nombre = models.CharField(max_length=30)
     responsable = models.CharField(max_length=50)
-    foto = models.ImageField(upload_to='img/')
-    inicio = models.CharField(max_length=20, null=True)
-    fin = models.CharField(max_length=20, null=True)
+    foto = models.ImageField(null=True, blank=True, upload_to='img/')
