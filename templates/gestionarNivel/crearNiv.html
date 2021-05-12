@@ -1,0 +1,61 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+    <form action="{% url 'crearNiv' %}" method="post">
+        {% csrf_token %}
+        <div class="container-fluid">
+            <div class="card p-5">
+                <h3 class="mb-0">Agregar Nivel</h3>
+                <hr>
+                <div class="form-group">
+                    <div class="container-fluid">
+                        <div class="form-group">
+                            <label for="name" class="col-sm-6 col-form-label">Nombre:</label>
+                            <div class="col-sm-12">
+                                <input type="text" name="name" id="name"
+                                       placeholder="Ingrese el nombre del nivel">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="numPlayers" class="col-sm-6 col-form-label">Valor:</label>
+                            <div class="col-sm-12">
+                                <input type="value" name="value" id="value"
+                                       placeholder="Ingrese el valor numérico del nivel">
+                                <small id="value" class="form-text text-muted">El nuevo valor debe seguir un orden
+                                    respecto al último nivel</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="p-2">
+                        <a class="btn btn-outline-primary ml-11 mr-4 mb-1" type="button"
+                           href="{% url 'listarNiv' %}">Cancelar
+                        </a>
+                    </div>
+                    <div class="p-2">
+                        <input type="submit" class="btn btn-primary" value="Registrar">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {% if registrado %}
+        <div class="d-flex flex-row">
+            <div class="d-flex flex-column">
+                <div class="d-flex justify-content-center">
+                    <b><p>Nivel registrado</p></b>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
