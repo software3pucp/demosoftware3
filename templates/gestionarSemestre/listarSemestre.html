@@ -86,12 +86,12 @@
                     </div>
 
                     <div class="row d-flex justify-content-center m-2">
-                        <form>
+                        <form id="formAgregar">
 
                             <div class="form-group row">
                                 <label for="boxSemestre" class="col-sm-3 col-form-label">Semestre</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="boxSemestre" placeholder="20XX-X" maxlength="6" required>
+                                    <input type="text" class="form-control" id="boxSemestre" name="boxSemestre" placeholder="20XX-X" maxlength="6" >
                                 </div>
                             </div>
 
@@ -100,7 +100,7 @@
                             <div class="form-group row">
                                 <label for="dateInicio" class="col-sm-3 col-form-label">Inicio</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="dateInicio" placeholder="dd de mm" maxlength="16" required>
+                                    <input type="text" class="form-control" id="dateInicio" name="dateInicio" placeholder="dd de mm" maxlength="16" >
                                 </div>
                             </div>
 
@@ -109,7 +109,7 @@
                             <div class="form-group row">
                                 <label for="dateFin" class="col-sm-3 col-form-label">Fin</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="dateFin" placeholder="dd de mm" maxlength="16" required>
+                                    <input type="text" class="form-control" id="dateFin" name="dateFin" placeholder="dd de mm" maxlength="16" >
                                 </div>
                             </div>
 
@@ -122,8 +122,7 @@
                                     </button>
                                 </div>
                                 <div class="col-sm-6">
-
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close" onclick="accion()">Aceptar</button>
+                                    <button type="submit" class="btn btn-primary" data-dismiss="modal" aria-label="Close" onclick="accion()">Aceptar</button>
                                 </div>
                             </div>
 
@@ -140,10 +139,33 @@
 {% block extrajs %}
     <script>
 
-        $(document).ready(function () {
-            console.log("ready!");
+        $(document).submit(function () {
+            $("#formAgregar").validate({
+                rules: {
+                    boxSemestre: {
+                        required: true
+                    },
+                    dateInicio: {
+                        required: true
+                    },
+                    dateFin: {
+                        required: true
+                    },
+
+                },
+                message:{
+                    boxSemestre: {
+                        required: "Por favor, ingresar ciclo"
+                    }
+                }
+            }
+        );
         });
         function accion(){
+
+
+
+
             $.ajax({
                 type: 'POST',
                 url: "{% url 'agregarSemestre'%}",
@@ -168,6 +190,7 @@
                         '</div>'
 
                     $(data).insertAfter($("#Anadir"));
+
                 },
                 error: function (response) {
                     // alert the error if any error occured

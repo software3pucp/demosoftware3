@@ -5,6 +5,6 @@ from django.db import models
 class Semestre(models.Model):
     nombreCodigo = models.CharField(max_length=10)
     anho = models.IntegerField()
-    etapa = models.IntegerField()
+    etapa = models.IntegerField(null=True)
     inicio = models.CharField(max_length=20, null=True)
     fin = models.CharField(max_length=20, null=True)
