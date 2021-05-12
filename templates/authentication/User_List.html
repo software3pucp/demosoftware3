@@ -1,0 +1,78 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block body %}
+    <div class="card mb-3">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h5 class="mb-0">Criterios de búsqueda</h5>
+                </div>
+            </div>
+            <div style="max-width: 25rem;">
+                <form>
+                    <div class="mb-3">
+                        <div class="form-group">
+                            <label for="name">Nombre</label>
+                            <input class="form-control" id="name" type="text" placeholder="Ingrese el nombre">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div class="card mb-3">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h5 class="mb-0">Nombres</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="fs--1" style="max-width: 100rem;">
+            <a class="notification" href="#!">
+                <div class="notification-avatar">
+                    <div class="avatar avatar-2xl mr-3">
+                        <img class="rounded-circle"
+                             src="https://i.pinimg.com/236x/ed/09/27/ed0927fde6607bf3cec4b50ebb8c079b.jpg" alt=""/>
+                    </div>
+                </div>
+                <div class="notification-body ">
+                    <p class="mb-1"><strong>Polar Keloke</strong></p>
+                     <div class="nav-link px-0 icon-indicator" href="" role="button">
+                        <span class="fas fa-pen iconSize"><span>
+                    </div>
+                    <div class="nav-link px-0 icon-indicator" href="" role="button">
+                        <span class="fas fa-power-off iconSize"><span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="fs--1" style="max-width: 100rem;">
+            <a class="notification" href="#!">
+                <div class="notification-avatar">
+                    <div class="avatar avatar-2xl mr-3">
+                        <img class="rounded-circle"
+                             src="https://pbs.twimg.com/profile_images/1373764957725155328/2-yXttat_400x400.jpg"
+                             alt=""/>
+                    </div>
+                </div>
+
+                <div class="notification-body ">
+                    <p class="mb-1"><strong>Aaron Baibe</strong></p>
+
+                    <div class="nav-link px-0 icon-indicator" href="" role="button">
+                        <span class="fas fa-pen iconSize"><span>
+                    </div>
+                    <div class="nav-link px-0 icon-indicator" href="" role="button">
+                        <span class="fas fa-power-off iconSize"><span>
+                    </div>
+                </div>
+
+
+            </a>
+        </div>
+    </div>
+{% endblock %}
