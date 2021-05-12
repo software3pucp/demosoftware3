@@ -8,14 +8,6 @@
             font-family: 'Open Sans', sans-serif;
         }
 
-        .vertical-center {
-            margin: 0;
-            position: absolute;
-            top: 50%;
-            -ms-transform: translateY(-50%);
-            transform: translateY(-50%);
-        }
-
         .center {
             margin: 0;
             position: absolute;
@@ -25,8 +17,166 @@
             transform: translate(-50%, -50%);
         }
 
-        .iconSize{
-             font-size: 23px;
+        .alignRight {
+            position: absolute;
+            right: 20px;
+            top: 8px;
+        }
+
+        .iconSize {
+            font-size: 23px;
+            z-index: 9999;
+        }
+
+        .iconColorNBorder {
+            color: white;
+            stroke: black;
+            stroke-width: 5;
+            z-index: 9999;
+        }
+
+        .light-300 {
+            font-family: 'Open Sans', sans-serif !important;
+            font-weight: 300;
+        }
+
+
+        .typo-space-line::after,
+
+
+            /* Main Nav */
+        #main_nav .nav-item .nav-link:hover {
+            color: #fff;
+        }
+
+        /* Home */
+        #index_banner {
+            background-image: url('./../img/banner-bg-01.jpg');
+            background-position: center center;
+            background-size: cover;
+            height: 100%;
+            min-height: 60vh;
+            width: 100%;
+        }
+
+        #index_banner .carousel-item {
+            min-height: 60vh;
+        }
+
+        #index_banner .carousel-control-prev i,
+        #index_banner .carousel-control-next i {
+            color: #FFADB9 !important;
+            text-decoration: none;
+            font-size: 4em;
+        }
+
+        #index_banner .carousel-inner {
+            height: 80vh;
+        }
+
+        #index_banner .carousel-indicators li,
+        #index_banner .carousel-indicators.active {
+            background-color: #FFADB9 !important;
+        }
+
+        .service-wrapper .service-footer {
+            max-width: 720px;
+        }
+
+        .service-work.card {
+            border-radius: 10px !important;
+            cursor: pointer;
+        }
+
+        .service-work .service-work-vertical {
+            background: rgb(0, 0, 0);
+            background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 33.33%, rgba(255, 255, 255, 1) 66.66%, rgba(255, 255, 255, 0) 99.99%);
+            background-size: 300% 300%;
+            background-position: 0% 100%;
+            transition: .5s;
+        }
+
+        .service-work .service-work-vertical:hover {
+            background-position: 0% 0%;
+            transition: .5s;
+        }
+
+        .service-work .service-work-vertical:hover * {
+            color: #000;
+            border-color: #000;
+            transition: .5s;
+        }
+
+        .service-work .service-work-vertical-ruk:hover * {
+            color: #000;
+            border-color: #000;
+            transition: .5s;
+        }
+
+        .recent-work.card {
+            border-radius: 10px !important;
+        }
+
+        .recent-work .recent-work-vertical {
+            background: rgb(255, 255, 255);
+            background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 33.333%, rgba(1, 126, 205, 1) 66.666%, rgba(255, 255, 255, 0) 99.999%);
+            background-size: 300% 300%;
+            background-position: 0% 100%;
+            transition: .5s;
+            cursor: pointer;
+        }
+
+        .recent-work .recent-work-vertical-ruk {
+            background: rgb(255, 255, 255);
+            background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 33.333%, rgb(27, 106, 154) 66.666%, rgba(255, 255, 255, 0) 99.999%);
+            background-size: 300% 300%;
+            background-position: 0% 100%;
+            transition: .5s;
+            cursor: pointer;
+        }
+
+        .recent-work .recent-work-vertical:hover {
+            background-position: 0% 0%;
+            transition: .5s;
+        }
+
+        .recent-work .recent-work-vertical:hover div.recent-work-content {
+            top: 50%;
+            margin-top: -2.5em;
+            position: absolute;
+        }
+
+        .recent-work .recent-work-vertical:hover * {
+            color: white;
+            transition: .5s;
+        }
+
+        /*¨*/
+        .recent-work .recent-work-vertical-ruk:hover {
+            background-position: 0% 0%;
+            transition: .5s;
+        }
+
+        .recent-work .recent-work-vertical-ruk:hover div.recent-work-content {
+            top: 50%;
+            margin-top: -2.5em;
+            position: absolute;
+        }
+
+        .recent-work .recent-work-vertical-ruk:hover * {
+            color: white;
+            transition: .5s;
+        }
+
+
+        .team-member:hover .team-member-img {
+            padding: 10px !important;
+        }
+
+        /* Footer */
+        footer a.text-light:hover {
+            color: #bfbfbf !important;
+            transition-duration: 0.15s;
         }
     </style>
 {% endblock %}
@@ -44,7 +194,8 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <select class="form-control" style="height: 25px" id="exampleFormControlSelect1" aria-label="Seleccione una Facultad">
+                    <select class="form-control" style="height: 25px" id="exampleFormControlSelect1"
+                            aria-label="Seleccione una Facultad">
                     </select>
                 </div>
             </div>
@@ -52,72 +203,71 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card-deck">
-                    <div class="card">
-                        <div class="card-img-top">
+                    <a class="recent-work card border-0 shadow-lg overflow-hidden">
+                        <div class="card-img-top recent-work-img ">
                             <img class="img-fluid" style="height: 200px; width: 100%; "
                                  src="https://files.pucp.education/puntoedu/wp-content/uploads/2021/02/23120135/facultad_de_ciencias_e_ingenieria001.jpg"
                                  alt="Card image cap">
                         </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <a class="nav-link px-0 icon-indicator" href="listar" role="button">
-                                        <div style="text-align: center;">
-                                        <span class="fas fa-pen iconSize"><span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-6">
-                                    <a class="nav-link px-0 icon-indicator" href="listar" role="button">
-                                        <div style="text-align: center;">
-                                            <span class="fas fa-power-off iconSize"><span>
-                                        </div>
-                                    </a>
+                        <div class="row alignRight">
+                            <div class="nav-link icon-indicator" href="{% url 'listarFacultad' %}" role="button">
+                                <div style="text-align: center;">
+                                        <span class="fas fa-pen iconSize iconColorNBorder"><span>
                                 </div>
                             </div>
-                            <h5 class="card-title mt-3" style="text-align: center">Ciencias e Ingeniería</h5>
+                            <div class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}" role="button">
+                                <div style="text-align: center;">
+                                            <span class="fas fa-power-off iconSize iconColorNBorder"><span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-img-top">
+                        <div class="recent-work-vertical card-img-overlay d-flex align-items-end">
+                            <div class="service-work-content text-left text-light">
+                                <h5 class="card-title mt-6" style="text-align: center">Ciencias e Ingeniería</h5>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="recent-work card border-0 shadow-lg overflow-hidden">
+                        <div class="card-img-top recent-work-img ">
                             <img class="img-fluid" style="height: 200px; width: 100%; "
                                  src="http://descubre.pucp.edu.pe/imagesv2/fac004/Arquitectura-690x468.jpg"
                                  alt="Card image cap">
                         </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <a class="nav-link px-0 icon-indicator" href="listar" role="button">
-                                        <div style="text-align: center;">
-                                        <span class="fas fa-pen iconSize"><span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-6">
-                                    <a class="nav-link px-0 icon-indicator" href="listar" role="button">
-                                        <div style="text-align: center;">
-                                            <span class="fas fa-power-off iconSize"><span>
-                                        </div>
-                                    </a>
+                        <div class="row alignRight">
+                            <div class="nav-link icon-indicator" href="{% url 'listarFacultad' %}" role="button">
+                                <div style="text-align: center;">
+                                        <span class="fas fa-pen iconSize iconColorNBorder"><span>
                                 </div>
                             </div>
-                            <h5 class="card-title mt-3" style="text-align: center">Arquitectura y Urbanismo</h5>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="col-md-12 center">
-                            <a class="nav-link px-0 icon-indicator" href="{% url 'crearFacultad' %}" role="button">
-                                <div class="mt-4" style="text-align: center;">
-                                            <span class="fas fa-plus fa-10x" style="text-align: center"><span>
+                            <div class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}" role="button">
+                                <div style="text-align: center;">
+                                            <span class="fas fa-power-off iconSize iconColorNBorder"><span>
                                 </div>
-                            </a>
-                            <h5 class="card-title mt-5" style="text-align: center">Nueva Facultad</h5>
+                            </div>
                         </div>
-                    </div>
+                        <div class="recent-work-vertical card-img-overlay d-flex align-items-end">
+                            <div class="service-work-content text-left text-light">
+                                <h5 class="card-title mt-6" style="text-align: center">Arquitectura y Urbanismo</h5>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="recent-work card border-0 shadow-lg overflow-hidden" href="{% url 'crearFacultad' %}">
+                        <div class="nav-link icon-indicator" role="button">
+                            <div class="mt-4" style="text-align: center;">
+                                            <span class="fas fa-plus fa-9x" style="text-align: center"><span>
+                            </div>
+                        </div>
+                        <div class="recent-work-vertical card-img-overlay d-flex align-items-end">
+                            <div class="service-work-content text-left text-light">
+                                <h5 class="card-title mt-6" style="text-align: center">Agregar Facultad</h5>
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
+
 
 
 {% endblock %}
