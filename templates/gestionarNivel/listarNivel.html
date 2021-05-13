@@ -1,0 +1,212 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+    <link href="{% static 'lib/flatpickr/flatpickr.min.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <style>
+        #Titulo {
+            color: #0154ae
+        }
+
+        p {
+            line-height: 20%;
+            text-align: center;
+            font-family: "Montserrat";
+        }
+
+        label {
+            color: #f9fafd;
+            font-family: "Montserrat";
+        }
+
+        .plus {
+            display: inline-block;
+            color: #000;
+            font-size: 60px;
+            line-height: 65px;
+        }
+
+        .plus::before {
+            content: "+";
+        }
+
+        .card:hover .plus {
+            background-color: #0154ae;
+            color: #f9fafd !important;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            background-color: #0154ae;
+            color: #f9fafd !important;
+            cursor: pointer;
+        }
+
+        .datetimepicker {
+            changeYear: false !important;
+        }
+    </style>
+
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+
+    {#AQUI COLOQUEN EL CÓDIGO#}
+    <div class="row d-flex justify-content-center ">
+        <div class="col-10">
+            <h4 id="Titulo" style="font-family: Montserrat">Creación de Nivel</h4>
+        </div>
+        <div class="col-2">
+            <a href="#Titulo" style="font-family: Roboto"><h5 id="Retroceder">
+                <img class="img-fluid" style="height: 20px"
+                     src="https://image.flaticon.com/icons/png/512/60/60577.png">
+                <u>Volver</u>
+            </h5></a>
+        </div>
+    </div>
+
+    <hr style="background-color: #0154ae;">
+    <div id="Niveles" class="row d-flex  mt-1">
+        <div id="Anadir" class=" col-xl-3 col-md-4 col-sm-6 p-2">
+            <div class="card nav-link icon-indicator" href="#agregarNivelNuevo" data-toggle="modal" role="button">
+                <div class="card-body d-flex justify-content-center p-0">
+                    <div class="plus alt">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% for nivel in nivelLista %}
+            <div class=" col-xl-3 col-md-4 col-sm-6 p-2">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">{{ nivel.name }}</p>
+                        <p class="card-text">{{ nivel.value }}</p>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+
+    <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
+         id="agregarNivelNuevo" tabindex="-1" role="dialog"
+         aria-labelledby="settings-modal-label" aria-hidden="true"
+         data-options='{"autoShow":true,"autoShowDelay":10,"showOnce":false}'>
+
+        <div class="modal-dialog modal-dialog-vertical" style="opacity: 0.90" role="document">
+            <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar" style="background-color: #017ECD;">
+
+                <div class="modal-body">
+                    <div class="row d-flex justify-content-center">
+                        <h5 style="color: #f9fafd; font-family:Montserrat">Agregar Nivel</h5>
+                        <hr style="background-color: #f9fafd; width: 70%">
+                    </div>
+
+                    <div class="row d-flex justify-content-center m-2">
+                        <form name="formAgregar" id="formAgregar">
+                            <div class="form-group row">
+                                <label name="name" for="name"
+                                       class="col-sm-4 col-form-label">Nombre</label>
+                                <input type="text" class="form-control col-sm-8" id="name" name="name"">
+                            </div>
+                            <br>
+                            <div class="form-group row">
+                                <label name="value" for="value"
+                                       class="col-sm-4 col-form-label">Valor</label>
+                                <input type="value" class="form-control col-sm-8" id="value" name="boxNivel">
+                            </div>
+                            <br>
+                            <div class="form-group row m-3 p-2">
+                                <div class="col-6">
+                                    <button class="btn btn-secondary" style="font-family: Roboto" type="button"
+                                            data-dismiss="modal" aria-label="Close">Cancelar
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button id="agr" style="font-family: Roboto ; background-color: #0154ae !important;"
+                                            type="button" class="btn btn-primary" onclick="validar()">Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{#Aquí coloco el JS particular de la web#}
+{% block extrajs %}
+    <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
+    <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
+
+    <script>
+        function validar() {
+            $("form[name='formAgregar']").validate({
+                rules: {
+                    name: {
+                        required: true,
+                    },
+                    value: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    name: {
+                        required: "Por favor ingrese el nombre del nivel"
+                    },
+                    value: {
+                        required: "Por favor ingrese el valor numérico del nivel"
+                    }
+                }
+            });
+        };
+
+        $("#agr").on('click', function () {
+            if ($("#formAgregar").valid()) {
+                agregar();
+            }
+        });
+
+    </script>
+    <script>
+        function agregar() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'agregarNivel'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    nombreCodigo: $("#name").val(),
+                    inicio: $("#vale").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["nuevoNivel"]);
+                    var fields = instance[0]["fields"];
+
+                    data = '<div class=" col-xl-3 col-md-4 col-sm-6 p-2">' +
+                        '<div class="card">' +
+                        '    <div class="card-body">' +
+                        '       <p class="card-title">' + fields.name + '</p>' +
+                        '       <p class="card-text">Del ' + fields.value + '</p>' +
+                        '    </div>' +
+                        '</div>' +
+                        '</div>'
+
+                    $(data).insertAfter($("#Anadir"));
+
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+    </script>
+
+{% endblock %}
