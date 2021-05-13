@@ -1,3 +1,4 @@
+import gestionarEspecialidad
 from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
 from django.shortcuts import render,redirect
@@ -25,3 +26,21 @@ def agregarEspecialidad(request):
     }
     return render(request, 'gestionarEspecialidad/agregarEspecialidad.html', context)
 
+def editarEspecialidad(request,pk):
+    especialidad = Especialidad.objects.get(pk=pk)
+    if request.POST:
+        nuevo_nombre = request.POST["nombre"]
+        nuevo_responsable = request.POST["responsable"]
+        nueva_foto = request.POST["foto"]
+
+        especialidad.nombre = nuevo_nombre
+        especialidad.responsable = nuevo_responsable
+        especialidad.foto = nueva_foto
+        especialidad.save()
+
+        return redirect(listarEspecialidad)
+
+    context = {
+        'especialidad':especialidad
+    }
+    return render(request,'gestionarEspecialidad/editarEspecialidad.html',context)
