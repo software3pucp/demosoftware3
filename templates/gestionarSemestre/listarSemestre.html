@@ -103,7 +103,7 @@
 
         {% for semestre in ListaSemestre %}
             <div class=" col-xl-3 col-md-4 col-sm-6 p-2">
-                <a href="../gestionarSemestre/enviarCursoHorario/{{semestre.nombreCodigo}}">
+                <a href="../enviarCursoHorario/{{semestre.nombreCodigo}}">
                     <div class="card ">
                         <div class="card-body">
                             <p class="card-title">{{ semestre.nombreCodigo }}</p>
@@ -238,7 +238,7 @@
                     var fields = instance[0]["fields"];
 
                     data = '<div class=" col-xl-3 col-md-4 col-sm-6 p-2">'+
-                        '<a href="../gestionarSemestre/enviarCursoHorario/'+fields.nombreCodigo+'">'+
+                        '<a href="../enviarCursoHorario/'+fields.nombreCodigo+'">'+
                         '<div class="card">'+
                         '    <div class="card-body">'+
                         '       <p class="card-title">'+fields.nombreCodigo+'</p>'+
