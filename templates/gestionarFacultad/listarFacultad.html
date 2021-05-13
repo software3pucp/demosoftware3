@@ -12,10 +12,16 @@
             font-size: 23px;
         }
 
+        .fa-pen:hover {
+            color: darkblue;
+        }
+
+        .fa-power-off:hover {
+            color: darkblue;
+        }
+
         .iconColorNBorder {
-            color: white;
-            stroke: black;
-            stroke-width: 6;
+            color: dodgerblue;
             z-index: 9999;
         }
 
@@ -72,7 +78,7 @@
 
         .recent-work .recent-work-vertical-ruk {
             background: rgb(255, 255, 255);
-            background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 33.333%, rgba(100, 149, 237, 1) 66.666%, rgba(255, 255, 255, 0) 99.999%);
+            background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 33.333%, rgba(30, 144, 255, 1) 66.666%, rgba(255, 255, 255, 0) 99.999%);
             background-size: 300% 300%;
             background-position: 0% 100%;
             transition: .5s;
@@ -148,7 +154,7 @@
         .specifies {
             position: absolute;
             width: 100%;
-            bottom: -55px;
+            bottom: -75px;
             background: white;
             padding: 10px;
             transition: .5s
@@ -170,6 +176,10 @@
             color: #ccc;
             font-weight: normal
         }
+
+        .card-link {
+            position: relative;
+        }
     </style>
 
 {% endblock %}
@@ -183,7 +193,6 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-4">
-                        </select>
                     </div>
                     <div class="col-md-4">
                     </div>
@@ -200,30 +209,33 @@
                 <div class="row">
                     {% for facultad in ListaFacultad %}
                         <div class="col-4 equal">
-                            <div class="product recent-work card border-0 shadow-lg overflow-hidden h-100">
-                                <a class="imgbox" href="comer"><img
-                                        src="/media/{{ facultad.foto.name }}/"></a>
-
-                                <div class="specifies recent-work-vertical card-img-overlay d-flex align-items-end">
-                                    <div class="service-work-content text-left text-light">
-                                        <h5 class="card-title mt-6"
-                                            style="text-align: left">{{ facultad.nombre }}
-                                        </h5>
-                                        <div class="row">
-                                            <a class="nav-link icon-indicator" href="{% url 'listarFacultad' %}"
-                                               role="link">
-                                                <div class="col-6">
-                                                    <span class="fas fa-pen iconSize iconColorNBorder"
-                                                          role="link"><span>
-                                                </div>
-                                            </a>
-                                            <a class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
-                                               role="link">
-                                                <div class="col-6">
-                                                    <span class="fas fa-power-off iconSize iconColorNBorder"
-                                                          role="link"><span>
-                                                </div>
-                                            </a>
+                            <div class="product card h-100">
+                                <a class="imgbox" href="comer">
+                                    <img src="/media/{{ facultad.foto.name }}/">
+                                </a>
+                                <div class="specifies">
+                                    <h5 class="card-title ml-2"
+                                        style="text-align: left">{{ facultad.nombre }}
+                                    </h5>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-6">
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <a class="nav-link icon-indicator" href="{% url 'listarFacultad' %}"
+                                                   role="link">
+                                                    <div class="fas fa-pen iconSize iconColorNBorder"
+                                                         style="text-align: center;">
+                                                    </div>
+                                                </a>
+                                                <a class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
+                                                   role="link">
+                                                    <div class="fas fa-power-off iconSize iconColorNBorder"
+                                                         style="text-align: center;">
+                                                    </div>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -248,5 +260,4 @@
                 </div>
             </div>
         </div>
-
 {% endblock %}
