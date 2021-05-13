@@ -258,12 +258,15 @@
                         </div>
                     </div>
                 {% endfor %}
+
+
+
                 <div class="col-4 equal">
                     <a class="recent-work card border-0 shadow-lg overflow-hidden h-100"
-                       href="{% url 'agregarEspecialidad' %}">
+                       href="{% url 'agregarEspecialidad' id_facultad=id_facultad %}">
                         <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
                             <div class="mt-4" style="text-align: center;">
-                                            <span class="fas fa-plus fa-9x" style="text-align: center"><span>
+                                            <span class="fas fa-plus fa-9x" style="text-align: center"></span>
                             </div>
                         </div>
                         <div class="recent-work-vertical-ruk card-img-overlay d-flex align-items-end">

@@ -28,9 +28,15 @@ def crearFacultad(request):
     }
     return render(request, 'gestionarFacultad/crearFacultad.html', context)
 
-def listarFacultadxEsp(request,pk):
+def listarFacultadxEsp(request,id_facultad):
+
+    print("==================================")
+    print(id_facultad)
+    print("==================================")
+
     context = {
-        'ListaEspecialidad': Especialidad.objects.filter(facultad_id=pk),
+        'ListaEspecialidad': Especialidad.objects.filter(facultad_id=id_facultad),
         'ListaFacultad': Facultad.objects.all(),
+        'id_facultad': id_facultad
     }
     return render(request, 'gestionarEspecialidad/listarEspecialidad.html', context)

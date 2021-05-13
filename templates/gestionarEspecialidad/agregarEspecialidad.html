@@ -50,31 +50,19 @@
 {% block body %}
     <div class="container-fluid">
         <div class="card p-5">
-            <form action="{% url 'agregarEspecialidad' %}" method="POST" enctype="multipart/form-data">
+            <form action="{% url 'agregarEspecialidad' id_facultad=id_facultad %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <h3 class="mb-0">Agregar Especialidad</h3>
                 <hr>
-                <p></p>
                 <div class="form-group">
                     <div class="container-fluid">
-                        <div class="row">
+                        <div class="row mt-2">
                             <label for="name">Nombre</label>
                             <input name="name" class="form-control p-3" id="name" type="text"
                                    placeholder="Ingrese el nombre de la especialidad">
                         </div>
                     </div>
-                    <p></p>
-                    <div class="form-group">
-                        <label for="name">Facultad</label>
-                        <select class="form-control" name="facultadPK" id="facultadFormControl"
-                                onchange="SelectedValue();">
-                            {% for facultad in ListaFacultad %}
-                                <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <p></p>
-                    <div class="form-group">
+                    <div class="form-group mt-2">
                         <label for="exampleFormControlSelect1">Seleccione responsable(s)</label>
                         <select name="responsable" class="form-control" id="exampleFormControlSelect1">
                             {% for responsable in ListaUsuarios %}
@@ -82,7 +70,6 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <p></p>
                     <div class="form-group">
                         <label for="exampleFormControlFile1">Ingrese una imagen para la especialidad</label>
                         <div class="input-group">
