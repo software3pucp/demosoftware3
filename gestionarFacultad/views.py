@@ -2,6 +2,11 @@ from gestionarFacultad.models import Facultad
 from django.shortcuts import render, redirect
 from authentication.models import User
 
+from gestionarEspecialidad.models import Especialidad
+from gestionarFacultad.models import Facultad
+from django.shortcuts import render,redirect
+from authentication.models import User
+
 
 # Create your views here.
 def listarFacultad(request):
@@ -22,3 +27,10 @@ def crearFacultad(request):
         'ListaUsuarios': User.objects.all(),
     }
     return render(request, 'gestionarFacultad/crearFacultad.html', context)
+
+def listarFacultadxEsp(request,pk):
+    context = {
+        'ListaEspecialidad': Especialidad.objects.filter(facultad_id=pk),
+        'ListaFacultad': Facultad.objects.all(),
+    }
+    return render(request, 'gestionarEspecialidad/listarEspecialidad.html', context)

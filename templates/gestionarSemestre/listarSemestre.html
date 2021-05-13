@@ -50,6 +50,18 @@
             changeYear: false !important;
         }
 
+        .card-title{
+            color: #000 ;
+        }
+        .card-text{
+            color: #000 ;
+        }
+        .card:hover .card-title{
+            color: #f9fafd ;
+        }
+        .card:hover .card-text{
+            color: #f9fafd;
+        }
 
     </style>
 
@@ -91,13 +103,15 @@
 
         {% for semestre in ListaSemestre %}
             <div class=" col-xl-3 col-md-4 col-sm-6 p-2">
-                <div class="card">
-                    <div class="card-body" >
-                        <p class="card-title">{{semestre.nombreCodigo}}</p>
-                        <p class="card-text">Del {{semestre.inicio}}</p>
-                        <p class="card-text">al {{semestre.fin}}</p>
+                <a href="../gestionarSemestre/enviarCursoHorario/{{semestre.nombreCodigo}}">
+                    <div class="card ">
+                        <div class="card-body">
+                            <p class="card-title">{{ semestre.nombreCodigo }}</p>
+                            <p class="card-text">Del {{ semestre.inicio }}</p>
+                            <p class="card-text">al {{ semestre.fin }}</p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
 
         {% endfor %}
@@ -224,6 +238,7 @@
                     var fields = instance[0]["fields"];
 
                     data = '<div class=" col-xl-3 col-md-4 col-sm-6 p-2">'+
+                        '<a href="../gestionarSemestre/enviarCursoHorario/'+fields.nombreCodigo+'">'+
                         '<div class="card">'+
                         '    <div class="card-body">'+
                         '       <p class="card-title">'+fields.nombreCodigo+'</p>'+
@@ -231,6 +246,7 @@
                         '       <p class="card-text">al '+fields.fin+'</p>'+
                         '    </div>'+
                         '</div>'+
+                        '</a>'+
                         '</div>'
 
                     $(data).insertAfter($("#Anadir"));
