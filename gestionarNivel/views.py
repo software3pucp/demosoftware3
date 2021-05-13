@@ -55,7 +55,6 @@ def listarNivel(request):
 def agregarNivel(request):
     nombre = request.POST['name']
     valor = request.POST['value']
-
     nivel = Nivel.objects.create(name=nombre, value=valor)
     ser_instance = serializers.serialize('json', [nivel, ])
     return JsonResponse({"nuevoNivel": ser_instance}, status=200)

@@ -21,28 +21,6 @@
             font-family: "Montserrat";
         }
 
-        .plus {
-            display: inline-block;
-            color: #000;
-            font-size: 60px;
-            line-height: 65px;
-        }
-
-        .plus::before {
-            content: "+";
-        }
-
-        .card:hover .plus {
-            background-color: #0154ae;
-            color: #f9fafd !important;
-            cursor: pointer;
-        }
-
-        .card:hover {
-            background-color: #0154ae;
-            color: #f9fafd !important;
-            cursor: pointer;
-        }
 
         .datetimepicker {
             changeYear: false !important;
@@ -69,28 +47,62 @@
     </div>
 
     <hr style="background-color: #0154ae;">
-    <div id="Niveles" class="row d-flex  mt-1">
-        <div id="Anadir" class=" col-xl-3 col-md-4 col-sm-6 p-2">
-            <div class="card nav-link icon-indicator" href="#agregarNivelNuevo" data-toggle="modal" role="button">
-                <div class="card-body d-flex justify-content-center p-0">
-                    <div class="plus alt">
+
+
+    <div class="card">
+
+        <div class="card-body">
+
+            <div class="d-flex justify-content-center">
+                <div class="col-8">
+                    <div class="btn btn-falcon-primary mb-2" href="#agregarNivelNuevo" data-toggle="modal"
+                         role="button">
+                        <span class="fa fa-plus"></span>
+                    </div>
+                    <div class="dashboard-data-table">
+                        <table class="table table-sm table-dashboard fs--1 data-table border-bottom"
+                               data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
+                            <thead class="bg-200 text-900">
+                            <tr>
+
+                                <th class="sort pr-1 align-middle">N°</th>
+                                <th class="sort pr-1 align-middle">Nombre</th>
+                                <th class="sort pr-1 align-middle">Valor</th>
+                                <th class="sort pr-1 align-middle text-right">Acción</th>
+                            </tr>
+                            </thead>
+                            <tbody id="purchases">
+
+                            {% for nivel in nivelLista %}
+                                <tr class="btn-reveal-trigger">
+
+                                    <th class="align-middle"> {{ nivel.pk }} </th>
+                                    <th class="align-middle">{{ nivel.name }}</th>
+                                    <td class="align-middle">{{ nivel.value }}</td>
+                                    <td class="align-middle text-right fs-0"><span
+                                            class="badge badge rounded-capsule badge-soft-info" >Editar<span
+                                            class="ml-1 fas fa-pencil" data-fa-transform="shrink-2"></span></span>
+                                        <span
+                                                class="badge badge rounded-capsule badge-soft-danger">Eliminar<span
+                                                class="ml-1 fas fa-crosshairs"
+                                                data-fa-transform="shrink-2"></span></span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
+
         </div>
-
-        {% for nivel in nivelLista %}
-            <div class=" col-xl-3 col-md-4 col-sm-6 p-2">
-                <div class="card">
-                    <div class="card-body">
-                        <p class="card-title">{{ nivel.name }}</p>
-                        <p class="card-text">{{ nivel.value }}</p>
-                    </div>
-                </div>
-            </div>
-
-        {% endfor %}
     </div>
+
+
+
+
 
     <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
          id="agregarNivelNuevo" tabindex="-1" role="dialog"
@@ -111,24 +123,24 @@
                             <div class="form-group row">
                                 <label name="name" for="name"
                                        class="col-sm-4 col-form-label">Nombre</label>
-                                <input type="text" class="form-control col-sm-8" id="name" name="name"">
+                                <input type="text" class="form-control col-sm-8" id="name" name="name">
                             </div>
                             <br>
                             <div class="form-group row">
                                 <label name="value" for="value"
                                        class="col-sm-4 col-form-label">Valor</label>
-                                <input type="value" class="form-control col-sm-8" id="value" name="boxNivel">
+                                <input type="value" class="form-control col-sm-8" id="value" name="value">
                             </div>
                             <br>
                             <div class="form-group row m-3 p-2">
                                 <div class="col-6">
-                                    <button class="btn btn-secondary" style="font-family: Roboto" type="button"
+                                    <button class="btn btn-secondary" type="button"
                                             data-dismiss="modal" aria-label="Close">Cancelar
                                     </button>
                                 </div>
                                 <div class="col-6">
-                                    <button id="agr" style="font-family: Roboto ; background-color: #0154ae !important;"
-                                            type="button" class="btn btn-primary" onclick="validar()">Agregar
+                                    <button
+                                            type="button" class="btn btn-primary" onclick="agregar()">Agregar
                                     </button>
                                 </div>
                             </div>
@@ -139,6 +151,55 @@
         </div>
     </div>
 
+{% comment %}
+<div class="modal fade modal-fixed-right modal-theme overflow-hidden"
+         id="editarNivel" tabindex="-1" role="dialog"
+         aria-labelledby="settings-modal-label" aria-hidden="true"
+         data-options='{"autoShow":true,"autoShowDelay":10,"showOnce":false}'>
+
+        <div class="modal-dialog modal-dialog-vertical" style="opacity: 0.90" role="document">
+            <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar" style="background-color: #017ECD;">
+
+                <div class="modal-body">
+                    <div class="row d-flex justify-content-center">
+                        <h5 style="color: #f9fafd; font-family:Montserrat">Agregar Nivel</h5>
+                        <hr style="background-color: #f9fafd; width: 70%">
+                    </div>
+
+                    <div class="row d-flex justify-content-center m-2">
+                        <form name="formAgregar" id="formAgregar">
+                            <input id="pkEditado" type="text" value="" hidden>
+                            <div class="form-group row">
+                                <label name="name" for="name"
+                                       class="col-sm-4 col-form-label">Nombre</label>
+                                <input type="text" class="form-control col-sm-8" id="name" name="name">
+                            </div>
+                            <br>
+                            <div class="form-group row">
+                                <label name="value" for="value"
+                                       class="col-sm-4 col-form-label">Valor</label>
+                                <input type="value" class="form-control col-sm-8" id="value" name="value">
+                            </div>
+                            <br>
+                            <div class="form-group row m-3 p-2">
+                                <div class="col-6">
+                                    <button class="btn btn-secondary" type="button"
+                                            data-dismiss="modal" aria-label="Close">Cancelar
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button
+                                            type="button" class="btn btn-primary" onclick="editar()">Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endcomment %}
 {% endblock %}
 
 {#Aquí coloco el JS particular de la web#}
@@ -147,59 +208,35 @@
     <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
 
     <script>
-        function validar() {
-            $("form[name='formAgregar']").validate({
-                rules: {
-                    name: {
-                        required: true,
-                    },
-                    value: {
-                        required: true,
-                    },
-                },
-                messages: {
-                    name: {
-                        required: "Por favor ingrese el nombre del nivel"
-                    },
-                    value: {
-                        required: "Por favor ingrese el valor numérico del nivel"
-                    }
-                }
-            });
-        };
-
-        $("#agr").on('click', function () {
-            if ($("#formAgregar").valid()) {
-                agregar();
-            }
-        });
-
-    </script>
-    <script>
         function agregar() {
+
+
             $.ajax({
                 type: 'POST',
                 url: "{% url 'agregarNivel'%}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    nombreCodigo: $("#name").val(),
-                    inicio: $("#vale").val(),
+                    name: $("#name").val(),
+                    value: $("#value").val(),
                 },
                 success: function (response) {
+
                     var instance = JSON.parse(response["nuevoNivel"]);
                     var fields = instance[0]["fields"];
 
-                    data = '<div class=" col-xl-3 col-md-4 col-sm-6 p-2">' +
-                        '<div class="card">' +
-                        '    <div class="card-body">' +
-                        '       <p class="card-title">' + fields.name + '</p>' +
-                        '       <p class="card-text">Del ' + fields.value + '</p>' +
-                        '    </div>' +
-                        '</div>' +
-                        '</div>'
-
-                    $(data).insertAfter($("#Anadir"));
-
+                    data = '<tr class="btn-reveal-trigger">' +
+                        '<th class="align-middle">' + instance[0]["pk"] + ' </th>' +
+                        '<th class="align-middle">' + fields["name"] + '</th>' +
+                        '<td class="align-middle">' + fields["value"] + '</td>' +
+                        '<td class="align-middle text-center fs-0"><span' +
+                        '       class="badge badge rounded-capsule badge-soft-info">Editar<span' +
+                        '      class="ml-1 fas fa-pencil" data-fa-transform="shrink-2"></span></span>' +
+                        ' <span' +
+                        '        class="badge badge rounded-capsule badge-soft-danger">Eliminar<span' +
+                        '       class="ml-1 fas fa-crosshairs" data-fa-transform="shrink-2"></span></span>' +
+                        ' </td>' +
+                        '</tr>';
+                    location.reload();
                 },
                 error: function (response) {
                     // alert the error if any error occured
