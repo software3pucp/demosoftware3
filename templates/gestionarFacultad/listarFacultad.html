@@ -216,7 +216,7 @@
                 {% for facultad in ListaFacultad %}
                     <div class="col-4 equal">
                         <div class="product card h-100">
-                            <a class="imgbox" href="{% url 'listarEspecialidad' %}">
+                            <a class="imgbox" href="{% url 'listarFacultadxEsp' pk=facultad.pk %}">
                                 <img class="zoom" src="/media/{{ facultad.foto.name }}/">
                             </a>
                             <div class="specifies">
