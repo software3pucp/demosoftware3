@@ -254,9 +254,9 @@
                         </select>
                     </div>
                 </div>
-                <div class="row" style="width: 100%">
+                <div class="row">
                     {% for especialidad in ListaEspecialidad %}
-                        <div class="col-md-4 equal">
+                        <div class="col-4 equal">
                             <div class="product recent-work card border-0 shadow-lg overflow-hidden h-100">
                                 <a class="imgbox" href="comer"><img
                                         src="/media/{{ especialidad.foto.name }}/"></a>
@@ -269,14 +269,14 @@
                                         <div class="row">
                                             <a class="nav-link icon-indicator" href="{% url 'listarFacultad' %}"
                                                role="link">
-                                                <div class="col-md-6">
+                                                <div class="col-6">
                                                     <span class="fas fa-pen iconSize iconColorNBorder"
                                                           role="link"><span>
                                                 </div>
                                             </a>
                                             <a class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
                                                role="link">
-                                                <div class="col-md-6">
+                                                <div class="col-6">
                                                     <span class="fas fa-power-off iconSize iconColorNBorder"
                                                           role="link"><span>
                                                 </div>
