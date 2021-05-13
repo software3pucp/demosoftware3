@@ -68,7 +68,7 @@
                                 <th class="sort pr-1 align-middle">N°</th>
                                 <th class="sort pr-1 align-middle">Nombre</th>
                                 <th class="sort pr-1 align-middle">Valor</th>
-                                <th class="sort pr-1 align-middle text-right">Acción</th>
+                                <th class="sort pr-1 align-middle text-center">Acción</th>
                             </tr>
                             </thead>
                             <tbody id="purchases">
@@ -79,14 +79,23 @@
                                     <th class="align-middle">{{ nivel.name }}</th>
                                     <td class="align-middle">{{ nivel.value }}</td>
                                     <td class="align-middle text-right fs-0">
-                                        <a href="{% url 'editarNiv' pk=nivel.pk %}"
-                                           class="badge badge rounded-capsule badge-soft-info">Editar</a>                                        </a>
-
                                         <form action="{% url 'listarNivel' %}" method="post">
                                             {% csrf_token %}
+                                            <div class="row">
+                                                <div class="col">
+                                                    <a href="{% url 'editarNiv' pk=nivel.pk %}"
+                                                       class="badge badge rounded-capsule badge-soft-info">Editar</a>
+                                                </div>
+                                                <div class="col">
+
+                                                    <button type="submit" class="badge rounded-capsule badge-soft-danger outline-none">
+                                                        <span >Eliminar</span>
+                                                    </button>
+
+                                                </div>
+                                            </div>
                                             <input type="hidden" id="nivelPk" name="nivelPk"
                                                    value="{{ nivel.pk }}">
-                                            <input class="btn btn-falcon-primary" type="submit"  value="Eliminar" >
                                         </form>
                                     </td>
                                 </tr>
@@ -222,18 +231,6 @@
                     var instance = JSON.parse(response["nuevoNivel"]);
                     var fields = instance[0]["fields"];
 
-                    data = '<tr class="btn-reveal-trigger">' +
-                        '<th class="align-middle">' + instance[0]["pk"] + ' </th>' +
-                        '<th class="align-middle">' + fields["name"] + '</th>' +
-                        '<td class="align-middle">' + fields["value"] + '</td>' +
-                        '<td class="align-middle text-center fs-0"><span' +
-                        '       class="badge badge rounded-capsule badge-soft-info">Editar<span' +
-                        '      class="ml-1 fas fa-pencil" data-fa-transform="shrink-2"></span></span>' +
-                        ' <span' +
-                        '        class="badge badge rounded-capsule badge-soft-danger">Eliminar<span' +
-                        '       class="ml-1 fas fa-crosshairs" data-fa-transform="shrink-2"></span></span>' +
-                        ' </td>' +
-                        '</tr>';
                     location.reload();
                 },
                 error: function (response) {
