@@ -77,9 +77,9 @@
                     <div class="form-group">
                         <label for="exampleFormControlSelect1">Seleccione responsable(s)</label>
                         <select name="responsable" class="form-control" id="exampleFormControlSelect1">
-                            <option>
-                                Raul
-                            </option>
+                            {% for responsable in ListaUsuarios %}
+                                <option value="responsable.pk">{{ responsable.first_name }} {{ responsable.last_name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <p></p>
@@ -151,7 +151,7 @@
         });
 
         var selectedValue = sessionStorage.getItem("selectedValue");
-        alert(selectedValue)
+        //alert(selectedValue)
 
         function SelectedValue() {
             document.getElementById("facultadFormControl").value = selectedValue;

@@ -147,7 +147,6 @@
         .product .imgbox img {
             display: block;
             width: 100%;
-            height: 90%;
         }
 
         .specifies {
@@ -203,20 +202,25 @@
                 <div class="col-md-4">
                 </div>
                 <div class="col-md-4">
+                    {% comment%}
                     <div class="form-group">
-                        <select class="form-control" id="facultadFormControl" onchange="getSelectValue()">
+                        <select class="form-control" id="facultadFormControl">
+
                             {% for facultad in ListaFacultad %}
                                  <option name="facultadPK" value={{ facultad.pk }}>{{ facultad.nombre }}</option>
                             {% endfor %}
+
                         </select>
                     </div>
+                    {% endcomment%}
                 </div>
             </div>
             <div class="row">
                 {% for facultad in ListaFacultad %}
                     <div class="col-4 equal">
-                        <div class="product card h-100">
-                            <a class="imgbox" href="{% url 'listarFacultadxEsp' pk=facultad.pk %}">
+                        <div class="product card h-125">
+                            <a class="imgbox" id="facultadIMG" href="{% url 'listarFacultadxEsp' pk=facultad.pk %}"
+                               onclick="getSelectValue(facultad.pk)">
                                 <img class="zoom" src="/media/{{ facultad.foto.name }}/">
                             </a>
                             <div class="specifies">
@@ -270,12 +274,12 @@
 
 {% block extrajs %}
     <script>
-        function getSelectValue() {
-            var facultadSelected = document.getElementById("facultadFormControl").value;
-            //alert(selectedValue);
-            sessionStorage.setItem("facultadSelected", facultadSelected);
+        function getSelectValue(pk) {
+            //var facultadSelected = document.getElementById("facultadPkCard").value;
+            alert(pk);
+            sessionStorage.setItem("facultadPkCard", pk);
         }
 
-        getSelectValue();
+        //getSelectValue();
     </script>
 {% endblock %}
