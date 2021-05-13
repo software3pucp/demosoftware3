@@ -24,7 +24,7 @@ urlpatterns = [
     path('auth/', include('authentication.urls')),
     path('gestionarFacultad/', include('gestionarFacultad.urls')),
     path('gestionarEspecialidad/', include('gestionarEspecialidad.urls')),
-    path('gestionarRE', include('gestionarRE.urls')),
-    path('gestionarSemestre', include('gestionarSemestre.urls')),
-    path('gestionarNivel', include('gestionarNivel.urls')),
+    path('gestionarRE/', include('gestionarRE.urls')),
+    path('gestionarSemestre/', include('gestionarSemestre.urls')),
+    path('gestionarNivel/', include('gestionarNivel.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
