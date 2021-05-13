@@ -25,7 +25,6 @@
 
         .iconSize {
             font-size: 23px;
-            z-index: 9999;
         }
 
         .iconColorNBorder {
@@ -182,6 +181,54 @@
             color: #bfbfbf !important;
             transition-duration: 0.15s;
         }
+
+
+        .product {
+
+            width: 250px;
+            height: 250px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .2);
+            border-radius: 5px;
+            background: white;
+            overflow: hidden
+        }
+
+        .product .imgbox {
+            height: 100%;
+            box-sizing: border-box
+        }
+
+        .product .imgbox img {
+            display: block;
+            width: 100%;
+            height: 90%;
+        }
+
+        .specifies {
+            position: absolute;
+            width: 100%;
+            bottom: -55px;
+            background: white;
+            padding: 10px;
+            transition: .5s
+        }
+
+        .product:hover .specifies {
+            bottom: 0
+        }
+
+        .specifies h2 {
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            width: 100%
+        }
+
+        .specifies h2 span {
+            font-size: 15px;
+            color: #ccc;
+            font-weight: normal
+        }
     </style>
 
 {% endblock %}
@@ -210,33 +257,34 @@
                 <div class="row" style="width: 100%">
                     {% for especialidad in ListaEspecialidad %}
                         <div class="col-md-4 equal">
-                            <a class="recent-work card border-0 shadow-lg overflow-hidden h-100">
-                                <div class="card-img-top recent-work-img ">
-                                    <img class="img-fluid" style="height: 100%; width: 100%; "
-                                         src="/media/{{especialidad.foto.name}}/"
-                                         alt="Card image cap">
-                                </div>
-                                <div class="recent-work-vertical card-img-overlay d-flex align-items-end">
+                            <div class="product recent-work card border-0 shadow-lg overflow-hidden h-100">
+                                <a class="imgbox" href="comer"><img
+                                        src="/media/{{ especialidad.foto.name }}/"></a>
+
+                                <div class="specifies recent-work-vertical card-img-overlay d-flex align-items-end">
                                     <div class="service-work-content text-left text-light">
-                                        <div class="row alignRight">
-                                            <div class="nav-link icon-indicator" href="{% url 'listarFacultad' %}"
-                                                 role="button">
-                                                <div style="text-align: center;">
-                                        <span class="fas fa-pen iconSize iconColorNBorder"><span>
-                                                </div>
-                                            </div>
-                                            <div class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
-                                                 role="button">
-                                                <div style="text-align: center;">
-                                            <span class="fas fa-power-off iconSize iconColorNBorder"><span>
-                                                </div>
-                                            </div>
-                                        </div>
                                         <h5 class="card-title mt-6"
-                                            style="text-align: center">{{ especialidad.nombre }}</h5>
+                                            style="text-align: left">{{ especialidad.nombre }}
+                                        </h5>
+                                        <div class="row">
+                                            <a class="nav-link icon-indicator" href="{% url 'listarFacultad' %}"
+                                               role="link">
+                                                <div class="col-md-6">
+                                                    <span class="fas fa-pen iconSize iconColorNBorder"
+                                                          role="link"><span>
+                                                </div>
+                                            </a>
+                                            <a class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
+                                               role="link">
+                                                <div class="col-md-6">
+                                                    <span class="fas fa-power-off iconSize iconColorNBorder"
+                                                          role="link"><span>
+                                                </div>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
                         </div>
                     {% endfor %}
                     <div class="col-md-4 equal">
