@@ -22,7 +22,8 @@ def agregarEspecialidad(request, id_facultad):
         foto = request.FILES['photo']
         facultad = Facultad.objects.get(pk=id_facultad)
         Especialidad.objects.create(nombre=nombre, responsable=id_responsable, facultad=facultad, foto=foto)
-        return redirect(listarFacultad)
+        return listarFacultadxEsp(request,id_facultad)
+
     context = {
         'ListaUsuarios': User.objects.all(),
         'ListaFacultad': Facultad.objects.all(),
