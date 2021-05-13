@@ -1,10 +1,12 @@
 from gestionarEspecialidad.models import Especialidad
 from django.shortcuts import render,redirect
-
+from demosoftware3.settings import MEDIA_URL
 # Create your views here.
 def listarEspecialidad(request):
+    media_path = MEDIA_URL
     context = {
-        'ListaEspecialidad': Especialidad.objects.all(),
+        'media_path':media_path,
+        'ListaEspecialidad': Especialidad.objects.all()
     }
     return render(request, 'gestionarEspecialidad/listarEspecialidad.html', context)
 
