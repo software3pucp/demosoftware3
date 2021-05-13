@@ -177,8 +177,15 @@
             font-weight: normal
         }
 
-        .card-link {
-            position: relative;
+        .zoom {
+            background-color: rgba(255, 255, 255, 0);
+            transition: transform .3s; /* Animation */
+            width: 200px;
+            height: 200px;
+        }
+
+        .zoom:hover {
+            transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
         }
     </style>
 
@@ -189,148 +196,104 @@
 
     {#AQUI COLOQUEN EL CÓDIGO#}
     <div class="container-fluid content-row">
-
-
-        <div class="row">
-<<<<<<< HEAD
-            <div class="col-md-4">
-                <select class="form-control" style="height: 25px" id="exampleFormControlSelect1"
-                        aria-label="Seleccione una Facultad">
-                </select>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <select class="form-control" id="facultadFormControl">
+                            {% for facultad in ListaFacultad %}
+                                <option disabled="disabled" value={{ facultad.pk }}>{{ facultad.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <select class="form-control" id="especialidadFormControl">
+                            {% for especialidad in ListaEspecialidad %}
+                                <option>{{ especialidad.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-4">
-            </div>
-            <div class="col-md-4">
-                <select class="form-control" style="height: 25px" id="exampleFormControlSelect1"
-                        aria-label="Seleccione una Facultad">
-                </select>
-            </div>
-        </div>
-        <div class="row">
-            {% for especialidad in ListaEspecialidad %}
-                <div class="col-4 equal">
-                    <div class="product recent-work card border-0 shadow-lg overflow-hidden h-100">
-                        <a class="imgbox" href="comer"><img
-                                src="{{ media_path }}{{ especialidad.foto.name }}"></a>
-                        {{ media_path }}{{ especialidad.foto.name }}
-                        <div class="specifies recent-work-vertical  d-flex align-items-end">
-                            <div class="service-work-content text-left text-light">
-                                <h5 class="card-title mt-6"
+            <div class="row">
+                {% for especialidad in ListaEspecialidad %}
+                    <div class="col-4 equal">
+                        <div class="product card h-100">
+                            <a class="imgbox" href="comer">
+                                <img class="zoom" src="/media/{{ especialidad.foto.name }}/">
+                            </a>
+                            <div class="specifies">
+                                <h5 class="card-title ml-2" id="nombresito"
                                     style="text-align: left">{{ especialidad.nombre }}
                                 </h5>
+                                <hr>
                                 <div class="row">
-                                    <a class="nav-link icon-indicator" href="{% url 'listarFacultad' %}"
-                                       role="link">
-                                        <div class="col-6">
-                                                    <span class="fas fa-pen iconSize iconColorNBorder"
-                                                          role="link"><span>
+                                    <div class="col-6">
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="row">
+                                            <a class="nav-link icon-indicator" href="{% url 'listarFacultad' %}"
+                                               role="link">
+                                                <div class="fas fa-pen iconSize iconColorNBorder"
+                                                     style="text-align: center;">
+                                                </div>
+                                            </a>
+                                            <a class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
+                                               role="link">
+                                                <div class="fas fa-power-off iconSize iconColorNBorder"
+                                                     style="text-align: center;">
+                                                </div>
+                                            </a>
                                         </div>
-                                    </a>
-                                    <a class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
-                                       role="link">
-                                        <div class="col-6">
-                                                    <span class="fas fa-power-off iconSize iconColorNBorder"
-                                                          role="link"><span>
-=======
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <select class="form-control" id="exampleFormControlSelect1">
-                                {% for facultad in FacuModels.ListaFacultad %}
-                                    <option>{{ facultad.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <select class="form-control" id="exampleFormControlSelect1">
-                                {% for especialidad in ListaEspecialidad %}
-                                    <option>{{ especialidad.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    {% for especialidad in ListaEspecialidad %}
-                        <div class="col-4 equal">
-                            <div class="product card h-100">
-                                <a class="imgbox" href="comer">
-                                    <img src="/media/{{ especialidad.foto.name }}/">
-                                </a>
-                                <div class="specifies">
-                                    <h5 class="card-title ml-2"
-                                        style="text-align: left">{{ especialidad.nombre }}
-                                    </h5>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-6">
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="row">
-                                                <a class="nav-link icon-indicator" href="{% url 'listarFacultad' %}"
-                                                   role="link">
-                                                    <div class="fas fa-pen iconSize iconColorNBorder"
-                                                         style="text-align: center;">
-                                                    </div>
-                                                </a>
-                                                <a class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
-                                                   role="link">
-                                                    <div class="fas fa-power-off iconSize iconColorNBorder"
-                                                         style="text-align: center;">
-                                                    </div>
-                                                </a>
-                                            </div>
->>>>>>> b558ecf13146fe0097c719d5fce98701e2dcad30
-                                        </div>
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-<<<<<<< HEAD
-=======
-                    {% endfor %}
-                    <div class="col-4 equal">
-                        <a class="recent-work card border-0 shadow-lg overflow-hidden h-100"
-                           href="{% url 'agregarEspecialidad' %}">
-                            <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
-                                <div class="mt-4" style="text-align: center;">
+                    </div>
+                {% endfor %}
+                <div class="col-4 equal">
+                    <a class="recent-work card border-0 shadow-lg overflow-hidden h-100"
+                       href="{% url 'agregarEspecialidad' %}">
+                        <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
+                            <div class="mt-4" style="text-align: center;">
                                             <span class="fas fa-plus fa-9x" style="text-align: center"><span>
-                                </div>
                             </div>
-                            <div class="recent-work-vertical-ruk card-img-overlay d-flex align-items-end">
-                                <div class="service-work-content text-left text-light">
-                                    <h5 class="card-title mt-6" style="text-align: center">Agregar Especialidad</h5>
-                                </div>
+                        </div>
+                        <div class="recent-work-vertical-ruk card-img-overlay d-flex align-items-end">
+                            <div class="service-work-content text-left text-light">
+                                <h5 class="card-title mt-6" style="text-align: center">Agregar Especialidad</h5>
                             </div>
-                        </a>
->>>>>>> b558ecf13146fe0097c719d5fce98701e2dcad30
-                    </div>
+                        </div>
+                    </a>
                 </div>
-            {% endfor %}
-            <div class="col-md-4 equal">
-                <a class="recent-work card border-0 shadow-lg overflow-hidden h-100"
-                   href="{% url 'agregarEspecialidad' %}">
-                    <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
-                        <div class="mt-4" style="text-align: center;">
-                                            <span class="fas fa-plus fa-9x" style="text-align: center"><span>
-                        </div>
-                    </div>
-                    <div class="recent-work-vertical-ruk card-img-overlay d-flex align-items-end">
-                        <div class="service-work-content text-left text-light">
-                            <h5 class="card-title mt-6" style="text-align: center">Agregar Especialidad</h5>
-                        </div>
-                    </div>
-                </a>
             </div>
         </div>
-<<<<<<< HEAD
+    </div>
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+        var facultadSelected;
+
+        function SelectedValue() {
+            facultadSelected = sessionStorage.getItem("facultadSelected");
+            //alert(facultadSelected);
+            //document.getElementById("facultadFormControl").value = 'Lista'
+        }
+
+        function selectElement(id, valueToSelect) {
+            let element = document.getElementById(id);
+            element.value = valueToSelect;
+        }
+
+        SelectedValue();
+        selectElement("facultadFormControl", facultadSelected);
 
 
-=======
->>>>>>> b558ecf13146fe0097c719d5fce98701e2dcad30
+    </script>
 {% endblock %}

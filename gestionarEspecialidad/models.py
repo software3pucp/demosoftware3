@@ -1,5 +1,5 @@
 from django.db import models
-from gestionarFacultad import models as FacuModels
+from gestionarFacultad.models import Facultad
 import unicodedata
 
 
@@ -21,5 +21,5 @@ def upload_location(instance, filename):
 class Especialidad(models.Model):
     nombre = models.CharField(max_length=30)
     responsable = models.CharField(max_length=50)
-    facultad = models.ForeignKey(FacuModels.Facultad, on_delete=models.CASCADE, null=True)
+    facultad = models.ForeignKey(Facultad, on_delete=models.CASCADE, null=True)
     foto = models.ImageField(null=True, blank=True, upload_to=upload_location)

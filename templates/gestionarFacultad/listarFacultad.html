@@ -131,7 +131,6 @@
 
 
         .product {
-
             width: 250px;
             height: 250px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, .2);
@@ -177,8 +176,15 @@
             font-weight: normal
         }
 
-        .card-link {
-            position: relative;
+        .zoom {
+            background-color: rgba(255, 255, 255, 0);
+            transition: transform .3s; /* Animation */
+            width: 200px;
+            height: 200px;
+        }
+
+        .zoom:hover {
+            transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
         }
     </style>
 
@@ -189,75 +195,87 @@
 
     {#AQUI COLOQUEN EL CÓDIGO#}
     <div class="container-fluid content-row">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-4">
-                    </div>
-                    <div class="col-md-4">
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <select class="form-control" id="exampleFormControlSelect1">
-                                {% for facultad in ListaFacultad %}
-                                    <option>{{ facultad.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <select class="form-control" id="facultadFormControl" onchange="getSelectValue()">
+                            {% for facultad in ListaFacultad %}
+                                 <option name="facultadPK" value={{ facultad.pk }}>{{ facultad.nombre }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
-                <div class="row">
-                    {% for facultad in ListaFacultad %}
-                        <div class="col-4 equal">
-                            <div class="product card h-100">
-                                <a class="imgbox" href="comer">
-                                    <img src="/media/{{ facultad.foto.name }}/">
-                                </a>
-                                <div class="specifies">
-                                    <h5 class="card-title ml-2"
-                                        style="text-align: left">{{ facultad.nombre }}
-                                    </h5>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-6">
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="row">
-                                                <a class="nav-link icon-indicator" href="{% url 'listarFacultad' %}"
-                                                   role="link">
-                                                    <div class="fas fa-pen iconSize iconColorNBorder"
-                                                         style="text-align: center;">
-                                                    </div>
-                                                </a>
-                                                <a class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
-                                                   role="link">
-                                                    <div class="fas fa-power-off iconSize iconColorNBorder"
-                                                         style="text-align: center;">
-                                                    </div>
-                                                </a>
-                                            </div>
+            </div>
+            <div class="row">
+                {% for facultad in ListaFacultad %}
+                    <div class="col-4 equal">
+                        <div class="product card h-100">
+                            <a class="imgbox" href="{% url 'listarEspecialidad' %}">
+                                <img class="zoom" src="/media/{{ facultad.foto.name }}/">
+                            </a>
+                            <div class="specifies">
+                                <h5 class="card-ti  tle ml-2"
+                                    style="text-align: left">{{ facultad.nombre }}
+                                </h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-6">
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="row">
+                                            <a class="nav-link icon-indicator" href="{% url 'listarFacultad' %}"
+                                               role="link">
+                                                <div class="fas fa-pen iconSize iconColorNBorder"
+                                                     style="text-align: center;">
+                                                </div>
+                                            </a>
+                                            <a class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
+                                               role="link">
+                                                <div class="fas fa-power-off iconSize iconColorNBorder"
+                                                     style="text-align: center;">
+                                                </div>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    {% endfor %}
-                    <div class="col-4 equal">
-                        <a class="recent-work card border-0 shadow-lg overflow-hidden h-100"
-                           href="{% url 'crearFacultad' %}">
-                            <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
-                                <div class="mt-4" style="text-align: center;">
-                                            <span class="fas fa-plus fa-9x" style="text-align: center"><span>
-                                </div>
-                            </div>
-                            <div class="recent-work-vertical-ruk card-img-overlay d-flex align-items-end">
-                                <div class="service-work-content text-left text-light">
-                                    <h5 class="card-title mt-6" style="text-align: center">Agregar Facultad</h5>
-                                </div>
-                            </div>
-                        </a>
                     </div>
+                {% endfor %}
+                <div class="col-4 equal">
+                    <a class="recent-work card border-0 shadow-lg overflow-hidden h-100"
+                       href="{% url 'crearFacultad' %}">
+                        <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
+                            <div class="mt-4" style="text-align: center;">
+                                            <span class="fas fa-plus fa-9x" style="text-align: center"><span>
+                            </div>
+                        </div>
+                        <div class="recent-work-vertical-ruk card-img-overlay d-flex align-items-end">
+                            <div class="service-work-content text-left text-light">
+                                <h5 class="card-title mt-6" style="text-align: center">Agregar Facultad</h5>
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
+    </div>
+{% endblock %}}
+
+{% block extrajs %}
+    <script>
+        function getSelectValue() {
+            var facultadSelected = document.getElementById("facultadFormControl").value;
+            //alert(selectedValue);
+            sessionStorage.setItem("facultadSelected", facultadSelected);
+        }
+
+        getSelectValue();
+    </script>
 {% endblock %}

@@ -68,13 +68,9 @@
                     <div class="form-group">
                         <label for="exampleFormControlSelect1">Seleccione responsable(s)</label>
                         <select name="responsable" class="form-control" id="exampleFormControlSelect1">
-                            {% comment %}{% for item in responsables %}
-                                <option value="item.pk">{{ item.name }}</option>
-                            {% endfor %}{% endcomment %}
-
-                            <option value="1">Alejandro Zapata</option>
-                            <option value="2">Jhonatan Cueva</option>
-                            <option value="3">Raúl Jeri</option>
+                            {% for responsable in ListaUsuarioos %}
+                                <option value="responsable.pk">{{ responsable.first_name }} {{ responsable.first_name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <p></p>
