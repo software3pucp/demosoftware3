@@ -9,16 +9,32 @@
                     <h5 class="mb-0">Criterios de búsqueda</h5>
                 </div>
             </div>
-            <div style="max-width: 25rem;">
-                <form>
-                    <div class="mb-3">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="name">Nombre</label>
                             <input class="form-control" id="name" type="text" placeholder="Ingrese el nombre">
                         </div>
                     </div>
-                </form>
+                    <div class="col-md-4">
+                        <div class="form-group flex-row">
+                            <label for="name">Codigo</label>
+                            <input class="form-control" id="name" type="text" placeholder="Ingrese el codigo">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Estado</label>
+                            <select class="form-control" id="#">
+                                <option value="1">Activo</option>
+                                <option value="2">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <a class="btn btn-falcon-primary" type="submit" style="margin-left:1rem" href="{% url 'user' %}">Agregar</a>
         </div>
 
     </div>
@@ -32,26 +48,38 @@
         </div>
 
         <div class="fs--1" style="max-width: 100rem;">
-            <a class="notification" href="#!">
+            <div class="notification" href="#!">
                 <div class="notification-avatar">
                     <div class="avatar avatar-2xl mr-3">
                         <img class="rounded-circle"
                              src="https://i.pinimg.com/236x/ed/09/27/ed0927fde6607bf3cec4b50ebb8c079b.jpg" alt=""/>
                     </div>
                 </div>
-                <div class="notification-body ">
-                    <p class="mb-1"><strong>Polar Keloke</strong></p>
-                     <div class="nav-link px-0 icon-indicator" href="" role="button">
-                        <span class="fas fa-pen iconSize"><span>
-                    </div>
-                    <div class="nav-link px-0 icon-indicator" href="" role="button">
-                        <span class="fas fa-power-off iconSize"><span>
+                <div class="notification-body" style="width: 80rem">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <p class="mb-1"><strong>Polar Keloke</strong></p>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="row align-right">
+                                    <div class="nav-link icon-indicator" href="#"
+                                         role="button">
+                                        <span class="fas fa-pen iconSize iconColorNBorder"><span>
+                                    </div>
+                                    <div class="nav-link icon-indicator" href="#"
+                                         role="button">
+                                            <span class="fas fa-power-off iconSize iconColorNBorder"><span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </a>
+            </div>
         </div>
         <div class="fs--1" style="max-width: 100rem;">
-            <a class="notification" href="#!">
+            <div class="notification" href="#!">
                 <div class="notification-avatar">
                     <div class="avatar avatar-2xl mr-3">
                         <img class="rounded-circle"
@@ -60,19 +88,30 @@
                     </div>
                 </div>
 
-                <div class="notification-body ">
-                    <p class="mb-1"><strong>Aaron Baibe</strong></p>
-
-                    <div class="nav-link px-0 icon-indicator" href="" role="button">
-                        <span class="fas fa-pen iconSize"><span>
-                    </div>
-                    <div class="nav-link px-0 icon-indicator" href="" role="button">
-                        <span class="fas fa-power-off iconSize"><span>
+                <div class="notification-body" style="width: 80rem">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <p class="mb-1"><strong>Aaron Baibe</strong></p>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="row align-right">
+                                    <div class="nav-link icon-indicator" href="#"
+                                         role="button">
+                                        <span class="fas fa-pen iconSize iconColorNBorder"><span>
+                                    </div>
+                                    <div class="nav-link icon-indicator" href="#"
+                                         role="button">
+                                            <span class="fas fa-power-off iconSize iconColorNBorder"><span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
 
-            </a>
+            </div>
         </div>
     </div>
 {% endblock %}

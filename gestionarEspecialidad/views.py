@@ -10,13 +10,11 @@ def listarEspecialidad(request):
 
 def agregarEspecialidad(request):
     if request.POST:
-        print("Entro al POST")
         nombre = request.POST['name']
         id_responsable = request.POST['responsable']
         foto = request.FILES['photo']
         Especialidad.objects.create(nombre=nombre, responsable=id_responsable, foto=foto)
         return redirect(listarEspecialidad)
-
     context = {
 
     }
