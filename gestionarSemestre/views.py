@@ -10,7 +10,7 @@ def listarSemestre(request):
     context = {
         'ListaSemestre':semestreLista
     }
-    return render(request,'gestionarSemestre/listarSemestre.html',context)
+    return render(request, 'gestionarSemestre/listarSemestre.html', context)
 
 def agregarSemestre(request):
     anho = int(request.POST["nombreCodigo"][0:4])
@@ -36,3 +36,10 @@ def agregarSemestre(request):
                             etapa=etapa, inicio=fechaIni, fin=fechaFin)
     ser_instance = serializers.serialize('json', [semestre,])
     return JsonResponse({"nuevoSemestre": ser_instance}, status=200)
+
+def enviarCursoHorario(request,nombreCodigo):
+    semestre = Semestre.objects.get(nombreCodigo=nombreCodigo)
+    context = {
+        "semestreSeleccionado": semestre
+    }
+    return  render(request, 'gestionarSemestre/semestre/semestreDetalle.html', context)
