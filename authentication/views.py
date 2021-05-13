@@ -5,7 +5,6 @@ from django.shortcuts import render, redirect
 import requests
 from django.views.generic import CreateView
 from authentication.models import User
-from authentication.forms import UserForm
 
 class RenderLogin(CreateView):
     template_name = 'authentication/login.html'

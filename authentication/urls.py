@@ -6,7 +6,8 @@ from authentication import views
 
 urlpatterns = [
     # path( url hijo, backend, nombre de la variable)
-    path('login/', views.RenderLogin.as_view(), name="login"),
-    path('user/', views.RegisterUser.as_view(), name='user'),
-    path('list/',views.RenderListar.as_view(), name='list')
+    #path('login/', views.RenderLogin.as_view(), name="login"),
+    #path('add/', views.RenderLogin, name='user'),
+    #path('',views.Show, name='showUsers')
+
 ]
