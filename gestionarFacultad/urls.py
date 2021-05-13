@@ -5,7 +5,7 @@ from gestionarFacultad import views
 urlpatterns = [
     # path( url hijo, backend, nombre de la variable)
     path('listar/', views.listarFacultad, name="listarFacultad"),
-    path('listar/<pk>', views.listarFacultadxEsp, name="listarFacultadxEsp"),
+    path('listar/<id_facultad>', views.listarFacultadxEsp, name="listarFacultadxEsp"),
     # path('editar', views.editarFacultad, name="editarFacultad"),
     # path('eliminar', views.eliminarFacultad, name="eliminarFacultad"),
     path('crear/', views.crearFacultad, name="crearFacultad")

@@ -219,8 +219,7 @@
                 {% for facultad in ListaFacultad %}
                     <div class="col-4 equal">
                         <div class="product card h-125">
-                            <a class="imgbox" id="facultadIMG" href="{% url 'listarFacultadxEsp' pk=facultad.pk %}"
-                               onclick="getSelectValue(facultad.pk)">
+                            <a class="imgbox" id="facultadIMG" href="{% url 'listarFacultadxEsp' id_facultad=facultad.pk %}" >
                                 <img class="zoom" src="/media/{{ facultad.foto.name }}/">
                             </a>
                             <div class="specifies">
