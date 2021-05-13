@@ -211,6 +211,7 @@
                 <div class="col-md-4">
                 </div>
                 <div class="col-md-4">
+                    {% comment %}
                     <div class="form-group">
                         <select class="form-control" id="especialidadFormControl">
                             {% for especialidad in ListaEspecialidad %}
@@ -218,13 +219,14 @@
                             {% endfor %}
                         </select>
                     </div>
+                {% endcomment %}
                 </div>
             </div>
             <div class="row">
                 {% for especialidad in ListaEspecialidad %}
                     <div class="col-4 equal">
                         <div class="product card h-100">
-                            <a class="imgbox" href="comer">
+                            <a class="imgbox" href="{% url 'listarSemestre' %}">
                                 <img class="zoom" src="/media/{{ especialidad.foto.name }}/">
                             </a>
                             <div class="specifies">
@@ -278,11 +280,10 @@
 
 {% block extrajs %}
     <script>
-        var facultadSelected;
 
         function SelectedValue() {
-            facultadSelected = sessionStorage.getItem("facultadSelected");
-            //alert(facultadSelected);
+            var facultadPkCard = sessionStorage.getItem("facultadPkCard");
+            alert(facultadPkCard);
             //document.getElementById("facultadFormControl").value = 'Lista'
         }
 
@@ -291,8 +292,8 @@
             element.value = valueToSelect;
         }
 
-        SelectedValue();
-        selectElement("facultadFormControl", facultadSelected);
+        //SelectedValue();
+        //selectElement("facultadFormControl", facultadSelected);
 
 
     </script>

@@ -16,7 +16,7 @@ def agregarEspecialidad(request):
         nombre = request.POST['name']
         id_responsable = request.POST['responsable']
         foto = request.FILES['photo']
-        facultad = request.POST['facultadPK']
+        facultad = Facultad.objects.get(pk=request.POST['facultadPK'])
         Especialidad.objects.create(nombre=nombre, responsable=id_responsable, facultad=facultad, foto=foto)
         return redirect(listarEspecialidad)
     context = {
