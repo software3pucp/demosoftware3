@@ -75,17 +75,19 @@
 
                             {% for nivel in nivelLista %}
                                 <tr class="btn-reveal-trigger">
-
                                     <th class="align-middle"> {{ nivel.pk }} </th>
                                     <th class="align-middle">{{ nivel.name }}</th>
                                     <td class="align-middle">{{ nivel.value }}</td>
-                                    <td class="align-middle text-right fs-0"><span
-                                            class="badge badge rounded-capsule badge-soft-info" >Editar<span
-                                            class="ml-1 fas fa-pencil" data-fa-transform="shrink-2"></span></span>
-                                        <span
-                                                class="badge badge rounded-capsule badge-soft-danger">Eliminar<span
-                                                class="ml-1 fas fa-crosshairs"
-                                                data-fa-transform="shrink-2"></span></span>
+                                    <td class="align-middle text-right fs-0">
+                                        <a href="{% url 'editarNiv' pk=nivel.pk %}"
+                                           class="badge badge rounded-capsule badge-soft-info">Editar</a>                                        </a>
+
+                                        <form action="{% url 'listarNivel' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" id="nivelPk" name="nivelPk"
+                                                   value="{{ nivel.pk }}">
+                                            <input type="submit"  value="Eliminar" >
+                                        </form>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -96,12 +98,8 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
-
-
 
 
     <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
@@ -151,7 +149,7 @@
         </div>
     </div>
 
-{% comment %}
+    {% comment %}
 <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
          id="editarNivel" tabindex="-1" role="dialog"
          aria-labelledby="settings-modal-label" aria-hidden="true"

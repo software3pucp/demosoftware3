@@ -30,25 +30,32 @@ from gestionarNivel.models import Nivel
 #     }
 #     return render(request, 'gestionarNivel/crearNiv.html', context)
 #
-# def editarNiv(request,pk):
-#     flag = False
-#     if request.POST:
-#         nivel = Nivel.objects.get(pk=pk)
-#         nivel.name = request.POST['name']
-#         nivel.value = request.POST['value']
-#         nivel.save()
-#         flag = True
-#     nivel = Nivel.objects.get(pk=pk)
-#     context = {
-#         'nivel': nivel,
-#         'flag': flag,
-#     }
-#     return render(request, 'gestionarNivel/editarNiv.html', context)
+def editarNiv(request,pk):
+     flag = False
+     if request.POST:
+         nivel = Nivel.objects.get(pk=pk)
+         nivel.name = request.POST['name']
+         nivel.value = request.POST['value']
+         nivel.save()
+         flag = True
+     nivel = Nivel.objects.get(pk=pk)
+     context = {
+         'nivel': nivel,
+         'flag': flag,
+     }
+     return render(request, 'gestionarNivel/editarNiv.html', context)
 
 def listarNivel(request):
+    flag = False
+    if request.POST:
+             nivel = Nivel.objects.get(pk=request.POST['nivelPk'])
+             nivel.state=0
+             nivel.save()
+             flag = True
     nivelLista = Nivel.objects.filter(state=1)
     context = {
-       'nivelLista': nivelLista
+       'nivelLista': nivelLista,
+        'flag': flag
     }
     return render(request,'gestionarNivel/listarNivel.html', context)
 
