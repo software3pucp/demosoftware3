@@ -8,78 +8,25 @@
             font-family: 'Open Sans', sans-serif;
         }
 
-        .center {
-            margin: 0;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
-        }
-
-        .alignRight {
-            position: absolute;
-            right: 20px;
-            top: 8px;
-        }
-
         .iconSize {
             font-size: 23px;
         }
 
+        .fa-pen:hover {
+            color: black;
+        }
+
+        .fa-power-off:hover {
+            color: black;
+        }
+
         .iconColorNBorder {
             color: white;
-            stroke: black;
-            stroke-width: 6;
             z-index: 9999;
         }
 
         .equal {
             margin-top: 20px;
-        }
-
-        .light-300 {
-            font-family: 'Open Sans', sans-serif !important;
-            font-weight: 300;
-        }
-
-
-        .typo-space-line::after,
-
-
-            /* Main Nav */
-        #main_nav .nav-item .nav-link:hover {
-            color: #fff;
-        }
-
-        /* Home */
-        #index_banner {
-            background-image: url('./../img/banner-bg-01.jpg');
-            background-position: center center;
-            background-size: cover;
-            height: 100%;
-            min-height: 60vh;
-            width: 100%;
-        }
-
-        #index_banner .carousel-item {
-            min-height: 60vh;
-        }
-
-        #index_banner .carousel-control-prev i,
-        #index_banner .carousel-control-next i {
-            color: #FFADB9 !important;
-            text-decoration: none;
-            font-size: 4em;
-        }
-
-        #index_banner .carousel-inner {
-            height: 80vh;
-        }
-
-        #index_banner .carousel-indicators li,
-        #index_banner .carousel-indicators.active {
-            background-color: #FFADB9 !important;
         }
 
         .service-wrapper .service-footer {
@@ -242,16 +189,24 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-4">
-                        <select class="form-control" style="height: 25px" id="exampleFormControlSelect1"
-                                aria-label="Seleccione una Facultad">
-                        </select>
+                        <div class="form-group">
+                            <select class="form-control" id="exampleFormControlSelect1">
+                                {% for facultad in FacuModels.ListaFacultad %}
+                                    <option>{{ facultad.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
                     <div class="col-md-4">
                     </div>
                     <div class="col-md-4">
-                        <select class="form-control" style="height: 25px" id="exampleFormControlSelect1"
-                                aria-label="Seleccione una Facultad">
-                        </select>
+                        <div class="form-group">
+                            <select class="form-control" id="exampleFormControlSelect1">
+                                {% for especialidad in ListaEspecialidad %}
+                                    <option>{{ especialidad.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -262,7 +217,7 @@
                                         src="/media/{{ especialidad.foto.name }}/"></a>
 
                                 <div class="specifies recent-work-vertical card-img-overlay d-flex align-items-end">
-                                    <div class="service-work-content text-left text-light">
+                                    <div class="text-left text-light">
                                         <h5 class="card-title mt-6"
                                             style="text-align: left">{{ especialidad.nombre }}
                                         </h5>
@@ -287,7 +242,7 @@
                             </div>
                         </div>
                     {% endfor %}
-                    <div class="col-md-4 equal">
+                    <div class="col-4 equal">
                         <a class="recent-work card border-0 shadow-lg overflow-hidden h-100"
                            href="{% url 'agregarEspecialidad' %}">
                             <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
@@ -305,5 +260,4 @@
                 </div>
             </div>
         </div>
-
 {% endblock %}

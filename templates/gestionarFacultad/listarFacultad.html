@@ -8,77 +8,19 @@
             font-family: 'Open Sans', sans-serif;
         }
 
-        .center {
-            margin: 0;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
-        }
-
-        .alignRight {
-            right: 10%;
-        }
-
         .iconSize {
-            font-size: 20px;
-            z-index: 9999;
+            font-size: 23px;
         }
 
-
-        .textColor {
+        .iconColorNBorder {
             color: white;
             stroke: black;
             stroke-width: 6;
+            z-index: 9999;
         }
 
         .equal {
             margin-top: 20px;
-        }
-
-        .light-300 {
-            font-family: 'Open Sans', sans-serif !important;
-            font-weight: 300;
-        }
-
-
-        .typo-space-line::after,
-
-
-            /* Main Nav */
-        #main_nav .nav-item .nav-link:hover {
-            color: #fff;
-        }
-
-        /* Home */
-        #index_banner {
-            background-image: url('./../img/banner-bg-01.jpg');
-            background-position: center center;
-            background-size: cover;
-            height: 100%;
-            min-height: 60vh;
-            width: 100%;
-        }
-
-        #index_banner .carousel-item {
-            min-height: 60vh;
-        }
-
-        #index_banner .carousel-control-prev i,
-        #index_banner .carousel-control-next i {
-            color: #FFADB9 !important;
-            text-decoration: none;
-            font-size: 4em;
-        }
-
-        #index_banner .carousel-inner {
-            height: 80vh;
-        }
-
-        #index_banner .carousel-indicators li,
-        #index_banner .carousel-indicators.active {
-            background-color: #FFADB9 !important;
         }
 
         .service-wrapper .service-footer {
@@ -181,10 +123,6 @@
             transition-duration: 0.15s;
         }
 
-        body {
-            margin: 0;
-            padding: 0;
-        }
 
         .product {
 
@@ -210,7 +148,7 @@
         .specifies {
             position: absolute;
             width: 100%;
-            bottom: -75px;
+            bottom: -55px;
             background: white;
             padding: 10px;
             transition: .5s
@@ -232,59 +170,6 @@
             color: #ccc;
             font-weight: normal
         }
-
-
-        label {
-            display: block;
-            margin-top: 5px;
-            font-weight: bold;
-            font-size: 15px
-        }
-
-        .gray-gradient {
-            background: #f5f5f5;
-            background: linear-gradient(to bottom, #fff 0%, #eae5e5 100%);
-        }
-
-        .gray-gradient:before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: #f5f5f5;
-            background: linear-gradient(to bottom, #fff 0%, #d2cece 100%);
-            transition: opacity .35s ease-in-out;
-        }
-
-        .blue-gradient {
-            background: #0569b6;
-            background: linear-gradient(to bottom, #0569b6 0%, #04497e 100%);
-        }
-
-        .blue-gradient:before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgb(255, 255, 255);
-            background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(1, 126, 205, 0) 75%);
-            transition: opacity .35s ease-in-out;
-        }
-
-        .blue-gradient a,
-        .gray-gradient a {
-            position: relative;
-            z-index: 1;
-        }
-
-        .blue-gradient:hover:before,
-        .gray-gradient:hover:before {
-            opacity: 0;
-        }
     </style>
 
 {% endblock %}
@@ -293,98 +178,75 @@
 {% block body %}
 
     {#AQUI COLOQUEN EL CÓDIGO#}
-    <div class="container-fluid">
+    <div class="container-fluid content-row">
         <div class="row">
-            <div class="col-md-4">
-            </div>
-            <div class="col-md-4">
-            </div>
-            <div class="col-md-4">
-                <select class="form-control" style="height: 25px" id="exampleFormControlSelect1"
-                        aria-label="Seleccione una Facultad">
-                </select>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="product card border-0 shadow-lg overflow-hidden h-125">
-                    <a class="imgbox blue-gradient" href="comer"><img
-                            src="https://pm1.narvii.com/6043/3a22d31a71de1bd3709a48fe58dd5b4cf057a4ed_hq.jpg">></a>
-                    <div class="specifies">
-                        <h2 class="text">kono subarashii sekai ni shukufuku wo<br>
-                            <hr>
-                            <div class="row">
-                                <div class="col-md-6">
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="row alignRight">
-                                        <a class="nav-link icon-indicator"
-                                           href="{% url 'listarFacultad' %}"
-                                           role="button">
-                                            <div style="text-align: center;">
-                                        <span class="fas fa-pen iconSize iconColorNBorder"><span>
-                                            </div>
-                                        </a>
-                                        <a class="nav-link icon-indicator"
-                                           href="{% url 'listarEspecialidad' %}"
-                                           role="button">
-                                            <div style="text-align: center;">
-                                            <span class="fas fa-power-off iconSize iconColorNBorder"><span>
-                                            </div>
-                                        </a>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4">
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <select class="form-control" id="exampleFormControlSelect1">
+                                {% for facultad in ListaFacultad %}
+                                    <option>{{ facultad.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    {% for facultad in ListaFacultad %}
+                        <div class="col-4 equal">
+                            <div class="product recent-work card border-0 shadow-lg overflow-hidden h-100">
+                                <a class="imgbox" href="comer"><img
+                                        src="/media/{{ facultad.foto.name }}/"></a>
+
+                                <div class="specifies recent-work-vertical card-img-overlay d-flex align-items-end">
+                                    <div class="service-work-content text-left text-light">
+                                        <h5 class="card-title mt-6"
+                                            style="text-align: left">{{ facultad.nombre }}
+                                        </h5>
+                                        <div class="row">
+                                            <a class="nav-link icon-indicator" href="{% url 'listarFacultad' %}"
+                                               role="link">
+                                                <div class="col-6">
+                                                    <span class="fas fa-pen iconSize iconColorNBorder"
+                                                          role="link"><span>
+                                                </div>
+                                            </a>
+                                            <a class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
+                                               role="link">
+                                                <div class="col-6">
+                                                    <span class="fas fa-power-off iconSize iconColorNBorder"
+                                                          role="link"><span>
+                                                </div>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="product  card border-0 shadow-lg overflow-hidden h-125">
-                    <a class="imgbox" href="comer"><img
-                            src="https://img.europapress.es/fotoweb/fotonoticia_20200130130626_420.webp"></a>
-                    <div class="specifies">
-                        <h2>One Piece<br>
-                            <hr>
-                            <div class="row">
-                                <div class="col-md-6">
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="row alignRight">
-                                        <a class="nav-link icon-indicator"
-                                           href="{% url 'listarFacultad' %}"
-                                           role="button">
-                                            <div style="text-align: center;">
-                                        <span class="fas fa-pen iconSize iconColorNBorder"><span>
-                                            </div>
-                                        </a>
-                                        <a class="nav-link icon-indicator"
-                                           href="{% url 'listarEspecialidad' %}"
-                                           role="button">
-                                            <div style="text-align: center;">
-                                            <span class="fas fa-power-off iconSize iconColorNBorder"><span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <a class="recent-work card border-0 shadow-lg overflow-hidden"
-                   href="{% url 'crearFacultad' %}">
-                    <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
-                        <div class="mt-4" style="text-align: center;">
+                        </div>
+                    {% endfor %}
+                    <div class="col-4 equal">
+                        <a class="recent-work card border-0 shadow-lg overflow-hidden h-100"
+                           href="{% url 'crearFacultad' %}">
+                            <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
+                                <div class="mt-4" style="text-align: center;">
                                             <span class="fas fa-plus fa-9x" style="text-align: center"><span>
-                        </div>
+                                </div>
+                            </div>
+                            <div class="recent-work-vertical-ruk card-img-overlay d-flex align-items-end">
+                                <div class="service-work-content text-left text-light">
+                                    <h5 class="card-title mt-6" style="text-align: center">Agregar Facultad</h5>
+                                </div>
+                            </div>
+                        </a>
                     </div>
-                    <div class="recent-work-vertical-ruk card-img-overlay d-flex align-items-end">
-                        <div class="service-work-content text-left text-light">
-                            <h5 class="card-title mt-6" style="text-align: center">Agregar Especialidad</h5>
-                        </div>
-                    </div>
-                </a>
+                </div>
             </div>
         </div>
-    </div>
+
 {% endblock %}
