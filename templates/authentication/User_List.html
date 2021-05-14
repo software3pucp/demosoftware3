@@ -2,45 +2,9 @@
 {% load static %}
 
 {% block body %}
+
+
     <div class="card mb-3">
-        <div class="card-header">
-            <div class="row align-items-center">
-                <div class="col">
-                    <h5 class="mb-0">Criterios de búsqueda</h5>
-                </div>
-            </div>
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="name">Nombre</label>
-                            <input class="form-control" id="name" type="text" placeholder="Ingrese el nombre">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group flex-row">
-                            <label for="name">Codigo</label>
-                            <input class="form-control" id="name" type="text" placeholder="Ingrese el codigo">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">Estado</label>
-                            <select class="form-control" id="#">
-                                <option value="1">Activo</option>
-                                <option value="2">Inactivo</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-
-        <div class="card mb-3">
         <div class="card-header">
             <div class="row align-items-center justify-content-between">
                 <div class="col-4 col-sm-auto d-flex align-items-center pr-0">
@@ -48,8 +12,9 @@
                 </div>
                 <div class="col-8 col-sm-auto ml-auto text-right pl-0">
                     <div id="dashboard-actions">
-                        <a href="{% url 'user' %}" class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-plus"
-                                                                                          data-fa-transform="shrink-3 down-2"></span><span
+                        <a href="{% url 'user' %}" class="btn btn-falcon-default btn-sm" type="button"><span
+                                class="fas fa-plus"
+                                data-fa-transform="shrink-3 down-2"></span><span
                                 class="d-none d-sm-inline-block ml-1">Agregar</span></a>
                     </div>
                 </div>
@@ -68,59 +33,21 @@
                     </tr>
                     </thead>
                     <tbody id="orders">
-                    <tr class="btn-reveal-trigger">
-                        <td class="align-middle">
-                            <div class="avatar avatar-2xl mr-3">
-                                <img class="rounded-circle"
-                                     src="https://i.pinimg.com/236x/ed/09/27/ed0927fde6607bf3cec4b50ebb8c079b.jpg"
-                                     alt=""/>
-                            </div>
-                        </td>
-                        <th class="align-middle"><a href="{% url 'user' %}">Sylvia Plath</a></th>
-                        <td class="align-middle">john@gmail.com</td>
-                        <td class="align-middle">Slick - Drag &amp; Drop Bootstrap Generator</td>
-
-                    </tr>
-                    <tr class="btn-reveal-trigger">
-                        <td class="py-2 align-middle">
-                            <div class="custom-control custom-checkbox">
-                                <input class="custom-control-input checkbox-bulk-select-target" type="checkbox"
-                                       id="checkbox-19"/>
-                                <label class="custom-control-label" for="checkbox-19"></label>
-                            </div>
-                        </td>
-                        <td class="py-2 align-middle white-space-nowrap"><a href="../e-commerce/order-details.html">
-                            <strong>#200</strong></a> by <strong>Daisha Howe</strong><br/><a
-                                href="mailto:howe@example.com">howe@example.com</a></td>
-                        <td class="py-2 align-middle">25/04/2019</td>
-                        <td class="py-2 align-middle">Daisha Howe, 829 Lavonne Valley Apt. 074 Stehrfort, RI 77914-0379
-                            <p class="mb-0 text-500">Via Free Shipping</p>
-                        </td>
-                        <td class="py-2 align-middle text-center fs-0 white-space-nowrap"><span
-                                class="badge badge rounded-capsule d-block badge-soft-success">Completed<span
-                                class="ml-1 fas fa-check" data-fa-transform="shrink-2"></span></span>
-                        </td>
-                        <td class="py-2 align-middle text-right fs-0 font-weight-medium">$39</td>
-                        <td class="py-2 align-middle white-space-nowrap">
-                            <div class="dropdown text-sans-serif">
-                                <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal mr-3"
-                                        type="button" id="order-dropdown-19" data-toggle="dropdown"
-                                        data-boundary="viewport" aria-haspopup="true" aria-expanded="false"><span
-                                        class="fas fa-ellipsis-h fs--1"></span></button>
-                                <div class="dropdown-menu dropdown-menu-right border py-0"
-                                     aria-labelledby="order-dropdown-19">
-                                    <div class="bg-white py-2"><a class="dropdown-item" href="#!">Completed</a><a
-                                            class="dropdown-item" href="#!">Processing</a><a class="dropdown-item"
-                                                                                             href="#!">On Hold</a><a
-                                            class="dropdown-item" href="#!">Pending</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item text-danger" href="#!">Delete</a>
-                                    </div>
+                    {% for user in users %}
+                        <tr class="btn-reveal-trigger">
+                            <td class="align-middle">
+                                <div class="avatar avatar-2xl mr-3">
+                                    <img class="rounded-circle"
+                                         src="https://i.pinimg.com/236x/ed/09/27/ed0927fde6607bf3cec4b50ebb8c079b.jpg"
+                                         alt=""/>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
+                            </td>
+                            <th class="align-middle"><a href="{% url 'user' %}">{{ user.first_name }}</a></th>
+                            <td class="align-middle">{{ user.email }}</td>
+                            <td class="align-middle">{{ user.code }}</td>
 
+                        </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>
