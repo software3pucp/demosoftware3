@@ -74,7 +74,7 @@
                     <div class="form-group">
                         <label for="exampleFormControlFile1">Ingrese una imagen para la especialidad</label>
                         <div class="input-group">
-                            <input name="photo_name"  type="text" class="form-control" readonly>
+                            <input name="photo_name" type="text" class="form-control" readonly>
                             <span class="input-group-btn pb-3">
                                         <span class="btn btn-primary btn-file ml-3 " type="button">
                                             Buscar… <input name="photo" type="file" id="imgInp">
@@ -86,7 +86,7 @@
                 </div>
                 <div class="wrapper">
                     <a class="btn btn-outline-primary mr-3 mb-1" type="button"
-                      href="{% url 'listarFacultadxEsp' id_facultad=especialidad.facultad.pk %}">Cancelar
+                       href="{% url 'listarFacultadxEsp' id_facultad=especialidad.facultad.pk %}">Cancelar
                     </a>
                     <button type="submit" class="btn btn-primary mr-3 mb-1" type="button">Guardar
                     </button>

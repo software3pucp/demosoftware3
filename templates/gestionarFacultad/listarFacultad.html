@@ -220,7 +220,7 @@
                     <div class="col-4 equal">
                         <div class="product card h-125">
                             <a class="imgbox" id="facultadIMG" href="{% url 'listarFacultadxEsp' id_facultad=facultad.pk %}" >
-                                <img class="zoom" src="/media/{{ facultad.foto.name }}/">
+                                <img class="zoom" src="{{ media_path }}{{ facultad.foto.name }}/">
                             </a>
                             <div class="specifies">
                                 <h5 class="card-ti  tle ml-2"

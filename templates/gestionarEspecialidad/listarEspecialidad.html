@@ -228,7 +228,7 @@
                         <div class="product card h-100">
                             <a class="imgbox"
                                href="{% url 'listarEspecialidadxCurso' id_especialidad=especialidad.pk %}">
-                                <img class="zoom" src="/media/{{ especialidad.foto.name }}/">
+                                <img class="zoom" src="{{ media_path }}{{ especialidad.foto.name }}/">
                             </a>
                             <div class="specifies">
                                 <h5 class="card-title ml-2" id="nombresito"
