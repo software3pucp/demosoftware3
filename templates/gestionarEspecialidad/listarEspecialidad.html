@@ -201,9 +201,11 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <select class="form-control" id="facultadFormControl">
+                        <select disabled="true" class="form-control" id="facultadFormControl">
                             {% for facultad in ListaFacultad %}
-                                <option disabled="disabled" value={{ facultad.pk }}>{{ facultad.nombre }}</option>
+                                {% if id_facultad|add:"0" == facultad.pk %}
+                                    <option value={{ facultad.pk }} selected>{{ facultad.nombre }}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                     </div>
@@ -239,7 +241,7 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="row">
-                                            <a class="nav-link icon-indicator" href="{% url 'editarEspecialidad' %}"
+                                            <a class="nav-link icon-indicator" href="#"
                                                role="link">
                                                 <div class="fas fa-pen iconSize iconColorNBorder"
                                                      style="text-align: center;">
@@ -266,7 +268,7 @@
                        href="{% url 'agregarEspecialidad' id_facultad=id_facultad %}">
                         <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
                             <div class="mt-4" style="text-align: center;">
-                                            <span class="fas fa-plus fa-9x" style="text-align: center"></span>
+                                <span class="fas fa-plus fa-9x" style="text-align: center"></span>
                             </div>
                         </div>
                         <div class="recent-work-vertical-ruk card-img-overlay d-flex align-items-end">
