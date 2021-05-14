@@ -1,0 +1,148 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+    <style>
+        html {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: center;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+
+        #img-upload {
+
+            width: 100%;
+        }
+
+        .wrapper {
+            text-align: center;
+        }
+
+        .button {
+            position: absolute;
+            top: 50%;
+        }
+    </style>
+
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+    <div class="container-fluid">
+        <div class="card p-5">
+            <form action="{% url 'agregarEspecialidad' id_facultad=id_facultad %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h3 class="mb-0">Agregar Especialidad</h3>
+                <hr>
+                <div class="form-group">
+                    <div class="container-fluid">
+                        <div class="row mt-2">
+                            <label for="name">Nombre</label>
+                            <input name="name" class="form-control p-3" id="name" type="text"
+                                   placeholder="Ingrese el nombre de la especialidad">
+                        </div>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="exampleFormControlSelect1">Seleccione responsable(s)</label>
+                        <select name="responsable" class="form-control" id="exampleFormControlSelect1">
+                            {% for responsable in ListaUsuarios %}
+                                <option value="responsable.pk">{{ responsable.first_name }} {{ responsable.last_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1">Ingrese una imagen para la especialidad</label>
+                        <div class="input-group">
+                            <input name="photo_name" type="text" class="form-control" readonly>
+                            <span class="input-group-btn pb-3">
+                                        <span class="btn btn-primary btn-file ml-3 " type="button">
+                                            Buscar… <input name="photo" type="file" id="imgInp">
+                                        </span>
+                                    </span>
+                        </div>
+                        <img id='img-upload'/>
+                    </div>
+                </div>
+                <div class="wrapper">
+                    <a class="btn btn-outline-primary mr-3 mb-1" type="button"
+                       href="{% url 'listarFacultadxEsp' id_facultad=id_facultad %}">Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary mr-3 mb-1" type="button">Agregar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extrajs %}
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(document).on('change', '.btn-file :file', function () {
+                var input = $(this),
+                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                input.trigger('fileselect', [label]);
+            });
+
+            $('.btn-file :file').on('fileselect', function (event, label) {
+
+                var input = $(this).parents('.input-group').find(':text'),
+                    log = label;
+
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+
+            });
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#img-upload').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#imgInp").change(function () {
+                readURL(this);
+            });
+        });
+
+        var selectedValue = sessionStorage.getItem("selectedValue");
+        //alert(selectedValue)
+
+        function SelectedValue() {
+            document.getElementById("facultadFormControl").value = selectedValue;
+        }
+    </script>
+
+{% endblock %}

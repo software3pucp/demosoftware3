@@ -1,0 +1,303 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+    <style>
+        html {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .iconSize {
+            font-size: 23px;
+        }
+
+        .fa-pen:hover {
+            color: darkblue;
+        }
+
+        .fa-power-off:hover {
+            color: darkblue;
+        }
+
+        .iconColorNBorder {
+            color: dodgerblue;
+            z-index: 9999;
+        }
+
+        .equal {
+            margin-top: 20px;
+        }
+
+        .service-wrapper .service-footer {
+            max-width: 720px;
+        }
+
+        .service-work.card {
+            border-radius: 10px !important;
+            cursor: pointer;
+        }
+
+        .service-work .service-work-vertical {
+            background: rgb(0, 0, 0);
+            background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 33.33%, rgba(255, 255, 255, 1) 66.66%, rgba(255, 255, 255, 0) 99.99%);
+            background-size: 300% 300%;
+            background-position: 0% 100%;
+            transition: .5s;
+        }
+
+        .service-work .service-work-vertical:hover {
+            background-position: 0% 0%;
+            transition: .5s;
+        }
+
+        .service-work .service-work-vertical:hover * {
+            color: #000;
+            border-color: #000;
+            transition: .5s;
+        }
+
+        .service-work .service-work-vertical-ruk:hover * {
+            color: #000;
+            border-color: #000;
+            transition: .5s;
+        }
+
+        .recent-work.card {
+            border-radius: 10px !important;
+        }
+
+        .recent-work .recent-work-vertical {
+            background: rgb(255, 255, 255);
+            background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 33.333%, rgba(1, 126, 205, 1) 66.666%, rgba(255, 255, 255, 0) 99.999%);
+            background-size: 300% 300%;
+            background-position: 0% 100%;
+            transition: .5s;
+            cursor: pointer;
+        }
+
+        .recent-work .recent-work-vertical-ruk {
+            background: rgb(255, 255, 255);
+            background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 33.333%, rgba(30, 144, 255, 1) 66.666%, rgba(255, 255, 255, 0) 99.999%);
+            background-size: 300% 300%;
+            background-position: 0% 100%;
+            transition: .5s;
+            cursor: pointer;
+        }
+
+        .recent-work .recent-work-vertical:hover {
+            background-position: 0% 0%;
+            transition: .5s;
+        }
+
+        .recent-work .recent-work-vertical:hover div.recent-work-content {
+            top: 50%;
+            margin-top: -2.5em;
+            position: absolute;
+        }
+
+        .recent-work .recent-work-vertical:hover * {
+            color: white;
+            transition: .5s;
+        }
+
+        /*¨*/
+        .recent-work .recent-work-vertical-ruk:hover {
+            background-position: 0% 0%;
+            transition: .5s;
+        }
+
+        .recent-work .recent-work-vertical-ruk:hover div.recent-work-content {
+            top: 50%;
+            margin-top: -2.5em;
+            position: absolute;
+        }
+
+        .recent-work .recent-work-vertical-ruk:hover * {
+            color: white;
+            transition: .5s;
+        }
+
+
+        .team-member:hover .team-member-img {
+            padding: 10px !important;
+        }
+
+        /* Footer */
+        footer a.text-light:hover {
+            color: #bfbfbf !important;
+            transition-duration: 0.15s;
+        }
+
+
+        .product {
+
+            width: 250px;
+            height: 250px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .2);
+            border-radius: 5px;
+            background: white;
+            overflow: hidden
+        }
+
+        .product .imgbox {
+            height: 100%;
+            box-sizing: border-box
+        }
+
+        .product .imgbox img {
+            display: block;
+            width: 100%;
+            height: 90%;
+        }
+
+        .specifies {
+            position: absolute;
+            width: 100%;
+            bottom: -75px;
+            background: white;
+            padding: 10px;
+            transition: .5s
+        }
+
+        .product:hover .specifies {
+            bottom: 0
+        }
+
+        .specifies h2 {
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            width: 100%
+        }
+
+        .specifies h2 span {
+            font-size: 15px;
+            color: #ccc;
+            font-weight: normal
+        }
+
+        .zoom {
+            background-color: rgba(255, 255, 255, 0);
+            transition: transform .3s; /* Animation */
+            width: 200px;
+            height: 200px;
+        }
+
+        .zoom:hover {
+            transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+        }
+    </style>
+
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+
+    {#AQUI COLOQUEN EL CÓDIGO#}
+    <div class="container-fluid content-row">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <select disabled="true" class="form-control" id="facultadFormControl">
+                            {% for facultad in ListaFacultad %}
+                                {% if id_facultad|add:"0" == facultad.pk %}
+                                    <option value={{ facultad.pk }} selected>{{ facultad.nombre }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    {% comment %}
+                    <div class="form-group">
+                        <select class="form-control" id="especialidadFormControl">
+                            {% for especialidad in ListaEspecialidad %}
+                                <option>{{ especialidad.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endcomment %}
+                </div>
+            </div>
+            <div class="row">
+                {% for especialidad in ListaEspecialidad %}
+                    <div class="col-4 equal">
+                        <div class="product card h-100">
+                            <a class="imgbox" href="{% url 'listarSemestre' %}">
+                                <img class="zoom" src="/media/{{ especialidad.foto.name }}/">
+                            </a>
+                            <div class="specifies">
+                                <h5 class="card-title ml-2" id="nombresito"
+                                    style="text-align: left">{{ especialidad.nombre }}
+                                </h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-6">
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="row">
+                                            <a class="nav-link icon-indicator" href="#"
+                                               role="link">
+                                                <div class="fas fa-pen iconSize iconColorNBorder"
+                                                     style="text-align: center;">
+                                                </div>
+                                            </a>
+                                            <a class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
+                                               role="link">
+                                                <div class="fas fa-power-off iconSize iconColorNBorder"
+                                                     style="text-align: center;">
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+
+                <div class="col-4 equal">
+                    <a class="recent-work card border-0 shadow-lg overflow-hidden h-100"
+                       href="{% url 'agregarEspecialidad' id_facultad=id_facultad %}">
+                        <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
+                            <div class="mt-4" style="text-align: center;">
+                                <span class="fas fa-plus fa-9x" style="text-align: center"></span>
+                            </div>
+                        </div>
+                        <div class="recent-work-vertical-ruk card-img-overlay d-flex align-items-end">
+                            <div class="service-work-content text-left text-light">
+                                <h5 class="card-title mt-6" style="text-align: center">Agregar Especialidad</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+
+        function SelectedValue() {
+            var facultadPkCard = sessionStorage.getItem("facultadPkCard");
+            alert(facultadPkCard);
+            //document.getElementById("facultadFormControl").value = 'Lista'
+        }
+
+        function selectElement(id, valueToSelect) {
+            let element = document.getElementById(id);
+            element.value = valueToSelect;
+        }
+
+        //SelectedValue();
+        //selectElement("facultadFormControl", facultadSelected);
+
+
+    </script>
+{% endblock %}
