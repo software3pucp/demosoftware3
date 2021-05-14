@@ -37,9 +37,22 @@
                         <tr class="btn-reveal-trigger">
                             <td class="align-middle">
                                 <div class="avatar avatar-2xl mr-3">
+
+
+                                    {% if user.photo.name %}
+
                                     <img class="rounded-circle"
-                                         src="/media/{{ user.photo.name }}/"
+                                         src="{{ media_path }}{{ user.photo.name }}/"
                                          alt=""/>
+                                    {% else %}
+                                    <img class="rounded-circle"
+                                         src="{% static 'img/team/avatar.png' %}"
+                                         alt=""/>
+                                    {% endif %}
+
+
+
+
                                 </div>
                             </td>
                             <th class="align-middle"><a href="{% url 'user' %}">{{ user.first_name }}</a></th>
