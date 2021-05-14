@@ -14,7 +14,7 @@ def listarEspecialidad(request):
         'ListaEspecialidad': Especialidad.objects.all(),
         'ListaFacultad': Facultad.objects.all(),
     }
-    return render(request, 'gestionarEspecialidad/listarCurso.html', context)
+    return render(request, 'gestionarEspecialidad/listarEspecialidad.html', context)
 
 
 def listarEspecialidadxCurso(request, id_especialidad):
@@ -45,11 +45,11 @@ def agregarEspecialidad(request, id_facultad):
         'ListaFacultad': Facultad.objects.all(),
         'id_facultad': id_facultad
     }
-    return render(request, 'gestionarEspecialidad/agregarCurso.html', context)
+    return render(request, 'gestionarEspecialidad/agregarEspecialidad.html', context)
 
 
-def editarEspecialidad(request, pk):
-    especialidad = Especialidad.objects.get(pk=pk)
+def editarEspecialidad(request, id_especialidad, id_facultad):
+    especialidad = Especialidad.objects.get(pk=id_especialidad)
     if request.POST:
         nuevo_nombre = request.POST["nombre"]
         nuevo_responsable = request.POST["responsable"]
@@ -60,9 +60,11 @@ def editarEspecialidad(request, pk):
         especialidad.foto = nueva_foto
         especialidad.save()
 
-        return redirect(listarEspecialidad)
+        return editarEspecialidad(request, id_especialidad, id_facultad)
 
     context = {
-        'especialidad': especialidad
+        'especialidad': especialidad,
+        'id_especialidad': id_especialidad,
+        'id_facultad': id_facultad
     }
-    return render(request, 'gestionarEspecialidad/editarCurso.html', context)
+    return render(request, 'gestionarEspecialidad/editarEspecialidad.html', context)

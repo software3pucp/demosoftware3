@@ -50,7 +50,8 @@
 {% block body %}
     <div class="container-fluid">
         <div class="card p-5">
-            <form action="{% url 'agregarEspecialidad' %}" method="POST" enctype="multipart/form-data">
+            <form action="{% url 'editarEspecialidad' id_especialidad=id_especialidad %}" method="POST"
+                  enctype="multipart/form-data">
                 {% csrf_token %}
                 <h3 class="mb-0">Editar Especialidad</h3>
                 <hr>
@@ -98,7 +99,7 @@
                 </div>
                 <div class="wrapper">
                     <a class="btn btn-outline-primary mr-3 mb-1" type="button"
-                       href="{% url 'listarEspecialidad' %}">Cancelar
+                      href="{% url 'listarFacultadxEsp' id_facultad=id_facultad %}">Cancelar
                     </a>
                     <button type="submit" class="btn btn-primary mr-3 mb-1" type="button">Guardar
                     </button>
@@ -151,6 +152,7 @@
         });
 
         var selectedValue = sessionStorage.getItem("selectedValue");
+
         //alert(selectedValue)
 
         function SelectedValue() {
