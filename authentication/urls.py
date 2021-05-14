@@ -8,6 +8,6 @@ urlpatterns = [
     # path( url hijo, backend, nombre de la variable)
     #path('login/', views.RenderLogin.as_view(), name="login"),
     path('add/', views.Register, name='user'),
-    path('',views.Show, name='showUsers')
-
+    path('',views.Show, name='showUsers'),
+    path('edit/<pk>', views.Edit, name='editUsers')
 ]

@@ -27,3 +27,25 @@ def Register(request):
             user.save()
         return redirect(Show)
     return render(request, 'authentication/User_Add.html')
+
+def Edit(request,pk):
+    user = User.objects.get(pk=pk)
+    if request.POST:
+        newname=request.POST['card-name']
+        newcode=request.POST['card-codigo']
+        newemail=request.POST['card-correo']
+        newpassword=password=request.POST['card-password']
+
+        user.first_name=newname
+        user.code=newcode
+        user.email=newemail
+        user.password=newpassword
+        user.save()
+        
+        return redirect(Show)
+    
+    context = {
+        'user':user    
+    }
+    
+    return render(request,'authentication/User_Edit.html',context)

@@ -55,7 +55,7 @@
 
                                 </div>
                             </td>
-                            <th class="align-middle"><a href="{% url 'user' %}">{{ user.first_name }}</a></th>
+                            <th class="align-middle"><a href="{% url 'editUsers' pk=user.pk %}">{{ user.first_name }}</a></th>
                             <td class="align-middle">{{ user.email }}</td>
                             <td class="align-middle">{{ user.code }}</td>
 

@@ -1,0 +1,370 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+    <style>
+        html {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .alignRight {
+            position: absolute;
+            right: 20px;
+            top: 8px;
+        }
+
+        .iconSize {
+            font-size: 23px;
+            z-index: 9999;
+        }
+
+        .iconColorNBorder {
+            color: white;
+            stroke: black;
+            stroke-width: 6;
+            z-index: 9999;
+        }
+
+        .equal {
+            margin-top: 20px;
+        }
+
+        .light-300 {
+            font-family: 'Open Sans', sans-serif !important;
+            font-weight: 300;
+        }
+
+
+        .typo-space-line::after,
+
+
+            /* Main Nav */
+        #main_nav .nav-item .nav-link:hover {
+            color: #fff;
+        }
+
+        /* Home */
+        #index_banner {
+            background-image: url('./../img/banner-bg-01.jpg');
+            background-position: center center;
+            background-size: cover;
+            height: 100%;
+            min-height: 60vh;
+            width: 100%;
+        }
+
+        #index_banner .carousel-item {
+            min-height: 60vh;
+        }
+
+        #index_banner .carousel-control-prev i,
+        #index_banner .carousel-control-next i {
+            color: #FFADB9 !important;
+            text-decoration: none;
+            font-size: 4em;
+        }
+
+        #index_banner .carousel-inner {
+            height: 80vh;
+        }
+
+        #index_banner .carousel-indicators li,
+        #index_banner .carousel-indicators.active {
+            background-color: #FFADB9 !important;
+        }
+
+        .service-wrapper .service-footer {
+            max-width: 720px;
+        }
+
+        .service-work.card {
+            border-radius: 10px !important;
+            cursor: pointer;
+        }
+
+        .service-work .service-work-vertical {
+            background: rgb(0, 0, 0);
+            background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 33.33%, rgba(255, 255, 255, 1) 66.66%, rgba(255, 255, 255, 0) 99.99%);
+            background-size: 300% 300%;
+            background-position: 0% 100%;
+            transition: .5s;
+        }
+
+        .service-work .service-work-vertical:hover {
+            background-position: 0% 0%;
+            transition: .5s;
+        }
+
+        .service-work .service-work-vertical:hover * {
+            color: #000;
+            border-color: #000;
+            transition: .5s;
+        }
+
+        .service-work .service-work-vertical-ruk:hover * {
+            color: #000;
+            border-color: #000;
+            transition: .5s;
+        }
+
+        .recent-work.card {
+            border-radius: 10px !important;
+        }
+
+        .recent-work .recent-work-vertical {
+            background: rgb(255, 255, 255);
+            background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 33.333%, rgba(1, 126, 205, 1) 66.666%, rgba(255, 255, 255, 0) 99.999%);
+            background-size: 300% 300%;
+            background-position: 0% 100%;
+            transition: .5s;
+            cursor: pointer;
+        }
+
+        .recent-work .recent-work-vertical-ruk {
+            background: rgb(255, 255, 255);
+            background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 33.333%, rgba(100, 149, 237, 1) 66.666%, rgba(255, 255, 255, 0) 99.999%);
+            background-size: 300% 300%;
+            background-position: 0% 100%;
+            transition: .5s;
+            cursor: pointer;
+        }
+
+        .recent-work .recent-work-vertical:hover {
+            background-position: 0% 0%;
+            transition: .5s;
+        }
+
+        .recent-work .recent-work-vertical:hover div.recent-work-content {
+            top: 50%;
+            margin-top: -2.5em;
+            position: absolute;
+        }
+
+        .recent-work .recent-work-vertical:hover * {
+            color: white;
+            transition: .5s;
+        }
+
+        /*¨*/
+        .recent-work .recent-work-vertical-ruk:hover {
+            background-position: 0% 0%;
+            transition: .5s;
+        }
+
+        .recent-work .recent-work-vertical-ruk:hover div.recent-work-content {
+            top: 50%;
+            margin-top: -2.5em;
+            position: absolute;
+        }
+
+        .recent-work .recent-work-vertical-ruk:hover * {
+            color: white;
+            transition: .5s;
+        }
+
+
+        .team-member:hover .team-member-img {
+            padding: 10px !important;
+        }
+
+        /* Footer */
+        footer a.text-light:hover {
+            color: #bfbfbf !important;
+            transition-duration: 0.15s;
+        }
+    </style>
+
+
+
+{% endblock %}
+
+{% block body %}
+   <div class="container-fluid">
+        <div class="row">
+            <form class="col-md-12" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group d-flex justify-content-center">
+                    <div class="col-8">
+                        <div class="card mb-3 btn-reveal-trigger">
+                            <div class="card-header position-relative min-vh-25">
+                                <div class="cover-image">
+                                    <div class="bg-holder rounded-soft rounded-bottom-0"
+                                         style="background-image:linear-gradient(#2c7be5,#0e1c2f);;">
+                                    </div>
+                                    <!--/.bg-holder-->
+
+                                    <input class="d-none" id="upload-cover-image" type="file">
+                                    <label class="cover-image-file-input" for="upload-cover-image"><span
+                                            class="fas fa-camera mr-2"></span><span>Change cover photo</span></label>
+                                </div>
+
+                                <div class="mb-3 text-center absolute-vertical-center">
+                                    <div class="avatar avatar-5xl shadow-sm img-thumbnail rounded-circle">
+                                        <div class="h-100 w-100 rounded-circle overflow-hidden position-relative">
+                                            <img src="{% static 'img/team/avatar.png' %}" width="200" alt=""
+                                                 id="image_preview" data-dz-thumbnail/>
+                                            <input class="d-none" id="photo" name="photo" type="file"
+                                                   accept="image/png,image/jpeg,image/jpg"/>
+                                            <label class="mb-0 overlay-icon d-flex flex-center" for="photo">
+                                                <span class="bg-holder overlay overlay-0"></span>
+                                                <span class="z-index-1 text-white text-center fs--1">
+                              <span class="fas fa-camera"></span>
+                              <span class="d-block">Agregar foto</span>
+                            </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {% if "photo" in errors %}
+                                        {% for e in errors.photo %}
+                                            <label class=" error mt-2">{{ e }}</label>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group d-flex justify-content-center">
+                    <div class="col-8">
+                        <div class="row no-gutters">
+                            <div class="col-12 pr-lg-2">
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Registro de Usuario</h5>
+                                    </div>
+                                    <div class="card-body bg-light">
+                                        <form id="applicantForm" action="{% url 'editUsers' pk=user.pk %}" method="POST"
+                                              enctype="multipart/form-data">
+                                            {% csrf_token %}
+
+                                            <div class="form-group">
+                                                <label for="card-name">Nombre</label>
+                                                <input class="form-control" name="card-name" type="text" value="{{ user.first_name }}"
+                                                       id="card-name" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="card-email">Codigo</label>
+                                                <input class="form-control" name="card-codigo" type="text" value="{{ user.code }}"
+                                                       id="card-codigo" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="card-password">Correo</label>
+                                                <input class="form-control" name="card-correo" type="email" value="{{ user.email }}"
+                                                       id="card-correo" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="card-password">Password</label>
+                                                <input class="form-control" name="card-password" type="password" value="{{ user.password }}"
+                                                       id="card-password" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <button class="btn btn-primary btn-block mt-5" type="submit"
+                                                        name="submit">
+                                                    Registrar
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block extrajs %}
+    <script src="{% static 'lib/select2/select2.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/connectycube@3.7.7/dist/connectycube.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(document).on('change', '.btn-file :file', function () {
+                var input = $(this),
+                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                input.trigger('fileselect', [label]);
+            });
+
+            $('.btn-file :file').on('fileselect', function (event, label) {
+
+                var input = $(this).parents('.input-group').find(':text'),
+                    log = label;
+
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+
+            });
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#img-upload').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#imgInp").change(function () {
+                readURL(this);
+            });
+        });
+
+        var selectedValue = sessionStorage.getItem("selectedValue");
+
+        //alert(selectedValue)
+
+        function SelectedValue() {
+            document.getElementById("facultadFormControl").value = selectedValue;
+        }
+
+        $(document).ready(function () {
+
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    let reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#image_preview').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                    console.log(input.files[0].name.split(".")[1])
+                    let extensions = ['jpg', 'jpeg', 'png']
+                    if (!(extensions.includes(input.files[0].name.split(".")[1]))) {
+                        $('#photo_error').text('Debe adjuntar archivos con extensión png, jpeg o jpg').removeAttr('hidden')
+                    } else {
+                        $('#photo_error').attr('hidden', 'true')
+                    }
+                }
+            }
+
+            $("#photo").change(function () {
+                readURL(this);
+            });
+        })
+
+    </script>
+{% endblock %}
