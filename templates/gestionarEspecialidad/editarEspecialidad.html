@@ -50,12 +50,11 @@
 {% block body %}
     <div class="container-fluid">
         <div class="card p-5">
-            <form action="{% url 'editarEspecialidad' id_especialidad=id_especialidad %}" method="POST"
+            <form action="{% url 'editarEspecialidad' id_especialidad=especialidad.pk %}" method="POST"
                   enctype="multipart/form-data">
                 {% csrf_token %}
                 <h3 class="mb-0">Editar Especialidad</h3>
                 <hr>
-                <p></p>
                 <div class="form-group">
                     <div class="container-fluid">
                         <div class="row">
@@ -64,17 +63,6 @@
                                    placeholder="Ingrese el nombre de la especialidad" value="{{ especialidad.nombre }}">
                         </div>
                     </div>
-                    <p></p>
-                    <div class="form-group">
-                        <label for="name">Facultad</label>
-                        <select class="form-control" name="facultadPK" id="facultadFormControl"
-                                onchange="SelectedValue();">
-                            {% for facultad in ListaFacultad %}
-                                <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <p></p>
                     <div class="form-group">
                         <label for="exampleFormControlSelect1">Seleccione responsable(s)</label>
                         <select name="responsable" class="form-control" id="exampleFormControlSelect1">
@@ -83,11 +71,10 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <p></p>
                     <div class="form-group">
                         <label for="exampleFormControlFile1">Ingrese una imagen para la especialidad</label>
                         <div class="input-group">
-                            <input name="photo_name" type="text" class="form-control" readonly>
+                            <input name="photo_name"  type="text" class="form-control" readonly>
                             <span class="input-group-btn pb-3">
                                         <span class="btn btn-primary btn-file ml-3 " type="button">
                                             Buscar… <input name="photo" type="file" id="imgInp">
@@ -99,7 +86,7 @@
                 </div>
                 <div class="wrapper">
                     <a class="btn btn-outline-primary mr-3 mb-1" type="button"
-                      href="{% url 'listarFacultadxEsp' id_facultad=id_facultad %}">Cancelar
+                      href="{% url 'listarFacultadxEsp' id_facultad=especialidad.facultad.pk %}">Cancelar
                     </a>
                     <button type="submit" class="btn btn-primary mr-3 mb-1" type="button">Guardar
                     </button>

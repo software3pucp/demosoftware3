@@ -7,7 +7,7 @@ urlpatterns = [
     path('listar/', views.listarEspecialidad, name="listarEspecialidad"),
     path('listar/<id_especialidad>/', views.listarEspecialidadxCurso, name="listarEspecialidadxCurso"),
     # path('agregar/', views.agregarEspecialidad, name="agregarEspecialidad"),
-    path('editar/<id_facultad>/<id_especialidad>/', views.editarEspecialidad, name="editarEspecialidad"),
+    path('editar/<id_especialidad>/', views.editarEspecialidad, name="editarEspecialidad"),
 
     path('agregar/<id_facultad>/', views.agregarEspecialidad, name="agregarEspecialidad"),
     # path('editar', views.editarFacultad, name="editarFacultad"),

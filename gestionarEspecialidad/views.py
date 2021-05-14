@@ -48,23 +48,23 @@ def agregarEspecialidad(request, id_facultad):
     return render(request, 'gestionarEspecialidad/agregarEspecialidad.html', context)
 
 
-def editarEspecialidad(request, id_especialidad, id_facultad):
+def editarEspecialidad(request, id_especialidad):
+    ListaUsuarios = User.objects.filter()
     especialidad = Especialidad.objects.get(pk=id_especialidad)
     if request.POST:
-        nuevo_nombre = request.POST["nombre"]
+        print(request.POST)
+        nuevo_nombre = request.POST["name"]
         nuevo_responsable = request.POST["responsable"]
-        nueva_foto = request.POST["foto"]
+        nueva_foto = request.FILES["photo"]
 
         especialidad.nombre = nuevo_nombre
         especialidad.responsable = nuevo_responsable
         especialidad.foto = nueva_foto
         especialidad.save()
-
-        return editarEspecialidad(request, id_especialidad, id_facultad)
+        return listarFacultadxEsp(request, id_facultad= especialidad.facultad.pk)
 
     context = {
         'especialidad': especialidad,
-        'id_especialidad': id_especialidad,
-        'id_facultad': id_facultad
+        'ListaUsuarios': ListaUsuarios
     }
     return render(request, 'gestionarEspecialidad/editarEspecialidad.html', context)
