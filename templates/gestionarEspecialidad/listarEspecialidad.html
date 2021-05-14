@@ -21,7 +21,7 @@
         }
 
         .iconColorNBorder {
-            color: dodgerblue;
+            color: rgba(1, 126, 205, 1);
             z-index: 9999;
         }
 
@@ -164,17 +164,10 @@
             bottom: 0
         }
 
-        .specifies h2 {
+        .specifies h5 {
             margin: 0;
             padding: 0;
-            font-size: 20px;
-            width: 100%
-        }
-
-        .specifies h2 span {
-            font-size: 15px;
-            color: #ccc;
-            font-weight: normal
+            color: rgba(1, 126, 205, 1);
         }
 
         .zoom {
@@ -225,34 +218,37 @@
             <div class="row">
                 {% for especialidad in ListaEspecialidad %}
                     <div class="col-4 equal">
-                        <div class="product card h-100">
+                        <div class="product recent-work card border-0 shadow-lg overflow-hidden h-100">
                             <a class="imgbox"
                                href="{% url 'listarEspecialidadxCurso' id_especialidad=especialidad.pk %}">
-                                <img class="zoom" src="{{ media_path }}{{ especialidad.foto.name }}/">
+                                <img class="" src="{{ media_path }}{{ especialidad.foto.name }}/">
                             </a>
-                            <div class="specifies">
-                                <h5 class="card-title ml-2" id="nombresito"
-                                    style="text-align: left">{{ especialidad.nombre }}
-                                </h5>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-6">
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="row">
-                                            <a class="nav-link icon-indicator"
-                                               href="{% url 'editarEspecialidad' id_especialidad=especialidad.pk %}"
-                                               role="link">
-                                                <div class="fas fa-pen iconSize iconColorNBorder"
-                                                     style="text-align: center;">
-                                                </div>
-                                            </a>
-                                            <a class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
-                                               role="link">
-                                                <div class="fas fa-power-off iconSize iconColorNBorder"
-                                                     style="text-align: center;">
-                                                </div>
-                                            </a>
+                            <div class="specifies recent-work-vertical card-img-overlay d-flex align-items-end"
+                                 style="pointer-events: none">
+                                <div class="service-work-content text-left text-light">
+                                    <h5 class="card-title ml-2" id="nombresito"
+                                        style="text-align: left">{{ especialidad.nombre }}
+                                    </h5>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-6">
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row" style="height:100%; width: 300px; pointer-events: all">
+                                                <a class="nav-link icon-indicator"
+                                                   href="{% url 'editarEspecialidad' id_especialidad=especialidad.pk %}"
+                                                   role="link">
+                                                    <div class="fas fa-pen iconSize iconColorNBorder"
+                                                         style="text-align: center;">
+                                                    </div>
+                                                </a>
+                                                <a class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
+                                                   role="link">
+                                                    <div class="fas fa-power-off iconSize iconColorNBorder"
+                                                         style="text-align: center;">
+                                                    </div>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -260,9 +256,6 @@
                         </div>
                     </div>
                 {% endfor %}
-
-
-
                 <div class="col-4 equal">
                     <a class="recent-work card border-0 shadow-lg overflow-hidden h-100"
                        href="{% url 'agregarEspecialidad' id_facultad=id_facultad %}">
