@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'gestionarFacultad',
     'gestionarEspecialidad',
     'gestionarCurso',
-    'gestionarSemestre'
+    'gestionarSemestre',
+    'gestionarEvaluacion',
 ]
 
 MIDDLEWARE = [
