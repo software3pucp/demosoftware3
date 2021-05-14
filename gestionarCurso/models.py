@@ -1,5 +1,8 @@
 from django.db import models
+from gestionarFacultad.models import Facultad
+from gestionarEspecialidad.models import Especialidad
 import unicodedata
+
 
 def remove_accents(input_str):
     nfkd_form = unicodedata.normalize('NFKD', input_str)
@@ -16,7 +19,7 @@ def upload_location(instance, filename):
     return 'img/%s.%s' % (remove_accents(instance.nombre), extension)
 
 
-class Facultad(models.Model):
+class Curso(models.Model):
     nombre = models.CharField(max_length=30)
     responsable = models.CharField(max_length=50)
-    foto = models.ImageField(null=True, blank=True, upload_to=upload_location)
+    especialidad = models.ForeignKey(Especialidad, on_delete=models.CASCADE, null=True)

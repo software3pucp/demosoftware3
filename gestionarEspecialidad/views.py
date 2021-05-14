@@ -1,7 +1,8 @@
 import gestionarEspecialidad
 from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
-from django.shortcuts import render,redirect
+from gestionarCurso.models import Curso
+from django.shortcuts import render, redirect
 from authentication.models import User
 
 # Create your views here.
@@ -13,7 +14,21 @@ def listarEspecialidad(request):
         'ListaEspecialidad': Especialidad.objects.all(),
         'ListaFacultad': Facultad.objects.all(),
     }
-    return render(request, 'gestionarEspecialidad/listarEspecialidad.html', context)
+    return render(request, 'gestionarEspecialidad/listarCurso.html', context)
+
+
+def listarEspecialidadxCurso(request, id_especialidad):
+    print("==================================")
+    print(id_especialidad)
+    print("==================================")
+
+    context = {
+        'ListaCurso': Curso.objects.filter(especialidad_id=id_especialidad),
+        'ListaEspecialidad': Especialidad.objects.all(),
+        'id_especialidad': id_especialidad
+    }
+    return render(request, 'gestionarCurso/listarCurso.html', context)
+
 
 def agregarEspecialidad(request, id_facultad):
     if request.POST:
@@ -23,16 +38,17 @@ def agregarEspecialidad(request, id_facultad):
         foto = request.FILES['photo']
         facultad = Facultad.objects.get(pk=id_facultad)
         Especialidad.objects.create(nombre=nombre, responsable=id_responsable, facultad=facultad, foto=foto)
-        return listarFacultadxEsp(request,id_facultad)
+        return listarFacultadxEsp(request, id_facultad)
 
     context = {
         'ListaUsuarios': User.objects.all(),
         'ListaFacultad': Facultad.objects.all(),
-        'id_facultad' : id_facultad
+        'id_facultad': id_facultad
     }
-    return render(request, 'gestionarEspecialidad/agregarEspecialidad.html', context)
+    return render(request, 'gestionarEspecialidad/agregarCurso.html', context)
 
-def editarEspecialidad(request,pk):
+
+def editarEspecialidad(request, pk):
     especialidad = Especialidad.objects.get(pk=pk)
     if request.POST:
         nuevo_nombre = request.POST["nombre"]
@@ -47,6 +63,6 @@ def editarEspecialidad(request,pk):
         return redirect(listarEspecialidad)
 
     context = {
-        'especialidad':especialidad
+        'especialidad': especialidad
     }
-    return render(request,'gestionarEspecialidad/editarEspecialidad.html',context)
+    return render(request, 'gestionarEspecialidad/editarCurso.html', context)
