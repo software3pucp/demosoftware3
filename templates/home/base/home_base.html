@@ -47,14 +47,9 @@
 <main class="main" id="top">
     {% csrf_token %}
     {% include 'home/components/home_top_navbar.html' %}
-    <div>
-        <div class="content">
-            {% block body %}{% endblock %}
-        </div>
-        <div>
-            {% include 'home/components/footer.html' %}
-        </div>
-    </div>
+    {% block body %}{% endblock %}
+    {% include 'home/components/footer.html' %}
+
 </main>
 <!-- ===============================================-->
 <!--    End of Main Content-->
