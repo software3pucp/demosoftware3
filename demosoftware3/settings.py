@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'authentication',
     'home',
     'gestionarRE',
+    'gestionarResultados',
     'gestionarNivel',
     'gestionarFacultad',
     'gestionarEspecialidad',

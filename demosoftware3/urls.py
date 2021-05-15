@@ -28,5 +28,5 @@ urlpatterns = [
     path('gestionarRE/', include('gestionarRE.urls')),
     path('gestionarSemestre/', include('gestionarSemestre.urls')),
     path('gestionarNivel/', include('gestionarNivel.urls')),
-    path('gestionarEvaluacion/',include(('gestionarEvaluacion.urls'))),
+    path('gestionarResultados/', include('gestionarResultados.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
