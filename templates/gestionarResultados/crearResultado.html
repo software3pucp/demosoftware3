@@ -3,47 +3,33 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
-    <style>
-        hr {
-            height: .5px;
-            background-color: #2F5496;
-        }
-
-        h3 {
-            font-family: Montserrat;
-            color: #2F5496;
-        }
-
-        label {
-            font-family: Montserrat;
-            color: black;
-        }
-
-    </style>
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
 {% block body %}
-    <div class="row d-flex justify-content-center ">
-        <div class="col-10">
-            <h4 id="Titulo" style="font-family: Montserrat"> Editar Resultado del Estudiante</h4>
-        </div>
-        <div class="col-2">
-            <a href="{% url 'listarResultado' %}" style="font-family: Roboto"><h5 id="Retroceder">
-                <img class="img-fluid" style="height: 20px"
-                     src="https://image.flaticon.com/icons/png/512/60/60577.png">
-                <u>Volver</u>
-            </h5></a>
-        </div>
-    </div>
-    <hr style="background-color: #0154ae;">
+
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <div class="col-12">
-                    <form action="{% url 'editarResultado' pk=resultado.pk %}" method="post">
+                    <div class="row d-flex justify-content-center ">
+                        <div class="col-10">
+                            <h4 id="Titulo">Crear Resultado del Estudiante</h4>
+                        </div>
+                        <div class="col-2">
+                            <a href="{% url 'listarResultado' %}">
+                                <div class="row">
+                                    <img class="img-fluid" style="height: 20px"
+                                         src="https://image.flaticon.com/icons/png/512/60/60577.png">
+                                    <h5>Volver</h5>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <hr style="background-color: #0154ae;">
+                    <form action="{% url 'crearResultado' %}" method="post">
                         {% csrf_token %}
-                        <div class="row" style="padding-left: 1%;padding-right: 1%">
+                        <div class="row p-1">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="codigo">Código:</label>
@@ -52,40 +38,35 @@
                             <div class="col-md-8">
                                 <div class="form-group">
                                     <input name="codigo" class="form-control" id="codigo" type="text"
-                                           value="{{ resultado.codigo }}">
+                                           placeholder="Ingrese el código">
                                 </div>
                             </div>
                         </div>
-
-                        <div class="row" style="padding-left: 1%;padding-right: 1%">
+                        <div class="row p-1">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="descripcion">Descripción:</label>
                                 </div>
                             </div>
                             <div class="col-md-8">
-                                <div class="form-group">
-                                    <input name="descripcion" class="form-control" id="descripcion"
-                                           type="tex" value="{{ resultado.descripcion }}">
+                                <div class="form-group ">
+                                    <input name="descripcion" class="form-control" id="descripcion" type="text"
+                                           placeholder="Ingrese una descripcion">
                                 </div>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-md-12">
                                 <h3>Indicadores del Resultado del Estudiante</h3>
                             </div>
                         </div>
                         <hr style="background-color: #0154ae;">
-
                         <div class="row">
-                            <div class="col-md-12" style="text-align: right;">
-                                <a class="btn btn-outline-primary" type="button" href="{% url 'listarResultado' %}">Cancelar</a>
-                                <input type="hidden" name="operacion" value="editar">
-                                <input type="submit" class="btn btn-primary" value="Guardar">
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <a class="btn btn-outline-primary m-1" type="button" href="{% url 'listarResultado' %}">Cancelar</a>
+                                <input type="submit" class="btn btn-primary m-1" value="Registrar">
                             </div>
                         </div>
-                        <!--<button class="btn btn-primary mb-3" type="submit">Save</button>-->
                     </form>
                 </div>
             </div>
@@ -95,11 +76,11 @@
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <div class="col-12">
-                    {% if flag %}
+                    {% if registrado %}
                         <div class="d-flex flex-row">
                             <div class="d-flex flex-column">
                                 <div class="d-flex justify-content-center">
-                                    <b><p>Resultado actualizado</p></b>
+                                    <b><p>Regultado registrado</p></b>
                                 </div>
                             </div>
                         </div>
@@ -108,5 +89,6 @@
             </div>
         </div>
     </div>
+
 
 {% endblock %}

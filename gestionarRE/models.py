@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+from gestionarResultados.models import ResultadoPUCP
 
 
 class Acreditadora(models.Model):
@@ -22,9 +23,4 @@ class ResultadoAcreditadora(models.Model):
     descripcion = models.CharField(max_length=150,default='',null=True,blank=True)
     estado = models.CharField(max_length=2,choices=ESTADOS,default='2',null=True,blank=True)
     acreditadora = models.ForeignKey(Acreditadora,on_delete=models.RESTRICT)
-
-
-class Resultado(models.Model):
-    codigo = models.CharField(max_length=10,default=None,null=True,blank=True)
-    descripcion = models.CharField(max_length=150,default=None,null=True,blank=True)
-    resultadosAcreditadora = models.ManyToManyField(ResultadoAcreditadora)
+    resultadoPUCP = models.ForeignKey(ResultadoPUCP,on_delete=models.RESTRICT)

@@ -4,19 +4,10 @@
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
     <style>
+
         hr {
             height: .5px;
             background-color: #2F5496;
-        }
-
-        h3 {
-            font-family: Montserrat;
-            color: #2F5496;
-        }
-
-        label {
-            font-family: Montserrat;
-            color: black;
         }
 
     </style>
@@ -31,7 +22,10 @@
         <div class="row">
             <div class="col-md-12">
                 <div style="float: right;">
-                    <a class="btn btn-outline-primary" type="button" href="{% url 'listarRE' %}">Volver</a>
+                    <a class="btn btn-outline-primary" type="button" href="{% url 'listarRE' %}">
+                        <img class="img-fluid" style="height: 20px" src="https://image.flaticon.com/icons/png/512/60/60577.png">
+                        Volver
+                    </a>
                 </div>
                 <h3>ABET - Editar Resultado del Estudiante </h3>
                 <hr>

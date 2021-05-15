@@ -1,11 +1,8 @@
 import requests
 from django.shortcuts import render
-
-from gestionarRE.models import Acreditadora,ResultadoAcreditadora, Resultado
-
+from gestionarRE.models import Acreditadora,ResultadoAcreditadora
 
 # Create your views here.
-
 
 def listarRE(request):
     resultados = ResultadoAcreditadora.objects.filter(acreditadora=1)
@@ -20,8 +17,6 @@ def editarRE(request,pk):
     flag = 0
     resultadoAcreditadora = ResultadoAcreditadora()
     resultadoAcreditadora.pk = pk
-    resultadosSelec = []
-    resultados = Resultado.objects.filter()
 
     if request.POST:
         if request.POST['operacion'] == 'entrada':
@@ -29,19 +24,9 @@ def editarRE(request,pk):
 
         elif request.POST['operacion'] == 'editar':
             resultadoAcreditadora = ResultadoAcreditadora.objects.get(pk=pk)
-            resultadosSelec = Resultado.objects.filter(resultadosAcreditadora=pk)
             resultadoAcreditadora.codigo = request.POST['codigo']
             resultadoAcreditadora.descripcion = request.POST['descripcion']
             resultadoAcreditadora.save()
-
-            for i in resultados:
-                id = 'select' + str(i.pk)
-                if request.POST[id] == '1' and i not in resultadosSelec:
-                    i.resultadosAcreditadora.add(resultadoAcreditadora)
-                    i.save()
-                elif request.POST[id] == '0' and i in resultadosSelec:
-                    i.resultadosAcreditadora.remove(resultadoAcreditadora)
-                    i.save()
             flag = 1
 
         elif request.POST['operacion'] == 'insertar':
@@ -49,24 +34,16 @@ def editarRE(request,pk):
                                                  acreditadora_id=request.POST["acreditadora"])
             resultadoAcreditadora = ResultadoAcreditadora.objects.latest('id')
             pk = resultadoAcreditadora.pk
-            for i in resultados:
-                id = 'select' + str(i.pk)
-                if request.POST[id] == '1':
-                    i.resultadosAcreditadora.add(resultadoAcreditadora)
-                    i.save()
             flag = 2
 
     if pk == '0':
         insert = True
     else:
         resultadoAcreditadora = ResultadoAcreditadora.objects.get(pk=pk)
-        resultadosSelec = Resultado.objects.filter(resultadosAcreditadora=pk)
 
     context = {
         'insert': insert,
         'resultadoAcreditadora': resultadoAcreditadora,
-        'resultados' : resultados,
-        'resultadosSelec': resultadosSelec,
         'flag' : flag,
     }
     return render(request,'gestionarRE/editarRE.html',context)

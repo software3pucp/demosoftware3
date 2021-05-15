@@ -1,6 +1,5 @@
 import requests
 from django.shortcuts import render
-from gestionarRE.models import Acreditadora,ResultadoAcreditadora, Resultado
 
 # Create your views here.
 from gestionarResultados.models import ResultadoPUCP
@@ -14,14 +13,14 @@ def crearResultado(request):
      context = {
          'registrado': registrado,
      }
-     return render(request, 'gestionarResultado/crearResultado.html', context)
+     return render(request, 'gestionarResultados/crearResultado.html', context)
 
 def listarResultado(request):
     resultados = ResultadoPUCP.objects.filter()
     context = {
         'resultados' : resultados,
     }
-    return render(request,'gestionarResultado/listarResultado.html',context)
+    return render(request,'gestionarResultados/listarResultados.html',context)
 
 def editarResultado(request, pk):
     flag = False
@@ -37,4 +36,4 @@ def editarResultado(request, pk):
         'resultado': resultado,
         'flag': flag,
     }
-    return render(request, 'gestionarResultado/editarResultado.html', context)
+    return render(request, 'gestionarResultados/editarResultado.html', context)

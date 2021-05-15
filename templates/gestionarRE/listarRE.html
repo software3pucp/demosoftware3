@@ -5,78 +5,9 @@
 {% block extrastyle %}
 <style>
 
-    .bg-primary{
-        background-color: #0154AE !important;
-    }
-
-    .btn-primary{
-        background-color: #0154AE;
-        border-width: 1px;
-        border-color: #fff;
-    }
-
-    .btn-primary:hover{
-        background-color: #017ECD;
-        border-width: 1px;
-        border-color: #fff;
-    }
-
-    .btn-primary:focus{
-        color: #0154AE;
-        background-color: #F9FAFD;
-        border-width: 1px;
-        border-color: #fff;
-        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
-    }
-
-    .nav-link{
-        font-family: Montserrat;
-        color:#CACACA;
-    }
-    .nav-link:hover{
-        font-family: Montserrat;
-        background-color: #CEE3FF;
-        color: black;
-    }
-
-    .nav-link:focus{
-        font-family: Montserrat;
-        color: #2F5496;
-    }
-
     hr{
         height: .5px;
         background-color: #2F5496;
-    }
-
-    h3{
-        font-family: Montserrat;
-        color: #2F5496;
-    }
-
-    .btn-success{
-        float: right;
-        background-color: #EDF2F9;
-        border-color: #EDF2F9;
-    }
-
-    .btn-success:hover{
-        background-color: #CEE3FF;
-        border-color: #CEE3FF;
-    }
-
-    .btn-success:focus{
-        background-color: #CEE3FF;
-        border-color: #CEE3FF;
-    }
-
-    .btn-success:active{
-        background-color: #CEE3FF !important;
-        border-color: #CEE3FF !important;
-    }
-
-    .fa-ellipsis-v{
-        color: #2F5496;
     }
 
 </style>
@@ -90,10 +21,10 @@
     <div class="col-12">
         <div class="fancy-tab">
             <div class="nav-bar nav-bar-center">
-                <div class="nav-bar-item px-3 px-sm-4 active"><span class="fas fa-home fs-2"></span>
+                <div class="nav-bar-item px-3 px-sm-4 active">
                     <div class="mt-1">Información</div>
                 </div>
-                <div class="nav-bar-item px-3 px-sm-4"><span class="fas fa-user-circle fs-2"></span>
+                <div class="nav-bar-item px-3 px-sm-4">
                     <div class="mt-1">Resultados</div>
                 </div>
             </div>
@@ -112,18 +43,19 @@
                             </div>
                         </div>
                         <div class="col">
-                             <div class="dropdown">
-                                <button class="btn btn-success" type="button" id="dropdownMenuButton"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="row d-flex justify-content-between ml-0">
+                                <h3 id="v-pills-home">Home</h3>
+                                <button class="btn dropdown-toggle btn-falcon-primary mb-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v"></i>
                                 </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <div class="dropdown-menu">
                                     <a class="dropdown-item" href="#">Action</a>
                                     <a class="dropdown-item" href="#">Another action</a>
                                     <a class="dropdown-item" href="#">Something else here</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Separated link</a>
                                 </div>
                             </div>
-                            <h3 id="v-pills-home">Home </h3>
                             <hr>
                             <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium,
                                 alias
@@ -434,9 +366,9 @@
                                                 {% csrf_token %}
                                                 <input type="hidden" name="operacion" value="entrada">
                                                 <input type="hidden" name="acreditadora" value="1">
-                                                <input type="submit" class="btn btn-primary mr-1 mb-1" value="Editar">
+                                                <input type="submit" class="btn btn-falcon-primary mr-1 mb-1" value="Editar">
                                             </form>
-                                            <button class="btn btn-primary mr-1 mb-1" type="button">Activar</button>
+                                            <button class="btn btn-falcon-primary mr-1 mb-1" type="button">Activar</button>
                                         </div>
                                     </div>
                                 </div>
