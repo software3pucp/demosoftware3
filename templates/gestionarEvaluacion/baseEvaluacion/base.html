@@ -26,7 +26,7 @@
 
                         <!-- Button trigger modal-->
                         <a href="" data-toggle="modal" data-target="#agregarAlumno"
-                           class="btn btn-falcon-default btn-sm" type="button">
+                           class="btn btn-outline-primary btn-sm" type="button">
                             <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
                                  aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
@@ -42,7 +42,7 @@
                             <span class="d-none d-sm-inline-block ml-1">Agregar Estudiante</span>
                         </a>
 
-                        <a href="    " class="btn btn-falcon-default btn-sm" type="button">
+                        <a href="    " class="btn btn-outline-dark btn-sm" type="button">
                             <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
                                  aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
@@ -65,6 +65,59 @@
         </div>
 
         <div class="card-body p-0">
+            <div class="dashboard-data-table">
+                <table class="table table-sm table-dashboard fs--1 data-table border-bottom dataTable no-footer"
+                       data-options="{&quot;responsive&quot;:false,&quot;pagingType&quot;:&quot;simple&quot;,&quot;lengthChange&quot;:false,&quot;searching&quot;:false,&quot;pageLength&quot;:8,&quot;columnDefs&quot;:[{&quot;targets&quot;:[0,6],&quot;orderable&quot;:false}],&quot;language&quot;:{&quot;info&quot;:&quot;_START_ to _END_ Items of _TOTAL_ — <a href=\&quot;#!\&quot; class=\&quot;font-weight-semi-bold\&quot;> view all <span class=\&quot;fas fa-angle-right\&quot; data-fa-transform=\&quot;down-1\&quot;></span> </a>&quot;},&quot;buttons&quot;:[&quot;copy&quot;,&quot;excel&quot;]}"
+                       id="DataTables_Table_0">
+                    <!-------REVISAR LO QUE ESTA EN DATA OPTIONS --->
+                    <thead class="bg-200 text-900">
+                    <tr>
+                        <th class="sort pr-1 align-middle">Codigo</th>
+                        <th class="sort pr-1 align-middle">Estudiante</th>
+                        <th class="sort pr-1 align-middle">Puntuacion</th>
+                        <th class="sort pr-1 align-middle text-center">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tablaAlumno">
+
+                    {% for alumno in listaAlumno %}
+                        <tr class="btn-reveal-trigger">
+                        <th class="align-middle">{{ alumno.codigoAlumno }}</th>
+                        <th class="align-middle"> {{ alumno.nombreAlumno }} </th>
+                        </tr>
+                    {% endfor %}
+
+                    <!--
+                        <tr class="btn-reveal-trigger">
+                            <th class="align-middle"> 5 </th>
+                            <th class="align-middle">todo</th>
+                            <td class="align-middle">125</td>
+                            <td class="align-middle text-right fs-0">
+                                <form action="/gestionarNivel/listar/" method="post">
+                                    <input type="hidden" name="csrfmiddlewaretoken" value="RjnRrTkuMrLSCSOfCOZZJV3KctghRXsUHOYpXeXVYgNklW0XotkaU2kiBc2tI7sQ">
+                                    <div class="row">
+                                        <div class="col">
+                                            <a href="/gestionarNivel/editar/5" class="badge badge rounded-capsule badge-soft-info">Editar</a>
+                                        </div>
+                                        <div class="col">
+
+                                            <button type="submit" class="badge rounded-capsule badge-soft-danger outline-none">
+                                                <span>Eliminar</span>
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="nivelPk" name="nivelPk" value="5">
+                                </form>
+                            </td>
+                        </tr>
+                        -->
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!--------------------------------------------------------------------------------
             <div class="falcon-data-table">
                 <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                     <div class="row mx-1">
@@ -98,9 +151,12 @@
                             <tbody id="orders">
 
                             <tr class="odd">
-                                <td valign="top" colspan="4" class="dataTables_empty">No data available in table</td>
+                                <td valign="top" colspan="4" class="dataTables_empty">No hay alumnos a evaluar. Ingrese
+                                    alguno
+                                </td>
                             </tr>
                             </tbody>
+
                         </table>
                     </div>
                     <div class="row no-gutters px-1 py-3 align-items-center justify-content-center">
@@ -131,13 +187,12 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
+            ---------------------------------------------------------------------------------->
         </div>
     </div>
-
-
-
     <!-- Modal-->
     <div class="modal fade" id="agregarAlumno" tabindex="-1" role="dialog" aria-labelledby="agregarAlumnoLabel"
          aria-hidden="true">
@@ -149,32 +204,97 @@
                             class="font-weight-light" aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="formAgregarAlumno" name="formAgregarAlumno">
                         <div class="form-group">
-                            <label for="nombre">Nombre</label>
-                            <input class="form-control" id="nombre" type="text" placeholder="Nombre">
+                            <label for="nombreAlumno">Nombre</label>
+                            <input class="form-control" id="nombreAlumno" name="nombreAlumno" type="text"
+                                   placeholder="Nombre">
                         </div>
                         <div class="form-group">
-                            <label for="codigo">Código</label>
-                            <input class="form-control" id="codigo" type="text" placeholder="Código">
+                            <label for="codigoAlumno">Código</label>
+                            <input class="form-control" id="codigoAlumno" name="codigoAlumno" type="text" maxlength="8"
+                                   placeholder="Código">
                         </div>
-
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
-                    <button class="btn btn-primary btn-sm" type="button">Agregar</button>
+                    <button id="btnAgregarAlumno" class="btn btn-primary btn-sm" type="button"
+                            onclick="validarAlumno()">Agregar
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
 
-
-
 {% endblock %}
 
 {#Aquí coloco el JS particular de la web#}
 {% block extrajs %}
+
+    <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
+    <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
+
+
+    <script>
+        function validarAlumno() {
+            $("form[name='formAgregarAlumno']").validate({
+                rules: {
+                    nombreAlumno: {
+                        required: true,
+                    },
+                    codigoAlumno: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    nombreAlumno: {
+                        required: "Por favor ingrese el nombre"
+                    },
+                    codigoAlumno: {
+                        required: "Por favor ingrese el codigo"
+                    }
+                }
+            });
+
+        };
+        $("#btnAgregarAlumno").on('click', function () {
+            if ($("#formAgregarAlumno").valid()) {
+                agregarAlumno();
+            }
+        });
+
+    </script>
+    <script>
+        function agregarAlumno() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'agregarAlumno'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    nombreAlumno: $("#nombreAlumno").val(),
+                    codigoAlumno: $("#codigoAlumno").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["nuevoAlumno"]);
+                    var fields = instance[0]["fields"];
+
+                    data = '<tr class="btn-reveal-trigger">' +
+                        '<th class="align-middle">' + fields.codigoAlumno + '</th>' +
+                        '<th class="align-middle">' + fields.nombreAlumno + '</th>' +
+                        '</tr>'
+
+                    $("#tablaAlumno").append(data);
+
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+    </script>
 
 
 {% endblock %}
