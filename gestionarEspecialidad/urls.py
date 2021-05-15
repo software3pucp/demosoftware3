@@ -8,6 +8,7 @@ urlpatterns = [
     path('listar/<id_especialidad>/', views.listarEspecialidadxCurso, name="listarEspecialidadxCurso"),
     # path('agregar/', views.agregarEspecialidad, name="agregarEspecialidad"),
     path('editar/<id_especialidad>/', views.editarEspecialidad, name="editarEspecialidad"),
+    path('eliminar/<id_especialidad>/', views.eliminarEspecialidad, name="eliminarEspecialidad"),
 
     path('agregar/<id_facultad>/', views.agregarEspecialidad, name="agregarEspecialidad"),
     # path('editar', views.editarFacultad, name="editarFacultad"),

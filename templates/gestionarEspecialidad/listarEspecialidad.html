@@ -218,12 +218,12 @@
             <div class="row">
                 {% for especialidad in ListaEspecialidad %}
                     <div class="col-4 equal">
-                        <div class="product recent-work card border-0 shadow-lg overflow-hidden h-100">
+                        <div class="product card h-125">
                             <a class="imgbox"
                                href="{% url 'listarEspecialidadxCurso' id_especialidad=especialidad.pk %}">
                                 <img class="" src="{{ media_path }}{{ especialidad.foto.name }}/">
                             </a>
-                            <div class="specifies recent-work-vertical card-img-overlay d-flex align-items-end"
+                            <div class="specifies"
                                  style="pointer-events: none">
                                 <div class="service-work-content text-left text-light">
                                     <h5 class="card-title ml-2" id="nombresito"
@@ -235,14 +235,13 @@
                                         </div>
                                         <div class="col-6">
                                             <div class="row" style="height:100%; width: 300px; pointer-events: all">
-                                                <a class="nav-link icon-indicator"
-                                                   href="{% url 'editarEspecialidad' id_especialidad=especialidad.pk %}"
+                                                <a class="nav-link icon-indicator" href="{% url 'editarEspecialidad' id_especialidad=especialidad.pk %}"
                                                    role="link">
                                                     <div class="fas fa-pen iconSize iconColorNBorder"
                                                          style="text-align: center;">
                                                     </div>
                                                 </a>
-                                                <a class="nav-link icon-indicator" href="{% url 'listarEspecialidad' %}"
+                                                <a class="nav-link icon-indicator" href="{% url 'eliminarEspecialidad' id_especialidad=especialidad.pk %}"
                                                    role="link">
                                                     <div class="fas fa-power-off iconSize iconColorNBorder"
                                                          style="text-align: center;">

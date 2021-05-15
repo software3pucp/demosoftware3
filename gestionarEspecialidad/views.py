@@ -74,3 +74,12 @@ def editarEspecialidad(request, id_especialidad):
         'ListaUsuarios': ListaUsuarios
     }
     return render(request, 'gestionarEspecialidad/editarEspecialidad.html', context)
+
+
+def eliminarEspecialidad(request, id_especialidad):
+    especialidad = Especialidad.objects.get(pk=id_especialidad)
+    fakuPK = especialidad.facultad.pk
+    especialidad.delete()
+    print("->>>>>>>>>>>>>>>")
+    print(fakuPK)
+    return listarFacultadxEsp(request, fakuPK)
