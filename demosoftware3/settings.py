@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'gestionarCurso',
     'gestionarSemestre',
     'gestionarEvaluacion',
+    'gestionarPlanMedicion',
 ]
 
 MIDDLEWARE = [
