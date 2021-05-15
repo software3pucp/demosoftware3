@@ -9,5 +9,6 @@ urlpatterns = [
     #path('login/', views.RenderLogin.as_view(), name="login"),
     path('add/', views.Register, name='user'),
     path('',views.Show, name='showUsers'),
-    path('edit/<pk>', views.Edit, name='editUsers')
+    path('edit/<pk>', views.Edit, name='editUsers'),
+    path('del/<pk>', views.Delete, name='deleteUser')
 ]

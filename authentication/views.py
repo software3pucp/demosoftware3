@@ -49,3 +49,8 @@ def Edit(request,pk):
     }
     
     return render(request,'authentication/User_Edit.html',context)
+
+def Delete(request, pk):
+    user = User.objects.get(pk=pk)
+    user.delete()
+    return redirect(Show)
