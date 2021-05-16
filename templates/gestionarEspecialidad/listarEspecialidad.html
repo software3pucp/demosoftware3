@@ -4,7 +4,6 @@
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
     <style>
-
         .product {
             overflow: hidden
         }
@@ -41,7 +40,7 @@
             margin-top: -0.4em;
             margin-bottom: 0.7em;
         }
-
+        
         .tooltip-inner {
             background-color: #ffffff;
             color: rgb(22, 87, 175);
@@ -84,7 +83,8 @@
         </div>
         <div class="row mt-2">
             {% for especialidad in ListaEspecialidad %}
-                <div class="card-group" style="width: 18rem;">
+                <div class="col-sm-12 col-md-6 col-lg-4">
+                <div class="card-group" >
                     <div class="product card mr-4 mb-4">
                         <div class="card-img-top imgbox">
                             <a href="{% url 'listarEspecialidadxCurso' id_especialidad=especialidad.pk %}">
@@ -116,6 +116,8 @@
                     </div>
                 </div>
                 </div>
+                </div>
+
             {% endfor %}
         <div class="col-4">
             <a class="card" href="{% url 'agregarEspecialidad' id_facultad=id_facultad %}">
