@@ -31,4 +31,5 @@ urlpatterns = [
     path('gestionarResultados/', include('gestionarResultados.urls')),
     path('gestionarEvaluacion/',include('gestionarEvaluacion.urls')),
     path('gestionarPlanMedicion/',include('gestionarPlanMedicion.urls')),
+    path('gestionarIndicadores/', include('gestionarIndicadores.urls'))
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

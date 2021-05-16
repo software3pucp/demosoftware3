@@ -45,14 +45,9 @@
             </h5></a>
         </div>
     </div>
-
     <hr style="background-color: #0154ae;">
-
-
     <div class="card">
-
         <div class="card-body">
-
             <div class="d-flex justify-content-center">
                 <div class="col-8">
                     <div class="btn btn-falcon-primary mb-2" href="#agregarNivelNuevo" data-toggle="modal"
@@ -110,7 +105,6 @@
         </div>
     </div>
 
-
     <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
          id="agregarNivelNuevo" tabindex="-1" role="dialog"
          aria-labelledby="settings-modal-label" aria-hidden="true"
@@ -158,55 +152,6 @@
         </div>
     </div>
 
-    {% comment %}
-<div class="modal fade modal-fixed-right modal-theme overflow-hidden"
-         id="editarNivel" tabindex="-1" role="dialog"
-         aria-labelledby="settings-modal-label" aria-hidden="true"
-         data-options='{"autoShow":true,"autoShowDelay":10,"showOnce":false}'>
-
-        <div class="modal-dialog modal-dialog-vertical" style="opacity: 0.90" role="document">
-            <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar" style="background-color: #017ECD;">
-
-                <div class="modal-body">
-                    <div class="row d-flex justify-content-center">
-                        <h5 style="color: #f9fafd; font-family:Montserrat">Agregar Nivel</h5>
-                        <hr style="background-color: #f9fafd; width: 70%">
-                    </div>
-
-                    <div class="row d-flex justify-content-center m-2">
-                        <form name="formAgregar" id="formAgregar">
-                            <input id="pkEditado" type="text" value="" hidden>
-                            <div class="form-group row">
-                                <label name="name" for="name"
-                                       class="col-sm-4 col-form-label">Nombre</label>
-                                <input type="text" class="form-control col-sm-8" id="name" name="name">
-                            </div>
-                            <br>
-                            <div class="form-group row">
-                                <label name="value" for="value"
-                                       class="col-sm-4 col-form-label">Valor</label>
-                                <input type="value" class="form-control col-sm-8" id="value" name="value">
-                            </div>
-                            <br>
-                            <div class="form-group row m-3 p-2">
-                                <div class="col-6">
-                                    <button class="btn btn-secondary" type="button"
-                                            data-dismiss="modal" aria-label="Close">Cancelar
-                                    </button>
-                                </div>
-                                <div class="col-6">
-                                    <button
-                                            type="button" class="btn btn-primary" onclick="editar()">Agregar
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-{% endcomment %}
 {% endblock %}
 
 {#Aquí coloco el JS particular de la web#}
@@ -216,7 +161,6 @@
 
     <script>
         function agregar() {
-
 
             $.ajax({
                 type: 'POST',

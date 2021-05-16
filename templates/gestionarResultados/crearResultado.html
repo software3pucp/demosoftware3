@@ -55,12 +55,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3>Indicadores del Resultado del Estudiante</h3>
-                            </div>
-                        </div>
-                        <hr style="background-color: #0154ae;">
+
                         <div class="row">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <a class="btn btn-outline-primary m-1" type="button" href="{% url 'listarResultado' %}">Cancelar</a>
@@ -68,22 +63,8 @@
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            <div class="d-flex justify-content-center">
-                <div class="col-12">
                     {% if registrado %}
-                        <div class="d-flex flex-row">
-                            <div class="d-flex flex-column">
-                                <div class="d-flex justify-content-center">
-                                    <b><p>Regultado registrado</p></b>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="alert alert-success m-2" role="alert">Resultado del estudiante registrado</div>
                     {% endif %}
                 </div>
             </div>

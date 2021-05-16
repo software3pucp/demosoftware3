@@ -14,7 +14,7 @@
                 <div class="col-12">
                     <div class="row d-flex justify-content-center">
                         <div class="col-10">
-                            <h4 id="Titulo"> Editar Resultado del Estudiante</h4>
+                            <h4> Editar Resultado del Estudiante</h4>
                         </div>
                         <div class="col-2">
                             <a href="{% url 'listarResultado' %}">
@@ -59,7 +59,7 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <h3>Indicadores del Resultado del Estudiante</h3>
+                                <h4>Indicadores del Resultado del Estudiante</h4>
                             </div>
                         </div>
                         <hr style="background-color: #0154ae;">
@@ -76,22 +76,6 @@
             </div>
         </div>
     </div>
-    <div class="card">
-        <div class="card-body">
-            <div class="d-flex justify-content-center">
-                <div class="col-12">
-                    {% if flag %}
-                        <div class="d-flex flex-row">
-                            <div class="d-flex flex-column">
-                                <div class="d-flex justify-content-center">
-                                    <b><p>Resultado actualizado</p></b>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
+
 
 {% endblock %}
