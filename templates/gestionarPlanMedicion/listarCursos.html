@@ -193,7 +193,7 @@
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <div class="col-md-12">
-                    <h3 class="mb-0"> {{ facultad }} - Cursos a ser evaluados </h3>
+                    <h3 class="mb-0"> Cursos a ser evaluados </h3>
                     <hr>
                 </div>
             </div>
@@ -201,7 +201,7 @@
             <div class="d-flex justify-content-end">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <select name="estado" class="form-control" id="exampleFormControlSelect1">
+                        <select id="estado" name="estado" class="form-control" id="exampleFormControlSelect1">
                             {% for estado in estados %}
                                 <option value={{ estado }}>{{ estado }}</option>
                             {% endfor %}
@@ -295,4 +295,50 @@
 
         </div>
     </div>
+{% endblock %}
+
+{#Aquí coloco el JS particular de la web#}
+{% block extrajs %}
+    <script>
+
+        $(document).ready(function () {
+            console.log("ready!");
+        });
+
+        function accion(){
+
+                console.log($("#selection").val())
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'listarCursos'%}",
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        seleccion: $("#estado").val(),
+                    },
+                    success: function (response) {
+
+                        var instance = JSON.parse(response["newLanguage"]);
+                        var fields = instance[0]["fields"];
+
+                        data = '<div class="col">'+
+                           '<div class="card" style="width: 18rem;">'+
+                            '    <div class="card-body">'+
+                             '       <h5 class="card-title">'+ fields.name +'</h5>'+
+                              '      <h6 class="card-subtitle mb-2 text-muted">'+ fields.longitud +'</h6>'+
+                               ' </div>'+
+                            '</div>'+
+                        '</div>'
+
+                        $("#aquiMetemosData").append(data);
+
+                    },
+                    error: function (response) {
+                        // alert the error if any error occured
+                        alert(response["responseJSON"]["error"]);
+                    }
+                });
+            }
+
+    </script>
 {% endblock %}

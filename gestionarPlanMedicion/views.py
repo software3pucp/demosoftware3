@@ -1,14 +1,23 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from gestionarCurso.models import Curso
 
 # Create your views here.
+from gestionarEspecialidad.models import Especialidad
+from gestionarFacultad.models import Facultad
+
 
 def listarCursos(request):
-    facultad = "Ingenieria Informática"
+
+    if request.POST:
+        print('*******************************************************************************************************')
+        print(request.POST)
+        print('*******************************************************************************************************')
+        return JsonResponse({"response": 'Correct'}, status=200)
+
     estados = ["Activo","Inactivo"]
-    cursos = Curso.objects.filter(especialidad=1)
+    cursos = Curso.objects.filter()
     context = {
-        'facultad' : facultad,
         'estados' : estados,
         'cursos' : cursos
     }
