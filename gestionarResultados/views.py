@@ -1,6 +1,6 @@
 import requests
 from django.shortcuts import render
-
+from django.db.models import Q
 # Create your views here.
 from gestionarIndicadores.models import Indicador
 from gestionarResultados.models import ResultadoPUCP
@@ -23,7 +23,15 @@ def crearResultado(request):
      return render(request, 'gestionarResultados/crearResultado.html', context)
 
 def listarResultado(request):
-    resultados = ResultadoPUCP.objects.filter()
+    eliminado = False
+    if request.POST:
+        resultadoPk = request.POST['resultadoPk']
+        resultado = ResultadoPUCP.objects.get(pk=resultadoPk)
+        resultado.estado ='0' #eliminación lógica
+        resultado.save()
+        eliminado =True
+
+    resultados = ResultadoPUCP.objects.filter(Q(estado='1') | Q(estado='2'))
     context = {
         'resultados' : resultados,
     }

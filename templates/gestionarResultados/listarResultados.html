@@ -12,30 +12,42 @@
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <div class="col-12">
-                    <a href="{% url 'crearResultado' %}" class="btn btn-primary mr-1 mb-1">Añadir</a>
+                     <div style="margin: 1%;">
+                        <a href="{% url 'crearResultado' %}" class="btn btn-primary mr-1 mb-1">Añadir</a>
+                     </div>
                     {% for resultado in resultados %}
                         <div style="margin: 1%;">
                             <div class="card text-white bg-primary">
                                 <div class="card-body">
-                                    <div class="row no-gutters">
-                                        <div class="col-md-1">
-                                            <h2 class="card-text text-white">{{ resultado.codigo }}</h2>
-                                        </div>
-                                        <div class="col-md-9 border-left border-right p-2">
-                                            <p>{{ resultado.descripcion }}</p>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="d-flex justify-content-center">
-                                                <a href="{% url 'editarResultado' pk=resultado.pk %}" class="btn btn-falcon-primary mr-1 mb-1">
-                                                    Editar
-                                                </a>
+                                    <form action="{% url 'listarResultado' %}" method="post">
+                                        {% csrf_token %}
+                                        <div class="row no-gutters">
+                                            <div class="col-md-1">
+                                                <h2 class="card-text text-white">{{ resultado.codigo }}</h2>
                                             </div>
-                                            <div class="d-flex justify-content-center">
-                                                <button class="btn btn-falcon-primary mr-1 mb-1" type="button">Activar
-                                                </button>
+                                            <div class="col-md-9 border-left border-right p-2">
+                                                <p>{{ resultado.descripcion }}</p>
+                                            </div>
+                                            <div class="col-md-2 ">
+                                                <div class="d-flex justify-content-center">
+                                                    <a href="{% url 'editarResultado' pk=resultado.pk %}"
+                                                       class="btn btn-falcon-primary mr-1 mb-1">Editar</a>
+                                                </div>
+                                                <div class="d-flex justify-content-center">
+                                                    <button class="btn btn-falcon-primary mr-1 mb-1" type="button">
+                                                        Activar
+                                                    </button>
+                                                </div>
+                                                <div class="d-flex justify-content-center">
+                                                    <input type="hidden" id="resultadoPk" name="resultadoPk"
+                                                           value="{{ resultado.pk }}">
+                                                    <button type="submit" class="btn btn-falcon-primary mr-1 mb-1">
+                                                        Eliminar
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -44,5 +56,4 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
