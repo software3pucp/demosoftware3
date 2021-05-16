@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from gestionarRE import views
+from gestionarREAcreditadoras import views
 
 urlpatterns = [
     # path( url hijo, backend, nombre de la variable)

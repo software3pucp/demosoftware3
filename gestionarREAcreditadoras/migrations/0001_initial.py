@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('codigo', models.CharField(blank=True, default='', max_length=10, null=True)),
                 ('descripcion', models.CharField(blank=True, default='', max_length=150, null=True)),
                 ('estado', models.CharField(blank=True, choices=[('0', 'Eliminado'), ('1', 'Activo'), ('2', 'Inactivo')], default='2', max_length=2, null=True)),
-                ('acreditadora', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='gestionarRE.acreditadora')),
+                ('acreditadora', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='gestionarREAcreditadoras.acreditadora')),
             ],
         ),
         migrations.CreateModel(
@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('codigo', models.CharField(blank=True, default=None, max_length=10, null=True)),
                 ('descripcion', models.CharField(blank=True, default=None, max_length=150, null=True)),
-                ('resultadosAcreditadora', models.ManyToManyField(to='gestionarRE.ResultadoAcreditadora')),
+                ('resultadosAcreditadora', models.ManyToManyField(to='gestionarREAcreditadoras.ResultadoAcreditadora')),
             ],
         ),
     ]

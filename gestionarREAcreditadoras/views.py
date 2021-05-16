@@ -1,6 +1,6 @@
 import requests
 from django.shortcuts import render
-from gestionarRE.models import Acreditadora,ResultadoAcreditadora
+from gestionarREAcreditadoras.models import Acreditadora,ResultadoAcreditadora
 
 # Create your views here.
 
@@ -9,7 +9,7 @@ def listarRE(request):
     context = {
         'resultados' : resultados,
     }
-    return render(request,'gestionarRE/listarRE.html',context)
+    return render(request,'gestionarREAcreditadoras/listarRE.html',context)
 
 
 def editarRE(request,pk):
@@ -46,7 +46,7 @@ def editarRE(request,pk):
         'resultadoAcreditadora': resultadoAcreditadora,
         'flag' : flag,
     }
-    return render(request,'gestionarRE/editarRE.html',context)
+    return render(request,'gestionarREAcreditadoras/editarRE.html',context)
 
 def eliminarRE(request,pk):
 

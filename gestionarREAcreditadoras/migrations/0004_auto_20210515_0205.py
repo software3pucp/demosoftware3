@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('gestionarResultados', '0002_auto_20210514_1738'),
-        ('gestionarRE', '0003_auto_20210515_0204'),
+        ('gestionarREAcreditadoras', '0003_auto_20210515_0204'),
     ]
 
     operations = [
