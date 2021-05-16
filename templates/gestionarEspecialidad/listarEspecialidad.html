@@ -44,9 +44,13 @@
 
         .tooltip-inner {
             background-color: #ffffff;
-            color: rgba(1, 126, 205, 1);
+            color: rgb(22, 87, 175);
         }
 
+        .tooltip.bs-tooltip-top .arrow:before {
+            border-top-color: rgb(22, 87, 175);
+        !important;
+        }
     </style>
 
 {% endblock %}
@@ -80,53 +84,54 @@
         </div>
         <div class="row mt-2">
             {% for especialidad in ListaEspecialidad %}
-                <div class="card-group">
-                    <div class="product card mr-4 mb-4" style="width: 20rem">
+                <div class="card-group" style="width: 18rem;">
+                    <div class="product card mr-4 mb-4">
                         <div class="card-img-top imgbox">
                             <a href="{% url 'listarEspecialidadxCurso' id_especialidad=especialidad.pk %}">
                                 <img class="img-fluid" src="{{ media_path }}{{ especialidad.foto.name }}/">
                             </a>
                         </div>
-                        <div class="specifies card-body" style="padding: 0.75rem">
-                            <h5 class="card-title ml-2">{{ especialidad.nombre }}</h5>
-                            <hr class="divider">
-                            <div class="row">
-                                <div class="col">
-                                    <a class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip"
-                                       data-placement="top"
-                                       title="Eliminar"
-                                       href="{% url 'eliminarEspecialidad' id_especialidad=especialidad.pk %}"
-                                       role="link">
-                                        <div class="fas fa-power-off iconColorNBorder"></div>
-                                    </a>
-                                    <a class="float-right mr-4 tooltip-inner arrow" data-toggle="tooltip"
-                                       data-placement="top"
-                                       title="Editar"
-                                       href="{% url 'editarEspecialidad' id_especialidad=especialidad.pk %}"
-                                       role="link">
-                                        <div class="fas fa-pen iconColorNBorder"></div>
-                                    </a>
-                                </div>
+                        <div class="specifies card-body p-1"
+                        ">
+                        <h5 class="card-title ml-2">{{ especialidad.nombre }}</h5>
+                        <hr class="divider">
+                        <div class="row">
+                            <div class="col">
+                                <a class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip"
+                                   data-placement="top"
+                                   title="Eliminar"
+                                   href="{% url 'eliminarEspecialidad' id_especialidad=especialidad.pk %}"
+                                   role="link">
+                                    <div class="fas fa-power-off iconColorNBorder"></div>
+                                </a>
+                                <a class="float-right mr-4 tooltip-inner arrow" data-toggle="tooltip"
+                                   data-placement="top"
+                                   title="Editar"
+                                   href="{% url 'editarEspecialidad' id_especialidad=especialidad.pk %}"
+                                   role="link">
+                                    <div class="fas fa-pen iconColorNBorder"></div>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
+                </div>
             {% endfor %}
-            <div class="col-4">
-                <a class="card" href="{% url 'agregarEspecialidad' id_facultad=id_facultad %}">
-                    <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
-                        <div class="mt-4" style="text-align: center;">
-                            <span class="fas fa-plus fa-9x" style="text-align: center"></span>
-                        </div>
+        <div class="col-4">
+            <a class="card" href="{% url 'agregarEspecialidad' id_facultad=id_facultad %}">
+                <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
+                    <div class="mt-4" style="text-align: center;">
+                        <span class="fas fa-plus fa-9x" style="text-align: center"></span>
                     </div>
+                </div>
+                <div class="">
                     <div class="">
-                        <div class="">
-                            <h5 class="card-title mt-6" style="text-align: center">Agregar Especialidad</h5>
-                        </div>
+                        <h5 class="card-title mt-6" style="text-align: center">Agregar Especialidad</h5>
                     </div>
-                </a>
-            </div>
+                </div>
+            </a>
         </div>
+    </div>
     </div>
 {% endblock %}
 
