@@ -32,12 +32,15 @@ def editarIndicador(request, pk):
 def listarIndicadorxResultado(request,id_resultado):
     flag = False
     if request.POST:
+        print('-------------------------------------------------------------')
+        print(request)
+        print('-------------------------------------------------------------')
         indicador = Indicador.objects.get(pk=request.POST['indicadorPK'])
         indicador.estado = 0  #eliminación lógica
         indicador.save()
         flag = True
 
-    listaIndicadores = Indicador.objects.filter()
+    listaIndicadores = Indicador.objects.filter(estado=1)
     context = {
         'listaIndicadores': listaIndicadores,
         'flag': flag
