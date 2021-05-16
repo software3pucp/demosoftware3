@@ -6,8 +6,11 @@
 
     <link href="{% static 'lib/flatpickr/flatpickr.min.css' %}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-
+        #Titulo {
+            color: #0154ae
+        }
     </style>
 
 {% endblock %}
@@ -17,60 +20,113 @@
 
     {#AQUI COLOQUEN EL CÓDIGO#}
 
-    <div class="card mb-3">
-        <div class="card-header">
-            <div class="row align-items-center justify-content-between">
-                <div class="col-8 col-sm-auto ml-auto text-right pl-0">
-                    <div id="dashboard-actions">
-                        <!-- Button trigger modal-->
-                        <a href="" data-toggle="modal" data-target="#agregarAlumno"
-                           class="btn btn-outline-primary btn-sm" type="button">
-                            <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
-                                 aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
-                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
-                                 style="transform-origin: 0.4375em 0.625em;">
-                                <g transform="translate(224 256)">
-                                    <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
-                                        <path fill="currentColor"
-                                              d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
-                                              transform="translate(-224 -256)"></path>
-                                    </g>
-                                </g>
-                            </svg>
-                            <span class="d-none d-sm-inline-block ml-1">Agregar Estudiante</span>
-                        </a>
-                        <a href="    " class="btn btn-outline-dark btn-sm" type="button">
-                            <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
-                                 aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
-                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
-                                 style="transform-origin: 0.4375em 0.625em;">
-                                <g transform="translate(224 256)">
-                                    <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
-                                        <path fill="currentColor"
-                                              d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
-                                              transform="translate(-224 -256)"></path>
-                                    </g>
-                                </g>
-                            </svg>
-                            <span class="d-none d-sm-inline-block ml-1">Importar Estudiante</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
+    {# Rubrica #}
+
+    <div class="row d-flex justify-content-center ">
+        <div class="col-10">
+            <h4 id="Titulo" style="font-family: Montserrat">Rúbrica para evaluación</h4>
+        </div>
+        <div class="col-2">
+        </div>
+    </div>
+    <hr class="mb-3" style="background-color: #0154ae;">
+
+
+    <div class="row d-flex mb-3">
+        <div class="col-3">
+            <label for="cboIndicador">Indicador:</label>
+            <select class="custom-select custom-select-sm mb-3" id="cboIndicador" name="cboIndicador"
+                    onchange="muestraRubrica()">
+                {% for indicador in listaIndicador %}
+                    <option value={{ indicador.pk }}>{{ indicador.codigo }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-3">
+            <label for="cboHorario">Horario:</label>
+            <select class="custom-select custom-select-sm mb-3" id="cboHorario" name="cboHorario">
+                <option selected="">H101</option>
+                <option value="1">H102</option>
+                <option value="2">H103</option>
+                <option value="3">H104</option>
+            </select>
         </div>
 
+        <div class="col-1"></div>
+        <div class="col-2">
+            <button class="btn btn-outline-primary"
+            "><i class="fa fa-download"></i> Rubrica
+            </button>
+        </div>
+        <div class="col-3">
+            <button class="btn btn-outline-primary"><i class="fa fa-download"></i> Evidencias</button>
+        </div>
+
+    </div>
+    <div class="card col-12 p-0 mb-4">
         <div class="card-body p-0">
-            <div class="dashboard-data-table">
-                <table class="table table-sm table-dashboard fs--1 table-hover data-table border-bottom dataTable no-footer"
+            <table class="table table-bordered" id="tablaNivel" name="tablaNivel">
+                <!------------------------------------------------------------------------->
+            </table>
+
+        </div>
+    </div>
+
+    {# Alumno Lista #}
+    <div class="row align-items-center mb-3 justify-content-between">
+        <div class="col-8 col-sm-auto ml-auto text-right pl-0">
+            <div id="dashboard-actions">
+                <!-- Button trigger modal-->
+                <a href="" data-toggle="modal" data-target="#agregarAlumno"
+                   class="btn btn-primary btn-sm" type="button">
+                    <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
+                         aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
+                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
+                         style="transform-origin: 0.4375em 0.625em;">
+                        <g transform="translate(224 256)">
+                            <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
+                                <path fill="currentColor"
+                                      d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                                      transform="translate(-224 -256)"></path>
+                            </g>
+                        </g>
+                    </svg>
+                    <span class="d-none d-sm-inline-block ml-1">Agregar Estudiante</span>
+                </a>
+                <a href="    " class="btn btn-secondary btn-sm" type="button">
+                    <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
+                         aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
+                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
+                         style="transform-origin: 0.4375em 0.625em;">
+                        <g transform="translate(224 256)">
+                            <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
+                                <path fill="currentColor"
+                                      d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                                      transform="translate(-224 -256)"></path>
+                            </g>
+                        </g>
+                    </svg>
+                    <span class="d-none d-sm-inline-block ml-1">Importar Estudiante</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card mb-3">
+
+        <div class="card-body p-0">
+            <div class="dashboard-data-table" style="text-align: center">
+                <table class="table table-sm table-dashboard m-0 fs--1 table-hover data-table dataTable no-footer"
                        data-options="{&quot;responsive&quot;:false,&quot;pagingType&quot;:&quot;simple&quot;,&quot;lengthChange&quot;:false,&quot;searching&quot;:false,&quot;pageLength&quot;:8,&quot;columnDefs&quot;:[{&quot;targets&quot;:[0,6],&quot;orderable&quot;:false}],&quot;language&quot;:{&quot;info&quot;:&quot;_START_ to _END_ Items of _TOTAL_ — <a href=\&quot;#!\&quot; class=\&quot;font-weight-semi-bold\&quot;> view all <span class=\&quot;fas fa-angle-right\&quot; data-fa-transform=\&quot;down-1\&quot;></span> </a>&quot;},&quot;buttons&quot;:[&quot;copy&quot;,&quot;excel&quot;]}"
                        id="DataTables_Table_0">
                     <!-------REVISAR LO QUE ESTA EN DATA OPTIONS --->
                     <thead class="bg-200 text-900">
                     <tr>
-                        <th class="sort pr-1 align-middle">Codigo</th>
-                        <th class="sort pr-1 align-middle">Estudiante</th>
-                        <th class="sort pr-1 align-middle">Puntuacion</th>
-                        <th class="sort pr-1 align-middle  ">Acciones</th>
+                        <th class=" pr-1 align-middle">Codigo</th>
+                        <th class=" pr-1 align-middle">Estudiante</th>
+                        <th class=" pr-1 align-middle">Puntuacion</th>
+                        <th class=" pr-1 align-middle  ">Acciones</th>
                     </tr>
                     </thead>
                     <tbody id="tablaAlumno">
@@ -80,137 +136,60 @@
                             <th class="align-middle">{{ alumno.codigoAlumno }}</th>
                             <th class="align-middle"> {{ alumno.nombreAlumno }} </th>
                             <th class="align-middle">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                           id="inlineRadio1" value="option1">
-                                    <label class="form-check-label" for="inlineRadio1">1</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                           id="inlineRadio2" value="option2">
-                                    <label class="form-check-label" for="inlineRadio2">2</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                           id="inlineRadio3" value="option3">
-                                    <label class="form-check-label" for="inlineRadio3">3</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                           id="inlineRadio4" value="option4">
-                                    <label class="form-check-label" for="inlineRadio4">4</label>
+                                <form>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                               id="inlineRadio1" value="option1">
+                                        <label class="form-check-label" for="inlineRadio1">1</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                               id="inlineRadio2" value="option2">
+                                        <label class="form-check-label" for="inlineRadio2">2</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                               id="inlineRadio3" value="option3">
+                                        <label class="form-check-label" for="inlineRadio3">3</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                               id="inlineRadio4" value="option4">
+                                        <label class="form-check-label" for="inlineRadio4">4</label>
+                                    </div>
+
+
+                                </form>
+                            </th>
+                            <th>
+                                <div class="row">
+                                    <div class="col">
+                                        <a href="" class="badge badge rounded-capsule badge-soft-info">Editar</a>
+                                    </div>
+                                    <div class="col">
+                                        <button type="submit"
+                                                class="badge rounded-capsule badge-soft-danger outline-none">
+                                            <span>Eliminar</span>
+                                        </button>
+                                    </div>
+                                    <div class="col">
+                                        <button type="submit"
+                                                class="badge rounded-capsule badge-soft-danger outline-none">
+                                            <span>Eliminar</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </th>
-
-
                         </tr>
                     {% endfor %}
-
-                    <!--
-                        <tr class="btn-reveal-trigger">
-                            <th class="align-middle"> 5 </th>
-                            <th class="align-middle">todo</th>
-                            <td class="align-middle">125</td>
-                            <td class="align-middle text-right fs-0">
-                                <form action="/gestionarNivel/listar/" method="post">
-                                    <input type="hidden" name="csrfmiddlewaretoken" value="RjnRrTkuMrLSCSOfCOZZJV3KctghRXsUHOYpXeXVYgNklW0XotkaU2kiBc2tI7sQ">
-                                    <div class="row">
-                                        <div class="col">
-                                            <a href="/gestionarNivel/editar/5" class="badge badge rounded-capsule badge-soft-info">Editar</a>
-                                        </div>
-                                        <div class="col">
-
-                                            <button type="submit" class="badge rounded-capsule badge-soft-danger outline-none">
-                                                <span>Eliminar</span>
-                                            </button>
-
-                                        </div>
-                                    </div>
-                                    <input type="hidden" id="nivelPk" name="nivelPk" value="5">
-                                </form>
-                            </td>
-                        </tr>
-                        -->
-
                     </tbody>
                 </table>
             </div>
-            <!--------------------------------------------------------------------------------
-            <div class="falcon-data-table">
-                <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-                    <div class="row mx-1">
-                        <div class="col-sm-12 col-md-6"></div>
-                        <div class="col-sm-12 col-md-6"></div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200 dataTable no-footer"
-                               data-options="{&quot;searching&quot;:false,&quot;responsive&quot;:false,&quot;info&quot;:false,&quot;lengthChange&quot;:false,&quot;sWrapper&quot;:&quot;falcon-data-table-wrapper&quot;,&quot;dom&quot;:&quot;<'row mx-1'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>><'table-responsive'tr><'row no-gutters px-1 py-3 align-items-center justify-content-center'<'col-auto'p>>&quot;,&quot;language&quot;:{&quot;paginate&quot;:{&quot;next&quot;:&quot;<span class=\&quot;fas fa-chevron-right\&quot;></span>&quot;,&quot;previous&quot;:&quot;<span class=\&quot;fas fa-chevron-left\&quot;></span>&quot;}}}"
-                               id="DataTables_Table_0" role="grid">
-                            <thead class="bg-200 text-900">
-                            <tr role="row">
-                                <th class="align-middle no-sort sorting_asc" tabindex="0"
-                                    aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending"
-                                    aria-label=": activate to sort column descending" style="width: 50px;"></th>
-                                <th class="align-middle sort sorting" tabindex="0" aria-controls="DataTables_Table_0"
-                                    rowspan="1" colspan="1" aria-label="Nombre: activate to sort column ascending"
-                                    style="width: 245.203px;">Nombre
-                                </th>
-                                <th class="align-middle sort pr-7 sorting" tabindex="0"
-                                    aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                    aria-label="Código: activate to sort column ascending" style="width: 217.203px;">
-                                    Código
-                                </th>
-                                <th class="align-middle sort sorting" style="min-width: 12.5rem; width: 639.203px;"
-                                    tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                    aria-label="Correo: activate to sort column ascending">Correo
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody id="orders">
-
-                            <tr class="odd">
-                                <td valign="top" colspan="4" class="dataTables_empty">No hay alumnos a evaluar. Ingrese
-                                    alguno
-                                </td>
-                            </tr>
-                            </tbody>
-
-                        </table>
-                    </div>
-                    <div class="row no-gutters px-1 py-3 align-items-center justify-content-center">
-                        <div class="col-auto">
-                            <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
-                                <ul class="pagination pagination-sm">
-                                    <li class="paginate_button page-item previous disabled"
-                                        id="DataTables_Table_0_previous"><a href="#" aria-controls="DataTables_Table_0"
-                                                                            data-dt-idx="0" tabindex="0"
-                                                                            class="page-link"><span class=""
-                                                                                                    data-fa-i2svg=""><svg
-                                            class="svg-inline--fa fa-chevron-left fa-w-10" aria-hidden="true"
-                                            focusable="false" data-prefix="fas" data-icon="chevron-left" role="img"
-                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path
-                                            fill="currentColor"
-                                            d="M34.52 239.03L228.87 44.69c9.37-9.37 24.57-9.37 33.94 0l22.67 22.67c9.36 9.36 9.37 24.52.04 33.9L131.49 256l154.02 154.75c9.34 9.38 9.32 24.54-.04 33.9l-22.67 22.67c-9.37 9.37-24.57 9.37-33.94 0L34.52 272.97c-9.37-9.37-9.37-24.57 0-33.94z"></path></svg></span></a>
-                                    </li>
-                                    <li class="paginate_button page-item next disabled" id="DataTables_Table_0_next"><a
-                                            href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0"
-                                            class="page-link"><span class="" data-fa-i2svg=""><svg
-                                            class="svg-inline--fa fa-chevron-right fa-w-10" aria-hidden="true"
-                                            focusable="false" data-prefix="fas" data-icon="chevron-right" role="img"
-                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path
-                                            fill="currentColor"
-                                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"></path></svg></span></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            ---------------------------------------------------------------------------------->
         </div>
     </div>
+
+
+
     <!-- Modal-->
     <div class="modal fade" id="agregarAlumno" tabindex="-1" role="dialog" aria-labelledby="agregarAlumnoLabel"
          aria-hidden="true">
@@ -299,28 +278,28 @@
                     data = '<tr class="btn-reveal-trigger">' +
                         '<th class="align-middle">' + fields.codigoAlumno + '</th>' +
                         '<th class="align-middle">' + fields.nombreAlumno + '</th>' +
-                        '                             <th class="align-middle">'+
-                                ' <div class="form-check form-check-inline">' +
-                                    ' <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
-                                         '   id="inlineRadio1" value="option1">' +
-                                  '   <label class="form-check-label" for="inlineRadio1">1</label>' +
-                                ' </div>' +
-                               '  <div class="form-check form-check-inline">' +
-                                   '  <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
-                                     '       id="inlineRadio2" value="option2">' +
-                                  '   <label class="form-check-label" for="inlineRadio2">2</label>' +
-                              '   </div>' +
-                             '    <div class="form-check form-check-inline">' +
-                              '       <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
-                               '             id="inlineRadio3" value="option3">' +
-                                '     <label class="form-check-label" for="inlineRadio3">3</label>' +
-                              '   </div>' +
-                              '   <div class="form-check form-check-inline">' +
-                              '       <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
-                              '              id="inlineRadio4" value="option4">' +
-                               '      <label class="form-check-label" for="inlineRadio4">4</label>' +
-                              '   </div>' +
-                           '  </th>  '+
+                        '                             <th class="align-middle">' +
+                        ' <div class="form-check form-check-inline">' +
+                        ' <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
+                        '   id="inlineRadio1" value="option1">' +
+                        '   <label class="form-check-label" for="inlineRadio1">1</label>' +
+                        ' </div>' +
+                        '  <div class="form-check form-check-inline">' +
+                        '  <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
+                        '       id="inlineRadio2" value="option2">' +
+                        '   <label class="form-check-label" for="inlineRadio2">2</label>' +
+                        '   </div>' +
+                        '    <div class="form-check form-check-inline">' +
+                        '       <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
+                        '             id="inlineRadio3" value="option3">' +
+                        '     <label class="form-check-label" for="inlineRadio3">3</label>' +
+                        '   </div>' +
+                        '   <div class="form-check form-check-inline">' +
+                        '       <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
+                        '              id="inlineRadio4" value="option4">' +
+                        '      <label class="form-check-label" for="inlineRadio4">4</label>' +
+                        '   </div>' +
+                        '  </th>  ' +
                         '</tr>'
 
                     $("#tablaAlumno").append(data);
@@ -334,5 +313,49 @@
         }
     </script>
 
+    <script>
+        function muestraRubrica() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'muestraRubrica'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    indicadorSeleccionado: $("#cboIndicador").val()
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["niveles"]);
+                    var i;
+                    var numero = instance.length;
+
+                    cabecera = '<thead class="thead">' +
+                        +'<tr>' +
+                        '<th style="color: #f9fafd; background-color: #0154ae"></th>' +
+                        '<th colspan="' + numero + '" style="color: #f9fafd; background-color: #0154ae">Niveles</th>' +
+                        '</tr>' +
+                        '<tr id="cabezaIndicadorNiveles">' +
+                        '<th scope="col" style="color: #f9fafd; background-color: #0154ae">Indicador de Desempeño</th>'
+
+                    cuerpo = '</tr>' +
+                        '</thead>' +
+                        '<tbody>' +
+                        '<tr id="cuerpoIndicadorNiveles">' +
+                        '<td>2.1 Diseña una solucion informatica bvuscando satisfacer necesidades.</td>'
+
+                    for (i = 0; i < numero; i++) {
+                        cabecera += ('<th scope="col" style="color: #0c0c0c; background-color: #D3D3D3">' + instance[i]["fields"].name + '</th>');
+                        cuerpo += '<td>' + instance[i]["fields"].value + '</td>';
+                    }
+
+                    cuerpo += ('</tr>' + '</tbody>');
+                    cabecera += cuerpo;
+                    $("#tablaNivel").html(cabecera);
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+    </script>
 
 {% endblock %}

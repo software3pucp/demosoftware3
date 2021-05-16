@@ -5,4 +5,5 @@ from gestionarEvaluacion import views
 urlpatterns = [
     path('listarAlumno/', views.listarAlumno, name='listarAlumno'),
     path('agregarAlumno/', views.agregarAlumno, name='agregarAlumno'),
+    path('muestraRubrica/',views.muestraRubrica,name='muestraRubrica')
 ]
