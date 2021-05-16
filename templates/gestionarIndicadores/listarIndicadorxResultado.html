@@ -85,7 +85,7 @@
                                         <th class="align-middle">{{ indicador.codigo }}</th>
                                         <td class="align-middle">{{ indicador.descripcion }}</td>
                                         <td class="align-middle text-right fs-0">
-                                            <form action="{% url 'listarIndicadorxResultado' id_resultado=resultado.pk %}" method="post">
+                                            <form action="{% url 'eliminarIndicadorxResultado' id_resultado=resultado.pk %}" method="post">
                                                 {% csrf_token %}
                                                 <div class="row">
                                                     <div class="col">
@@ -99,7 +99,7 @@
                                                         </button>
                                                     </div>
                                                 </div>
-                                                <input type="hidden" id="indicadorPK" name="indicadorPk"
+                                                <input type="hidden" id="indicador_pk" name="indicador_pk"
                                                        value="{{ indicador.pk }}">
                                             </form>
                                         </td>
@@ -169,7 +169,10 @@
     <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
 
     <script>
+        console.log({{resultado.pk}})
         function agregar() {
+
+
             $.ajax({
                 type: 'POST',
                 url: "{% url 'agregarIndicador' id_resultado=resultado.pk %}",
@@ -179,8 +182,6 @@
                     descripcionI: $("#descripcionI").val(),
                 },
                 success: function (response) {
-                    var instance = JSON.parse(response["nuevoIndicador"]);
-                    var fields = instance[0]["fields"];
                     location.reload();
                 },
                 error: function (response) {

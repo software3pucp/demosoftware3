@@ -1,6 +1,6 @@
 import requests
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core import serializers
 # Create your views here.
 from gestionarIndicadores.models import Indicador
@@ -10,16 +10,24 @@ from gestionarResultados.models import ResultadoPUCP
 
 def editarIndicador(request, pk):
     flag = False
+    indicador = Indicador.objects.get(pk=pk)
+    id_resultado= indicador.resultado_id
+    nivelLista = Nivel.objects.filter(state=1)
+
     if request.POST:
         indicador = Indicador.objects.get(pk=pk)
         indicador.codigo = request.POST['codigo']
         indicador.descripcion = request.POST['descripcion']
         indicador.save()
         flag = True
+        context = {
+            'indicador': indicador,
+            'flag': flag,
+            'id_resultado': id_resultado,
+            'nivelLista': nivelLista,
+        }
+        return render(request, 'gestionarIndicadores/editarIndicador.html', context)
 
-    indicador = Indicador.objects.get(pk=pk)
-    id_resultado= indicador.resultado_id
-    nivelLista = Nivel.objects.filter(state=1)
     context = {
         'indicador': indicador,
         'flag': flag,
@@ -30,25 +38,31 @@ def editarIndicador(request, pk):
 
 
 def listarIndicadorxResultado(request,id_resultado):
-    flag = False
-    if request.POST:
-        print('-------------------------------------------------------------')
-        print(request)
-        print('-------------------------------------------------------------')
-        indicador = Indicador.objects.get(pk=request.POST['indicadorPK'])
-        indicador.estado = 0  #eliminación lógica
-        indicador.save()
-        flag = True
-
+    print("ESTE ES EL GESTIONAR INDICADORES")
     listaIndicadores = Indicador.objects.filter(estado=1)
     context = {
         'listaIndicadores': listaIndicadores,
-        'flag': flag
+        'resultado': ResultadoPUCP.objects.get(pk=id_resultado)
     }
     return render(request, 'gestionarIndicadores/listarIndicadorxResultado.html', context)
 
 
+
+def eliminarIndicadorxResultado(request,id_resultado):
+    if request.POST:
+
+        print(request.POST)
+
+        indicador = Indicador.objects.get(pk=request.POST['indicador_pk'])
+        indicador.estado = 0
+        indicador.save()
+        flag = True
+        return redirect('editarResultado', pk=id_resultado)
+    return redirect('home')
+
+
 def agregarIndicador(request, id_resultado):
+    print(request.POST)
     codigo = request.POST['codigoI']
     descripcion = request.POST['descripcionI']
     resultado = ResultadoPUCP.objects.get(pk=id_resultado)
