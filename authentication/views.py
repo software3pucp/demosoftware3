@@ -54,3 +54,4 @@ def Delete(request, pk):
     user = User.objects.get(pk=pk)
     user.delete()
     return redirect(Show)
+

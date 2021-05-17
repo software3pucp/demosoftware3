@@ -164,3 +164,5 @@ logging.basicConfig(level=logging.DEBUG,
 logging.debug('Comienza el programa')
 logging.info('Procesando con normalidad')
 logging.warning('Advertencia')
+
+LOGIN_REDIRECT_URL='listarFacultad'
