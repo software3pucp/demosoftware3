@@ -67,10 +67,11 @@
                         <label for="exampleFormControlSelect1">Seleccione responsable(s)</label>
                         <select name="responsable" class="form-control" id="exampleFormControlSelect1">
                             {% for responsable in ListaUsuarios %}
-                                <option value="responsable.pk">{{ responsable.first_name }} {{ responsable.last_name }}</option>
+                                <option value={{ responsable.pk }}>{{ responsable.first_name }} {{ responsable.last_name }}</option>
                             {% endfor %}
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label for="exampleFormControlFile1">Ingrese una imagen para la especialidad</label>
                         <div class="input-group">
@@ -83,10 +84,11 @@
                         </div>
                         <img id='img-upload'/>
                     </div>
+
                 </div>
                 <div class="wrapper">
                     <a class="btn btn-outline-primary mr-3 mb-1" type="button"
-                       href="{% url 'listarFacultadxEsp' id_facultad=especialidad.facultad.pk %}">Cancelar
+                       href="{% url 'listarEspecialidadxCurso' id_facultad=especialidad.facultad.pk %}">Cancelar
                     </a>
                     <button type="submit" class="btn btn-primary mr-3 mb-1" type="button">Guardar
                     </button>

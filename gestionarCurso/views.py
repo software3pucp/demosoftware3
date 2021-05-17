@@ -33,19 +33,26 @@ def agregarCurso(request, id_especialidad):
     return render(request, 'gestionarCUrso/agregarCurso.html', context)
 
 
-def editarCurso(request, pk):
-    curso = Curso.objects.get(pk=pk)
+def editarCurso(request, id_curso):
+    curso = Curso.objects.get(pk=id_curso)
     if request.POST:
-        nuevo_nombre = request.POST["nombre"]
+        nuevo_nombre = request.POST["name"]
         nuevo_responsable = request.POST["responsable"]
         curso.nombre = nuevo_nombre
         curso.responsable = nuevo_responsable
         curso.save()
 
-        return redirect(listarCurso)
+        return listarEspecialidadxCurso(request, curso.especialidad_id)
 
     context = {
-        'curso': curso
+        'curso': curso,
+        'ListaUsuarios': User.objects.all()
     }
     return render(request, 'gestionarCurso/editarCurso.html', context)
-    ender(request, 'gestionarCurso/listarCurso.html', context)
+
+
+def eliminarCurso(request, id_curso):
+    curso = Curso.objects.get(pk=id_curso)
+    espPK = curso.especialidad_id
+    curso.delete()
+    return listarEspecialidadxCurso(request, espPK)

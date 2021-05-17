@@ -55,7 +55,7 @@ def agregarEspecialidad(request, id_facultad):
 
 
 def editarEspecialidad(request, id_especialidad):
-    ListaUsuarios = User.objects.filter()
+    #ListaUsuarios = User.objects.filter()
     especialidad = Especialidad.objects.get(pk=id_especialidad)
     if request.POST:
         print(request.POST)
@@ -71,7 +71,7 @@ def editarEspecialidad(request, id_especialidad):
 
     context = {
         'especialidad': especialidad,
-        'ListaUsuarios': ListaUsuarios
+        'ListaUsuarios': User.objects.all()
     }
     return render(request, 'gestionarEspecialidad/editarEspecialidad.html', context)
 
@@ -80,6 +80,4 @@ def eliminarEspecialidad(request, id_especialidad):
     especialidad = Especialidad.objects.get(pk=id_especialidad)
     fakuPK = especialidad.facultad.pk
     especialidad.delete()
-    print("->>>>>>>>>>>>>>>")
-    print(fakuPK)
     return listarFacultadxEsp(request, fakuPK)

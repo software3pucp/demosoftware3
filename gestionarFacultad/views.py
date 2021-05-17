@@ -45,3 +45,30 @@ def listarFacultadxEsp(request, id_facultad):
         'media_path': media_path
     }
     return render(request, 'gestionarEspecialidad/listarEspecialidad.html', context)
+
+def editarFacultad(request, id_facultad):
+    ListaUsuarios = User.objects.filter()
+    facultad = Facultad.objects.get(pk=id_facultad)
+    if request.POST:
+        print(request.POST)
+        nuevo_nombre = request.POST["name"]
+        nuevo_responsable = request.POST["responsable"]
+        nueva_foto = request.FILES["photo"]
+
+        facultad.nombre = nuevo_nombre
+        facultad.responsable = nuevo_responsable
+        facultad.foto = nueva_foto
+        facultad.save()
+        return redirect(listarFacultad)
+
+    context = {
+        'facultad': facultad,
+        'ListaUsuarios': ListaUsuarios
+    }
+    return render(request, 'gestionarFacultad/editarFacultad.html', context)
+
+
+def eliminarFacultad(request, id_facultad):
+    facultad = Facultad.objects.get(pk=id_facultad)
+    facultad.delete()
+    return listarFacultad(request)
