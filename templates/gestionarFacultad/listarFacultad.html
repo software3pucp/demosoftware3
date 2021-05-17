@@ -35,14 +35,14 @@
                                         <a class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip"
                                            data-placement="top"
                                            title="Eliminar"
-                                           href="#"
+                                           href="{% url 'eliminarFacultad' id_facultad=facultad.pk %}"
                                            role="link">
                                             <div class="fas fa-power-off iconColorNBorder"></div>
                                         </a>
                                         <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip"
                                            data-placement="top"
                                            title="Editar"
-                                           href="#"
+                                           href="{% url 'editarFacultad'  id_facultad=facultad.pk %}"
                                            role="link">
                                             <div class="fas fa-pen iconColorNBorder"></div>
                                         </a>
