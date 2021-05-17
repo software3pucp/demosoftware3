@@ -198,93 +198,48 @@
                 </div>
             </div>
 
-            <div class="d-flex justify-content-end">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <select id="estado" name="estado" class="form-control" id="exampleFormControlSelect1">
-                            {% for estado in estados %}
-                                <option value={{ estado }}>{{ estado }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+            <div class="d-flex justify-content-between m-3">
+                <div class="form-group">
+                    <select id="facultades" name="facultades" class="form-control" id="FormControlSelect1">
+                        {% for facultad in facultades %}
+                            <option onclick="listarEspecialidades()"
+                                    value={{ facultad.pk }}>{{ facultad.nombre }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
+                <div class="form-group">
+                    <select id="especialidades" name="especialidades" class="form-control" id="FormControlSelect1">
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <select id="estado" name="estado" class="form-control" id="ControlSelect2">
+                        {% for estado in estados %}
+                            <option onclick="listarCursos()" value={{ estado }}>{{ estado }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
             </div>
 
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center mt-3">
                 <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-4">
-                        </div>
-                        <div class="col-md-4">
-                        </div>
-                        <div class="col-md-4">
-                            {% comment%}
-                    <div class="form-group">
-                        <select class="form-control" id="facultadFormControl">
-
-                            {% for facultad in ListaFacultad %}
-                                 <option name="facultadPK" value={{ facultad.pk }}>{{ facultad.nombre }}</option>
-                            {% endfor %}
-
-                        </select>
-                    </div>
-                    {% endcomment%}
+                        <div id="selectEspe" class="col-md-12">
                         </div>
                     </div>
-                    <div class="row">
-                        {% for curso in cursos %}
-                            <div class="col-4 equal">
-                                <div class="product card h-125" style="height: 300px">
-{#                                    <a class="imgbox"#}
-{#                                       id="facultadIMG" href="{% url 'listarFacultadxEsp' id_facultad=curso.pk %}">#}
-{#                                        <img class="" src="{{ media_path }}{{ facultad.foto.name }}/">#}
-{#                                    </a>#}
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <button class="btn btn-falcon-primary mr-1 mb-1" type="button">Primar</button>
-                                        </div>
-                                    </div>
-
-                                    <div class="specifies">
-                                        <h5 class="card-title ml-2"
-                                            style="text-align: left">{{ curso.nombre }}
-                                        </h5>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-6">
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="row">
-                                                    <a class="nav-link icon-indicator" href="#"
-                                                       role="link">
-                                                        <div class="fas fa-pen iconSize iconColorNBorder"
-                                                             style="text-align: center;">
-                                                        </div>
-                                                    </a>
-                                                    <a class="nav-link icon-indicator" href="#"
-                                                       role="link">
-                                                        <div class="fas fa-power-off iconSize iconColorNBorder"
-                                                             style="text-align: center;">
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                        <div class="col-4 equal">
-                            <a class="recent-work card border-0 shadow-lg overflow-hidden h-100"
+                    <div id="cursos" class="row">
+                        <div id="nuevo" class="col-4 equal">
+                            <a class="recent-work product card border-0 shadow-lg overflow-hidden h-100"
                                href="{% url 'crearFacultad' %}">
-                                <div class="nav-link icon-indicator" role="button" style="height: 300px; width: 100%;">
+                                <div class="nav-link icon-indicator" role="button">
                                     <div class="mt-4" style="text-align: center;">
-                                            <span class="fas fa-plus fa-9x" style="text-align: center"><span>
+                                        <span class="fas fa-plus fa-9x" style="text-align: center"></span>
                                     </div>
                                 </div>
                                 <div class="recent-work-vertical-ruk card-img-overlay d-flex align-items-end">
                                     <div class="service-work-content text-left text-light">
-                                        <h5 class="card-title mt-6" style="text-align: center">Agregar Facultad</h5>
+                                        <h5 class="card-title mt-6">Agregar Curso</h5>
                                     </div>
                                 </div>
                             </a>
@@ -303,42 +258,91 @@
 
         $(document).ready(function () {
             console.log("ready!");
+            listarEspecialidades();
         });
 
-        function accion(){
-
-                console.log($("#selection").val())
-
-                $.ajax({
-                    type: 'POST',
-                    url: "{% url 'listarCursos'%}",
-                    data: {
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        seleccion: $("#estado").val(),
-                    },
-                    success: function (response) {
-
-                        var instance = JSON.parse(response["newLanguage"]);
-                        var fields = instance[0]["fields"];
-
-                        data = '<div class="col">'+
-                           '<div class="card" style="width: 18rem;">'+
-                            '    <div class="card-body">'+
-                             '       <h5 class="card-title">'+ fields.name +'</h5>'+
-                              '      <h6 class="card-subtitle mb-2 text-muted">'+ fields.longitud +'</h6>'+
-                               ' </div>'+
-                            '</div>'+
-                        '</div>'
-
-                        $("#aquiMetemosData").append(data);
-
-                    },
-                    error: function (response) {
-                        // alert the error if any error occured
-                        alert(response["responseJSON"]["error"]);
+        function listarEspecialidades(){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'listarCursos' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: 'listEspe',
+                    facultad: $("#facultades").val(),
+                },
+                success: function (response){
+                    var instance = JSON.parse(response["resp"]);
+                    $("#especialidad").remove();
+                    for(var i=0; i<instance.length; i++){
+                        data = '<option id="especialidad" onclick="listarCursos()" value='+
+                            instance[i]["pk"]+'>'+
+                            instance[i]["fields"].nombre+'</option>';
+                        $("#especialidades").append(data);
                     }
-                });
-            }
+                    listarCursos();
+                },
+                error: function (response){
+                    alert(response["responseJSON"]["error"]);
+                },
+            });
+        }
+
+        function listarCursos() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'listarCursos'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: 'listCur',
+                    especialidad: $("#especialidades").val(),
+                    estado: $("#estado").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["resp"]);
+                    $("#selectEspeTit").remove();
+                    data = '<div id="selectEspeTit">' +
+                        '   <h4>' + $("#facultades option:selected").text() + ' - ' + $("#especialidades option:selected").text()+'</h4>' +
+                        '   <hr>' +
+                        '</div>';
+                    $("#selectEspe").append(data);
+                    $(".curso").remove();
+                    for(var i=0; i<instance.length; i++){
+                        data = '<div class="curso col-4 equal">' +
+                            '   <div class="d-flex justify-content-center">'+
+                            '       <div class="product card h-125" style="height: 300px">' +
+                            '           <div class="row">' +
+                            '               <div class="col-md-4">' +
+                            '                   <button class="btn btn-falcon-primary mr-1 mb-1" type="button">Primar</button>' +
+                            '               </div>' +
+                            '           </div>' +
+                            '           <div class="specifies">' +
+                            '               <h5 class="card-title ml-2" style="text-align: left">' + instance[instance.length-i-1]["fields"].nombre + '</h5>' +
+                            '               <hr>' +
+                            '               <div class="row d-flex justify-content-end">' +
+                            '                   <div class="col-6">' +
+                            '                       <div class="row">' +
+                            '                           <a class="nav-link icon-indicator" href="#" role="link">' +
+                            '                               <div class="fas fa-pen iconSize iconColorNBorder" style="text-align: center;"></div>' +
+                            '                           </a>' +
+                            '                           <a class="nav-link icon-indicator" href="#" role = "link">' +
+                            '                               <div class="fas fa-power-off iconSize iconColorNBorder" style = "text-align: center;">' + '</div>'+
+                            '                           </a>'+
+                            '                       </div>'+
+                            '                   </div>'+
+                            '               </div>'+
+                            '           </div>'+
+                            '       </div>'+
+                            '   </div>'+
+                            '</div>' ;
+                        $("#cursos").prepend(data);
+                    }
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
 
     </script>
 {% endblock %}
