@@ -32,9 +32,51 @@ def listarCursos(request):
     }
     return render(request,'gestionarPlanMedicion/listarCursos.html',context)
 
-def editarCursos(request):
-    context = {
+def crearCursos(request,pk):
+    insert = False
+    flag = 0
+    curso = Curso()
+    curso.pk = pk
+    especialidad = "Ingenieria Informática"
+    listaCursos = Curso.objects.filter(especialidad_id = 1)
+    listaHorarios = ["H0811","H0882","H0813","H0814","H0815"]
+    listaEstados = ["Activo","Inactivo"]
 
+    if request.POST:
+        if request.POST['operacion'] == 'entrada':
+            # resultadoAcreditadora.acreditadora_id = request.POST["acreditadora"]
+            flag=0
+
+        elif request.POST['operacion'] == 'editar':
+            # resultadoAcreditadora = ResultadoAcreditadora.objects.get(pk=pk)
+            # resultadoAcreditadora.codigo = request.POST['codigo']
+            # resultadoAcreditadora.descripcion = request.POST['descripcion']
+            # resultadoAcreditadora.save()
+            flag = 1
+
+        elif request.POST['operacion'] == 'in   sertar':
+            # ResultadoAcreditadora.objects.create(codigo=request.POST['codigo'],descripcion=request.POST['descripcion'],
+            #                                      acreditadora_id=request.POST["acreditadora"])
+            # resultadoAcreditadora = ResultadoAcreditadora.objects.latest('id')
+            # pk = resultadoAcreditadora.pk
+            flag = 2
+
+
+
+    if pk == '0':
+        insert = True
+    else:
+        curso = Especialidad.objects.get(pk=pk)
+
+    context = {
+        'especialidad' : especialidad,
+        'listaCursos' : listaCursos,
+        'listaHorarios':listaHorarios,
+        'listaEstados':listaEstados,
+        'curso' : curso,
+        'insert': insert,
+        'flag': flag,
     }
-    return render(request,'gestionarPlanMedicion/editarCursos.html',context)
+    return render(request,'gestionarPlanMedicion/crearCursos.html',context)
+
 

@@ -1,0 +1,133 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+    {#AQUI COLOQUEN EL CÓDIGO#}
+    <form action="{% url 'crearCursos' pk=curso.pk %}" method="post">
+        {% csrf_token %}
+        <div class="card">
+            <div class="card-body">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-12">
+                        {% if insert == 1 %}
+                            <h3 class="mb-0"> {{ especialidad }} - Añadir curso a ser evaluado </h3>
+                        {% elif insert == 0 %}
+                            <h3 class="mb-0"> {{ especialidad }} - Editar curso a ser evaluado </h3>
+                        {% endif %}
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-12">
+                        <div class="form-group mt-2">
+                            <label for="exampleFormControlSelect1">Curso</label>
+                            <select name="curso" class="form-control" id="exampleFormControlSelect1">
+                                {% for curso in listaCursos %}
+                                    <option value={{ curso.pk }}>{{ curso.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="row d-flex justify-content-between">
+                        <label for="exampleFormControlSelect2">Horarios</label>
+                        <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button">
+                            <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-12">
+                        <select name="horarios" class="form-control" id="exampleFormControlSelect2">
+                            {% for horario in listaHorarios %}
+                                <option value={{ horario }}>{{ horario }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div class="row d-flex">
+                    {% for horario in listaHorarios %}
+                        <div class="col-md-3">
+                            <div class="card m-1">
+                                <div class="card-body" style="padding: 1rem">
+                                    <div class="row">
+                                        <div class="col-md-8 p-0 d-flex justify-content-center">
+                                            <a class="btn p-0 " href="#agregarSemestreNuevo" data-toggle="modal">{{ horario }}</a>
+                                        </div>
+                                        <div class="col-md-4 p-0 d-flex justify-content-center"
+                                             style="border-left: 1px solid">
+                                            <a class="btn p-0" href="#!">
+                                                <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-12">
+                        <div class="form-group mt-2">
+                            <label for="exampleFormControlSelect1">Estado</label>
+                            <select name="estado" class="form-control" id="exampleFormControlSelect3">
+                                {% for estado in listaEstados %}
+                                    <option value={{ estado }}>{{ estado }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
+         id="agregarSemestreNuevo" tabindex="-1" role="dialog"
+         aria-labelledby="settings-modal-label" aria-hidden="true"
+         data-options='{"autoShow":false,"autoShowDelay":10,"showOnce":false}'>
+
+        <div class="modal-dialog modal-dialog-vertical"  role="document">
+            <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar"
+                 style="background-color: #017ECD;">
+
+                <div class="modal-body">
+                   <div class="row d-flex justify-content-center">
+                        <h5>Agregar Semestre</h5>
+                        <hr  style="background-color: #f9fafd; width: 70%">
+                    </div>
+
+                    <div class="row d-flex justify-content-start">
+                        <div class="col-12 pl-5">
+                            <h5>Codigo: H001</h5>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row d-flex justify-content-start">
+                         <div class="col-12 pl-5">
+                            <h5>Descripción:</h5>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-start">
+                         <div class="col-12 pl-5">
+                            <p>Horario perteneciente al curso de Tesis 1</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

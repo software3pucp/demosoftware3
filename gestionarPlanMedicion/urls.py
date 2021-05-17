@@ -5,5 +5,5 @@ from gestionarPlanMedicion import views
 urlpatterns = [
     # path( url hijo, backend, nombre de la variable)
     path('listar', views.listarCursos, name="listarCursos"),
-    path('editar/<pk>', views.editarCursos, name="editarCursos"),
+    path('crear/<pk>', views.crearCursos, name="crearCursos"),
 ]
