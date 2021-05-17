@@ -4,152 +4,6 @@
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
     <style>
-        .product {
-            overflow: hidden
-        }
-
-        .product .imgbox {
-            height: 100%;
-            box-sizing: border-box
-        }
-
-        .product .imgbox img {
-            display: block;
-            width: 100%;
-            height: 90%;
-        }
-
-        .specifies {
-            position: absolute;
-            width: 100%;
-            bottom: -57px;
-            background: white;
-            transition: .5s
-        }
-
-        .product:hover .specifies {
-            bottom: 0;
-        }
-
-        .specifies h5 {
-            color: rgba(1, 126, 205, 1);
-            align-content: center !important;
-        }
-
-        hr.divider {
-            margin-top: -0.4em;
-            margin-bottom: 0.7em;
-        }
-
-        .tooltip-inner {
-            background-color: #ffffff;
-            color: rgb(22, 87, 175);
-        }
-
-        .tooltip.bs-tooltip-top .arrow:before {
-            border-top-color: rgb(22, 87, 175);
-        !important;
-        }
-
-        .service-wrapper .service-footer {
-            max-width: 720px;
-        }
-
-        .service-work.card {
-            border-radius: 10px !important;
-            cursor: pointer;
-        }
-
-        .service-work .service-work-vertical {
-            background: rgb(0, 0, 0);
-            background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 33.33%, rgba(255, 255, 255, 1) 66.66%, rgba(255, 255, 255, 0) 99.99%);
-            background-size: 300% 300%;
-            background-position: 0% 100%;
-            transition: .5s;
-        }
-
-        .service-work .service-work-vertical:hover {
-            background-position: 0% 0%;
-            transition: .5s;
-        }
-
-        .service-work .service-work-vertical:hover * {
-            color: #000;
-            border-color: #000;
-            transition: .5s;
-        }
-
-        .service-work .service-work-vertical-ruk:hover * {
-            color: #000;
-            border-color: #000;
-            transition: .5s;
-        }
-
-        .recent-work.card {
-            border-radius: 10px !important;
-        }
-
-        .recent-work .recent-work-vertical {
-            background: rgb(255, 255, 255);
-            background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 33.333%, rgba(1, 126, 205, 1) 66.666%, rgba(255, 255, 255, 0) 99.999%);
-            background-size: 300% 300%;
-            background-position: 0% 100%;
-            transition: .5s;
-            cursor: pointer;
-        }
-
-        .recent-work .recent-work-vertical-ruk {
-            background: rgb(255, 255, 255);
-            background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 33.333%, rgba(30, 144, 255, 1) 66.666%, rgba(255, 255, 255, 0) 99.999%);
-            background-size: 300% 300%;
-            background-position: 0% 100%;
-            transition: .5s;
-            cursor: pointer;
-        }
-
-        .recent-work .recent-work-vertical:hover {
-            background-position: 0% 0%;
-            transition: .5s;
-        }
-
-        .recent-work .recent-work-vertical:hover div.recent-work-content {
-            top: 50%;
-            margin-top: -2.5em;
-            position: absolute;
-        }
-
-        .recent-work .recent-work-vertical:hover * {
-            color: white;
-            transition: .5s;
-        }
-
-        /*¨*/
-        .recent-work .recent-work-vertical-ruk:hover {
-            background-position: 0% 0%;
-            transition: .5s;
-        }
-
-        .recent-work .recent-work-vertical-ruk:hover div.recent-work-content {
-            top: 50%;
-            margin-top: -2.5em;
-            position: absolute;
-        }
-
-        .recent-work .recent-work-vertical-ruk:hover * {
-            color: white;
-            transition: .5s;
-        }
-
-
-        .team-member:hover .team-member-img {
-            padding: 10px !important;
-        }
-
-        /* Footer */
-        footer a.text-light:hover {
-            color: #bfbfbf !important;
-            transition-duration: 0.15s;
-        }
     </style>
 
 {% endblock %}
@@ -172,14 +26,14 @@
             <div class="col-6">
             </div>
         </div>
-        <div class="row mt-2">
+        <div class="row mt-4">
             {% for especialidad in ListaEspecialidad %}
                 <div class="col-sm-12 col-md-6 col-lg-4">
                     <div class="card-group">
-                        <div class="product card mr-4 mb-4">
-                            <div class="card-img-top imgbox">
+                        <div class="product card mr-4 mb-4" style="height: 16rem">
+                            <div class="card-img-top imgbox" style="height: 15rem">
                                 <a href="{% url 'listarEspecialidadxCurso' id_especialidad=especialidad.pk %}">
-                                    <img class="img-fluid" src="{{ media_path }}{{ especialidad.foto.name }}/">
+                                    <img class="" src="{{ media_path }}{{ especialidad.foto.name }}/">
                                 </a>
                             </div>
                             <div class="specifies card-body p-1">
@@ -194,7 +48,7 @@
                                            role="link">
                                             <div class="fas fa-power-off iconColorNBorder"></div>
                                         </a>
-                                        <a class="float-right mr-4 tooltip-inner arrow" data-toggle="tooltip"
+                                        <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip"
                                            data-placement="top"
                                            title="Editar"
                                            href="{% url 'editarEspecialidad' id_especialidad=especialidad.pk %}"
@@ -210,7 +64,8 @@
             {% endfor %}
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <div class="card-group">
-                    <a class="recent-work card" href="{% url 'agregarEspecialidad' id_facultad=id_facultad %}">
+                    <a class="recent-work card mr-4 mb-4" href="{% url 'agregarEspecialidad' id_facultad=id_facultad %}"
+                       style="height: 16rem">
                         <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
                             <div class="mt-4" style="text-align: center;">
                                 <span class="fas fa-plus fa-9x" style="text-align: center"></span>

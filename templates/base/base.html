@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
 
-	<head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,39 +35,40 @@
     <link href="{% static 'lib/leaflet.markercluster/MarkerCluster.css' %}" rel="stylesheet">
     <link href="{% static 'lib/leaflet.markercluster/MarkerCluster.Default.css' %}" rel="stylesheet">
     <link href="{% static 'css/theme.css' %}" rel="stylesheet">
+    <link href="{% static 'componentes/css/cardFEC.css' %}" rel="stylesheet">
 
     {% block extrastyle %}{% endblock %}
 
-	</head>
-	<body>
+</head>
+<body>
 
-    <!-- ===============================================-->
-    <!--    Main Content-->
-    <!-- ===============================================-->
-    <main class="main" id="top">
-      {% csrf_token %}
-      <div class="container" data-layout="container">
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+<main class="main" id="top">
+    {% csrf_token %}
+    <div class="container" data-layout="container">
 
         {% include 'base/side_navbar.html' %}
 
         <div class="content">
 
-          {% include 'base/top_navbar.html' %}
-          {% block body %}{% endblock %}
+            {% include 'base/top_navbar.html' %}
+            {% block body %}{% endblock %}
 
 
         </div>
-        </div>
-    </main>
-    <!-- ===============================================-->
-    <!--    End of Main Content-->
-    <!-- ===============================================-->
+    </div>
+</main>
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
 
-    {% include 'base/scripts.html' %}
-    {% block extrajs %}{% endblock %}
+{% include 'base/scripts.html' %}
+{% block extrajs %}{% endblock %}
 
-    <script>
+<script>
 
-    </script>
-  </body>
+</script>
+</body>
 </html>
