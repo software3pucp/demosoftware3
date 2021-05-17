@@ -4,29 +4,51 @@
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
     <style>
-        html {
-            font-family: 'Open Sans', sans-serif;
+        .product {
+            overflow: hidden
         }
 
-        .iconSize {
-            font-size: 23px;
+        .product .imgbox {
+            height: 100%;
+            box-sizing: border-box
         }
 
-        .fa-pen:hover {
-            color: darkblue;
+        .product .imgbox img {
+            display: block;
+            width: 100%;
+            height: 90%;
         }
 
-        .fa-power-off:hover {
-            color: darkblue;
+        .specifies {
+            position: absolute;
+            width: 100%;
+            bottom: -57px;
+            background: white;
+            transition: .5s
         }
 
-        .iconColorNBorder {
+        .product:hover .specifies {
+            bottom: 0;
+        }
+
+        .specifies h5 {
             color: rgba(1, 126, 205, 1);
-            z-index: 9999;
+            align-content: center !important;
         }
 
-        .equal {
-            margin-top: 20px;
+        hr.divider {
+            margin-top: -0.4em;
+            margin-bottom: 0.7em;
+        }
+
+        .tooltip-inner {
+            background-color: #ffffff;
+            color: rgb(22, 87, 175);
+        }
+
+        .tooltip.bs-tooltip-top .arrow:before {
+            border-top-color: rgb(22, 87, 175);
+        !important;
         }
 
         .service-wrapper .service-footer {
@@ -128,58 +150,6 @@
             color: #bfbfbf !important;
             transition-duration: 0.15s;
         }
-
-
-        .product {
-
-            width: 250px;
-            height: 250px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, .2);
-            border-radius: 5px;
-            background: white;
-            overflow: hidden
-        }
-
-        .product .imgbox {
-            height: 100%;
-            box-sizing: border-box
-        }
-
-        .product .imgbox img {
-            display: block;
-            width: 100%;
-            height: 90%;
-        }
-
-        .specifies {
-            position: absolute;
-            width: 100%;
-            bottom: -75px;
-            background: white;
-            padding: 10px;
-            transition: .5s
-        }
-
-        .product:hover .specifies {
-            bottom: 0
-        }
-
-        .specifies h5 {
-            margin: 0;
-            padding: 0;
-            color: rgba(1, 126, 205, 1);
-        }
-
-        .zoom {
-            background-color: rgba(255, 255, 255, 0);
-            transition: transform .3s; /* Animation */
-            width: 200px;
-            height: 200px;
-        }
-
-        .zoom:hover {
-            transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-        }
     </style>
 
 {% endblock %}
@@ -189,70 +159,55 @@
 
     {#AQUI COLOQUEN EL CÓDIGO#}
     <div class="container-fluid content-row">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-4">
-                </div>
-                <div class="col-md-4">
-                </div>
-                <div class="col-md-4">
-                    {% comment%}
-                    <div class="form-group">
-                        <select class="form-control" id="facultadFormControl">
-
-                            {% for facultad in ListaFacultad %}
-                                 <option name="facultadPK" value={{ facultad.pk }}>{{ facultad.nombre }}</option>
-                            {% endfor %}
-
-                        </select>
-                    </div>
-                    {% endcomment%}
-                </div>
+        <div class="row">
+            <div class="col-6">
             </div>
-            <div class="row">
-                {% for facultad in ListaFacultad %}
-                    <div class="col-4 equal">
-                        <div class="product card h-125">
-                            <a class="imgbox"
-                               id="facultadIMG" href="{% url 'listarFacultadxEsp' id_facultad=facultad.pk %}" >
-                                <img class="" src="{{ media_path }}{{ facultad.foto.name }}/">
-                            </a>
-                            <div class="specifies">
-                                <h5 class="card-title ml-2"
-                                    style="text-align: left">{{ facultad.nombre }}
-                                </h5>
-                                <hr>
+            <div class="col-6">
+            </div>
+        </div>
+        <div class="row mt-2">
+            {% for facultad in ListaFacultad %}
+                <div class="col-sm-12 col-md-6 col-lg-4">
+                    <div class="card-group">
+                        <div class="product card mr-4 mb-4">
+                            <div class="card-img-top imgbox">
+                                <a href="{% url 'listarFacultadxEsp' id_facultad=facultad.pk %}">
+                                    <img class="" src="{{ media_path }}{{ facultad.foto.name }}/">
+                                </a>
+                            </div>
+                            <div class="specifies card-body p-1">
+                                <h5 class="card-title ml-2">{{ facultad.nombre }}</h5>
+                                <hr class="divider">
                                 <div class="row">
-                                    <div class="col-6">
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="row">
-                                            <a class="nav-link icon-indicator" href="#"
-                                               role="link">
-                                                <div class="fas fa-pen iconSize iconColorNBorder"
-                                                     style="text-align: center;">
-                                                </div>
-                                            </a>
-                                            <a class="nav-link icon-indicator" href="#"
-                                               role="link">
-                                                <div class="fas fa-power-off iconSize iconColorNBorder"
-                                                     style="text-align: center;">
-                                                </div>
-                                            </a>
-                                        </div>
+                                    <div class="col">
+                                        <a class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip"
+                                           data-placement="top"
+                                           title="Eliminar"
+                                           href="#"
+                                           role="link">
+                                            <div class="fas fa-power-off iconColorNBorder"></div>
+                                        </a>
+                                        <a class="float-right mr-4 tooltip-inner arrow" data-toggle="tooltip"
+                                           data-placement="top"
+                                           title="Editar"
+                                           href="#"
+                                           role="link">
+                                            <div class="fas fa-pen iconColorNBorder"></div>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                {% endfor %}
-                <div class="col-4 equal">
-                    <a class="recent-work card border-0 shadow-lg overflow-hidden h-100"
-                       href="{% url 'crearFacultad' %}">
+                </div>
+
+            {% endfor %}
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <div class="card-group">
+                    <a class="recent-work card" href="{% url 'crearFacultad' %}">
                         <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
                             <div class="mt-4" style="text-align: center;">
-                                            <span class="fas fa-plus fa-9x" style="text-align: center"><span>
+                                <span class="fas fa-plus fa-9x" style="text-align: center"></span>
                             </div>
                         </div>
                         <div class="recent-work-vertical-ruk card-img-overlay d-flex align-items-end">
@@ -265,16 +220,9 @@
             </div>
         </div>
     </div>
-{% endblock %}}
+{% endblock %}
 
 {% block extrajs %}
     <script>
-        function getSelectValue(pk) {
-            //var facultadSelected = document.getElementById("facultadPkCard").value;
-            alert(pk);
-            sessionStorage.setItem("facultadPkCard", pk);
-        }
-
-        //getSelectValue();
     </script>
 {% endblock %}
