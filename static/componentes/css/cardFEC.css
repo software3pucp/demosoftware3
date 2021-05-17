@@ -16,7 +16,7 @@
 .specifies {
     position: absolute;
     width: 100%;
-    bottom: -57px;
+    bottom: -58px;
     background: white;
     transition: .5s
 }
@@ -79,6 +79,10 @@ hr.divider {
     transition: .5s;
 }
 
+.service-work h5 {
+    color: rgba(1, 126, 205, 1);
+}
+
 .recent-work.card {
     border-radius: 10px !important;
 }
@@ -94,7 +98,7 @@ hr.divider {
 
 .recent-work .recent-work-vertical-ruk {
     background: rgb(255, 255, 255);
-    background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 33.333%, rgba(30, 144, 255, 1) 66.666%, rgba(255, 255, 255, 0) 99.999%);
+    background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 33.333%, rgba(1, 126, 205, 1) 66.666%, rgba(255, 255, 255, 0) 99.999%);
     background-size: 300% 300%;
     background-position: 0% 100%;
     transition: .5s;
@@ -143,4 +147,16 @@ hr.divider {
 footer a.text-light:hover {
     color: #bfbfbf !important;
     transition-duration: 0.15s;
+}
+
+.fa-power-off {
+    color: rgba(1, 126, 205, 1);
+}
+
+.fa-pen{
+    color: rgba(1, 126, 205, 1);
+}
+
+.fa-plus{
+    color: rgba(1, 126, 205, 1);
 }

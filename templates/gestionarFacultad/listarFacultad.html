@@ -37,14 +37,14 @@
                                            title="Eliminar"
                                            href="{% url 'eliminarFacultad' id_facultad=facultad.pk %}"
                                            role="link">
-                                            <div class="fas fa-power-off iconColorNBorder"></div>
+                                            <div class="fas fa-power-off"></div>
                                         </a>
                                         <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip"
                                            data-placement="top"
                                            title="Editar"
                                            href="{% url 'editarFacultad'  id_facultad=facultad.pk %}"
                                            role="link">
-                                            <div class="fas fa-pen iconColorNBorder"></div>
+                                            <div class="fas fa-pen"></div>
                                         </a>
                                     </div>
                                 </div>
@@ -54,16 +54,17 @@
                 </div>
             {% endfor %}
             <div class="col-sm-12 col-md-6 col-lg-4">
-                <div class="card-group">
+                <div class="card-group service-work">
                     <a class="recent-work card mr-4 mb-4" href="{% url 'crearFacultad' %}" style="height: 16rem">
-                        <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
+                        <div class="nav-link icon-indicator" role="button">
                             <div class="mt-4" style="text-align: center;">
                                 <span class="fas fa-plus fa-9x" style="text-align: center"></span>
                             </div>
                         </div>
-                        <div class="recent-work-vertical-ruk card-img-overlay d-flex align-items-end">
-                            <div class="service-work-content text-left text-light">
-                                <h5 class="card-title mt-6" style="text-align: center">Agregar Facultad</h5>
+                        <div class="recent-work-vertical-ruk card-img-overlay">
+                            <div class="service-work-content">
+                                <h5 class="card-title" style="text-align: center; margin-top: 11.4rem">Agregar
+                                    Facultad</h5>
                             </div>
                         </div>
                     </a>
