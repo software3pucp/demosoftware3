@@ -39,8 +39,10 @@ def crearCursos(request,pk):
     curso.pk = pk
     especialidad = "Ingenieria Informática"
     listaCursos = Curso.objects.filter(especialidad_id = 1)
-    listaHorarios = ["H0811","H0882","H0813","H0814","H0815"]
+    listaHorarios = ["H0811","H0882","H0813","H0814"]
     listaEstados = ["Activo","Inactivo"]
+    listaResponsables = ["Corrado Guillermo"]
+    listaIndicadores = ["ID01","ID02","ID03"]
 
     if request.POST:
         if request.POST['operacion'] == 'entrada':
@@ -73,6 +75,8 @@ def crearCursos(request,pk):
         'listaCursos' : listaCursos,
         'listaHorarios':listaHorarios,
         'listaEstados':listaEstados,
+        'listaResponsables':listaResponsables,
+        'listaIndicadores': listaIndicadores,
         'curso' : curso,
         'insert': insert,
         'flag': flag,
