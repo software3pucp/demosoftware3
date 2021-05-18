@@ -116,7 +116,7 @@
                                 <div class="card-body" style="padding: 1rem">
                                     <div class="row">
                                         <div class="col-md-8 p-0 d-flex justify-content-center">
-                                            <a class="btn p-0 " href="#informacionIndicador" data-toggle="modal">{{ indicador }}</a>
+                                            <a class="btn p-0 " href="#informacionIndicador" data-toggle="modal">{{ indicador.descripcion }}</a>
                                         </div>
                                         <div class="col-md-4 p-0 d-flex justify-content-center"
                                              style="border-left: 1px solid">
@@ -131,17 +131,14 @@
                     {% endfor %}
                 </div>
                 <br>
-                <div class="row d-flex">
-                    <div class="col-12">
-                        <a class="btn btn-outline-primary mr-3 mb-1" type="button"
-                               href="{% url 'listarFacultad' %}">Eliminar
-                        </a>
-                        <a class="btn btn-outline-primary mr-3 mb-1" type="button"
-                               href="{% url 'listarFacultad' %}">Cancelar
-                        </a>
-                        <button type="submit" class="btn btn-primary mr-3 mb-1" type="button">Guardar
-                        </button>
-                    </div>
+                <div class="row d-flex justify-content-end pt-5">
+                    <a class="btn btn-outline-primary mr-3 mb-1" type="button" href="{% url 'listarFacultad' %}">
+                        Eliminar
+                    </a>
+                    <a class="btn btn-outline-primary mr-3 mb-1" type="button" href="{% url 'listarFacultad' %}">
+                        Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary mr-3 mb-1" type="button">Guardar</button>
                 </div>
             </div>
         </div>
@@ -158,7 +155,7 @@
             <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar"
                  style="background-color: #017ECD;">
 
-                <div class="modal-body">
+                <div class="modal-body text-white">
                    <div class="row d-flex justify-content-center">
                         <h5>Información Horario</h5>
                         <hr  style="background-color: #f9fafd; width: 70%">

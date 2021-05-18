@@ -6,6 +6,8 @@ from django.core import serializers
 from gestionarCurso.models import Curso
 from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
+from gestionarIndicadores.models import Indicador
+from gestionarPlanMedicion.models import PlanMedicion
 
 
 def listarCursos(request):
@@ -30,23 +32,24 @@ def listarCursos(request):
         'especialidades' : especialidades,
         'estados' : estados,
     }
-    return render(request,'gestionarPlanMedicion/listarCursos.html',context)
+    return render(request,'gestionarPlanMedicion/listarPlanMedicion.html',context)
 
 def crearCursos(request,pk):
     insert = False
     flag = 0
-    curso = Curso()
-    curso.pk = pk
-    especialidad = "Ingenieria Informática"
-    listaCursos = Curso.objects.filter(especialidad_id = 1)
+    plan = PlanMedicion()
+    plan.pk = pk
+    listaCursos = []
+    listaEstados = []
+    listaResponsables = []
     listaHorarios = ["H0811","H0882","H0813","H0814"]
-    listaEstados = ["Activo","Inactivo"]
-    listaResponsables = ["Corrado Guillermo"]
-    listaIndicadores = ["ID01","ID02","ID03"]
+    listaIndicadores = Indicador.objects.filter()
+    especialidad = ''
 
     if request.POST:
         if request.POST['operacion'] == 'entrada':
-            # resultadoAcreditadora.acreditadora_id = request.POST["acreditadora"]
+            listaCursos = Curso.objects.filter(especialidad=request.POST['especialidad'])
+            especialidad = request.POST['especialidad']
             flag=0
 
         elif request.POST['operacion'] == 'editar':
@@ -56,7 +59,7 @@ def crearCursos(request,pk):
             # resultadoAcreditadora.save()
             flag = 1
 
-        elif request.POST['operacion'] == 'in   sertar':
+        elif request.POST['operacion'] == 'insertar':
             # ResultadoAcreditadora.objects.create(codigo=request.POST['codigo'],descripcion=request.POST['descripcion'],
             #                                      acreditadora_id=request.POST["acreditadora"])
             # resultadoAcreditadora = ResultadoAcreditadora.objects.latest('id')
@@ -77,10 +80,10 @@ def crearCursos(request,pk):
         'listaEstados':listaEstados,
         'listaResponsables':listaResponsables,
         'listaIndicadores': listaIndicadores,
-        'curso' : curso,
+        'curso' : plan,
         'insert': insert,
         'flag': flag,
     }
-    return render(request,'gestionarPlanMedicion/crearCursos.html',context)
+    return render(request,'gestionarPlanMedicion/crearPlanMedicion.html',context)
 
 

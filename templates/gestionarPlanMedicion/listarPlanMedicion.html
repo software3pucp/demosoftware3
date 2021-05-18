@@ -231,7 +231,7 @@
                     <div id="cursos" class="row">
                         <div id="nuevo" class="col-4 equal">
                             <a class="recent-work product card border-0 shadow-lg overflow-hidden h-100"
-                               href="{% url 'agregarFacultad' %}">
+                               href="{% url 'crearFacultad' %}">
                                 <div class="nav-link icon-indicator" role="button">
                                     <div class="mt-4" style="text-align: center;">
                                         <span class="fas fa-plus fa-9x" style="text-align: center"></span>
@@ -261,7 +261,7 @@
             listarEspecialidades();
         });
 
-        function listarEspecialidades() {
+        function listarEspecialidades(){
             $.ajax({
                 type: 'POST',
                 url: "{% url 'listarCursos' %}",
@@ -270,18 +270,18 @@
                     operacion: 'listEspe',
                     facultad: $("#facultades").val(),
                 },
-                success: function (response) {
+                success: function (response){
                     var instance = JSON.parse(response["resp"]);
                     $("#especialidad").remove();
-                    for (var i = 0; i < instance.length; i++) {
-                        data = '<option id="especialidad" onclick="listarCursos()" value=' +
-                            instance[i]["pk"] + '>' +
-                            instance[i]["fields"].nombre + '</option>';
+                    for(var i=0; i<instance.length; i++){
+                        data = '<option id="especialidad" onclick="listarCursos()" value='+
+                            instance[i]["pk"]+'>'+
+                            instance[i]["fields"].nombre+'</option>';
                         $("#especialidades").append(data);
                     }
                     listarCursos();
                 },
-                error: function (response) {
+                error: function (response){
                     alert(response["responseJSON"]["error"]);
                 },
             });
@@ -301,14 +301,14 @@
                     var instance = JSON.parse(response["resp"]);
                     $("#selectEspeTit").remove();
                     data = '<div id="selectEspeTit">' +
-                        '   <h4>' + $("#facultades option:selected").text() + ' - ' + $("#especialidades option:selected").text() + '</h4>' +
+                        '   <h4>' + $("#facultades option:selected").text() + ' - ' + $("#especialidades option:selected").text()+'</h4>' +
                         '   <hr>' +
                         '</div>';
                     $("#selectEspe").append(data);
                     $(".curso").remove();
-                    for (var i = 0; i < instance.length; i++) {
+                    for(var i=0; i<instance.length; i++){
                         data = '<div class="curso col-4 equal">' +
-                            '   <div class="d-flex justify-content-center">' +
+                            '   <div class="d-flex justify-content-center">'+
                             '       <div class="product card h-125" style="height: 300px">' +
                             '           <div class="row">' +
                             '               <div class="col-md-4">' +
@@ -316,7 +316,7 @@
                             '               </div>' +
                             '           </div>' +
                             '           <div class="specifies">' +
-                            '               <h5 class="card-title ml-2" style="text-align: left">' + instance[instance.length - i - 1]["fields"].nombre + '</h5>' +
+                            '               <h5 class="card-title ml-2" style="text-align: left">' + instance[instance.length-i-1]["fields"].nombre + '</h5>' +
                             '               <hr>' +
                             '               <div class="row d-flex justify-content-end">' +
                             '                   <div class="col-6">' +
@@ -325,15 +325,15 @@
                             '                               <div class="fas fa-pen iconSize iconColorNBorder" style="text-align: center;"></div>' +
                             '                           </a>' +
                             '                           <a class="nav-link icon-indicator" href="#" role = "link">' +
-                            '                               <div class="fas fa-power-off iconSize iconColorNBorder" style = "text-align: center;">' + '</div>' +
-                            '                           </a>' +
-                            '                       </div>' +
-                            '                   </div>' +
-                            '               </div>' +
-                            '           </div>' +
-                            '       </div>' +
-                            '   </div>' +
-                            '</div>';
+                            '                               <div class="fas fa-power-off iconSize iconColorNBorder" style = "text-align: center;">' + '</div>'+
+                            '                           </a>'+
+                            '                       </div>'+
+                            '                   </div>'+
+                            '               </div>'+
+                            '           </div>'+
+                            '       </div>'+
+                            '   </div>'+
+                            '</div>' ;
                         $("#cursos").prepend(data);
                     }
                 },
