@@ -30,32 +30,33 @@
                     <form action="{% url 'crearResultado' %}" method="post">
                         {% csrf_token %}
                         <div class="row p-1">
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="codigo">Código:</label>
                                 </div>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-10">
                                 <div class="form-group">
                                     <input name="codigo" class="form-control" id="codigo" type="text"
                                            placeholder="Ingrese el código">
                                 </div>
                             </div>
                         </div>
-                        <div class="row p-1">
-                            <div class="col-md-4">
+                        <div class="row p-1 ">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="descripcion">Descripción:</label>
                                 </div>
                             </div>
-                            <div class="col-md-8">
-                                <div class="form-group ">
-                                    <input name="descripcion" class="form-control" id="descripcion" type="text"
-                                           placeholder="Ingrese una descripcion">
+                            <div class="col-md-10">
+                                <div class="input-group">
+                                    <textarea name="descripcion" id="descripcion" class="form-control"
+                                              placeholder="Ingrese una descripcion"
+                                              aria-label="With textarea" rows="3"></textarea>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mt-4">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <a class="btn btn-outline-primary m-1" type="button" href="{% url 'listarResultado' %}">Cancelar</a>
                                 <input type="submit" class="btn btn-primary m-1" value="Registrar">

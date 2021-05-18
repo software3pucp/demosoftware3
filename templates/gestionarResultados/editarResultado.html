@@ -51,8 +51,11 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group">
-                                    <input name="descripcion" class="form-control" id="descripcion" type="tex"
-                                           value="{{ resultado.descripcion }}">
+                                    <div class="input-group">
+                                    <textarea name="descripcion" id="descripcion" class="form-control"
+                                              value="{{ resultado.descripcion }}"
+                                              aria-label="With textarea" rows="3"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
