@@ -7,6 +7,6 @@ urlpatterns = [
     path('agregar/<id_resultado>/', views.agregarIndicador, name="agregarIndicador"),
     path('editar/<pk>/', views.editarIndicador,name="editarIndicador"),
     path('listar/<id_resultado>/', views.listarIndicadorxResultado, name="listarIndicadorxResultado"),
-    path('eliminar/<id_resultado>/', views.eliminarIndicadorxResultado, name="eliminarIndicadorxResultado")
-
+    path('eliminar/<id_resultado>/', views.eliminarIndicadorxResultado, name="eliminarIndicadorxResultado"),
+    path('agregarDescripcion/', views.agregarDescipcionNivel, name="agregarDescipcionNivel"),
 ]
