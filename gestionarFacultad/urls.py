@@ -10,5 +10,5 @@ urlpatterns = [
     path('editar/<id_facultad>/', views.editarFacultad, name="editarFacultad"),
     path('eliminar/<id_facultad>/', views.eliminarFacultad, name="eliminarFacultad"),
 
-    path('crear/', views.crearFacultad, name="crearFacultad")
+    path('crear/', views.agregarFacultad, name="agregarFacultad")
 ]

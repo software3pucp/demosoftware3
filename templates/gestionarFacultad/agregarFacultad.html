@@ -50,7 +50,7 @@
 {% block body %}
     <div class="container-fluid">
         <div class="card p-5">
-            <form action="{% url 'crearFacultad' %}" method="POST" enctype="multipart/form-data">
+            <form action="{% url 'agregarFacultad' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <h3 class="mb-0">Agregar Facultad</h3>
                 <hr>
@@ -61,7 +61,7 @@
 
                             <label for="name">Nombre</label>
                             <input name="name" class="form-control p-3" id="name" type="text"
-                                   placeholder="Ingrese el nombre de la facultad">
+                                   placeholder="Ingrese el nombre de la facultad" required/>
                         </div>
                     </div>
                     <p></p>
@@ -80,7 +80,7 @@
                             <input name="photo_name" type="text" class="form-control" readonly>
                             <span class="input-group-btn pb-3">
                                         <span class="btn btn-primary btn-file ml-3 " type="button">
-                                            Buscar… <input name="photo" type="file" id="imgInp">
+                                            Buscar… <input name="photo" type="file" id="imgInp" required/>
                                         </span>
                                     </span>
                         </div>

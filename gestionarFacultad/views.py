@@ -19,7 +19,7 @@ def listarFacultad(request):
     return render(request, 'gestionarFacultad/listarFacultad.html', context)
 
 
-def crearFacultad(request):
+def agregarFacultad(request):
     if request.POST:
         nombre = request.POST['name']
         id_responsable = request.POST['responsable']
@@ -29,7 +29,7 @@ def crearFacultad(request):
     context = {
         'ListaUsuarios': User.objects.all(),
     }
-    return render(request, 'gestionarFacultad/crearFacultad.html', context)
+    return render(request, 'gestionarFacultad/agregarFacultad.html', context)
 
 
 def listarFacultadxEsp(request, id_facultad):
