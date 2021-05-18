@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
 
-	<head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,36 +38,25 @@
 
     {% block extrastyle %}{% endblock %}
 
-	</head>
-	<body>
+</head>
+<body>
 
-    <!-- ===============================================-->
-    <!--    Main Content-->
-    <!-- ===============================================-->
-    <main class="main" id="top">
-      {% csrf_token %}
-      <div class="container" data-layout="container">
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+
+{% block body %}{% endblock %}
 
 
-        <div class="content">
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
 
-            <div class="card">
-          {% block body %}{% endblock %}
+{% include 'base/scripts.html' %}
+{% block extrajs %}{% endblock %}
 
-            </div>
+<script>
 
-        </div>
-        </div>
-    </main>
-    <!-- ===============================================-->
-    <!--    End of Main Content-->
-    <!-- ===============================================-->
-
-    {% include 'base/scripts.html' %}
-    {% block extrajs %}{% endblock %}
-
-    <script>
-
-    </script>
-  </body>
+</script>
+</body>
 </html>
