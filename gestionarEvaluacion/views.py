@@ -6,6 +6,7 @@ from django.core import serializers
 
 from gestionarEvaluacion.models import Alumno
 from gestionarIndicadores.models import Indicador
+from gestionarRubrica.models import Rubrica
 from gestionarNivel.models import Nivel
 def listarAlumno(request):
     listaAlumno = Alumno.objects.filter()
@@ -24,6 +25,10 @@ def agregarAlumno(request):
     return JsonResponse({"nuevoAlumno": ser_instance}, status=200)
 
 def muestraRubrica(request):
-    niveles = Nivel.objects.filter(state=request.POST["indicadorSeleccionado"])
-    ser_instance = serializers.serialize('json', list(niveles),fields=('id','name','value','state'))
-    return JsonResponse({"niveles": ser_instance}, status=200)
+    niveles = Nivel.objects.all()
+    rubrica = Rubrica.objects.filter(indicador_id=request.POST["indicadorSeleccionado"])
+    indicador = Indicador.objects.get(pk=request.POST["indicadorSeleccionado"])
+    ser_instance = serializers.serialize('json', list(rubrica),fields=('id','descripcion','especialidad','indicador','nivel'))
+    ser_instance2 = serializers.serialize('json',[indicador,])
+    ser_instance3 = serializers.serialize('json', list(niveles),fields=('id','name','value','state'))
+    return JsonResponse({"rubrica": ser_instance,"indicador":ser_instance2, "niveles": ser_instance3 }, status=200)
