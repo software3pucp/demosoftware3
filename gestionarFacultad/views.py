@@ -59,7 +59,7 @@ def editarFacultad(request, id_facultad):
         facultad.responsable = nuevo_responsable
         facultad.foto = nueva_foto
         facultad.save()
-        return redirect(listarFacultad)
+        return redirect('listarFacultad')
 
     context = {
         'facultad': facultad,
