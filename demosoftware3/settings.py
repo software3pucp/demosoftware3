@@ -166,3 +166,4 @@ logging.info('Procesando con normalidad')
 logging.warning('Advertencia')
 
 LOGIN_REDIRECT_URL='listarFacultad'
+LOGOUT_REDIRECT_URL='login'

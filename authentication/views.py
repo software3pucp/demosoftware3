@@ -19,7 +19,7 @@ def Show(request):
 
 def Register(request):
     if request.POST:
-        user = User.objects.create(first_name=request.POST['card-name'],
+        user = User.objects.create_user(first_name=request.POST['card-name'],
                             username=request.POST['card-correo'], code=request.POST['card-codigo'],
                             email=request.POST['card-correo'], password=request.POST['card-password'], is_active=True)
         if request.POST['photo']:
@@ -34,7 +34,7 @@ def Edit(request,pk):
         newname=request.POST['card-name']
         newcode=request.POST['card-codigo']
         newemail=request.POST['card-correo']
-        newpassword=password=request.POST['card-password']
+        newpassword=request.POST['card-password']
 
         user.first_name=newname
         user.code=newcode
