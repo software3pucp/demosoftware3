@@ -1,5 +1,4 @@
 from django.db import models
-from gestionarFacultad.models import Facultad
 from gestionarEspecialidad.models import Especialidad
 import unicodedata
 

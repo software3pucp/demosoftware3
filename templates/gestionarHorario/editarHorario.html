@@ -60,7 +60,7 @@
                         <div class="row">
                             <label for="name">Nombre</label>
                             <input name="name" class="form-control p-3" id="name" type="text"
-                                   placeholder="Ingrese el nombre del curso" value="{{ horario.nombre }}" required/>
+                                   placeholder="Ingrese el codigo del horario" value="{{ horario.codigo }}" required/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -89,7 +89,7 @@
                 </div>
                 <div class="wrapper mt-5">
                     <a class="btn btn-outline-primary mr-3 mb-1" type="button"
-                       href="{% url 'listarCursoxHorario' id_curso=horario.especialidad.pk %}">Cancelar
+                       href="{% url 'listarCursoxHorario' id_curso=horario.curso.pk %}">Cancelar
                     </a>
                     <button type="submit" class="btn btn-primary mr-3 mb-1" type="button">Guardar
                     </button>

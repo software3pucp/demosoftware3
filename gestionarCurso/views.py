@@ -16,7 +16,7 @@ def listarCurso(request):
         'ListaEspecialidad': Especialidad.objects.all(),
         'ListaCurso': Curso.objects.all(),
     }
-    return render(request, 'gestionarCurso/listarHorario.html', context)
+    return render(request, 'gestionarCurso/listarCurso.html', context)
 
 
 def listarCursoxHorario(request, id_curso):
@@ -47,7 +47,7 @@ def agregarCurso(request, id_especialidad):
         'ListaEspecialidad': Especialidad.objects.all(),
         'id_especialidad': id_especialidad
     }
-    return render(request, 'gestionarCurso/agregarHorario.html', context)
+    return render(request, 'gestionarCurso/agregarCurso.html', context)
 
 
 def editarCurso(request, id_curso):
@@ -55,7 +55,7 @@ def editarCurso(request, id_curso):
     if request.POST:
         nuevo_nombre = request.POST["name"]
         nuevo_responsable = request.POST["responsable"]
-        curso.nombre = nuevo_nombre
+        curso.codigo = nuevo_nombre
         curso.responsable = nuevo_responsable
         curso.save()
         return redirect('listarEspecialidadxCurso', curso.especialidad_id)
@@ -64,7 +64,7 @@ def editarCurso(request, id_curso):
         'curso': curso,
         'ListaUsuarios': User.objects.all()
     }
-    return render(request, 'gestionarCurso/editarHorario.html', context)
+    return render(request, 'gestionarCurso/editarCurso.html', context)
 
 
 def eliminarCurso(request, id_curso):

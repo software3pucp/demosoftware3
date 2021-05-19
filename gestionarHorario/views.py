@@ -24,7 +24,7 @@ def agregarHorario(request, id_curso):
         id_responsable = request.POST['responsable']
         curso = Curso.objects.get(pk=id_curso)
         Horario.objects.create(codigo=codigo, responsable=id_responsable, curso=curso)
-        return redirect('listarEspecialidadxCurso', id_curso)
+        return redirect('listarCursoxHorario', id_curso)
 
     context = {
         'ListaUsuarios': User.objects.all(),
@@ -39,7 +39,7 @@ def editarHorario(request, id_horario):
     if request.POST:
         nuevo_nombre = request.POST["name"]
         nuevo_responsable = request.POST["responsable"]
-        horario.nombre = nuevo_nombre
+        horario.codigo = nuevo_nombre
         horario.responsable = nuevo_responsable
         horario.save()
         return redirect('listarCursoxHorario', horario.curso_id)
