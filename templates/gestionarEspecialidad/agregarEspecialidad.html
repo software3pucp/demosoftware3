@@ -75,10 +75,10 @@
                         <div class="input-group">
                             <input name="photo_name" type="text" class="form-control" readonly>
                             <span class="input-group-btn pb-3">
-                                        <span class="btn btn-primary btn-file ml-3 " type="button">
-                                            Buscar… <input name="photo" type="file" id="imgInp" required/>
-                                        </span>
+                                    <span class="btn btn-primary btn-file ml-3 " type="button">
+                                        Buscar… <input name="photo" type="file" id="imgInp" required/>
                                     </span>
+                            </span>
                         </div>
                         <img id='img-upload'/>
                     </div>
@@ -136,13 +136,6 @@
                 readURL(this);
             });
         });
-
-        var selectedValue = sessionStorage.getItem("selectedValue");
-        //alert(selectedValue)
-
-        function SelectedValue() {
-            document.getElementById("facultadFormControl").value = selectedValue;
-        }
     </script>
 
 {% endblock %}
