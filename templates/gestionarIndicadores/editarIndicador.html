@@ -64,7 +64,7 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group">
-                                    <input name="descripcion" class="form-control" id="descripcion" type="tex"
+                                    <input name="descripcion" class="form-control" id="descripcion" type="text"
                                            value="{{ indicador.descripcion }}">
                                 </div>
                             </div>
@@ -90,25 +90,24 @@
                             <tbody id="purchases">
                             <form action="{% url 'listarNivel' %}" method="post">
                                 {% csrf_token %}
+
                                 {% for nivel in nivelLista %}
                                     <tr class="btn-reveal-trigger">
-                                        <th class="align-middle"> {{ nivel.value }} </th>
+                                        <th class="align-middle">{{ nivel.value }} </th>
                                         <th class="align-middle">{{ nivel.name }}</th>
                                         <td class="align-middle">
                                             <div class="input-group">
-                                                <textarea name="desc_nivel" id="desc_nivel" class="form-control"
+                                                <textarea name="desc_nivel" id="desc_nivel{{ nivel.pk }}"
+                                                          class="form-control"
                                                           aria-label="With textarea"></textarea>
                                             </div>
                                         </td>
-                                        <input type="hidden" name="nivelpk" id="nivelpk" value="{{ nivel.pk }}">
-                                        <input type="hidden" name="indicadorpk" id="indicadorpk"
-                                               value="{{ indicador.pk }}">
                                         <td class="align-middle text-right fs-0">
                                             <div class="row">
                                                 <div class="col">
                                                     <button
                                                             type="button" class="btn-sm btn-primary rounded-capsule"
-                                                            onclick="agregarDescripcion()">Agregar
+                                                            onclick="agregarDescripcion({{ nivel.pk }})">Agregar
                                                     </button>
 
                                                     <a href="{% url 'editarIndicador' pk=indicador.pk %}"
@@ -118,6 +117,8 @@
                                         </td>
                                     </tr>
                                 {% endfor %}
+
+
                             </form>
                             </tbody>
                         </table>
@@ -182,24 +183,28 @@
     <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
 
     <script>
-        function agregarDescripcion() {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'agregarDescipcionNivel' %}",
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    nivelpk: $("#nivelpk").val(),
-                    indicadorpk: $("#indicadorpk").val(),
-                    desc_nivel: $("#desc_nivel").val(),
-                },
-                success: function (response) {
-                    location.reload();
-                },
-                error: function (response) {
-                    // alert the error if any error occured
-                    alert(response["responseJSON"]["error"]);
-                }
-            });
+        function agregarDescripcion(nivel) {
+                        $.ajax({
+                            type: 'POST',
+                            url: "{% url 'agregarDescipcionNivel' %}",
+                            data: {
+                                csrfmiddlewaretoken: '{{ csrf_token }}',
+                                nivelpk: nivel,
+                                indicadorpk: {{ indicador.pk }},
+                                desc_nivel:  $("#desc_nivel"+nivel).val()
+                            },
+                            success: function (response) {
+                                console.log("Ajax exito")
+                                console.log($("#desc_nivel"+nivel).val())
+                                $("#desc_nivel"+nivel).prop("disabled",true)
+                                $("#desc_nivel"+nivel).val($("#desc_nivel"+nivel).val())
+
+                            },
+                            error: function (response) {
+                                // alert the error if any error occured
+                                alert(response["responseJSON"]["error"]);
+                            }
+                        });
         }
     </script>
 

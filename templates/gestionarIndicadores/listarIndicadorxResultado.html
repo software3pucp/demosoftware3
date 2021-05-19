@@ -12,56 +12,53 @@
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <div class="col-12">
-                    <form action="{% url 'crearResultado' %}" method="post">
-                        {% csrf_token %}
-                        <div class="row d-flex justify-content-center ">
-                            <div class="col-10">
-                                <h4>Resultado del Estudiante</h4>
-                            </div>
-                            <div class="col-2">
-                                <a href="{% url 'listarResultado' %}">
-                                    <div class="row">
-                                        <img class="img-fluid" style="height: 20px"
-                                             src="https://image.flaticon.com/icons/png/512/60/60577.png">
-                                        <h5>Volver</h5>
-                                    </div>
-                                </a>
+                    <div class="row d-flex justify-content-center ">
+                        <div class="col-10">
+                            <h4>Resultado del Estudiante</h4>
+                        </div>
+                        <div class="col-2">
+                            <a href="{% url 'listarResultado' %}">
+                                <div class="row">
+                                    <img class="img-fluid" style="height: 20px"
+                                         src="https://image.flaticon.com/icons/png/512/60/60577.png">
+                                    <h5>Volver</h5>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <hr style="background-color: #0154ae;">
+                    <div class="row p-1">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="codigo">Código:</label>
                             </div>
                         </div>
-                        <hr style="background-color: #0154ae;">
-                        <div class="row p-1">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="codigo">Código:</label>
-                                </div>
-                            </div>
-                            <div class="col-md-10">
-                                <div class="form-group">
-                                    <input name="codigo" class="form-control" id="codigo" type="text"
-                                           value="{{ resultado.codigo }}">
-                                </div>
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <input name="codigo" class="form-control" id="codigo" type="text"
+                                       value="{{ resultado.codigo }}">
                             </div>
                         </div>
-                        <div class="row p-1">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="descripcion">Descripción:</label>
-                                </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="descripcion">Descripción:</label>
                             </div>
-                            <div class="col-md-10">
-                                <div class="form-group ">
+                        </div>
+                        <div class="col-md-10">
+                            <div class="form-group ">
                                     <textarea name="descripcion" id="descripcion" class="form-control"
                                               aria-label="With textarea" rows="4">{{ resultado.descripcion }}</textarea>
-                                </div>
                             </div>
                         </div>
-                        <div class="row mt-1">
-                            <div class="col-md-12 d-flex justify-content-end">
-                                <a class="btn btn-outline-primary m-1" type="button" href="{% url 'listarResultado' %}">Cancelar</a>
-                                <input type="submit" class="btn btn-primary m-1" value="Registrar">
-                            </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <a class="btn btn-outline-primary m-1" type="button" href="{% url 'listarResultado' %}">Cancelar</a>
+                            <span class="btn btn-primary m-1" onclick="actualizarResultado({{ resultado.pk }})">Actualizar</span>
                         </div>
-                    </form>
+                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             <h4>Indicadores del Resultado del Estudiante</h4>
@@ -131,7 +128,7 @@
 
                 <div class="modal-body">
                     <div class="row d-flex justify-content-center">
-                        <h5 style="color: #f9fafd; font-family:Montserrat">Agregar Indicador</h5>
+                        <h5 class="text-white">Agregar Indicador</h5>
                         <hr style="background-color: #f9fafd; width: 70%">
                     </div>
 
@@ -139,13 +136,13 @@
                         <form name="formAgregar" id="formAgregar">
                             <div class="form-group row">
                                 <label name="codigoI" for="codigoI"
-                                       class="col-sm-4 col-form-label">Codigo</label>
+                                       class="col-sm-4 col-form-label text-white">Codigo</label>
                                 <input type="text" class="form-control col-sm-8" id="codigoI" name="codigoI">
                             </div>
                             <br>
                             <div class="form-group row">
                                 <label name="descripcionI" for="descripcionI"
-                                       class="col-sm-4 col-form-label">Descripción</label>
+                                       class="col-sm-4 col-form-label text-white">Descripción</label>
                                 <input type="text" class="form-control col-sm-8" id="descripcionI" name="descripcionI">
                             </div>
                             <br>
@@ -193,6 +190,27 @@
                     alert(response["responseJSON"]["error"]);
                 }
             });
+        }
+
+        function actualizarResultado(resultadopk) {
+            console.log(resultadopk)
+
+{% comment %}            $.ajax({
+                type: 'POST',
+                url: "{% url 'editar' id_resultado=resultado.pk %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    codigoI: $("#codigoI").val(),
+                    descripcionI: $("#descripcionI").val(),
+                },
+                success: function (response) {
+                    location.reload()
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });{% endcomment %}
         }
     </script>
 
