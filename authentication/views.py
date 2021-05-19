@@ -8,7 +8,7 @@ from authentication.models import User
 from demosoftware3.settings import MEDIA_URL
 from gestionarFacultad.views import listarFacultad
 from django.contrib.auth import authenticate
-
+from django.contrib.auth import login, logout
 
 def Show(request):
     media_path = MEDIA_URL
@@ -66,6 +66,7 @@ def sing_in(request):
         password = request.POST['card-password']
         user = authenticate(request,username=username,password=password)
         if user is not None:
+            login(request,user)
             return redirect(listarFacultad)
         else:
             return render(request,'authentication/login.html')
@@ -73,4 +74,5 @@ def sing_in(request):
     return render(request,'authentication/login.html')
 
 def sing_out(request):
+    logout(request)
     return redirect(sing_in)
