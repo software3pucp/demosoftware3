@@ -50,10 +50,10 @@
 {% block body %}
     <div class="container-fluid">
         <div class="card p-5">
-            <form action="{% url 'agregarCurso' id_especialidad=id_especialidad %}" method="POST"
+            <form action="{% url 'agregarHorario' id_curso=id_curso %}" method="POST"
                   enctype="multipart/form-data">
                 {% csrf_token %}
-                <h3 class="mb-0">Agregar Curso</h3>
+                <h3 class="mb-0">Agregar Horario</h3>
                 <hr>
                 <div class="form-group">
                     <div class="container-fluid">
@@ -74,7 +74,7 @@
                 </div>
                 <div class="wrapper">
                     <a class="btn btn-outline-primary mr-3 mb-1" type="button"
-                       href="{% url 'listarEspecialidadxCurso' id_especialidad=id_especialidad %}">Cancelar
+                       href="{% url 'listarCursoxHorario' id_curso=id_curso %}">Cancelar
                     </a>
                     <button type="submit" class="btn btn-primary mr-3 mb-1" type="button">Agregar
                     </button>

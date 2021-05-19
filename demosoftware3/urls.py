@@ -25,6 +25,7 @@ urlpatterns = [
     path('facultades/', include('gestionarFacultad.urls')),
     path('especialidades/', include('gestionarEspecialidad.urls')),
     path('cursos/', include('gestionarCurso.urls')),
+    path('horarios/', include('gestionarHorario.urls')),
     path('gestionarREAcreditadoras/', include('gestionarREAcreditadoras.urls')),
     path('gestionarSemestre/', include('gestionarSemestre.urls')),
     path('gestionarNivel/', include('gestionarNivel.urls')),

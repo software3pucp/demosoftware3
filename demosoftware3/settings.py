@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'gestionarFacultad',
     'gestionarEspecialidad',
     'gestionarCurso',
+    'gestionarHorario',
     'gestionarSemestre',
     'gestionarEvaluacion',
     'gestionarPlanMedicion',

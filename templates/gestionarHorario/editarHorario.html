@@ -50,20 +50,20 @@
 {% block body %}
     <div class="container-fluid">
         <div class="card p-5">
-            <form action="{% url 'agregarCurso' id_especialidad=id_especialidad %}" method="POST"
+            <form action="{% url 'editarHorario' id_horario=horario.pk %}" method="POST"
                   enctype="multipart/form-data">
                 {% csrf_token %}
-                <h3 class="mb-0">Agregar Curso</h3>
+                <h3 class="mb-0">Editar Horario</h3>
                 <hr>
                 <div class="form-group">
                     <div class="container-fluid">
-                        <div class="row mt-2">
+                        <div class="row">
                             <label for="name">Nombre</label>
                             <input name="name" class="form-control p-3" id="name" type="text"
-                                   placeholder="Ingrese el nombre del curso" required/>
+                                   placeholder="Ingrese el nombre del curso" value="{{ horario.nombre }}" required/>
                         </div>
                     </div>
-                    <div class="form-group mt-2">
+                    <div class="form-group">
                         <label for="exampleFormControlSelect1">Seleccione responsable(s)</label>
                         <select name="responsable" class="form-control" id="exampleFormControlSelect1">
                             {% for responsable in ListaUsuarios %}
@@ -71,12 +71,27 @@
                             {% endfor %}
                         </select>
                     </div>
+                    {% comment %}
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1">Ingrese una imagen para la especialidad</label>
+                        <div class="input-group">
+                            <input name="photo_name" type="text" class="form-control" readonly>
+                            <span class="input-group-btn pb-3">
+                                        <span class="btn btn-primary btn-file ml-3 " type="button">
+                                            Buscar… <input name="photo" type="file" id="imgInp">
+                                        </span>
+                                    </span>
+                        </div>
+                        <img id='img-upload'/>
+                    </div>
+                    {% endcomment %}
+
                 </div>
-                <div class="wrapper">
+                <div class="wrapper mt-5">
                     <a class="btn btn-outline-primary mr-3 mb-1" type="button"
-                       href="{% url 'listarEspecialidadxCurso' id_especialidad=id_especialidad %}">Cancelar
+                       href="{% url 'listarCursoxHorario' id_curso=horario.especialidad.pk %}">Cancelar
                     </a>
-                    <button type="submit" class="btn btn-primary mr-3 mb-1" type="button">Agregar
+                    <button type="submit" class="btn btn-primary mr-3 mb-1" type="button">Guardar
                     </button>
                 </div>
             </form>
@@ -125,6 +140,14 @@
                 readURL(this);
             });
         });
+
+        var selectedValue = sessionStorage.getItem("selectedValue");
+
+        //alert(selectedValue)
+
+        function SelectedValue() {
+            document.getElementById("facultadFormControl").value = selectedValue;
+        }
     </script>
 
 {% endblock %}

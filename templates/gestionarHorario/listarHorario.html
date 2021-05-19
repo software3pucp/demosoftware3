@@ -16,9 +16,9 @@
         <div class="row">
             <div class="col-6">
                 <select disabled="true" class="form-control" id="especFormControl">
-                    {% for especialidad in ListaEspecialidad %}
-                        {% if id_especialidad|add:"0" == especialidad.pk %}
-                            <option value={{ especialidad.pk }} selected>{{ especialidad.nombre }}</option>
+                    {% for curso in ListaCurso %}
+                        {% if id_curso|add:"0" == curso.pk %}
+                            <option value={{ curso.pk }} selected>{{ curso.nombre }}</option>
                         {% endif %}
                     {% endfor %}
                 </select>
@@ -27,31 +27,31 @@
             </div>
         </div>
         <div class="row mt-4">
-            {% for curso in ListaCurso %}
+            {% for horario in ListaHorario %}
                 <div class="col-sm-12 col-md-6 col-lg-4">
                     <div class="card-group">
                         <div class="product card mr-4 mb-4" style="height: 16rem">
                             <div class="card-img-top imgbox" style="height: 15rem">
-                                <a href="{% url 'listarCursoxHorario' id_curso=curso.pk %}">
+                                <a class="imgbox" href="#">
                                     <img class="" src="{% static 'img/illustrations/3.png' %}">
                                 </a>
                             </div>
                             <div class="specifies card-body p-1">
-                                <h5 class="card-title ml-2">{{ curso.nombre }}</h5>
+                                <h5 class="card-title ml-2">{{ horario.nombre }}</h5>
                                 <hr class="divider">
                                 <div class="row">
                                     <div class="col">
                                         <a class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip"
                                            data-placement="top"
                                            title="Eliminar"
-                                           href="{% url 'eliminarCurso' id_curso=curso.pk %}"
+                                           href="{% url 'eliminarHorario' id_horario=horario.pk %}"
                                            role="link">
                                             <div class="fas fa-power-off iconColorNBorder"></div>
                                         </a>
                                         <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip"
                                            data-placement="top"
                                            title="Editar"
-                                           href="{% url 'editarCurso'  id_curso=curso.pk %}"
+                                           href="{% url 'editarHorario'  id_horario=horario.pk %}"
                                            role="link">
                                             <div class="fas fa-pen iconColorNBorder"></div>
                                         </a>
@@ -65,7 +65,7 @@
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <div class="card-group service-work">
                     <a class="recent-work card mr-4 mb-4"
-                       href="{% url 'agregarCurso' id_especialidad=id_especialidad %}" style="height: 16rem">
+                       href="{% url 'agregarHorario' id_curso=id_curso %}" style="height: 16rem">
                         <div class="nav-link icon-indicator" role="button">
                             <div class="mt-4" style="text-align: center;">
                                 <span class="fas fa-plus fa-9x" style="text-align: center"></span>
@@ -74,7 +74,7 @@
                         <div class="recent-work-vertical-ruk card-img-overlay">
                             <div class="service-work-content">
                                 <h5 class="card-title" style="text-align: center; margin-top: 11.4rem">Agregar
-                                    Curso</h5>
+                                    Horario</h5>
                             </div>
                         </div>
                     </a>
