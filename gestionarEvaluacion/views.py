@@ -9,7 +9,7 @@ from gestionarIndicadores.models import Indicador
 from gestionarRubrica.models import Rubrica
 from gestionarNivel.models import Nivel
 def evaluar(request):
-    listaAlumno = Alumno.objects.filter() #Lista de horarios
+    listaAlumno = reversed(Alumno.objects.filter()) #Lista de horarios
     listaIndicador = Indicador.objects.filter()
     context = {
         'listaAlumno': listaAlumno,
@@ -35,6 +35,13 @@ def muestraRubrica(request):
     return JsonResponse({"rubrica": ser_instance,"indicador":ser_instance2, "niveles": ser_instance3 }, status=200)
 
 def listarAlumno(request):
-    listaAlumno = Alumno.objects.filter(horario=request.POST["horarioSeleccionado"])
+    filtrado = request.POST["filtrado"]
+    if (filtrado!=""):
+        if (filtrado.isnumeric()):
+            listaAlumno = reversed(Alumno.objects.filter(codigoAlumno=filtrado, horario=request.POST["horarioSeleccionado"]))
+        else:
+            listaAlumno = reversed(Alumno.objects.filter(nombreAlumno=filtrado,horario=request.POST["horarioSeleccionado"]))
+    else:
+        listaAlumno = reversed(Alumno.objects.filter(horario=request.POST["horarioSeleccionado"]))
     ser_instance = serializers.serialize('json', list(listaAlumno),fields=('id', 'nombreAlumno', 'codigoAlumno', 'horario'))
     return JsonResponse({"listaAlumno": ser_instance},  status=200)

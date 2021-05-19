@@ -43,7 +43,8 @@
         </div>
         <div class="col-3">
             <label for="cboHorario">Horario:</label>
-            <select class="custom-select custom-select-sm mb-3" id="cboHorario" name="cboHorario">
+            <select class="custom-select custom-select-sm mb-3" id="cboHorario" name="cboHorario"
+                    onchange="listarAlumno()">
                 <option selected="" value="H101">H101</option>
                 <option value="H102">H102</option>
                 <option value="H103">H103</option>
@@ -70,7 +71,13 @@
     {# Botones Agregar e Importar Estudiantes #}
     <div class="row align-items-center mb-3 justify-content-between">
         <div class="col-8 col-sm-auto ml-auto text-right pl-0">
+
             <div id="dashboard-actions">
+
+                <input class="form-control mr-sm-2 mb-2" id="textBuscar" type="search" placeholder="Buscar" aria-label="Search">
+                <button class="btn btn-primary my-2 my-sm-0" onclick="listarAlumno()">Buscar</button>
+
+
                 <!-- Button trigger modal-->
                 <a href="" data-toggle="modal" data-target="#agregarAlumno"
                    class="btn btn-falcon-default btn-sm" type="button">
@@ -107,8 +114,9 @@
         </div>
     </div>
 
-    <div class="card mb-3">
 
+    {# Listado De Alumnos #}
+    <div class="card mb-3">
         <div class="card-body p-0">
             <table class="table table-hover">
                 <thead class="thead-dark">
@@ -224,6 +232,7 @@
     <script>
         $(document).ready(function () {
             muestraRubrica();
+            listarAlumno();
         });
     </script>
 
@@ -299,7 +308,7 @@
                         '   </div>' +
                         '  </th>  ' +
                         '</tr>'
-                    $("#tablaAlumno").append(data);
+                    $("#tablaAlumno").prepend(data);
 
                 },
                 error: function (response) {
@@ -311,47 +320,50 @@
     </script>
 
     <script>
-        function  listarAlumno(){
+        function listarAlumno() {
             $.ajax({
                 type: 'POST',
                 url: "{% url 'listarAlumno'%}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    horario: $("#cboHorario").val()
+                    horarioSeleccionado: $("#cboHorario").val(),
+                    filtrado: $("#textBuscar").val()
                 },
                 success: function (response) {
-                    var instance = JSON.parse(response["nuevoAlumno"]);
+                    var instance = JSON.parse(response["listaAlumno"]);
                     var i;
                     var numero = instance.length;
-                    //var fields = instance[0]["fields"];
-
-                    data += ('<tr class="btn-reveal-trigger">' +
-                        '<th class="align-middle">' + fields.codigoAlumno + '</th>' +
-                        '<th class="align-middle">' + fields.nombreAlumno + '</th>' +
-                        '                             <th class="align-middle">' +
-                        ' <div class="form-check form-check-inline">' +
-                        ' <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
-                        '   id="inlineRadio1" value="option1">' +
-                        '   <label class="form-check-label" for="inlineRadio1">1</label>' +
-                        ' </div>' +
-                        '  <div class="form-check form-check-inline">' +
-                        '  <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
-                        '       id="inlineRadio2" value="option2">' +
-                        '   <label class="form-check-label" for="inlineRadio2">2</label>' +
-                        '   </div>' +
-                        '    <div class="form-check form-check-inline">' +
-                        '       <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
-                        '             id="inlineRadio3" value="option3">' +
-                        '     <label class="form-check-label" for="inlineRadio3">3</label>' +
-                        '   </div>' +
-                        '   <div class="form-check form-check-inline">' +
-                        '       <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
-                        '              id="inlineRadio4" value="option4">' +
-                        '      <label class="form-check-label" for="inlineRadio4">4</label>' +
-                        '   </div>' +
-                        '  </th>  ' +
-                        '</tr>')
-                    $("#tablaAlumno").append(data);
+                    data = ''
+                    for (i = 0; i < numero; i++) {
+                        data += ('<tr class="btn-reveal-trigger">' +
+                            '<th class="align-middle">' + instance[i]["fields"].codigoAlumno + '</th>' +
+                            '<th class="align-middle">' + instance[i]["fields"].nombreAlumno + '</th>' +
+                            '                             <th class="align-middle">' +
+                            ' <div class="form-check form-check-inline">' +
+                            ' <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
+                            '   id="inlineRadio1" value="option1">' +
+                            '   <label class="form-check-label" for="inlineRadio1">1</label>' +
+                            ' </div>' +
+                            '  <div class="form-check form-check-inline">' +
+                            '  <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
+                            '       id="inlineRadio2" value="option2">' +
+                            '   <label class="form-check-label" for="inlineRadio2">2</label>' +
+                            '   </div>' +
+                            '    <div class="form-check form-check-inline">' +
+                            '       <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
+                            '             id="inlineRadio3" value="option3">' +
+                            '     <label class="form-check-label" for="inlineRadio3">3</label>' +
+                            '   </div>' +
+                            '   <div class="form-check form-check-inline">' +
+                            '       <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
+                            '              id="inlineRadio4" value="option4">' +
+                            '      <label class="form-check-label" for="inlineRadio4">4</label>' +
+                            '   </div>' +
+                            '  </th>  ' +
+                            '</tr>')
+                    }
+                    $("#tablaAlumno").html(data);
+                    $("#textBuscar").val('');
 
                 },
                 error: function (response) {
@@ -382,7 +394,6 @@
                     var numero = instanceRubricas.length;
                     var camposIndicador = instanceIndicador[0]["fields"];
 
-                    console.log(instanceRubricas.length)
                     dataIndicador = '<div class="row d-flex justify-content-start mb-4">' +
                         '<div class="col-md-auto mb-4">' +
                         '<div class="card text-white bg-primary">' +
