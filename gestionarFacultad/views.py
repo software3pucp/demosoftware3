@@ -25,7 +25,7 @@ def agregarFacultad(request):
         id_responsable = request.POST['responsable']
         foto = request.FILES['photo']
         Facultad.objects.create(nombre=nombre, responsable=id_responsable, foto=foto)
-        return redirect(listarFacultad)
+        return redirect('listarFacultad')
     context = {
         'ListaUsuarios': User.objects.all(),
     }
@@ -71,4 +71,4 @@ def editarFacultad(request, id_facultad):
 def eliminarFacultad(request, id_facultad):
     facultad = Facultad.objects.get(pk=id_facultad)
     facultad.delete()
-    return listarFacultad(request)
+    return redirect('listarFacultad')

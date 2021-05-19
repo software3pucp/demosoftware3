@@ -23,7 +23,8 @@ def agregarCurso(request, id_especialidad):
         id_responsable = request.POST['responsable']
         especialidad = Especialidad.objects.get(pk=id_especialidad)
         Curso.objects.create(nombre=nombre, responsable=id_responsable, especialidad=especialidad)
-        return listarEspecialidadxCurso(request, id_especialidad)
+        return redirect('listarEspecialidadxCurso',id_especialidad)
+
 
     context = {
         'ListaUsuarios': User.objects.all(),
@@ -41,8 +42,8 @@ def editarCurso(request, id_curso):
         curso.nombre = nuevo_nombre
         curso.responsable = nuevo_responsable
         curso.save()
+        return redirect('listarEspecialidadxCurso',curso.especialidad_id)
 
-        return listarEspecialidadxCurso(request, curso.especialidad_id)
 
     context = {
         'curso': curso,
@@ -55,4 +56,5 @@ def eliminarCurso(request, id_curso):
     curso = Curso.objects.get(pk=id_curso)
     espPK = curso.especialidad_id
     curso.delete()
-    return listarEspecialidadxCurso(request, espPK)
+    return redirect('listarEspecialidadxCurso',espPK)
+
