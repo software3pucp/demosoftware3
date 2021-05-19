@@ -3,6 +3,8 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.core import serializers
 # Create your views here.
+from rest_framework.utils import json
+
 from gestionarEspecialidad.models import Especialidad
 from gestionarIndicadores.models import Indicador
 from gestionarNivel.models import Nivel
@@ -12,29 +14,23 @@ from gestionarRubrica.models import Rubrica
 
 def editarIndicador(request, pk):
     editado = False
-    haydesc = False
-
     indicador = Indicador.objects.get(pk=pk)
     id_resultado = indicador.resultado_id
-    nivelLista = Nivel.objects.filter(state=1)
+    nivelLista = Nivel.objects.filter(state=1).order_by('value')
     rubrica = Rubrica.objects.filter(indicador_id=pk)
-    print(rubrica)
     nivelLista2 =[]
+
     for nivel in nivelLista:
-        print(nivel.pk)
-        for rub in rubrica:
-            desc_nivel = ''
-            print("rub ----------")
-            print("rub:" + str(rub.nivel_id))
-            if nivel.pk == rub.nivel_id:
-                desc_nivel= rub.descripcion
-        registro = [nivel,desc_nivel]
+        registro=[nivel,'']
         nivelLista2.append(registro)
 
-    print(nivelLista2)
+    for nivel in nivelLista:
+        for rub in rubrica:
+            if nivel.pk == rub.nivel_id:
+                desc_nivel= rub.descripcion
+                nivelLista2[nivel.value-1][1]=desc_nivel
 
-    if len(rubrica)>0:
-        haydesc=True
+    nivelLista=nivelLista2
 
     if request.POST:
         indicador = Indicador.objects.get(pk=pk)
@@ -48,19 +44,15 @@ def editarIndicador(request, pk):
             'id_resultado': id_resultado,
             'nivelLista': nivelLista,
             'rubrica':rubrica,
-            'haydesc':haydesc,
-            'desc_nivel':desc_nivel,
         }
         return render(request, 'gestionarIndicadores/editarIndicador.html', context)
 
     context = {
         'rubrica':rubrica,
-        'haydesc':haydesc,
         'indicador': indicador,
         'editado': editado,
         'id_resultado': id_resultado,
         'nivelLista': nivelLista,
-        'desc_nivel': desc_nivel,
     }
     return render(request, 'gestionarIndicadores/editarIndicador.html', context)
 
@@ -94,10 +86,22 @@ def agregarIndicador(request, id_resultado):
     return JsonResponse({"nuevoIndicador": ser_instance}, status=200)
 
 def agregarDescipcionNivel(request):
-    esp = Especialidad.objects.get(pk=1)  # por ahora solo para una especialidad (Infomatica)
-    niv = Nivel.objects.get(pk=request.POST['nivelpk'])
-    ind = Indicador.objects.get(pk=request.POST['indicadorpk'])
-    desc = request.POST['desc_nivel']
-    desc_nivel = Rubrica.objects.create(especialidad=esp, nivel=niv, indicador=ind, descripcion=desc)
+    print('---------------------------------------------------------')
+    print(request.POST['indicadorpk'])
+    print(request.POST['nivelpk'])
+    print(request.POST['desc_nivel'])
+    print('---------------------------------------------------------')
+
+    try:
+        desc_nivel = Rubrica.objects.get(indicador_id=request.POST['indicadorpk'], nivel_id=request.POST['nivelpk'])
+        desc_nivel.descripcion = request.POST['desc_nivel']
+        desc_nivel.save()
+    except:
+        esp = Especialidad.objects.get(pk=1)  # por ahora solo para una especialidad (Infomatica)
+        niv = Nivel.objects.get(pk=request.POST['nivelpk'])
+        ind = Indicador.objects.get(pk=request.POST['indicadorpk'])
+        desc = request.POST['desc_nivel']
+        desc_nivel = Rubrica.objects.create(especialidad=esp, nivel=niv, indicador=ind, descripcion=desc)
+        #print('se registró')
     ser_instance = serializers.serialize('json', [desc_nivel, ])
     return JsonResponse({"nuevaDesc_nivel": ser_instance}, status=200)
