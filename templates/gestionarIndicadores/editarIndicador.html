@@ -95,11 +95,18 @@
                                     <tr class="btn-reveal-trigger">
                                         <th class="align-middle">{{ nivel.value }} </th>
                                         <th class="align-middle">{{ nivel.name }}</th>
+                                        {% if haydesc %}
+
+                                            {% if nivel.pk in rubrica.pk %}
+
+                                            {% endif %}
+
+                                        {% endif %}
                                         <td class="align-middle">
                                             <div class="input-group">
-                                                <textarea name="desc_nivel" id="desc_nivel{{ nivel.pk }}"
-                                                          class="form-control"
-                                                          aria-label="With textarea"></textarea>
+                                                    <textarea name="desc_nivel" id="desc_nivel{{ nivel.pk }}"
+                                                              class="form-control"
+                                                              aria-label="With textarea">{{ desc_nivel }}</textarea>
                                             </div>
                                         </td>
                                         <td class="align-middle text-right fs-0">
@@ -117,8 +124,6 @@
                                         </td>
                                     </tr>
                                 {% endfor %}
-
-
                             </form>
                             </tbody>
                         </table>
@@ -138,43 +143,6 @@
         </div>
     </form>
 
-    <!--
-        <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
-             id="agregarDescripcionNivel" tabindex="-1" role="dialog"
-             aria-labelledby="settings-modal-label" aria-hidden="true"
-             data-options='{"autoShow":false,"autoShowDelay":10,"showOnce":false}'>
-            <div class="modal-dialog modal-dialog-vertical" style="opacity: 0.90" role="document">
-                <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar" style="background-color: #017ECD;">
-                    <div class="modal-body">
-                        <div class="row d-flex justify-content-center">
-                            <h5 style="color: #f9fafd; font-family:Montserrat">Agregar descripción</h5>
-                            <hr style="background-color: #f9fafd; width: 70%">
-                        </div>
-                        <div class="row d-flex justify-content-center m-2">
-                            <form name="formAgregar" id="formAgregar">
-                                <div class="form-group row">
-                                    <label class="text-white" name="desc_nivel" for="desc_nivel">Descripción:</label>
-                                    <input type=text class="form-control" name="desc_nivel" id="desc_nivel">
-                                </div>
-                                <div class="form-group row m-3 p-2">
-                                    <div class="col-6">
-                                        <button class="btn btn-secondary" type="button"
-                                                data-dismiss="modal" aria-label="Close">Cancelar
-                                        </button>
-                                    </div>
-                                    <div class="col-6">
-                                        <button
-                                                type="button" class="btn btn-primary" onclick="agregarDescripcion()">Agregar
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    -->
 
 {% endblock %}
 
@@ -184,27 +152,24 @@
 
     <script>
         function agregarDescripcion(nivel) {
-                        $.ajax({
-                            type: 'POST',
-                            url: "{% url 'agregarDescipcionNivel' %}",
-                            data: {
-                                csrfmiddlewaretoken: '{{ csrf_token }}',
-                                nivelpk: nivel,
-                                indicadorpk: {{ indicador.pk }},
-                                desc_nivel:  $("#desc_nivel"+nivel).val()
-                            },
-                            success: function (response) {
-                                console.log("Ajax exito")
-                                console.log($("#desc_nivel"+nivel).val())
-                                $("#desc_nivel"+nivel).prop("disabled",true)
-                                $("#desc_nivel"+nivel).val($("#desc_nivel"+nivel).val())
-
-                            },
-                            error: function (response) {
-                                // alert the error if any error occured
-                                alert(response["responseJSON"]["error"]);
-                            }
-                        });
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'agregarDescipcionNivel' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    nivelpk: nivel,
+                    indicadorpk: {{ indicador.pk }},
+                    desc_nivel: $("#desc_nivel" + nivel).val()
+                },
+                success: function (response) {
+                    $("#desc_nivel" + nivel).prop("disabled", true)
+                    $("#desc_nivel" + nivel).val($("#desc_nivel" + nivel).val())
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
         }
     </script>
 

@@ -11,33 +11,44 @@ from gestionarRubrica.models import Rubrica
 
 
 def editarIndicador(request, pk):
-    flag = False
+    editado = False
+    haydesc = False
+    desc_nivel =''
     indicador = Indicador.objects.get(pk=pk)
     id_resultado = indicador.resultado_id
     nivelLista = Nivel.objects.filter(state=1)
+    rubrica = Rubrica.objects.filter(indicador_id=pk)
+
+    if len(rubrica)>0:
+        haydesc=True
 
     if request.POST:
         indicador = Indicador.objects.get(pk=pk)
         indicador.codigo = request.POST['codigo']
         indicador.descripcion = request.POST['descripcion']
         indicador.save()
-        flag = True
+        editado = True
         context = {
             'indicador': indicador,
-            'flag': flag,
+            'editado': editado,
             'id_resultado': id_resultado,
             'nivelLista': nivelLista,
+            'rubrica':rubrica,
+            'haydesc':haydesc,
+            'desc_nivel':desc_nivel,
         }
         return render(request, 'gestionarIndicadores/editarIndicador.html', context)
 
     context = {
+        'rubrica':rubrica,
+        'haydesc':haydesc,
         'indicador': indicador,
-        'flag': flag,
+        'editado': editado,
         'id_resultado': id_resultado,
         'nivelLista': nivelLista,
+        'desc_nivel': desc_nivel,
     }
     return render(request, 'gestionarIndicadores/editarIndicador.html', context)
-
 
 def listarIndicadorxResultado(request, id_resultado):
 
@@ -69,19 +80,10 @@ def agregarIndicador(request, id_resultado):
     return JsonResponse({"nuevoIndicador": ser_instance}, status=200)
 
 def agregarDescipcionNivel(request):
-
-    print(request.POST)
-
     esp = Especialidad.objects.get(pk=1)  # por ahora solo para una especialidad (Infomatica)
     niv = Nivel.objects.get(pk=request.POST['nivelpk'])
     ind = Indicador.objects.get(pk=request.POST['indicadorpk'])
     desc = request.POST['desc_nivel']
-    print('----------------------------------------------')
-    print(esp)
-    print(niv)
-    print(ind)
-    print(desc)
-    print('----------------------------------------------')
     desc_nivel = Rubrica.objects.create(especialidad=esp, nivel=niv, indicador=ind, descripcion=desc)
     ser_instance = serializers.serialize('json', [desc_nivel, ])
     return JsonResponse({"nuevaDesc_nivel": ser_instance}, status=200)

@@ -173,7 +173,6 @@
 
     <script>
         function agregar() {
-
             $.ajax({
                 type: 'POST',
                 url: "{% url 'agregarIndicador' id_resultado=resultado.pk %}",
@@ -192,25 +191,26 @@
             });
         }
 
-        function actualizarResultado(resultadopk) {
-            console.log(resultadopk)
-
-{% comment %}            $.ajax({
+        function actualizarResultado() {
+            $.ajax({
                 type: 'POST',
-                url: "{% url 'editar' id_resultado=resultado.pk %}",
+                url: "{% url 'actualizarResultado' pk=resultado.pk %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    codigoI: $("#codigoI").val(),
-                    descripcionI: $("#descripcionI").val(),
+                    codigo: $("#codigo").val(),
+                    descripcion: $("#descripcion").val(),
                 },
-                success: function (response) {
-                    location.reload()
+                success: function (response){
+                    $("#codigo").prop("disabled", true)
+                    $("#descripcion").prop("disabled", true)
+                    $("#codigo").val($("#codigo").val())
+                    $("#descripcion").val($("#descripcion").val())
                 },
                 error: function (response) {
                     // alert the error if any error occured
                     alert(response["responseJSON"]["error"]);
                 }
-            });{% endcomment %}
+            });
         }
     </script>
 
