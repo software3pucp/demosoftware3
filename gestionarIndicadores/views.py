@@ -13,11 +13,25 @@ from gestionarRubrica.models import Rubrica
 def editarIndicador(request, pk):
     editado = False
     haydesc = False
-    desc_nivel =''
+
     indicador = Indicador.objects.get(pk=pk)
     id_resultado = indicador.resultado_id
     nivelLista = Nivel.objects.filter(state=1)
     rubrica = Rubrica.objects.filter(indicador_id=pk)
+    print(rubrica)
+    nivelLista2 =[]
+    for nivel in nivelLista:
+        print(nivel.pk)
+        for rub in rubrica:
+            desc_nivel = ''
+            print("rub ----------")
+            print("rub:" + str(rub.nivel_id))
+            if nivel.pk == rub.nivel_id:
+                desc_nivel= rub.descripcion
+        registro = [nivel,desc_nivel]
+        nivelLista2.append(registro)
+
+    print(nivelLista2)
 
     if len(rubrica)>0:
         haydesc=True
