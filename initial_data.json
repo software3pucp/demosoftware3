@@ -4,5 +4,47 @@
     "fields": {
       "name": "Administrator"
     }
+  },
+  {
+    "model": "auth.group",
+    "pk": 2,
+    "fields": {
+      "name": "Asistente de acreditación"
+    }
+  },
+   {
+    "model": "auth.group",
+    "pk": 3,
+    "fields": {
+      "name": "Auditor"
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 4,
+    "fields": {
+      "name": "Coordinador de facultad"
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 5,
+    "fields": {
+      "name": "Coordinador de especialidad"
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 6,
+    "fields": {
+      "name": "Docente"
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 7,
+    "fields": {
+      "name": "Usuario"
+    }
   }
 ]
