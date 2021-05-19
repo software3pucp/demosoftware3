@@ -127,7 +127,7 @@
 
                 <tbody id="tablaAlumno">
 
-                {# Cali, al acabar borra este for#}
+                {# Al acabar borra este for#}
                 {% for alumno in listaAlumno %}
 
                     <tr class="btn-reveal-trigger">
@@ -203,9 +203,38 @@
             </div>
         </div>
     </div>
+    <!-- Modal Editar Alumno -->
+    <div class="modal fade" id="editarAlumno" tabindex="-1" role="dialog" aria-labelledby="editarAlumnoLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarAlumnoLabel">Editar al alumno</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditarAlumno" name="formEditarAlumno">
+                        <div class="form-group">
+                            <label  for="nombreAlumno">Nombre</label>
+                            <div  id="editNombre">                        </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="codigoAlumno">Código</label>
+                            <input class="form-control" id="codigoAlumnoMod" name="codigoAlumno" type="text" maxlength="8"
+                                   placeholder="Código">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
+                    <button id="btnEditarAlumno" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
-
+    <!-- Modal Eliminar Alumno -->
     <div class="modal fade" id="eliminarAlumno" tabindex="-1" role="dialog" aria-labelledby="eliminarAlumnoLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -236,6 +265,41 @@
             listarAlumno();
         });
 
+        function evaluarEditar(codigoAlumno, pk){
+
+            data = '<input class="form-control" id="nombreAlumnoMod" name="nombreAlumnoMod" type="text" placeholder='+codigoAlumno+'> ' +
+                '</input>';
+            $("#editNombre").html(data);
+            $("#editarAlumno").modal('show');
+
+            $("#btnEditarAlumno").on('click', function () {
+                editarAlumno(pk);
+                $("#editarAlumno").modal('hide');
+            });
+
+        };
+
+        function editarAlumno(idAlumno){
+             $.ajax({
+                type: 'POST',
+                url: "{% url 'editarAlumno'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    idAlumno: idAlumno,
+                    codigoAlumno: $("#codigoAlumnoMod").val(),
+                    nombreAlumno:$("#nombreAlumnoMod").val()
+                },
+                success: function (response) {
+                    console.log("Se ha editado correctamente!");
+                    listarAlumno();
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
         function evaluarEliminar(codigoAlumno, pk) {
             data = '<h5 class="modal-title" id="eliminarAlumnoLabel">Se eliminara el alumno ' + codigoAlumno + '</h5>';
             $("#eliminarAlumnoLabel").html(data);
@@ -265,6 +329,7 @@
                 }
             });
         }
+
 
         function validarAlumno() {
             $("form[name='formAgregarAlumno']").validate({
@@ -313,7 +378,6 @@
                 }
             });
         }
-
 
         function agregarAlumno() {
             $.ajax({
@@ -412,7 +476,7 @@
                                 '<a href="" class="badge badge-pill badge-primary">Subir Evidencia</a>' +
                                 '</div>' +
                                 '<div class="col">' +
-                                '<a href="" class="badge badge-pill badge-secondary">Editar</a>' +
+                                '<button class="badge badge-pill badge-secondary" onclick="evaluarEditar('+instance[i]["fields"].codigoAlumno +','+instance[i]["pk"]+',)">Editar</button>' +
                                 '</div>' +
                                 '<div class="col">' +
                                 '<button class="badge badge-pill badge-danger" onclick="evaluarEliminar(' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ',)">Eliminar</button>' +
