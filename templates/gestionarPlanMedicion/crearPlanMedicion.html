@@ -29,7 +29,7 @@
                     <div class="col-md-12">
                         <div class="form-group mt-2">
                             <label for="exampleFormControlSelect1">Curso</label>
-                            <select name="curso" class="form-control" id="exampleFormControlSelect1">
+                            <select id="cursos" name="curso" class="form-control" id="exampleFormControlSelect1">
                                 {% if insert %}
                                     {% for curso in listaCursos %}
                                         <option value={{ curso.pk }}>{{ curso.nombre }}</option>
@@ -46,7 +46,7 @@
                     <div class="col">
                         <div class="row d-flex justify-content-between">
                             <label for="exampleFormControlSelect2">Horarios</label>
-                            <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button">
+                            <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button" onclick="agregarHorario()">
                                 <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
                             </button>
                         </div>
@@ -60,19 +60,19 @@
                         </div>
                     </div>
                     <br>
-                    <div class="row d-flex">
+                    <div id="horariosSelec" class="row d-flex">
                         {% for horario in horariosSelec %}
-                            <div class="col-md-3">
+                            <div id="horario{{ horario.pk }}" class="col-md-3">
                                 <div class="card m-1">
                                     <div class="card-body" style="padding: 1rem">
                                         <div class="row">
                                             <div class="col-md-8 p-0 d-flex justify-content-center">
                                                 <a class="btn p-0 " href="#informacionHorario"
-                                                   data-toggle="modal" onclick='mostrarHorario("{{ horario }}")'>{{ horario }}</a>
+                                                   data-toggle="modal" onclick='mostrarHorario("{{ horario.pk }}")'>{{ horario.codigo }}</a>
                                             </div>
                                             <div class="col-md-4 p-0 d-flex justify-content-center"
                                                  style="border-left: 1px solid">
-                                                <a class="btn p-0" href="#!">
+                                                <a class="btn p-0" onclick='quitarHorario("{{ horario.pk }}")' href="#!">
                                                     <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
                                                 </a>
                                             </div>
@@ -290,6 +290,7 @@
     <script>
         $(document).ready(function () {
             console.log("ready!");
+            listarHorarios();
         });
 
         function  mostrarHorario(pk){
@@ -322,15 +323,73 @@
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     operacion: "listHorarios",
-                    curso: $("#curso").val(),
+                    curso: $("#cursos").val(),
                 },
                 success: function (response){
                     var instance = JSON.parse(response["resp"]);
                     $(".horario").remove();
                     for(var i=0; i<instance.length; i++){
-                        data = '<option class="horario" value={{ horario }}>{{ horario }}</option>';
+                        data = '<option class="horario" value="'+instance[i]["pk"]+'">'+instance[i]["fields"].codigo+'</option>';
                         $("#horarios").append(data);
                     }
+                },
+                error: function (response){
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+        function agregarHorario(){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearPlanMedicion' pk=plan.pk %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: "agregarHorario",
+                    planPK: '{{ plan.pk }}',
+                    horarioPk: $("#horarios").val(),
+                },
+                success: function (response){
+                    var instance = JSON.parse(response["resp"]);
+                    console.log(instance[0])
+                    data = '<div id="horario'+instance[0]["pk"]+'" class="col-md-3">'+
+                        '   <div class="card m-1">'+
+                        '       <div class="card-body" style="padding: 1rem">'+
+                        '           <div class="row">'+
+                        '               <div class="col-md-8 p-0 d-flex justify-content-center">'+
+                        '                   <a class="btn p-0 " href="#informacionHorario" data-toggle="modal" onclick="'+'mostrarHorario('+ instance[0]["pk"]+' ) ">'+instance[0]["fields"].codigo+'</a>'+
+                        '               </div>'+
+                        '               <div class="col-md-4 p-0 d-flex justify-content-center" style="border-left: 1px solid">'+
+                        '                   <a class="btn p-0" onclick="quitarHorario('+instance[0]["pk"]+')">'+
+                        '                       <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>'+
+                        '                   </a>'+
+                        '               </div>'+
+                        '           </div>'+
+                        '       </div>'+
+                        '   </div>'+
+                        '</div>';
+                    $("#horariosSelec").append(data);
+                },
+                error: function (response){
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+        function  quitarHorario(pk){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearPlanMedicion' pk=plan.pk %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: "quitarHorario",
+                    planPK: '{{ plan.pk }}',
+                    horarioPk: pk,
+                },
+                success: function (response){
+                    var instance = JSON.parse(response["resp"]);
+                    console.log(instance[0])
+                    $("#horario"+instance[0]['pk']).remove()
                 },
                 error: function (response){
                     alert(response["responseJSON"]["error"]);

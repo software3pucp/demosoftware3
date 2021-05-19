@@ -53,7 +53,7 @@ def crearPlanMedicion(request,pk):
     listaHorarios = []
     listaIndicadores = Indicador.objects.filter()
     especialidad = ''
-    horariosSelec = ["H0811","H0882","H0813"]
+    horariosSelec = []
     indicadoresSelec = []
     if request.POST:
         if request.POST['operacion'] == 'editar':
@@ -87,9 +87,6 @@ def crearPlanMedicion(request,pk):
             data = serializers.serialize("json", indicador)
             return JsonResponse({"resp": data}, status=200)
         elif request.POST['operacion'] == 'quitarIndicador':
-            print('***************************************************************************************************')
-            print(request.POST)
-            print('***************************************************************************************************')
             indicador = Indicador.objects.filter(pk=request.POST["indicadorPk"])
             plan = PlanMedicion.objects.get(pk=request.POST["planPK"])
             indicadores = plan.indicador.all()
@@ -98,6 +95,30 @@ def crearPlanMedicion(request,pk):
             plan.indicador.remove(indicador[0].pk)
             data = serializers.serialize("json", indicador)
             return JsonResponse({"resp": data}, status=200)
+        elif request.POST['operacion'] == 'agregarHorario':
+            print(request.POST["horarioPk"])
+            horario = Horario.objects.filter(pk=request.POST["horarioPk"])
+            plan = PlanMedicion.objects.get(pk=request.POST["planPK"])
+            horarios = plan.horario.all()
+            if horario[0] in horarios:
+                return JsonResponse({'status':'false','message':'Horario ya ingresado'}, status=500)
+            plan.horario.add(horario[0].pk)
+            data = serializers.serialize("json", horario)
+            return JsonResponse({"resp": data}, status=200)
+        elif request.POST['operacion'] == 'quitarHorario':
+            print('***************************************************************************************************')
+            print(request.POST)
+            print('***************************************************************************************************')
+            horario = Horario.objects.filter(pk=request.POST["horarioPk"])
+            plan = PlanMedicion.objects.get(pk=request.POST["planPK"])
+            horarios = plan.horario.all()
+            print(horarios)
+            print(horario[0])
+            if horario[0] not in horarios:
+                return JsonResponse({'status': 'false', 'message': 'Indicador ya ingresado'}, status=500)
+            plan.horario.remove(horario[0].pk)
+            data = serializers.serialize("json", horario)
+            return JsonResponse({"resp": data}, status=200)
         listaCursos = Curso.objects.filter(especialidad=request.POST['especialidad'])
         especialidad = Especialidad.objects.get(pk=request.POST['especialidad'])
 
@@ -105,8 +126,10 @@ def crearPlanMedicion(request,pk):
         insert = True
     else:
         plan = PlanMedicion.objects.get(pk=pk)
-        many = plan.indicador.all()
-        indicadoresSelec = many
+        manyInd = plan.indicador.all()
+        manyHor = plan.horario.all()
+        indicadoresSelec = manyInd
+        horariosSelec = manyHor
 
     context = {
         'especialidad': especialidad,
