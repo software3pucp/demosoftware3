@@ -9,6 +9,7 @@ class Alumno(models.Model):
     nombreAlumno = models.CharField(max_length=10, null=True, blank=True)
     codigoAlumno = models.CharField(max_length=9, null=True, blank=True)
     horario = models.CharField(max_length=5, null=True, blank=True)
+    puntuacion = models.CharField(max_length=2,null=False,blank=True)
 
 class MedicionDeIndicador(models.Model):
     codigo = models.CharField(max_length=10, default='', null=True, blank=True)

@@ -25,6 +25,12 @@ def agregarAlumno(request):
     ser_instance = serializers.serialize('json', [nuevoAlumno,])
     return JsonResponse({"nuevoAlumno": ser_instance}, status=200)
 
+def guardarPuntuacion(request):
+    if request.POST:
+        alumno = Alumno.objects.get(codigoAlumno=request.POST["codigoAlumno"])
+        alumno.puntuacion = request.POST["puntuacion"]
+        alumno.save()
+
 def muestraRubrica(request):
     niveles = Nivel.objects.all()
     rubrica = Rubrica.objects.filter(indicador_id=request.POST["indicadorSeleccionado"])

@@ -138,23 +138,23 @@
                         <th>
                             <form>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                           id="inlineRadio1" value="option1">
+                                    <input class="radioBtnClass" type="radio" name="inlineRadioOptions"
+                                            value="{{alumno.codigoAlumno}}1">
                                     <label class="form-check-label" for="inlineRadio1">1</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                           id="inlineRadio2" value="option2">
+                                    <input class="radioBtnClass" type="radio" name="inlineRadioOptions"
+                                            value="{{alumno.codigoAlumno}}2">
                                     <label class="form-check-label" for="inlineRadio2">2</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                           id="inlineRadio3" value="option3">
+                                    <input class="radioBtnClass" type="radio" name="inlineRadioOptions"
+                                           value="{{alumno.codigoAlumno}}3">
                                     <label class="form-check-label" for="inlineRadio3">3</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                           id="inlineRadio4" value="option4">
+                                    <input class="radioBtnClass" type="radio" name="inlineRadioOptions"
+                                            value="{{alumno.codigoAlumno}}4">
                                     <label class="form-check-label" for="inlineRadio4">4</label>
                                 </div>
                             </form>
@@ -166,7 +166,7 @@
                                 </div>
                                 <div class="col">
                                     <button type="submit"
-                                            class="badge rounded-capsule badge-soft-danger outline-none">
+                                            class="badge rounded-capsule badge-soft-danger outline-none" onclick="guardarPuntuacion()">
                                         <span>Guardar</span>
                                     </button>
                                 </div>
@@ -232,7 +232,7 @@
     <script>
         $(document).ready(function () {
             muestraRubrica();
-            listarAlumno();
+            //listarAlumno();
         });
     </script>
 
@@ -265,7 +265,15 @@
         });
 
     </script>
+    <script>
+        function guardarPuntuacion(){
+            if($("input[type='radio'].radioBtnClass").is(':checked')) {
+                var card_type = $("input[type='radio'].radioBtnClass:checked").val();
+                console.log(card_type);
+            }
+        }
 
+    </script>
 
     <script>
         function agregarAlumno() {
