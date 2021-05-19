@@ -19,17 +19,22 @@ def evaluar(request):
 
 
 def agregarAlumno(request):
+    niveles = Nivel.objects.all()
     nuevoAlumno = Alumno.objects.create(nombreAlumno=request.POST["nombreAlumno"],
                                         codigoAlumno=request.POST["codigoAlumno"],
                                         horario=request.POST["horario"])
     ser_instance = serializers.serialize('json', [nuevoAlumno,])
-    return JsonResponse({"nuevoAlumno": ser_instance}, status=200)
+    ser_instance2 = serializers.serialize('json', list(niveles), fields=('id', 'name', 'value', 'state'))
+    return JsonResponse({"nuevoAlumno": ser_instance,"niveles": ser_instance2 }, status=200)
 
 def guardarPuntuacion(request):
-    if request.POST:
-        alumno = Alumno.objects.get(codigoAlumno=request.POST["codigoAlumno"])
-        alumno.puntuacion = request.POST["puntuacion"]
-        alumno.save()
+    print(request)
+    print("##############################################")
+    alumno = Alumno.objects.get(codigoAlumno=request.POST["codigoAlumno"])
+    descripcion = Rubrica.objects.get(indicador_id=request.POST["indicador"],nivel_id=request.POST["nivel"]).descripcion
+    alumno.descripcionP = descripcion
+    alumno.save()
+    return JsonResponse(status=200)
 
 def muestraRubrica(request):
     niveles = Nivel.objects.all()
@@ -42,6 +47,7 @@ def muestraRubrica(request):
 
 def listarAlumno(request):
     filtrado = request.POST["filtrado"]
+    niveles = Nivel.objects.all()
     if (filtrado!=""):
         if (filtrado.isnumeric()):
             listaAlumno = reversed(Alumno.objects.filter(codigoAlumno=filtrado, horario=request.POST["horarioSeleccionado"]))
@@ -50,4 +56,5 @@ def listarAlumno(request):
     else:
         listaAlumno = reversed(Alumno.objects.filter(horario=request.POST["horarioSeleccionado"]))
     ser_instance = serializers.serialize('json', list(listaAlumno),fields=('id', 'nombreAlumno', 'codigoAlumno', 'horario'))
-    return JsonResponse({"listaAlumno": ser_instance},  status=200)
+    ser_instance2 = serializers.serialize('json', list(niveles), fields=('id', 'name', 'value', 'state'))
+    return JsonResponse({"listaAlumno": ser_instance, "niveles": ser_instance2},  status=200)

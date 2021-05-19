@@ -139,7 +139,7 @@
                             <form>
                                 <div class="form-check form-check-inline">
                                     <input class="radioBtnClass" type="radio" name="inlineRadioOptions"
-                                            value="1" onclick="guardarPuntuacion({{ alumno.codigoAlumno }},{{ rubrica.pk }})">
+                                            value="1" onclick="guardarPuntuacion({{ alumno.codigoAlumno }},{{ nivel.pk }})">
                                     <label class="form-check-label" for="inlineRadio1">1</label>
                                 </div>
                                 <div class="form-check form-check-inline">
@@ -235,7 +235,7 @@
     <script>
         $(document).ready(function () {
             muestraRubrica();
-            //listarAlumno();
+            listarAlumno();
         });
 
         function validarAlumno() {
@@ -266,15 +266,24 @@
         });
 
 
-        function guardarPuntuacion(codigoAlumno,rubrica){
-
-            console.log(codigoAlumno);
-            console.log(rubrica);
-
-           {% comment %}if($("input[type='radio'].radioBtnClass").is(':checked')) {
-                var card_type = $("input[type='radio'].radioBtnClass:checked").val();
-                console.log(card_type);
-            }{% endcomment %}
+        function guardarPuntuacion(codigoAlumno,nivel){
+              $.ajax({
+                type: 'POST',
+                url: "{% url 'guardarPuntuacion'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    codigoAlumno: codigoAlumno,
+                    nivel: nivel,
+                    indicador : $("#cboIndicador").val()
+                },
+                success: function (response){
+                    console.log("ya ta");
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
         }
 
 
@@ -290,34 +299,22 @@
                 },
                 success: function (response) {
                     var instance = JSON.parse(response["nuevoAlumno"]);
+                    var instanceN = JSON.parse(response["niveles"]);
                     var fields = instance[0]["fields"];
-
+                    var i;
+                    var numero = instanceN.length;
                     data = '<tr class="btn-reveal-trigger">' +
                         '<th class="align-middle">' + fields.codigoAlumno + '</th>' +
                         '<th class="align-middle">' + fields.nombreAlumno + '</th>' +
-                        '                             <th class="align-middle">' +
-                        ' <div class="form-check form-check-inline">' +
-                        ' <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
-                        '   id="inlineRadio1" value="option1">' +
-                        '   <label class="form-check-label" for="inlineRadio1">1</label>' +
-                        ' </div>' +
-                        '  <div class="form-check form-check-inline">' +
-                        '  <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
-                        '       id="inlineRadio2" value="option2">' +
-                        '   <label class="form-check-label" for="inlineRadio2">2</label>' +
-                        '   </div>' +
-                        '    <div class="form-check form-check-inline">' +
-                        '       <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
-                        '             id="inlineRadio3" value="option3">' +
-                        '     <label class="form-check-label" for="inlineRadio3">3</label>' +
-                        '   </div>' +
-                        '   <div class="form-check form-check-inline">' +
-                        '       <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
-                        '              id="inlineRadio4" value="option4">' +
-                        '      <label class="form-check-label" for="inlineRadio4">4</label>' +
-                        '   </div>' +
-                        '  </th>  ' +
-                        '</tr>'
+                        '                             <th class="align-middle">';
+                        for (i=1;i<=numero;i++){
+                            data+=('<div class="form-check form-check-inline">'+
+                                    '<input class="radioBtnClass" type="radio" name="inlineRadioOptions"'+
+                                            'value="'+i+' " onclick="guardarPuntuacion('+fields.codigoAlumno+','+instanceN[i-1]["pk"]+',)">'+
+                                    '<label class="form-check-label" for="inlineRadio1">'+i+'</label>'+
+                                '</div>');
+                        }
+                    data += '</th>'+'</tr>';
                     $("#tablaAlumno").prepend(data);
 
                 },
@@ -340,35 +337,25 @@
                 success: function (response) {
                     var instance = JSON.parse(response["listaAlumno"]);
                     var i;
+                    var j;
                     var numero = instance.length;
+                    var instanceN = JSON.parse(response["niveles"]);
+                    var numeroN = instanceN.length;
+                    console.log(instanceN);
                     data = ''
                     for (i = 0; i < numero; i++) {
                         data += ('<tr class="btn-reveal-trigger">' +
                             '<th class="align-middle">' + instance[i]["fields"].codigoAlumno + '</th>' +
                             '<th class="align-middle">' + instance[i]["fields"].nombreAlumno + '</th>' +
-                            '                             <th class="align-middle">' +
-                            ' <div class="form-check form-check-inline">' +
-                            ' <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
-                            '   id="inlineRadio1" value="option1">' +
-                            '   <label class="form-check-label" for="inlineRadio1">1</label>' +
-                            ' </div>' +
-                            '  <div class="form-check form-check-inline">' +
-                            '  <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
-                            '       id="inlineRadio2" value="option2">' +
-                            '   <label class="form-check-label" for="inlineRadio2">2</label>' +
-                            '   </div>' +
-                            '    <div class="form-check form-check-inline">' +
-                            '       <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
-                            '             id="inlineRadio3" value="option3">' +
-                            '     <label class="form-check-label" for="inlineRadio3">3</label>' +
-                            '   </div>' +
-                            '   <div class="form-check form-check-inline">' +
-                            '       <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
-                            '              id="inlineRadio4" value="option4">' +
-                            '      <label class="form-check-label" for="inlineRadio4">4</label>' +
-                            '   </div>' +
-                            '  </th>  ' +
-                            '</tr>')
+                            '                             <th class="align-middle">');
+                            for (j=1;j<=numeroN;j++){
+                            data+=('<div class="form-check form-check-inline">'+
+                                    '<input class="radioBtnClass" type="radio" name="inlineRadioOptions"'+
+                                            'value="'+j+' " onclick="guardarPuntuacion('+instance[i]["fields"].codigoAlumno+','+instanceN[j-1]["pk"]+',)">'+
+                                    '<label class="form-check-label" for="inlineRadio1">'+j+'</label>'+
+                                '</div>');
+                            }
+                            data+=('  </th>  ' + '</tr>');
                     }
                     $("#tablaAlumno").html(data);
                     $("#textBuscar").val('');
