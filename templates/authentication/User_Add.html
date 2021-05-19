@@ -247,10 +247,21 @@
                                     <div class="card-header">
                                         <h5 class="mb-0">Registro de Usuario</h5>
                                     </div>
+
                                     <div class="card-body bg-light">
                                         <form id="applicantForm" action="{% url 'user' %}" method="POST"
                                               enctype="multipart/form-data">
                                             {% csrf_token %}
+
+
+                                            <div class="form-group">
+                                                <label for="">Roles</label>
+                                                <select name="" class="form-control" id="">
+                                                    {% for roles in grupos %}
+                                                        <option value={{ roles.pk }}>{{ roles.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
 
                                             <div class="form-group">
                                                 <label for="card-name">Nombre</label>

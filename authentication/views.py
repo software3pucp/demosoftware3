@@ -9,6 +9,7 @@ from demosoftware3.settings import MEDIA_URL
 from gestionarFacultad.views import listarFacultad
 from django.contrib.auth import authenticate
 from django.contrib.auth import login, logout
+from django.contrib.auth.models import Group
 
 def Show(request):
     media_path = MEDIA_URL
@@ -20,14 +21,17 @@ def Show(request):
 
 
 def Register(request):
+    context = {
+        'grupos': Group.objects.all()
+    }
     if request.POST:
-        photo = request.FILES['photo']
+        photo = request.FILES.get('photo')
         user = User.objects.create_user(first_name=request.POST['card-name'],
                                         username=request.POST['card-correo'], code=request.POST['card-codigo'],
                                         email=request.POST['card-correo'], password=request.POST['card-password'],
                                         photo=photo, is_active=True)
         return redirect(Show)
-    return render(request, 'authentication/User_Add.html')
+    return render(request, 'authentication/User_Add.html',context)
 
 
 def Edit(request, pk):
@@ -39,6 +43,7 @@ def Edit(request, pk):
         newemail = request.POST['card-correo']
         newpassword = request.POST['card-password']
         newphoto = request.FILES['photo']
+
 
         user.first_name = newname
         user.code = newcode
