@@ -30,6 +30,7 @@
                         <th class="align-middle sort">Nombre</th>
                         <th class="align-middle sort pr-7">Código</th>
                         <th class="align-middle sort" style="min-width: 12.5rem;">Correo</th>
+                        <th class="align-middle no-sort">Acción</th>
                     </tr>
                     </thead>
                     <tbody id="orders">
@@ -41,24 +42,27 @@
 
                                     {% if user.photo.name %}
 
-                                    <img class="rounded-circle"
-                                         src="{{ media_path }}{{ user.photo.name }}/"
-                                         alt=""/>
+                                        <img class="rounded-circle"
+                                             src="{{ media_path }}{{ user.photo.name }}/"
+                                             alt=""/>
                                     {% else %}
-                                    <img class="rounded-circle"
-                                         src="{% static 'img/team/avatar.png' %}"
-                                         alt=""/>
+                                        <img class="rounded-circle"
+                                             src="{% static 'img/team/avatar.png' %}"
+                                             alt=""/>
                                     {% endif %}
-
-
 
 
                                 </div>
                             </td>
-                            <th class="align-middle"><a href="{% url 'editUsers' pk=user.pk %}">{{ user.first_name }}</a></th>
+                            <th class="align-middle"><a
+                                    href="{% url 'editUsers' pk=user.pk %}">{{ user.first_name }}</a></th>
                             <td class="align-middle">{{ user.code }}</td>
                             <td class="align-middle">{{ user.email }}</td>
-
+                            <td class="align-middle">
+                                <a class="btn btn-falcon-default btn-sm mr-2  text-body" type="button"
+                                   href="{% url 'deleteUser' pk=user.pk %}"><span
+                                        class="fas fa-ban mr-1"></span>Eliminar</a>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
