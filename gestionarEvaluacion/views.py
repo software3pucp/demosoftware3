@@ -35,9 +35,6 @@ def guardarPuntuacion(request):
     return JsonResponse({},status=200)
 
 def editarAlumno(request):
-    print("toy aqui jeje")
-    print(request)
-    print("############################")
     alumno = Alumno.objects.get(pk = request.POST["idAlumno"])
     nuevoCodigo = request.POST["codigoAlumno"]
     nuevoNombre = request.POST["nombreAlumno"]

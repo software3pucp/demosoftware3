@@ -128,41 +128,6 @@
                 <tbody id="tablaAlumno">
 
                 {# Al acabar borra este for#}
-                {% for alumno in listaAlumno %}
-
-                    <tr class="btn-reveal-trigger">
-                        <th>{{ alumno.codigoAlumno }}</th>
-                        <th> {{ alumno.nombreAlumno }} </th>
-                        <th>
-                            <form>
-                                <div class="form-check form-check-inline">
-                                    <input class="radioBtnClass" type="radio" name="inlineRadioOptions"
-                                           value="1"
-                                           onclick="guardarPuntuacion({{ alumno.codigoAlumno }},{{ nivel.pk }})">
-                                    <label class="form-check-label" for="inlineRadio1">1</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="radioBtnClass" type="radio" name="inlineRadioOptions"
-                                           value="2" onclick="guardarPuntuacion({{ alumno.codigoAlumno }},2)">
-                                    <label class="form-check-label" for="inlineRadio1">2</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="radioBtnClass" type="radio" name="inlineRadioOptions"
-                                           value="3" onclick="guardarPuntuacion({{ alumno.codigoAlumno }},3)">
-                                    <label class="form-check-label" for="inlineRadio1">3</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="radioBtnClass" type="radio" name="inlineRadioOptions"
-                                           value="4" onclick="guardarPuntuacion({{ alumno.codigoAlumno }},4)">
-                                    <label class="form-check-label" for="inlineRadio1">4</label>
-                                </div>
-
-
-                            </form>
-                        </th>
-
-                    </tr>
-                {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -221,8 +186,7 @@
                         </div>
                         <div class="form-group">
                             <label for="codigoAlumno">Código</label>
-                            <input class="form-control" id="codigoAlumnoMod" name="codigoAlumno" type="text" maxlength="8"
-                                   placeholder="Código">
+                            <div id="editCodigo"></div>
                         </div>
                     </form>
                 </div>
@@ -265,11 +229,16 @@
             listarAlumno();
         });
 
-        function evaluarEditar(codigoAlumno, pk){
-
-            data = '<input class="form-control" id="nombreAlumnoMod" name="nombreAlumnoMod" type="text" placeholder='+codigoAlumno+'> ' +
-                '</input>';
+        function evaluarEditar(nombreAlumno,codigoAlumno,pk){
+            var nomb = nombreAlumno.toString();
+            console.log(nomb);
+            console.log(codigoAlumno);
+            data ='';
+            data += '<input class="form-control" id="nombreAlumnoMod" name="nombreAlumnoMod" type="text" value="'+nomb+'">';
             $("#editNombre").html(data);
+
+            data = '<input class="form-control" id="codigoAlumnoMod" name="codigoAlumnoMod" type="text" value='+codigoAlumno+'>';
+            $("#editCodigo").html(data);
             $("#editarAlumno").modal('show');
 
             $("#btnEditarAlumno").on('click', function () {
@@ -468,7 +437,6 @@
                                     '<label class="form-check-label" for="inlineRadio1">' + j + '</label>' +
                                     '</div>');
                             }
-
                             data += ('</th>' +
                                 '<th>' +
                                 '<div class="row">' +
@@ -476,7 +444,7 @@
                                 '<a href="" class="badge badge-pill badge-primary">Subir Evidencia</a>' +
                                 '</div>' +
                                 '<div class="col">' +
-                                '<button class="badge badge-pill badge-secondary" onclick="evaluarEditar('+instance[i]["fields"].codigoAlumno +','+instance[i]["pk"]+',)">Editar</button>' +
+                                '<button class="badge badge-pill badge-secondary" onclick="evaluarEditar(\''+instance[i]["fields"].nombreAlumno +'\',' + instance[i]["fields"].codigoAlumno + ','+instance[i]["pk"]+')">Editar</button>' +
                                 '</div>' +
                                 '<div class="col">' +
                                 '<button class="badge badge-pill badge-danger" onclick="evaluarEliminar(' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ',)">Eliminar</button>' +
