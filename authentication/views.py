@@ -31,23 +31,27 @@ def Register(request):
 
 
 def Edit(request, pk):
+    media_path = MEDIA_URL
     user = User.objects.get(pk=pk)
     if request.POST:
         newname = request.POST['card-name']
         newcode = request.POST['card-codigo']
         newemail = request.POST['card-correo']
         newpassword = request.POST['card-password']
+        newphoto = request.FILES['photo']
 
         user.first_name = newname
         user.code = newcode
         user.email = newemail
         user.password = newpassword
+        user.photo = newphoto
         user.save()
 
         return redirect(Show)
 
     context = {
-        'user': user
+        'user': user,
+        'media_path': media_path
     }
 
     return render(request, 'authentication/User_Edit.html', context)
