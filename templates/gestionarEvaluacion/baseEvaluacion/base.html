@@ -241,9 +241,30 @@
             $("#editCodigo").html(data);
             $("#editarAlumno").modal('show');
 
+            $("form[name='formEditarAlumno']").validate({
+                rules: {
+                    nombreAlumnoMod: {
+                        required: true,
+                    },
+                    codigoAlumnoMod: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    nombreAlumnoMod: {
+                        required: "Por favor ingrese el nombre"
+                    },
+                    codigoAlumnoMod: {
+                        required: "Por favor ingrese el codigo"
+                    }
+                }
+            });
+
             $("#btnEditarAlumno").on('click', function () {
+                if ($("#formEditarAlumno").valid()) {
                 editarAlumno(pk);
                 $("#editarAlumno").modal('hide');
+                }
             });
 
         };
