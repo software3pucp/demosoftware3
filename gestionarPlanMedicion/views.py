@@ -19,16 +19,23 @@ def listarPlanMedicion(request):
             data = serializers.serialize("json", especialidades)
             return JsonResponse({"resp": data}, status=200)
         elif request.POST['operacion'] == 'listCur':
-            planes = PlanMedicion.objects.filter(curso__especialidad_id__exact=request.POST['especialidad'])
+            planes = PlanMedicion.objects.filter(curso__especialidad_id__exact=request.POST['especialidad'],estado = request.POST['estado'])
             pks = planes.values_list('curso_id',flat=True)
             cursos = Curso.objects.filter(pk__in=pks)
             dataP = serializers.serialize("json", planes)
             dataC = serializers.serialize("json", cursos)
             return JsonResponse({"resp": dataP,"resp1": dataC}, status=200)
+        elif request.POST['operacion'] == 'estado':
+            planMedicion = PlanMedicion.objects.get(pk=request.POST['planpk'])
+            if planMedicion.estado == '1':
+                planMedicion.estado = '2'
+            elif planMedicion.estado == '2':
+                planMedicion.estado = '1'
+            planMedicion.save()
 
     facultades = Facultad.objects.filter()
     especialidades = Especialidad.objects.filter()
-    estados = ["Activo","Inactivo"]
+    estados = PlanMedicion.ESTADOS[1:]
     context = {
         'facultades' : facultades,
         'especialidades' : especialidades,

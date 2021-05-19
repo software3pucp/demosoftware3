@@ -212,9 +212,9 @@
                 </div>
 
                 <div class="form-group">
-                    <select id="estado" name="estado" class="form-control" id="ControlSelect2">
+                    <select id="estado" name="estado" class="form-control" id="ControlSelect2" onchange="listarCursos()">
                         {% for estado in estados %}
-                            <option value={{ estado }}>{{ estado }}</option>
+                            <option value={{ estado.0 }}>{{ estado.1 }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -332,11 +332,12 @@
                             '                       {% csrf_token %}'+
                             '                       <input type="hidden" name="operacion" value="entrada">'+
                             '                       <input type="hidden" name="especialidad" value="'+$("#especialidades").val()+'">'+
-                            '                       <button class="btn btn-falcon-primary nav-link icon-indicator fas fa-pen iconSize iconColorNBorder" style="text-align: center;"></button>' +
+                            '                       <button class="rbtn btn-falcon-primary nav-link icon-indicator fas fa-pen iconSize iconColoNBorder" style="text-align: center;"></button>' +
                             '                   </form>'+
-                            '                   <form class="p-2 pr-3" action="/gestionarPlanMedicion/crear/'+ instance[instance.length-i-1]["pk"] + '" method="post">'+
+                            '                   <form class="p-2 pr-3" action="{% url 'listarPlanMedicion' %}" method="post">'+
                             '                       {% csrf_token %}'+
-                            '                       <input type="hidden" name="operacion" value="entrada">'+
+                            '                       <input type="hidden" name="operacion" value="estado">'+
+                            '                       <input type="hidden" name="planpk" value= "'+instance[instance.length-i-1]["pk"] +'"'+
                             '                       <input type="hidden" name="especialidad" value="'+$("#especialidades").val()+'">'+
                             '                       <button class="btn btn-falcon-primary nav-link icon-indicator fas fa-power-off iconSize iconColorNBorder" style="text-align: center;"></button>' +
                             '                   </form>'+
