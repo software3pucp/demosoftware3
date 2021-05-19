@@ -200,22 +200,21 @@
 
             <div class="d-flex justify-content-between m-3">
                 <div class="form-group">
-                    <select id="facultades" name="facultades" class="form-control" id="FormControlSelect1">
+                    <select id="facultades" name="facultades" class="form-control" id="FormControlSelect1" onchange="listarEspecialidades()">
                         {% for facultad in facultades %}
-                            <option onclick="listarEspecialidades()"
-                                    value={{ facultad.pk }}>{{ facultad.nombre }}</option>
+                            <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
-                    <select id="especialidades" name="especialidades" class="form-control" id="FormControlSelect1">
+                    <select id="especialidades" name="especialidades" class="form-control" id="FormControlSelect1" onchange="listarCursos()">
                     </select>
                 </div>
 
                 <div class="form-group">
                     <select id="estado" name="estado" class="form-control" id="ControlSelect2">
                         {% for estado in estados %}
-                            <option onclick="listarCursos()" value={{ estado }}>{{ estado }}</option>
+                            <option value={{ estado }}>{{ estado }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -266,6 +265,7 @@
         });
 
         function listarEspecialidades(){
+            console.log($("#facultades").val());
             $.ajax({
                 type: 'POST',
                 url: "{% url 'listarPlanMedicion' %}",
@@ -276,9 +276,9 @@
                 },
                 success: function (response){
                     var instance = JSON.parse(response["resp"]);
-                    $("#especialidad").remove();
+                    $(".especialidad").remove();
                     for(var i=0; i<instance.length; i++){
-                        data = '<option id="especialidad" onclick="listarCursos()" value='+
+                        data = '<option class="especialidad" onclick="listarCursos()" value='+
                             instance[i]["pk"]+'>'+
                             instance[i]["fields"].nombre+'</option>';
                         $("#especialidades").append(data);
@@ -347,6 +347,7 @@
                             '</div>' ;
                         $("#cursos").prepend(data);
                     }
+                    console.log('terminado');
                 },
                 error: function (response) {
                     // alert the error if any error occured

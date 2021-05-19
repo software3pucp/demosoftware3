@@ -6,6 +6,7 @@ from django.core import serializers
 from gestionarCurso.models import Curso
 from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
+from gestionarHorario.models import Horario
 from gestionarIndicadores.models import Indicador
 from gestionarPlanMedicion.models import PlanMedicion
 
@@ -19,7 +20,7 @@ def listarPlanMedicion(request):
             return JsonResponse({"resp": data}, status=200)
         elif request.POST['operacion'] == 'listCur':
             planes = PlanMedicion.objects.filter(curso__especialidad_id__exact=request.POST['especialidad'])
-            pks = planes.values_list('id',flat=True)
+            pks = planes.values_list('curso_id',flat=True)
             cursos = Curso.objects.filter(pk__in=pks)
             dataP = serializers.serialize("json", planes)
             dataC = serializers.serialize("json", cursos)
@@ -42,7 +43,7 @@ def crearPlanMedicion(request,pk):
     plan.pk = pk
     listaCursos = []
     listaEstados = PlanMedicion.ESTADOS[1:]
-    listaHorarios = ["H0811","H0882","H0813","H0814"]
+    listaHorarios = []
     listaIndicadores = Indicador.objects.filter()
     especialidad = ''
     horariosSelec = ["H0811","H0882","H0813"]
@@ -58,6 +59,10 @@ def crearPlanMedicion(request,pk):
             plan = PlanMedicion.objects.latest('id')
             pk = plan.pk
             flag = 2
+        elif request.POST['operacion'] == 'listHorarios':
+            listaHorarios = Horario.objects.filter(curso_id=request.POST['curso'])
+            data = serializers.serialize("json", listaHorarios)
+            return JsonResponse({"resp": data}, status=200)
         elif request.POST['operacion'] == 'mostrarHorario':
             data = request.POST['horarioPk']
             return JsonResponse({"resp": data}, status=200)
