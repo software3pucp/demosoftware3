@@ -151,9 +151,12 @@
                         <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
                         <input class="btn btn-primary mr-3 mb-1" type="submit" value="Agregar" name="Agregar">
                     {% else %}
-                        <a class="btn btn-outline-primary mr-3 mb-1" type="button" href="{% url 'listarPlanMedicion' %}">
-                            Eliminar
-                        </a>
+                        <form action="{% url 'listarPlanMedicion' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="operacion" value="eliminar">
+                            <input type="hidden" name="planPk" value="{{ plan.pk }}">
+                            <input class="btn btn-outline-primary mr-3 mb-1" type="submit" value="Eliminar" name="Eliminar">
+                        </form>
                         <a class="btn btn-primary mr-3 mb-1" type="button" href="{% url 'listarPlanMedicion' %}">
                             Volver
                         </a>

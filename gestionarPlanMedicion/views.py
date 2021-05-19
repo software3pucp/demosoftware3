@@ -32,6 +32,13 @@ def listarPlanMedicion(request):
             elif planMedicion.estado == '2':
                 planMedicion.estado = '1'
             planMedicion.save()
+        elif request.POST['operacion'] == 'eliminar':
+            print('***************************************************************************************************')
+            print(request.POST)
+            print('***************************************************************************************************')
+            planMedicion = PlanMedicion.objects.get(pk=request.POST['planPk'])
+            planMedicion.delete()
+            print(planMedicion)
 
     facultades = Facultad.objects.filter()
     especialidades = Especialidad.objects.filter()
@@ -106,9 +113,6 @@ def crearPlanMedicion(request,pk):
             data = serializers.serialize("json", horario)
             return JsonResponse({"resp": data}, status=200)
         elif request.POST['operacion'] == 'quitarHorario':
-            print('***************************************************************************************************')
-            print(request.POST)
-            print('***************************************************************************************************')
             horario = Horario.objects.filter(pk=request.POST["horarioPk"])
             plan = PlanMedicion.objects.get(pk=request.POST["planPK"])
             horarios = plan.horario.all()
@@ -144,5 +148,3 @@ def crearPlanMedicion(request,pk):
         'flag': flag,
     }
     return render(request,'gestionarPlanMedicion/crearPlanMedicion.html',context)
-
-
