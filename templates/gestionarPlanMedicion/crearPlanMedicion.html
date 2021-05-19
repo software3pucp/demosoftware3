@@ -8,16 +8,18 @@
 {#Bloque de extra body -> HTML#}
 {% block body %}
     {#AQUI COLOQUEN EL CÓDIGO#}
-    <form action="{% url 'crearCursos' pk=curso.pk %}" method="post">
+    {% if insert %}
+    <form action="{% url 'crearPlanMedicion' pk=plan.pk %}" method="post">
         {% csrf_token %}
+    {% endif %}
         <div class="card">
             <div class="card-body">
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-12">
-                        {% if insert == 1 %}
-                            <h3 class="mb-0"> {{ especialidad }} - Añadir curso a ser evaluado </h3>
-                        {% elif insert == 0 %}
-                            <h3 class="mb-0"> {{ especialidad }} - Editar curso a ser evaluado </h3>
+                        {% if insert %}
+                            <h3 class="mb-0"> {{ especialidad.nombre }} - Añadir curso a ser evaluado </h3>
+                        {% else %}
+                            <h3 class="mb-0"> {{ plan.curso.especialidad.nombre }} - Editar curso a ser evaluado </h3>
                         {% endif %}
                         <hr>
                     </div>
@@ -28,121 +30,143 @@
                         <div class="form-group mt-2">
                             <label for="exampleFormControlSelect1">Curso</label>
                             <select name="curso" class="form-control" id="exampleFormControlSelect1">
-                                {% for curso in listaCursos %}
-                                    <option value={{ curso.pk }}>{{ curso.nombre }}</option>
-                                {% endfor %}
+                                {% if insert %}
+                                    {% for curso in listaCursos %}
+                                        <option value={{ curso.pk }}>{{ curso.nombre }}</option>
+                                    {% endfor %}
+                                {% else %}
+                                    <option value={{ plan.curso.pk }}>{{ plan.curso.nombre }}</option>
+                                {% endif %}
                             </select>
                         </div>
                     </div>
                 </div>
 
-                <div class="col">
-                    <div class="row d-flex justify-content-between">
-                        <label for="exampleFormControlSelect2">Horarios</label>
-                        <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button">
-                            <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
-                        </button>
-                    </div>
-
-                </div>
-
-                <div class="row d-flex justify-content-center">
-                    <div class="col-md-12">
-                        <select name="horarios" class="form-control" id="exampleFormControlSelect2">
-                            {% for horario in listaHorarios %}
-                                <option value={{ horario }}>{{ horario }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-                <br>
-                <div class="row d-flex">
-                    {% for horario in listaHorarios %}
-                        <div class="col-md-3">
-                            <div class="card m-1">
-                                <div class="card-body" style="padding: 1rem">
-                                    <div class="row">
-                                        <div class="col-md-8 p-0 d-flex justify-content-center">
-                                            <a class="btn p-0 " href="#informacionHorario" data-toggle="modal">{{ horario }}</a>
-                                        </div>
-                                        <div class="col-md-4 p-0 d-flex justify-content-center"
-                                             style="border-left: 1px solid">
-                                            <a class="btn p-0" href="#!">
-                                                <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                {% if not insert %}
+                    <div class="col">
+                        <div class="row d-flex justify-content-between">
+                            <label for="exampleFormControlSelect2">Horarios</label>
+                            <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button">
+                                <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
+                            </button>
                         </div>
-                    {% endfor %}
-                </div>
-                <div class="row d-flex justify-content-center">
-                    <div class="col-md-12">
-                        <div class="form-group mt-2">
-                            <label for="exampleFormControlSelect1">Estado</label>
-                            <select name="estado" class="form-control" id="exampleFormControlSelect3">
-                                {% for estado in listaEstados %}
-                                    <option value={{ estado }}>{{ estado }}</option>
+
+                    </div>
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-md-12">
+                            <select name="horarios" class="form-control" id="exampleFormControlSelect2">
+                                {% for horario in listaHorarios %}
+                                    <option value={{ horario }}>{{ horario }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                     </div>
-                </div>
-
-                <div class="col">
-                    <div class="row d-flex justify-content-between">
-                        <label for="exampleFormControlSelect4">Indicadores</label>
-                        <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button">
-                            <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="row d-flex justify-content-center">
-                    <div class="col-md-12">
-                        <select name="horarios" class="form-control" id="exampleFormControlSelect2">
-                            {% for indicador in listaIndicadores %}
-                                <option value={{ indicador }}>{{ indicador }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-                <br>
-                <div class="row d-flex">
-                    {% for indicador in listaIndicadores %}
-                        <div class="col-md-3">
-                            <div class="card m-1">
-                                <div class="card-body" style="padding: 1rem">
-                                    <div class="row">
-                                        <div class="col-md-8 p-0 d-flex justify-content-center">
-                                            <a class="btn p-0 " href="#informacionIndicador" data-toggle="modal">{{ indicador.descripcion }}</a>
-                                        </div>
-                                        <div class="col-md-4 p-0 d-flex justify-content-center"
-                                             style="border-left: 1px solid">
-                                            <a class="btn p-0" href="#!">
-                                                <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
-                                            </a>
+                    <br>
+                    <div class="row d-flex">
+                        {% for horario in horariosSelec %}
+                            <div class="col-md-3">
+                                <div class="card m-1">
+                                    <div class="card-body" style="padding: 1rem">
+                                        <div class="row">
+                                            <div class="col-md-8 p-0 d-flex justify-content-center">
+                                                <a class="btn p-0 " href="#informacionHorario"
+                                                   data-toggle="modal" onclick='mostrarHorario("{{ horario }}")'>{{ horario }}</a>
+                                            </div>
+                                            <div class="col-md-4 p-0 d-flex justify-content-center"
+                                                 style="border-left: 1px solid">
+                                                <a class="btn p-0" href="#!">
+                                                    <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if insert %}
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-md-12">
+                            <div class="form-group mt-2">
+                                <label for="exampleFormControlSelect1">Estado</label>
+                                <select name="estado" class="form-control" id="exampleFormControlSelect3">
+                                    {% for estado in listaEstados %}
+                                        <option value={{ estado.0 }}>{{ estado.1 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                         </div>
-                    {% endfor %}
-                </div>
-                <br>
+                    </div>
+                {% endif %}
+
+                {% if not insert %}
+                    <div class="col">
+                        <div class="row d-flex justify-content-between pt-4">
+                            <label for="exampleFormControlSelect4">Indicadores</label>
+                            <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button" onclick="agregarIndicador()">
+                                <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-md-12">
+                            <select name="horarios" class="form-control" id="indicador">
+                                {% for indicador in listaIndicadores %}
+                                    <option value={{ indicador.pk }}>{{ indicador.codigo }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div id="indicadoresSelec" class="row d-flex">
+                        {% for indicador in indicadoresSelec %}
+                            <div id="indicador{{ indicador.pk }}" class="col-md-3">
+                                <div class="card m-1">
+                                    <div class="card-body" style="padding: 1rem">
+                                        <div class="row">
+                                            <div class="col-md-8 p-0 d-flex justify-content-center">
+                                                <a class="btn p-0 " href="#informacionIndicador"
+                                                   data-toggle="modal" onclick='mostrarIndicador("{{ indicador.pk }}")'>{{ indicador.codigo }}</a>
+                                            </div>
+                                            <div class="col-md-4 p-0 d-flex justify-content-center"
+                                                 style="border-left: 1px solid">
+                                                <a class="btn p-0" onclick='quitarIndicador("{{ indicador.pk }}")'>
+                                                    <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 <div class="row d-flex justify-content-end pt-5">
-                    <a class="btn btn-outline-primary mr-3 mb-1" type="button" href="{% url 'listarFacultad' %}">
-                        Eliminar
-                    </a>
-                    <a class="btn btn-outline-primary mr-3 mb-1" type="button" href="{% url 'listarFacultad' %}">
-                        Cancelar
-                    </a>
-                    <button type="submit" class="btn btn-primary mr-3 mb-1" type="button">Guardar</button>
+                    {% if insert %}
+                        <a class="btn btn-outline-primary mr-3 mb-1" type="button" href="{% url 'listarPlanMedicion' %}">
+                            Cancelar
+                        </a>
+                        <input type="hidden" name="operacion" value="insertar">
+                        <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
+                        <input class="btn btn-primary mr-3 mb-1" type="submit" value="Agregar" name="Agregar">
+                    {% else %}
+                        <a class="btn btn-outline-primary mr-3 mb-1" type="button" href="{% url 'listarPlanMedicion' %}">
+                            Eliminar
+                        </a>
+                        <a class="btn btn-primary mr-3 mb-1" type="button" href="{% url 'listarPlanMedicion' %}">
+                            Volver
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
+    {% if insert %}
     </form>
+    {% endif %}
 
     <!--Barras laterales-->
 
@@ -151,69 +175,68 @@
          aria-labelledby="settings-modal-label" aria-hidden="true"
          data-options='{"autoShow":false,"autoShowDelay":10,"showOnce":false}'>
 
-        <div class="modal-dialog modal-dialog-vertical"  role="document">
+        <div class="modal-dialog modal-dialog-vertical" role="document">
             <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar"
                  style="background-color: #017ECD;">
 
                 <div class="modal-body text-white">
-                   <div class="row d-flex justify-content-center">
+                    <div class="row d-flex justify-content-center">
                         <h5>Información Horario</h5>
-                        <hr  style="background-color: #f9fafd; width: 70%">
+                        <hr class="mb-5" style="background-color: #f9fafd; width: 70%">
                     </div>
 
                     <div class="row d-flex justify-content-start">
-                        <div class="col-12 pl-5">
-                            <h5>Codigo: H001</h5>
+                        <div id="horCodField" class="col-12 pl-5">
+
                         </div>
                     </div>
                     <br>
                     <div class="row d-flex justify-content-start">
-                         <div class="col-12 pl-5">
+                        <div class="col-12 pl-5">
                             <h5>Descripción:</h5>
                         </div>
                     </div>
                     <div class="row d-flex justify-content-start">
-                         <div class="col-12 pl-5">
-                            <p>Horario perteneciente al curso de Tesis 1</p>
+                        <div id="horDescripField" class="col-12 pl-5">
+
                         </div>
                     </div>
                     <div class="row d-flex justify-content-start">
-                         <div class="col-12 pl-5">
+                        <div class="col-12 pl-5">
                             <h5>Curso Asociado:</h5>
                         </div>
                     </div>
                     <div class="row d-flex justify-content-start">
-                         <div class="col-12 pl-5">
-                            <p>Tesis 1</p>
+                        <div class="col-12 pl-5">
+                            <p>{{ plan.curso.nombre }}</p>
                         </div>
                     </div>
                     <div class="row d-flex justify-content-start">
-                         <div class="col-12 pl-5">
+                        <div class="col-12 pl-5">
                             <h5>Responsables:</h5>
                         </div>
                     </div>
                     {% for responsable in listaResponsables %}
-                    <div class="row d-flex justify-content-start">
-                        <div class="col-12 pl-5">
-                            <div class="card m-1">
-                                <div class="card-body" style="padding: 1rem">
-                                    <div class="row">
-                                        <div class="col-md-8 p-0 d-flex justify-content-center">
-                                            <a class="btn p-0 " href="#!" data-toggle="modal">{{ responsable }}</a>
-                                        </div>
-                                        <div class="col-md-4 p-0 d-flex justify-content-center"
-                                             style="border-left: 1px solid">
-                                            <a class="btn p-0" href="#!">
-                                                <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
-                                            </a>
+                        <div class="row d-flex justify-content-start">
+                            <div class="col-12 pl-5">
+                                <div class="card m-1">
+                                    <div class="card-body" style="padding: 1rem">
+                                        <div class="row">
+                                            <div class="col-md-8 p-0 d-flex justify-content-center">
+                                                <a class="btn p-0 " href="#!" data-toggle="modal">{{ responsable }}</a>
+                                            </div>
+                                            <div class="col-md-4 p-0 d-flex justify-content-center"
+                                                 style="border-left: 1px solid">
+                                                <a class="btn p-0" href="#!">
+                                                    <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     {% endfor %}
-
                 </div>
             </div>
         </div>
@@ -224,44 +247,158 @@
          aria-labelledby="settings-modal-label" aria-hidden="true"
          data-options='{"autoShow":false,"autoShowDelay":10,"showOnce":false}'>
 
-        <div class="modal-dialog modal-dialog-vertical"  role="document">
+        <div class="modal-dialog modal-dialog-vertical" role="document">
             <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar"
                  style="background-color: #017ECD;">
 
-                <div class="modal-body">
-                   <div class="row d-flex justify-content-center">
+                <div class="modal-body text-white">
+                    <div class="row d-flex justify-content-center">
                         <h5>Información Indicador</h5>
-                        <hr  style="background-color: #f9fafd; width: 70%">
+                        <hr style="background-color: #f9fafd; width: 70%">
                     </div>
 
                     <div class="row d-flex justify-content-start">
-                        <div class="col-12 pl-5">
-                            <h5>Codigo: ID01</h5>
+                        <div id="indCodField" class="col-12 pl-5">
+                            <h5 id="indCod">Codigo: ID01</h5>
                         </div>
                     </div>
                     <br>
                     <div class="row d-flex justify-content-start">
-                         <div class="col-12 pl-5">
+                        <div class="col-12 pl-5">
                             <h5>Descripción:</h5>
                         </div>
                     </div>
                     <div class="row d-flex justify-content-start">
-                         <div class="col-12 pl-5">
-                            <p>Aplica conceptos lógicos para la resolución de problemas</p>
+                        <div id="indDescripField" class="col-12 pl-5">
+                            <p id="indDescrip">Aplica conceptos lógicos para la resolución de problemas</p>
                         </div>
                     </div>
                     <div class="row d-flex justify-content-start">
-                         <div class="col-12 pl-5">
+                        <div class="col-12 pl-5">
                             <h5>Curso Asociado:</h5>
                         </div>
                     </div>
                     <div class="row d-flex justify-content-start">
-                         <div class="col-12 pl-5">
-                            <p>Tesis 1</p>
+                        <div class="col-12 pl-5">
+                            <p>{{ plan.curso.nombre }}</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+        $(document).ready(function () {
+            console.log("ready!");
+        });
+
+        function  mostrarHorario(pk){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearPlanMedicion' pk=plan.pk %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: "mostrarHorario",
+                    horarioPk: pk,
+                },
+                success: function (response){
+                    $("#horCod").remove();
+                    $("#horDescrip").remove();
+                    data = '<h5 id="horCod" class="text-white">Codigo: '+response["resp"]+'</h5>';
+                    $("#horCodField").append(data);
+                    data = '<p id="horDescrip">'+response["resp"]+'</p>';
+                    $("#horDescripField").append(data);
+                },
+                error: function (response){
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+        function mostrarIndicador(pk){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearPlanMedicion' pk=plan.pk %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: "mostrarIndicador",
+                    indicadorPk: pk,
+                },
+                success: function (response){
+                    var instance = JSON.parse(response["resp"]);
+                    $("#indCod").remove();
+                    $("#indDescrip").remove();
+                    data = '<h5 id="indCod" class="text-white">Codigo: '+instance[0]["fields"].codigo+'</h5>';
+                    $("#indCodField").append(data);
+                    data = '<p id="indDescrip">'+instance[0]["fields"].descripcion+'</p>';
+                    $("#indDescripField").append(data);
+                },
+                error: function (response){
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+        function agregarIndicador(){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearPlanMedicion' pk=plan.pk %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: "agregarIndicador",
+                    planPK: '{{ plan.pk }}',
+                    indicadorPk: $("#indicador").val(),
+                },
+                success: function (response){
+                    var instance = JSON.parse(response["resp"]);
+                    console.log(instance[0])
+                    data = '<div id="indicador'+instance[0]["pk"]+'" class="col-md-3">'+
+                        '   <div class="card m-1">'+
+                        '       <div class="card-body" style="padding: 1rem">'+
+                        '           <div class="row">'+
+                        '               <div class="col-md-8 p-0 d-flex justify-content-center">'+
+                        '                   <a class="btn p-0 " href="#informacionIndicador" data-toggle="modal" onclick="'+'mostrarIndicador('+ instance[0]["pk"]+' ) ">'+instance[0]["fields"].codigo+'</a>'+
+                        '               </div>'+
+                        '               <div class="col-md-4 p-0 d-flex justify-content-center" style="border-left: 1px solid">'+
+                        '                   <a class="btn p-0" onclick="quitarIndicador('+instance[0]["pk"]+')">'+
+                        '                       <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>'+
+                        '                   </a>'+
+                        '               </div>'+
+                        '           </div>'+
+                        '       </div>'+
+                        '   </div>'+
+                        '</div>';
+                    $("#indicadoresSelec").append(data);
+                },
+                error: function (response){
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+        function quitarIndicador(pk){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearPlanMedicion' pk=plan.pk %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: "quitarIndicador",
+                    planPK: '{{ plan.pk }}',
+                    indicadorPk: pk,
+                },
+                success: function (response){
+                    var instance = JSON.parse(response["resp"]);
+                    console.log(instance[0])
+                    $("#indicador"+instance[0]['pk']).remove()
+                },
+                error: function (response){
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+    </script>
 {% endblock %}

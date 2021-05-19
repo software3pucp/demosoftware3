@@ -222,27 +222,31 @@
 
             </div>
 
-            <div class="d-flex justify-content-center mt-3">
+            <div class="d-flex justify-content-center mt-3 mb-5">
                 <div class="col-md-12">
                     <div class="row">
                         <div id="selectEspe" class="col-md-12">
                         </div>
                     </div>
                     <div id="cursos" class="row">
-                        <div id="nuevo" class="col-4 equal">
-                            <a class="recent-work product card border-0 shadow-lg overflow-hidden h-100"
-                               href="{% url 'crearFacultad' %}">
-                                <div class="nav-link icon-indicator" role="button">
-                                    <div class="mt-4" style="text-align: center;">
-                                        <span class="fas fa-plus fa-9x" style="text-align: center"></span>
+
+                        <div id="nuevo" class="col-md-4 equal">
+                            <form class="d-flex justify-content-center" action="{% url 'crearPlanMedicion' pk='0' %}" method="post">
+                                {% csrf_token %}
+                                <input id="hid" type="hidden" name="operacion" value="entrada">
+                                <button type="submit" class="recent-work product card border-0 shadow-lg overflow-hidden h-125">
+                                    <div class="nav-link icon-indicator" role="button">
+                                        <div class="mt-4" style="text-align: center;">
+                                            <span class="fas fa-plus fa-9x" style="text-align: center"></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="recent-work-vertical-ruk card-img-overlay d-flex align-items-end">
-                                    <div class="service-work-content text-left text-light">
-                                        <h5 class="card-title mt-6">Agregar Curso</h5>
+                                    <div class="recent-work-vertical-ruk card-img-overlay d-flex align-items-end">
+                                        <div class="service-work-content text-left text-light">
+                                            <h5 class="card-title mt-6">Agregar Curso</h5>
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -264,7 +268,7 @@
         function listarEspecialidades(){
             $.ajax({
                 type: 'POST',
-                url: "{% url 'listarCursos' %}",
+                url: "{% url 'listarPlanMedicion' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     operacion: 'listEspe',
@@ -290,7 +294,7 @@
         function listarCursos() {
             $.ajax({
                 type: 'POST',
-                url: "{% url 'listarCursos'%}",
+                url: "{% url 'listarPlanMedicion'%}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     operacion: 'listCur',
@@ -299,7 +303,12 @@
                 },
                 success: function (response) {
                     var instance = JSON.parse(response["resp"]);
+                    var instance1 = JSON.parse(response["resp1"]);
+                    $("#esp").remove();
+                    data='<input id="esp" type="hidden" name="especialidad" value="'+$("#especialidades").val()+'">';
+                    $("#hid").after(data);
                     $("#selectEspeTit").remove();
+
                     data = '<div id="selectEspeTit">' +
                         '   <h4>' + $("#facultades option:selected").text() + ' - ' + $("#especialidades option:selected").text()+'</h4>' +
                         '   <hr>' +
@@ -307,28 +316,30 @@
                     $("#selectEspe").append(data);
                     $(".curso").remove();
                     for(var i=0; i<instance.length; i++){
-                        data = '<div class="curso col-4 equal">' +
+                        data = '<div class="curso col-md-4 equal">' +
                             '   <div class="d-flex justify-content-center">'+
-                            '       <div class="product card h-125" style="height: 300px">' +
+                            '       <div class="product card">' +
                             '           <div class="row">' +
                             '               <div class="col-md-4">' +
                             '                   <button class="btn btn-falcon-primary mr-1 mb-1" type="button">Primar</button>' +
                             '               </div>' +
                             '           </div>' +
                             '           <div class="specifies">' +
-                            '               <h5 class="card-title ml-2" style="text-align: left">' + instance[instance.length-i-1]["fields"].nombre + '</h5>' +
+                            '               <h5 class="card-title ml-2" style="text-align: left">' + instance1[instance.length-i-1]["fields"].nombre + '</h5>' +
                             '               <hr>' +
                             '               <div class="row d-flex justify-content-end">' +
-                            '                   <div class="col-6">' +
-                            '                       <div class="row">' +
-                            '                           <a class="nav-link icon-indicator" href="#" role="link">' +
-                            '                               <div class="fas fa-pen iconSize iconColorNBorder" style="text-align: center;"></div>' +
-                            '                           </a>' +
-                            '                           <a class="nav-link icon-indicator" href="#" role = "link">' +
-                            '                               <div class="fas fa-power-off iconSize iconColorNBorder" style = "text-align: center;">' + '</div>'+
-                            '                           </a>'+
-                            '                       </div>'+
-                            '                   </div>'+
+                            '                   <form class="p-2" action="/gestionarPlanMedicion/crear/'+ instance[instance.length-i-1]["pk"] + '" method="post">'+
+                            '                       {% csrf_token %}'+
+                            '                       <input type="hidden" name="operacion" value="entrada">'+
+                            '                       <input type="hidden" name="especialidad" value="'+$("#especialidades").val()+'">'+
+                            '                       <button class="btn btn-falcon-primary nav-link icon-indicator fas fa-pen iconSize iconColorNBorder" style="text-align: center;"></button>' +
+                            '                   </form>'+
+                            '                   <form class="p-2 pr-3" action="/gestionarPlanMedicion/crear/'+ instance[instance.length-i-1]["pk"] + '" method="post">'+
+                            '                       {% csrf_token %}'+
+                            '                       <input type="hidden" name="operacion" value="entrada">'+
+                            '                       <input type="hidden" name="especialidad" value="'+$("#especialidades").val()+'">'+
+                            '                       <button class="btn btn-falcon-primary nav-link icon-indicator fas fa-power-off iconSize iconColorNBorder" style="text-align: center;"></button>' +
+                            '                   </form>'+
                             '               </div>'+
                             '           </div>'+
                             '       </div>'+

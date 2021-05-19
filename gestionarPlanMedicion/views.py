@@ -10,20 +10,21 @@ from gestionarIndicadores.models import Indicador
 from gestionarPlanMedicion.models import PlanMedicion
 
 
-def listarCursos(request):
+def listarPlanMedicion(request):
 
     if request.POST:
-        print('***************************************************************************************************')
-        print(request)
-        print('***************************************************************************************************')
         if request.POST['operacion'] == 'listEspe':
             especialidades = Especialidad.objects.filter(facultad_id=request.POST['facultad'])
             data = serializers.serialize("json", especialidades)
             return JsonResponse({"resp": data}, status=200)
         elif request.POST['operacion'] == 'listCur':
-            cursos = Curso.objects.filter(especialidad_id=request.POST['especialidad'])
-            data = serializers.serialize("json", cursos)
-            return JsonResponse({"resp": data}, status=200)
+            planes = PlanMedicion.objects.filter(curso__especialidad_id__exact=request.POST['especialidad'])
+            pks = planes.values_list('id',flat=True)
+            cursos = Curso.objects.filter(pk__in=pks)
+            dataP = serializers.serialize("json", planes)
+            dataC = serializers.serialize("json", cursos)
+            return JsonResponse({"resp": dataP,"resp1": dataC}, status=200)
+
     facultades = Facultad.objects.filter()
     especialidades = Especialidad.objects.filter()
     estados = ["Activo","Inactivo"]
@@ -34,53 +35,76 @@ def listarCursos(request):
     }
     return render(request,'gestionarPlanMedicion/listarPlanMedicion.html',context)
 
-def crearCursos(request,pk):
+def crearPlanMedicion(request,pk):
     insert = False
     flag = 0
     plan = PlanMedicion()
     plan.pk = pk
     listaCursos = []
-    listaEstados = []
-    listaResponsables = []
+    listaEstados = PlanMedicion.ESTADOS[1:]
     listaHorarios = ["H0811","H0882","H0813","H0814"]
     listaIndicadores = Indicador.objects.filter()
     especialidad = ''
-
+    horariosSelec = ["H0811","H0882","H0813"]
+    indicadoresSelec = []
     if request.POST:
-        if request.POST['operacion'] == 'entrada':
-            listaCursos = Curso.objects.filter(especialidad=request.POST['especialidad'])
-            especialidad = request.POST['especialidad']
-            flag=0
-
-        elif request.POST['operacion'] == 'editar':
-            # resultadoAcreditadora = ResultadoAcreditadora.objects.get(pk=pk)
-            # resultadoAcreditadora.codigo = request.POST['codigo']
-            # resultadoAcreditadora.descripcion = request.POST['descripcion']
-            # resultadoAcreditadora.save()
+        if request.POST['operacion'] == 'editar':
+            print('***************************************************************************************************')
+            print(request.POST)
+            print('***************************************************************************************************')
             flag = 1
-
         elif request.POST['operacion'] == 'insertar':
-            # ResultadoAcreditadora.objects.create(codigo=request.POST['codigo'],descripcion=request.POST['descripcion'],
-            #                                      acreditadora_id=request.POST["acreditadora"])
-            # resultadoAcreditadora = ResultadoAcreditadora.objects.latest('id')
-            # pk = resultadoAcreditadora.pk
+            PlanMedicion.objects.create(curso_id=request.POST['curso'],estado=request.POST['estado'])
+            plan = PlanMedicion.objects.latest('id')
+            pk = plan.pk
             flag = 2
-
-
+        elif request.POST['operacion'] == 'mostrarHorario':
+            data = request.POST['horarioPk']
+            return JsonResponse({"resp": data}, status=200)
+        elif request.POST['operacion'] == 'mostrarIndicador':
+            indicador = Indicador.objects.filter(pk=request.POST["indicadorPk"])
+            data = serializers.serialize("json", indicador)
+            return JsonResponse({"resp": data}, status=200)
+        elif request.POST['operacion'] == 'agregarIndicador':
+            indicador = Indicador.objects.filter(pk=request.POST["indicadorPk"])
+            plan = PlanMedicion.objects.get(pk=request.POST["planPK"])
+            indicadores = plan.indicador.all()
+            if indicador[0] in indicadores:
+                return JsonResponse({'status':'false','message':'Indicador ya ingresado'}, status=500)
+            plan.indicador.add(indicador[0].pk)
+            data = serializers.serialize("json", indicador)
+            return JsonResponse({"resp": data}, status=200)
+        elif request.POST['operacion'] == 'quitarIndicador':
+            print('***************************************************************************************************')
+            print(request.POST)
+            print('***************************************************************************************************')
+            indicador = Indicador.objects.filter(pk=request.POST["indicadorPk"])
+            plan = PlanMedicion.objects.get(pk=request.POST["planPK"])
+            indicadores = plan.indicador.all()
+            if indicador[0] not in indicadores:
+                return JsonResponse({'status': 'false', 'message': 'Indicador ya ingresado'}, status=500)
+            plan.indicador.remove(indicador[0].pk)
+            data = serializers.serialize("json", indicador)
+            return JsonResponse({"resp": data}, status=200)
+        listaCursos = Curso.objects.filter(especialidad=request.POST['especialidad'])
+        especialidad = Especialidad.objects.get(pk=request.POST['especialidad'])
 
     if pk == '0':
         insert = True
     else:
-        curso = Especialidad.objects.get(pk=pk)
+        plan = PlanMedicion.objects.get(pk=pk)
+        many = plan.indicador.all()
+        indicadoresSelec = many
 
     context = {
-        'especialidad' : especialidad,
-        'listaCursos' : listaCursos,
-        'listaHorarios':listaHorarios,
-        'listaEstados':listaEstados,
-        'listaResponsables':listaResponsables,
+        'especialidad': especialidad,
+        'listaCursos': listaCursos,
+        'listaHorarios': listaHorarios,
+        'listaEstados': listaEstados,
         'listaIndicadores': listaIndicadores,
-        'curso' : plan,
+        'horariosSelec': horariosSelec,
+        'indicadoresSelec': indicadoresSelec,
+        'plan': plan,
         'insert': insert,
         'flag': flag,
     }
