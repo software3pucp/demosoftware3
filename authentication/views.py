@@ -85,3 +85,6 @@ def sing_in(request):
 def sing_out(request):
     logout(request)
     return redirect(sing_in)
+
+def select_rol(request):
+    return render(request, 'authentication/Select_rol.html')
