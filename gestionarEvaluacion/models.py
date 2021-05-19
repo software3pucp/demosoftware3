@@ -8,7 +8,7 @@ from gestionarIndicadores.models import Indicador
 class Alumno(models.Model):
     nombreAlumno = models.CharField(max_length=10, null=True, blank=True)
     codigoAlumno = models.CharField(max_length=9, null=True, blank=True)
-
+    horario = models.CharField(max_length=5, null=True, blank=True)
 
 class MedicionDeIndicador(models.Model):
     codigo = models.CharField(max_length=10, default='', null=True, blank=True)

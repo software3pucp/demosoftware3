@@ -31,8 +31,6 @@
     </div>
     <hr class="mb-3" style="background-color: #0154ae;">
 
-
-
     <div class="row d-flex mb-3">
         <div class="col-3">
             <label for="cboIndicador">Indicador:</label>
@@ -46,10 +44,10 @@
         <div class="col-3">
             <label for="cboHorario">Horario:</label>
             <select class="custom-select custom-select-sm mb-3" id="cboHorario" name="cboHorario">
-                <option selected="">H101</option>
-                <option value="1">H102</option>
-                <option value="2">H103</option>
-                <option value="3">H104</option>
+                <option selected="" value="H101">H101</option>
+                <option value="H102">H102</option>
+                <option value="H103">H103</option>
+                <option value="H104">H104</option>
             </select>
         </div>
 
@@ -69,14 +67,13 @@
     <div id="contenidoRubrica">
     </div>
 
-
-    {# Alumno Lista #}
+    {# Botones Agregar e Importar Estudiantes #}
     <div class="row align-items-center mb-3 justify-content-between">
         <div class="col-8 col-sm-auto ml-auto text-right pl-0">
             <div id="dashboard-actions">
                 <!-- Button trigger modal-->
                 <a href="" data-toggle="modal" data-target="#agregarAlumno"
-                   class="btn btn-primary btn-sm" type="button">
+                   class="btn btn-falcon-default btn-sm" type="button">
                     <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
                          aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
                          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
@@ -91,7 +88,7 @@
                     </svg>
                     <span class="d-none d-sm-inline-block ml-1">Agregar Estudiante</span>
                 </a>
-                <a href="    " class="btn btn-secondary btn-sm" type="button">
+                <a href="" class="btn btn-falcon-default btn-sm" type="button">
                     <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
                          aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
                          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
@@ -110,79 +107,74 @@
         </div>
     </div>
 
-
     <div class="card mb-3">
 
         <div class="card-body p-0">
-            <div class="dashboard-data-table" style="text-align: center">
-                <table class="table table-sm table-dashboard m-0 fs--1 table-hover data-table dataTable no-footer"
-                       data-options="{&quot;responsive&quot;:false,&quot;pagingType&quot;:&quot;simple&quot;,&quot;lengthChange&quot;:false,&quot;searching&quot;:false,&quot;pageLength&quot;:8,&quot;columnDefs&quot;:[{&quot;targets&quot;:[0,6],&quot;orderable&quot;:false}],&quot;language&quot;:{&quot;info&quot;:&quot;_START_ to _END_ Items of _TOTAL_ — <a href=\&quot;#!\&quot; class=\&quot;font-weight-semi-bold\&quot;> view all <span class=\&quot;fas fa-angle-right\&quot; data-fa-transform=\&quot;down-1\&quot;></span> </a>&quot;},&quot;buttons&quot;:[&quot;copy&quot;,&quot;excel&quot;]}"
-                       id="DataTables_Table_0">
-                    <!-------REVISAR LO QUE ESTA EN DATA OPTIONS --->
-                    <thead class="bg-200 text-900">
-                    <tr>
-                        <th class=" pr-1 align-middle">Codigo</th>
-                        <th class=" pr-1 align-middle">Estudiante</th>
-                        <th class=" pr-1 align-middle">Puntuacion</th>
-                        <th class=" pr-1 align-middle  ">Acciones</th>
-                    </tr>
-                    </thead>
-                    <tbody id="tablaAlumno">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Codigo</th>
+                    <th scope="col">Estudiante</th>
+                    <th scope="col">Puntuacion</th>
+                    <th class="white-space-nowrap">Acciones</th>
+                </tr>
+                </thead>
 
-                    {% for alumno in listaAlumno %}
-                        <tr class="btn-reveal-trigger">
-                            <th class="align-middle">{{ alumno.codigoAlumno }}</th>
-                            <th class="align-middle"> {{ alumno.nombreAlumno }} </th>
-                            <th class="align-middle">
-                                <form>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                               id="inlineRadio1" value="option1">
-                                        <label class="form-check-label" for="inlineRadio1">1</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                               id="inlineRadio2" value="option2">
-                                        <label class="form-check-label" for="inlineRadio2">2</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                               id="inlineRadio3" value="option3">
-                                        <label class="form-check-label" for="inlineRadio3">3</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                               id="inlineRadio4" value="option4">
-                                        <label class="form-check-label" for="inlineRadio4">4</label>
-                                    </div>
+                <tbody id="tablaAlumno">
 
+                {% for alumno in listaAlumno %}
 
-                                </form>
-                            </th>
-                            <th>
-                                <div class="row">
-                                    <div class="col">
-                                        <a href="" class="badge badge rounded-capsule badge-soft-info">Editar</a>
-                                    </div>
-                                    <div class="col">
-                                        <button type="submit"
-                                                class="badge rounded-capsule badge-soft-danger outline-none">
-                                            <span>Eliminar</span>
-                                        </button>
-                                    </div>
-                                    <div class="col">
-                                        <button type="submit"
-                                                class="badge rounded-capsule badge-soft-danger outline-none">
-                                            <span>Eliminar</span>
-                                        </button>
-                                    </div>
+                    <tr class="btn-reveal-trigger">
+                        <th>{{ alumno.codigoAlumno }}</th>
+                        <th> {{ alumno.nombreAlumno }} </th>
+                        <th>
+                            <form>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                           id="inlineRadio1" value="option1">
+                                    <label class="form-check-label" for="inlineRadio1">1</label>
                                 </div>
-                            </th>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                           id="inlineRadio2" value="option2">
+                                    <label class="form-check-label" for="inlineRadio2">2</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                           id="inlineRadio3" value="option3">
+                                    <label class="form-check-label" for="inlineRadio3">3</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                           id="inlineRadio4" value="option4">
+                                    <label class="form-check-label" for="inlineRadio4">4</label>
+                                </div>
+                            </form>
+                        </th>
+                        <th>
+                            <div class="row">
+                                <div class="col">
+                                    <a href="" class="badge badge rounded-capsule badge-soft-info">Editar</a>
+                                </div>
+                                <div class="col">
+                                    <button type="submit"
+                                            class="badge rounded-capsule badge-soft-danger outline-none">
+                                        <span>Guardar</span>
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <button type="submit"
+                                            class="badge rounded-capsule badge-soft-danger outline-none">
+                                        <span>Eliminar</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -230,8 +222,8 @@
     <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
     <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
     <script>
-    $(document).ready(function () {
-             muestraRubrica();
+        $(document).ready(function () {
+            muestraRubrica();
         });
     </script>
 
@@ -264,6 +256,8 @@
         });
 
     </script>
+
+
     <script>
         function agregarAlumno() {
             $.ajax({
@@ -273,6 +267,7 @@
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     nombreAlumno: $("#nombreAlumno").val(),
                     codigoAlumno: $("#codigoAlumno").val(),
+                    horario: $("#cboHorario").val()
                 },
                 success: function (response) {
                     var instance = JSON.parse(response["nuevoAlumno"]);
@@ -304,8 +299,7 @@
                         '   </div>' +
                         '  </th>  ' +
                         '</tr>'
-
-                    $("#contenidoRubrica").append(data);
+                    $("#tablaAlumno").append(data);
 
                 },
                 error: function (response) {
@@ -314,6 +308,61 @@
                 }
             });
         }
+    </script>
+
+    <script>
+        function  listarAlumno(){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'listarAlumno'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    horario: $("#cboHorario").val()
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["nuevoAlumno"]);
+                    var i;
+                    var numero = instance.length;
+                    //var fields = instance[0]["fields"];
+
+                    data += ('<tr class="btn-reveal-trigger">' +
+                        '<th class="align-middle">' + fields.codigoAlumno + '</th>' +
+                        '<th class="align-middle">' + fields.nombreAlumno + '</th>' +
+                        '                             <th class="align-middle">' +
+                        ' <div class="form-check form-check-inline">' +
+                        ' <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
+                        '   id="inlineRadio1" value="option1">' +
+                        '   <label class="form-check-label" for="inlineRadio1">1</label>' +
+                        ' </div>' +
+                        '  <div class="form-check form-check-inline">' +
+                        '  <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
+                        '       id="inlineRadio2" value="option2">' +
+                        '   <label class="form-check-label" for="inlineRadio2">2</label>' +
+                        '   </div>' +
+                        '    <div class="form-check form-check-inline">' +
+                        '       <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
+                        '             id="inlineRadio3" value="option3">' +
+                        '     <label class="form-check-label" for="inlineRadio3">3</label>' +
+                        '   </div>' +
+                        '   <div class="form-check form-check-inline">' +
+                        '       <input class="form-check-input" type="radio" name="inlineRadioOptions"' +
+                        '              id="inlineRadio4" value="option4">' +
+                        '      <label class="form-check-label" for="inlineRadio4">4</label>' +
+                        '   </div>' +
+                        '  </th>  ' +
+                        '</tr>')
+                    $("#tablaAlumno").append(data);
+
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+
+        }
+
+
     </script>
 
     <script>
@@ -335,7 +384,7 @@
 
                     console.log(instanceRubricas.length)
                     dataIndicador = '<div class="row d-flex justify-content-start mb-4">' +
-                        '<div class="col-6 mb-4">' +
+                        '<div class="col-md-auto mb-4">' +
                         '<div class="card text-white bg-primary">' +
                         '<div class="card-body">' +
                         '<div class="card-title">' + camposIndicador.codigo +
@@ -347,15 +396,13 @@
                         '</div>';
 
                     if (instanceRubricas.length > 0) {
-
                         dataNiveles = '<div class="col-12">' +
                             '<div class="card bg-light">' +
                             '<div class="card-body p-0">' +
                             '<div class="table-responsive">' +
                             '<table class="table">' +
-                            '<thead class="thead-light">' +
+                            '<thead class="thead-dark">' +
                             '<tr>';
-
                         dataDescripcion = '</tr>' +
                             '</thead>' +
                             '<tbody>' +
@@ -367,7 +414,6 @@
                         }
                         dataNiveles += '<th  scope="col">' + instanceNivel[numero - 1]["fields"].name + ' (' + instanceNivel[i]["fields"].value + ')</th>';
                         dataDescripcion += '<td >' + instanceRubricas[numero - 1]["fields"].descripcion + '</td>';
-
                         dataDescripcion += ('</tr>' +
                             '</tbody>' +
                             '</table>' +
@@ -385,14 +431,13 @@
                             '<div class="card-title"> Aún no se han asignado niveles a este indicador' +
                             '</div>' +
                             '<p class="card-text"> Por favor agregar los correspondientes en la pestaña "Resultados"' +
-                            '</p>'+
+                            '</p>' +
                             '</div>' +
                             '</div>' +
                             '</div>' +
                             '</div>';
                         dataIndicador += dataNiveles;
                     }
-
 
                     $("#contenidoRubrica").html(dataIndicador);
                 },
@@ -403,5 +448,4 @@
             });
         }
     </script>
-
 {% endblock %}

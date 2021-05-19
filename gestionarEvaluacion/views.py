@@ -8,8 +8,8 @@ from gestionarEvaluacion.models import Alumno
 from gestionarIndicadores.models import Indicador
 from gestionarRubrica.models import Rubrica
 from gestionarNivel.models import Nivel
-def listarAlumno(request):
-    listaAlumno = Alumno.objects.filter()
+def evaluar(request):
+    listaAlumno = Alumno.objects.filter() #Lista de horarios
     listaIndicador = Indicador.objects.filter()
     context = {
         'listaAlumno': listaAlumno,
@@ -20,7 +20,8 @@ def listarAlumno(request):
 
 def agregarAlumno(request):
     nuevoAlumno = Alumno.objects.create(nombreAlumno=request.POST["nombreAlumno"],
-                                        codigoAlumno=request.POST["codigoAlumno"])
+                                        codigoAlumno=request.POST["codigoAlumno"],
+                                        horario=request.POST["horario"])
     ser_instance = serializers.serialize('json', [nuevoAlumno,])
     return JsonResponse({"nuevoAlumno": ser_instance}, status=200)
 
@@ -32,3 +33,8 @@ def muestraRubrica(request):
     ser_instance2 = serializers.serialize('json',[indicador,])
     ser_instance3 = serializers.serialize('json', list(niveles),fields=('id','name','value','state'))
     return JsonResponse({"rubrica": ser_instance,"indicador":ser_instance2, "niveles": ser_instance3 }, status=200)
+
+def listarAlumno(request):
+    listaAlumno = Alumno.objects.filter(horario=request.POST["horarioSeleccionado"])
+    ser_instance = serializers.serialize('json', list(listaAlumno),fields=('id', 'nombreAlumno', 'codigoAlumno', 'horario'))
+    return JsonResponse({"listaAlumno": ser_instance},  status=200)
