@@ -198,7 +198,33 @@
         </div>
     </div>
 
+    <!-- Modal Rubrica Alumno -->
+
+    <div class="modal fade" id="rubricaAlumno" tabindex="-1" role="dialog" aria-labelledby="rubricaAlumnoLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rubricaAlumnoLabel">Aviso</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                  <div class="modal-body">
+                    <form id="formEvidenciaAlumno" name="formEvidenciaAlumno">
+                        <div class="form-group">
+                            Estamos trabajando en esta funcionalidad
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnRubricaAlumno" class="btn btn-primary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Eliminar Alumno -->
+
     <div class="modal fade" id="eliminarAlumno" tabindex="-1" role="dialog" aria-labelledby="eliminarAlumnoLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -228,11 +254,18 @@
             muestraRubrica();
             listarAlumno();
         });
+        function subirEvidencia(){
+           {% comment %} data = '<h5 class="modal-title" id="eliminarAlumnoLabel">Estamos trabajando en esta funcionalidad</h5>';
+            $("#rubricaAlumnoLabel").html(data);{% endcomment %}
+            $("#rubricaAlumno").modal('show');
 
+            $("#btnRubricaAlumno").on('click', function () {
+                $("#rubricaAlumno").modal('hide');
+            });
+
+        }
         function evaluarEditar(nombreAlumno,codigoAlumno,pk){
             var nomb = nombreAlumno.toString();
-            console.log(nomb);
-            console.log(codigoAlumno);
             data ='';
             data += '<input class="form-control" id="nombreAlumnoMod" name="nombreAlumnoMod" type="text" value="'+nomb+'">';
             $("#editNombre").html(data);
@@ -465,7 +498,7 @@
                                 '<th>' +
                                 '<div class="row">' +
                                 ' <div class="col">' +
-                                '<a href="" class="badge badge-pill badge-primary">Subir Evidencia</a>' +
+                                '<button class="badge badge-pill badge-primary" onclick="subirEvidencia()">Subir Evidencia></button>' +
                                 '</div>' +
                                 '<div class="col">' +
                                 '<button class="badge badge-pill badge-secondary" onclick="evaluarEditar(\''+instance[i]["fields"].nombreAlumno +'\',' + instance[i]["fields"].codigoAlumno + ','+instance[i]["pk"]+')">Editar</button>' +
