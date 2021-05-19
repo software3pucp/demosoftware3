@@ -28,7 +28,7 @@
 
                                     <div class="z-index-1 position-relative"><a
                                             class="text-white mb-4 text-sans-serif font-weight-extra-bold fs-4 d-inline-block"
-                                            href="../../index.html">APOLO</a>
+                                            href="{% url 'home' %}">APOLO</a>
                                         <p class="text-white opacity-75">Sistema de Acreditación y Mejora Continua</p>
                                     </div>
                                 </div>
@@ -44,10 +44,11 @@
                             <div class="col-md-7 d-flex flex-center">
                                 <div class="p-4 p-md-5 flex-grow-1">
                                     <h3>Ingresar</h3>
-                                    <form>
+                                    <form method="POST" enctype="multipart/form-data" action="{% url 'login' %}">
+                                        {% csrf_token %}
                                         <div class="form-group">
                                             <label for="card-email">Usuario</label>
-                                            <input class="form-control" id="card-email" type="email"/>
+                                            <input class="form-control" name="card-email" id="card-email" type="email"/>
                                         </div>
                                         <div class="form-group">
                                             <div class="d-flex justify-content-between">
@@ -55,7 +56,7 @@
                                                  href="../../authentication/card/forgot-password.html">
                                                 ¿Olvidaste tu contraseña?</a>
                                             </div>
-                                            <input class="form-control" id="card-password" type="password"/>
+                                            <input class="form-control" name="card-password" id="card-password" type="password"/>
                                         </div>
                                         <div class="custom-control custom-checkbox">
                                             <input class="custom-control-input" type="checkbox" id="card-checkbox"

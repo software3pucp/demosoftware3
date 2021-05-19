@@ -6,6 +6,8 @@ import requests
 from django.views.generic import CreateView
 from authentication.models import User
 from demosoftware3.settings import MEDIA_URL
+from gestionarFacultad.views import listarFacultad
+from django.contrib.auth import authenticate
 
 
 def Show(request):
@@ -55,3 +57,20 @@ def Delete(request, pk):
     user = User.objects.get(pk=pk)
     user.delete()
     return redirect(Show)
+
+
+def sing_in(request):
+
+    if request.POST:
+        username = request.POST['card-email']
+        password = request.POST['card-password']
+        user = authenticate(request,username=username,password=password)
+        if user is not None:
+            return redirect(listarFacultad)
+        else:
+            return render(request,'authentication/login.html')
+
+    return render(request,'authentication/login.html')
+
+def sing_out(request):
+    return redirect(sing_in)
