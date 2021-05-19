@@ -30,7 +30,6 @@
         </div>
     </div>
     <hr class="mb-3" style="background-color: #0154ae;">
-
     <div class="row d-flex mb-3">
         <div class="col-3">
             <label for="cboIndicador">Indicador:</label>
@@ -65,7 +64,8 @@
 
     </div>
 
-    <div id="contenidoRubrica">
+    <div class="col-12">
+        <div id="contenidoRubrica"></div>
     </div>
 
     {# Botones Agregar e Importar Estudiantes #}
@@ -139,35 +139,37 @@
                             <form>
                                 <div class="form-check form-check-inline">
                                     <input class="radioBtnClass" type="radio" name="inlineRadioOptions"
-                                            value="{{alumno.codigoAlumno}}1">
+                                            value="1" onclick="guardarPuntuacion({{ alumno.codigoAlumno }},{{ rubrica.pk }})">
                                     <label class="form-check-label" for="inlineRadio1">1</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="radioBtnClass" type="radio" name="inlineRadioOptions"
-                                            value="{{alumno.codigoAlumno}}2">
-                                    <label class="form-check-label" for="inlineRadio2">2</label>
+                                            value="2" onclick="guardarPuntuacion({{ alumno.codigoAlumno }},2)">
+                                    <label class="form-check-label" for="inlineRadio1">2</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="radioBtnClass" type="radio" name="inlineRadioOptions"
-                                           value="{{alumno.codigoAlumno}}3">
-                                    <label class="form-check-label" for="inlineRadio3">3</label>
+                                            value="3" onclick="guardarPuntuacion({{ alumno.codigoAlumno }},3)">
+                                    <label class="form-check-label" for="inlineRadio1">3</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="radioBtnClass" type="radio" name="inlineRadioOptions"
-                                            value="{{alumno.codigoAlumno}}4">
-                                    <label class="form-check-label" for="inlineRadio4">4</label>
+                                            value="4" onclick="guardarPuntuacion({{ alumno.codigoAlumno }},4)">
+                                    <label class="form-check-label" for="inlineRadio1">4</label>
                                 </div>
+
+
                             </form>
                         </th>
                         <th>
                             <div class="row">
                                 <div class="col">
-                                    <a href="" class="badge badge rounded-capsule badge-soft-info">Editar</a>
+                                    <a href="" class="badge badge rounded-capsule badge-soft-info">Subir Evidencia</a>
                                 </div>
                                 <div class="col">
                                     <button type="submit"
-                                            class="badge rounded-capsule badge-soft-danger outline-none" onclick="guardarPuntuacion()">
-                                        <span>Guardar</span>
+                                            class="badge rounded-capsule badge-soft-danger outline-none" onclick="editar()">
+                                        <span>Editar</span>
                                     </button>
                                 </div>
                                 <div class="col">
@@ -229,14 +231,13 @@
 
     <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
     <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
+
     <script>
         $(document).ready(function () {
             muestraRubrica();
             //listarAlumno();
         });
-    </script>
 
-    <script>
         function validarAlumno() {
             $("form[name='formAgregarAlumno']").validate({
                 rules: {
@@ -264,18 +265,19 @@
             }
         });
 
-    </script>
-    <script>
-        function guardarPuntuacion(){
-            if($("input[type='radio'].radioBtnClass").is(':checked')) {
+
+        function guardarPuntuacion(codigoAlumno,rubrica){
+
+            console.log(codigoAlumno);
+            console.log(rubrica);
+
+           {% comment %}if($("input[type='radio'].radioBtnClass").is(':checked')) {
                 var card_type = $("input[type='radio'].radioBtnClass:checked").val();
                 console.log(card_type);
-            }
+            }{% endcomment %}
         }
 
-    </script>
 
-    <script>
         function agregarAlumno() {
             $.ajax({
                 type: 'POST',
@@ -325,9 +327,7 @@
                 }
             });
         }
-    </script>
 
-    <script>
         function listarAlumno() {
             $.ajax({
                 type: 'POST',
@@ -382,10 +382,6 @@
 
         }
 
-
-    </script>
-
-    <script>
         function muestraRubrica() {
             $.ajax({
                 type: 'POST',
@@ -403,7 +399,7 @@
                     var camposIndicador = instanceIndicador[0]["fields"];
 
                     dataIndicador = '<div class="row d-flex justify-content-start mb-4">' +
-                        '<div class="col-md-auto mb-4">' +
+                        '<div class="col-12 mb-4">' +
                         '<div class="card text-white bg-primary">' +
                         '<div class="card-body">' +
                         '<div class="card-title">' + camposIndicador.codigo +
