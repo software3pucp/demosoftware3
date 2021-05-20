@@ -20,9 +20,6 @@ def listarCurso(request):
 
 
 def listarCursoxHorario(request, id_curso):
-    print("==================================")
-    print(id_curso)
-    print("==================================")
     media_path = MEDIA_URL
     context = {
         'ListaHorario': Horario.objects.filter(curso_id=id_curso),
@@ -35,7 +32,6 @@ def listarCursoxHorario(request, id_curso):
 
 def agregarCurso(request, id_especialidad):
     if request.POST:
-        print(request.POST)
         nombre = request.POST['name']
         id_responsable = request.POST['responsable']
         especialidad = Especialidad.objects.get(pk=id_especialidad)

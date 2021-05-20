@@ -3,7 +3,9 @@ from io import BytesIO  # StringIO and BytesIO are parts of io module in python3
 from django.test import Client
 import base64  # for decoding base64 image
 from django.test import TestCase, override_settings
-
+from gestionarCurso.models import Curso
+from gestionarEspecialidad.models import Especialidad
+from gestionarFacultad.models import Facultad
 
 class TestingClasses(TestCase):
 
@@ -11,6 +13,9 @@ class TestingClasses(TestCase):
     def setUpTestData(cls):
         print("Inicio de prueba del módulo ESPECIALIDAD")
         print("=====================================")
+        facultad = Facultad.objects.create(nombre='facultad', responsable='1')
+        especialidad = Especialidad.objects.create(nombre='especialidad', responsable='1', facultad=facultad)
+        curso = Curso.objects.create(nombre='curso', responsable='1', especialidad=especialidad)
         pass
 
     def setUp(self):
@@ -21,7 +26,8 @@ class TestingClasses(TestCase):
     def test_agregar_especialidad(self):
         print("Comenzando pruebas de: test_agregar_especialidad")
         c = Client()
-        response = c.get('/especialidades/agregar/')
+        id_facultad = "1"
+        response = c.get('/especialidades/agregar/' + id_facultad + '/')
         if response.status_code == 200:
             print('Correcta inicialización de agregar especialidad!')
         elif response.status_code == 404:
@@ -35,7 +41,7 @@ class TestingClasses(TestCase):
             charset='utf-8',
         )
         c = Client()
-        response = c.post('/especialidades/agregar/', {'name': 5, 'responsable': 'Juan', 'photo': image})
+        response = c.post('/especialidades/agregar/'+id_facultad+'/', {'name': 1, 'responsable': 1, 'photo': image})
         if response.status_code != 404:
             print('Se agregó una especialidad correctamente!')
         elif response.status_code == 404:
@@ -60,8 +66,8 @@ class TestingClasses(TestCase):
         print("Comenzando pruebas de: eliminarEspecialidad")
         c = Client(enforce_csrf_checks=True)
         id_especialidad = "1"
-        response = c.post('/especialidades/eliminar/' + id_especialidad + '/', follow=True)
-        if response.status_code == 200:
+        response = c.post('/especialidades/eliminar/' + id_especialidad + '/')
+        if response.status_code != 404:
             print('Correcto eliminar Especialidad!')
         else:
             self.assertFalse(False)
