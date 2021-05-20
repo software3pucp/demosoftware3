@@ -48,8 +48,12 @@ def Edit(request, pk):
         newcode = request.POST['card-codigo']
         newemail = request.POST['card-correo']
         newpassword = request.POST['card-password']
-        newphoto = request.FILES['photo']
-
+        newphoto = request.FILES.get('photo')
+        user.groups.clear()
+        roles = request.POST.getlist('choices-multiple-remove-button')
+        for val in roles:
+            group = Group.objects.get(id=val)
+            group.user_set.add(user)
 
         user.first_name = newname
         user.code = newcode

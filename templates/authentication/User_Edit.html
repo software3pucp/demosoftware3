@@ -249,29 +249,29 @@
                                         <h5 class="mb-0">Registro de Usuario</h5>
                                     </div>
                                     <div class="card-body bg-light">
+                                        <div class="form-group">
+                                            <label for="">Roles Asignados</label>
+                                            <select id="choices-multiple-remove-button"
+                                                    name="choices-multiple-remove-button"
+                                                    placeholder="Roles" multiple disabled>
+                                                {% for x,y in roles %}
+                                                    <option value={{ x }} selected>{{ y }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="card-body bg-light">
                                         <form id="applicantForm" action="{% url 'editUsers' pk=user.pk %}" method="POST"
                                               enctype="multipart/form-data">
                                             {% csrf_token %}
-
-
+                                        
                                             <div class="form-group">
-                                                <label for="">Roles</label>
+                                                <label for="">Ingrese nuevos roles</label>
                                                 <select id="choices-multiple-remove-button"
                                                         name="choices-multiple-remove-button"
                                                         placeholder="Seleccionar rol" multiple>
                                                     {% for val in grupos %}
                                                         <option value={{ val.pk }}>{{ val.name }}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="">Roles</label>
-                                                <select id="choices-multiple-remove-button"
-                                                        name="choices-multiple-remove-button"
-                                                        placeholder="Seleccionar rol" multiple>
-                                                    {% for x,y in roles %}
-                                                        <option value={{ x }}>{{ y }}</option>
                                                     {% endfor %}
                                                 </select>
                                             </div>
