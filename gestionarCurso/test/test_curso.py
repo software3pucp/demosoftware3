@@ -4,38 +4,45 @@ from django.test import Client
 import base64  # for decoding base64 image
 from django.test import TestCase, override_settings
 
+from gestionarCurso.models import Curso
+from gestionarEspecialidad.models import Especialidad
+from gestionarFacultad.models import Facultad
+
 
 class TestingClasses(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        print("=====================================")
         print("Inicio de prueba del módulo CURSO")
         print("=====================================")
+        facultad = Facultad.objects.create(nombre='facultad', responsable='1')
+        especialidad = Especialidad.objects.create(nombre='especialidad', responsable='1', facultad=facultad)
+        curso = Curso.objects.create(nombre='curso', responsable='1', especialidad=especialidad)
         pass
 
     def setUp(self):
         # print("setUp: Run once for every test method to setup clean data.")
         pass
 
-
     def test_agregar_curso(self):
         print("Comenzando pruebas de: test_agregar_curso")
         c = Client()
-        response = c.get('/cursos/agregar/')
+        id_especialidad = "1"
+        response = c.get('/cursos/agregar/' + id_especialidad + '/')
         if response.status_code == 200:
             print('Correcta inicialización de agregar curso!')
         elif response.status_code == 404:
             self.assertFalse(False)
         c = Client()
 
-        response = c.post('/cursos/agregar/', {'name': 5, 'responsable': 'Juan'})
+        response = c.post('/cursos/agregar/' + id_especialidad + '/', {'name': 'curso', 'responsable': 1})
         if response.status_code != 404:
             print('Se agregó un curso correctamente!')
         elif response.status_code == 404:
             self.assertFalse(False)
 
     def test_listarCursoxHorario(self):
-
         print("Comenzando pruebas de: test_listarCursoxHorario")
         c = Client()
         id_curso = "1"
@@ -47,10 +54,10 @@ class TestingClasses(TestCase):
 
     def test_eliminarCurso(self):
         print("Comenzando pruebas de: test_eliminarCurso")
-        c = Client(enforce_csrf_checks=True)
+        c = Client()
         id_curso = "1"
-        response = c.post('/cursos/eliminar/' + id_curso + '/', follow=True)
-        if response.status_code == 200:
+        response = c.post('/cursos/eliminar/' + id_curso + '/')
+        if response.status_code != 404:
             print('Correcto eliminar Curso!')
         else:
             self.assertFalse(False)
