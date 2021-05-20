@@ -72,7 +72,7 @@
 
                             {% for nivel in nivelLista %}
                                 <tr class="btn-reveal-trigger">
-                                    <th class="align-middle"> {{ nivel.pk }} </th>
+                                    <th class="align-middle"> {{ forloop.counter }} </th>
                                     <th class="align-middle">{{ nivel.name }}</th>
                                     <td class="align-middle">{{ nivel.value }}</td>
                                     <td class="align-middle text-right fs-0">

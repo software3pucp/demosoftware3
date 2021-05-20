@@ -93,7 +93,7 @@
                                                            role="button" data-toggle="dropdown" aria-haspopup="true"
                                                            aria-expanded="false">
             <div class="avatar avatar-xl">
-                <img class="rounded-circle" src="{% static 'img/team/3-thumb.png' %}" alt=""/>
+                <img class="rounded-circle" src="{{ media_path }}{{ request.user.photo }}" alt=""/>
             </div>
         </a>
             <div class="dropdown-menu dropdown-menu-right py-0" aria-labelledby="navbarDropdownUser">

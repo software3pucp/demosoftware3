@@ -14,11 +14,32 @@ class TestingClasses(TestCase):
 
     def test_listar_facultad(self):
 
-        print("Method: test http entry." + "test_listar_facultad")
+        print("Method: test http entry. " + "test_listar_facultad")
         c = Client()
-        response = c.post('/gestionarFacultad/listar/', {'username': 'john', 'password': 'smith'})
+        response = c.get('/facultades/listar/')
         if response.status_code == 200:
-            print('Success!')
+            print('Success! ------------------------------------------------')
+        elif response.status_code == 404:
+            self.assertFalse(False)
+
+
+
+    def test_agregar_facultad(self):
+
+        print("Method: test http entry. " + "test_agregar_facultad")
+        c = Client()
+        response = c.get('/facultades/crear/')
+        if response.status_code == 200:
+            print('Correcta inicialización de agregar facultad!---------------------')
+        elif response.status_code == 404:
+            self.assertFalse(False)
+        c = Client()
+
+
+        response = c.post('/facultades/crear/',{'name':5, 'responsable':'Juan', 'photo':data})
+        print(response.status_code)
+        if response.status_code == 200:
+            print('Se agregó una facultad! ------------------------------------------------')
         elif response.status_code == 404:
             self.assertFalse(False)
 

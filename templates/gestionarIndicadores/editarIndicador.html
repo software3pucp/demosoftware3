@@ -170,10 +170,12 @@
             });
         }
 
-        {% comment %}
+
         function habilitarCampo(nivel) {
-            $("#editarDescripcion" + nivel).prop("aria-disabled", true);
-        }{% endcomment %}
+            console.log(nivel)
+            console.log($("#desc_nivel" + nivel))
+            $("#desc_nivel" + nivel).prop("disabled", false);
+        }
     </script>
 
 {% endblock %}
