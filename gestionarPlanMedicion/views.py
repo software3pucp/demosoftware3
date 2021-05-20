@@ -52,7 +52,10 @@ def listarPlanMedicion(request):
 
 def crearPlanMedicion(request,pk):
     insert = False
+    #El flag 0: operacion no realizada
+    #flag > 0: operacion correspondiente realizada
     flag = 0
+    errorInsert = 0
     plan = PlanMedicion()
     plan.pk = pk
     listaCursos = []
@@ -69,10 +72,14 @@ def crearPlanMedicion(request,pk):
             print('***************************************************************************************************')
             flag = 1
         elif request.POST['operacion'] == 'insertar':
-            PlanMedicion.objects.create(curso_id=request.POST['curso'],estado=request.POST['estado'])
-            plan = PlanMedicion.objects.latest('id')
-            pk = plan.pk
-            flag = 2
+            planes = PlanMedicion.objects.filter(curso_id=request.POST['curso'])
+            if len(planes) == 0:
+                PlanMedicion.objects.create(curso_id=request.POST['curso'],estado=request.POST['estado'])
+                plan = PlanMedicion.objects.latest('id')
+                pk = plan.pk
+                flag = 2
+            else:
+                errorInsert = 1
         elif request.POST['operacion'] == 'listHorarios':
             listaHorarios = Horario.objects.filter(curso_id=request.POST['curso'])
             data = serializers.serialize("json", listaHorarios)
@@ -146,5 +153,6 @@ def crearPlanMedicion(request,pk):
         'plan': plan,
         'insert': insert,
         'flag': flag,
+        'errorInsert': errorInsert,
     }
     return render(request,'gestionarPlanMedicion/crearPlanMedicion.html',context)

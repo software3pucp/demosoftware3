@@ -162,6 +162,9 @@
                         </a>
                     {% endif %}
                 </div>
+                {% if errorInsert %}
+                    <div class="alert alert-danger" role="alert">Error al insertar plan de medición</div>
+                {% endif %}
             </div>
         </div>
     {% if insert %}
