@@ -34,10 +34,6 @@ def agregarFacultad(request):
 
 def listarFacultadxEsp(request, id_facultad):
     media_path = MEDIA_URL
-    print("==================================")
-    print(id_facultad)
-    print("==================================")
-
     context = {
         'ListaEspecialidad': Especialidad.objects.filter(facultad_id=id_facultad),
         'ListaFacultad': Facultad.objects.all(),
@@ -71,4 +67,5 @@ def editarFacultad(request, id_facultad):
 def eliminarFacultad(request, id_facultad):
     facultad = Facultad.objects.get(pk=id_facultad)
     facultad.delete()
+    print("Correcto eliminar Facultad!")
     return redirect('listarFacultad')
