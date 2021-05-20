@@ -42,6 +42,7 @@ def Register(request):
 def Edit(request, pk):
     media_path = MEDIA_URL
     user = User.objects.get(pk=pk)
+
     if request.POST:
         newname = request.POST['card-name']
         newcode = request.POST['card-codigo']
@@ -61,7 +62,9 @@ def Edit(request, pk):
 
     context = {
         'user': user,
-        'media_path': media_path
+        'media_path': media_path,
+        'roles': list(user.groups.values_list()),
+        'grupos': Group.objects.all()
     }
 
     return render(request, 'authentication/User_Edit.html', context)
