@@ -25,19 +25,13 @@ class TestingClasses(TestCase):
         elif response.status_code == 404:
             self.assertFalse(False)
 
-    def test_AgregarNivel(self):
-        print("Comenzando pruebas de: test_test_AgregarNivel")
+    def test_EditarNivel(self):
+        print("Comenzando pruebas de: test_test_test_EditarNivel")
         c = Client()
-        response = c.get('/gestionarNivel/agregar/')
+        pk = "1"
+        response = c.post('/gestionarNivel/editar/' + pk + '/', follow=True)
         if response.status_code == 200:
-            print('Correcta inicialización de agregar nivel!')
-        elif response.status_code == 404:
+            print('Se edito una nivel correctamente!')
+        else:
             self.assertFalse(False)
-        c = Client()
 
-
-        response = c.post('/gestionarNivel/agregar/', {'nombre': 'algo', 'valor': 12})
-        if response.status_code != 404:
-            print('Se agregó una nivel correctamente!')
-        elif response.status_code == 404:
-            self.assertFalse(False)
