@@ -76,7 +76,7 @@
                             </a>
                         </div>
                         <div class="d-flex p-2">
-                            <input type="submit" class="btn btn-primary" value="Guardar">
+                            <input type="submit" class="btn btn-primary"  value="Guardar">
                         </div>
                     </div>
 
@@ -109,7 +109,7 @@
                                             <div class="input-group">
                                                     <textarea name="desc_nivel" id="desc_nivel{{ item.0.pk }}"
                                                               class="form-control"
-                                                              rows="3">{{ item.1 }}</textarea>
+                                                              rows="3" disabled>{{ item.1 }}</textarea>
                                             </div>
                                         </td>
                                         <td class="align-middle text-right fs-0">
@@ -170,12 +170,15 @@
             });
         }
 
+        {% comment %}function desabilitarCampos(){
+            $("#descripcion").prop("disabled", true);
+            $("#codigo").prop("disabled", true);
+        }{% endcomment %}
 
         function habilitarCampo(nivel) {
-            console.log(nivel)
-            console.log($("#desc_nivel" + nivel))
             $("#desc_nivel" + nivel).prop("disabled", false);
         }
+
     </script>
 
 {% endblock %}

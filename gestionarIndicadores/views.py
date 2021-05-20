@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect
 from django.core import serializers
 # Create your views here.
 from rest_framework.utils import json
-
 from gestionarEspecialidad.models import Especialidad
 from gestionarIndicadores.models import Indicador
 from gestionarNivel.models import Nivel
@@ -29,7 +28,6 @@ def editarIndicador(request, pk):
             if nivel.pk == rub.nivel_id:
                 desc_nivel= rub.descripcion
                 nivelLista2[nivel.value-1][1]=desc_nivel
-
     nivelLista=nivelLista2
 
     if request.POST:
@@ -70,7 +68,7 @@ def eliminarIndicadorxResultado(request, id_resultado):
     if request.POST:
         print(request.POST)
         indicador = Indicador.objects.get(pk=request.POST['indicador_pk'])
-        indicador.estado = 0
+        indicador.estado = 0 #eliminación lógica
         indicador.save()
         flag = True
         return redirect('editarResultado', pk=id_resultado)
@@ -86,12 +84,6 @@ def agregarIndicador(request, id_resultado):
     return JsonResponse({"nuevoIndicador": ser_instance}, status=200)
 
 def agregarDescipcionNivel(request):
-    print('---------------------------------------------------------')
-    print(request.POST['indicadorpk'])
-    print(request.POST['nivelpk'])
-    print(request.POST['desc_nivel'])
-    print('---------------------------------------------------------')
-
     try:
         desc_nivel = Rubrica.objects.get(indicador_id=request.POST['indicadorpk'], nivel_id=request.POST['nivelpk'])
         desc_nivel.descripcion = request.POST['desc_nivel']
