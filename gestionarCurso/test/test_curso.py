@@ -17,14 +17,6 @@ class TestingClasses(TestCase):
         # print("setUp: Run once for every test method to setup clean data.")
         pass
 
-    def test_listar_curso(self):
-        print("Comenzando pruebas de: test_listar_curso")
-        c = Client()
-        response = c.get('/cursos/listar/')
-        if response.status_code == 200:
-            print('Correcto Listar Curso!')
-        elif response.status_code == 404:
-            self.assertFalse(False)
 
     def test_agregar_curso(self):
         print("Comenzando pruebas de: test_agregar_curso")
