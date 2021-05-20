@@ -25,11 +25,16 @@ def Register(request):
         'grupos': Group.objects.all()
     }
     if request.POST:
+        print(request.POST)
         photo = request.FILES.get('photo')
         user = User.objects.create_user(first_name=request.POST['card-name'],
                                         username=request.POST['card-correo'], code=request.POST['card-codigo'],
                                         email=request.POST['card-correo'], password=request.POST['card-password'],
                                         photo=photo, is_active=True)
+        roles=request.POST.getlist('choices-multiple-remove-button')
+        for val in roles:
+            group = Group.objects.get(id=val)
+            group.user_set.add(user)
         return redirect(Show)
     return render(request, 'authentication/User_Add.html',context)
 
