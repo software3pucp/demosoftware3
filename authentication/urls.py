@@ -13,4 +13,5 @@ urlpatterns = [
     path('edit/<pk>', views.Edit, name='editUsers'),
     path('del/<pk>', views.Delete, name='deleteUser'),
     path('select_rol/',views.select_rol, name="selectrol"),
+    path('validation/',views.validation,name="validation"),
 ]

@@ -102,3 +102,6 @@ def sing_out(request):
 
 def select_rol(request):
     return render(request, 'authentication/Select_rol.html')
+
+def validation(request):
+    return redirect(listarFacultad)
