@@ -65,10 +65,9 @@ class TestingClasses(TestCase):
 
     def test_eliminar_resultado(self):
         print("Comenzando pruebas de: test_eliminar_resultado")
-        c = Client(enforce_csrf_checks=True)
+        c = Client()
         id_resultado = "1"
         response = c.post('/gestionarResultados/listar/', {'resultadoPk': id_resultado})
-        print(response)
         if response.status_code == 200:
             print('Correcto eliminar Resultado!')
         else:
