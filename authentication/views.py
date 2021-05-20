@@ -42,26 +42,35 @@ def Register(request):
 def Edit(request, pk):
     media_path = MEDIA_URL
     user = User.objects.get(pk=pk)
+    print(request.POST)
     if request.POST:
         newname = request.POST['card-name']
         newcode = request.POST['card-codigo']
         newemail = request.POST['card-correo']
         newpassword = request.POST['card-password']
-        newphoto = request.FILES['photo']
-
+        if request.FILES.get('photo'):
+            newphoto = request.FILES.get('photo')
+            user.photo = newphoto
 
         user.first_name = newname
         user.code = newcode
         user.email = newemail
         user.password = newpassword
-        user.photo = newphoto
         user.save()
+        if request.POST.getlist('choices-multiple-remove-button'):
+            user.groups.clear()
+            roles = request.POST.getlist('choices-multiple-remove-button')
+            for val in roles:
+                group = Group.objects.get(id=val)
+                group.user_set.add(user)
 
         return redirect(Show)
 
     context = {
         'user': user,
-        'media_path': media_path
+        'media_path': media_path,
+        'roles': list(user.groups.values_list()),
+        'grupos': Group.objects.all()
     }
 
     return render(request, 'authentication/User_Edit.html', context)

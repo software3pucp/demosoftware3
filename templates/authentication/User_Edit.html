@@ -189,120 +189,164 @@
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-    <div class="row">
-        <form class="col-md-12" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-group d-flex justify-content-center">
-                <div class="col-8">
-                    <div class="card mb-3 btn-reveal-trigger">
-                        <div class="card-header position-relative min-vh-25">
-                            <div class="cover-image">
-                                <div class="bg-holder rounded-soft rounded-bottom-0"
-                                     style="background-image:linear-gradient(#2c7be5,#0e1c2f);;">
+    <div class="container-fluid">
+        <div class="row">
+            <form class="col-md-12" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group d-flex justify-content-center">
+                    <div class="col-8">
+                        <div class="card mb-3 btn-reveal-trigger">
+                            <div class="card-header position-relative min-vh-25">
+                                <div class="cover-image">
+                                    <div class="bg-holder rounded-soft rounded-bottom-0"
+                                         style="background-image:linear-gradient(#2c7be5,#0e1c2f);;">
+                                    </div>
+                                    <!--/.bg-holder-->
+
+                                    <input class="d-none" id="upload-cover-image" type="file">
+                                    <label class="cover-image-file-input" for="upload-cover-image"><span
+                                            class="fas fa-camera mr-2"></span><span>Change cover photo</span></label>
                                 </div>
-                                <!--/.bg-holder-->
 
-                                <input class="d-none" id="upload-cover-image" type="file">
-                                <label class="cover-image-file-input" for="upload-cover-image"><span
-                                        class="fas fa-camera mr-2"></span><span>Change cover photo</span></label>
+                                <div class="mb-3 text-center absolute-vertical-center">
+                                    <div class="avatar avatar-5xl shadow-sm img-thumbnail rounded-circle">
+                                        <div class="h-100 w-100 rounded-circle overflow-hidden position-relative">
+
+
+
+
+
+
+                                            <img class="rounded-circle"
+                                                 src="
+                                                         {% if user.photo.name %}{{ media_path }}{{ user.photo.name }}{% else %}{% static 'img/team/avatar.png' %}{% endif %}"
+                                                 alt="" id="image_preview" data-dz-thumbnail/>
+
+
+
+                                            <input class="d-none" id="photo" name="photo" type="file"
+                                                   accept="image/png,image/jpeg,image/jpg"/>
+                                            <label class="mb-0 overlay-icon d-flex flex-center" for="photo">
+                                                <span class="bg-holder overlay overlay-0"></span>
+                                                <span class="z-index-1 text-white text-center fs--1">
+                                                <span class="fas fa-camera"></span>
+                                                <span class="d-block">Agregar foto</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {% if "photo" in errors %}
+                                        {% for e in errors.photo %}
+                                            <label class=" error mt-2">{{ e }}</label>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group d-flex justify-content-center">
+                    <div class="col-8">
+                        <div class="row no-gutters">
+                            <div class="col-12 pr-lg-2">
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Registro de Usuario</h5>
+                                    </div>
+                                    <div class="card-body bg-light">
+                                        <div class="form-group">
+                                            <label for="">Roles Asignados</label>
+                                            <select id="choices-multiple-remove-button"
+                                                    name="choices-multiple-remove-button"
+                                                    placeholder="Roles" multiple disabled>
+                                                {% for x,y in roles %}
+                                                    <option value={{ x }} selected>{{ y }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="card-body bg-light">
+                                        <form id="applicantForm" action="{% url 'editUsers' pk=user.pk %}" method="POST"
+                                              enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                        
+                                            <div class="form-group">
+                                                <label for="">Ingrese nuevos roles</label>
+                                                <select id="choices-multiple-remove-button"
+                                                        name="choices-multiple-remove-button"
+                                                        placeholder="Seleccionar rol" multiple>
+                                                    {% for val in grupos %}
+                                                        <option value={{ val.pk }}>{{ val.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
 
-                            <div class="mb-3 text-center absolute-vertical-center">
-                                <div class="avatar avatar-5xl shadow-sm img-thumbnail rounded-circle">
-                                    <div class="h-100 w-100 rounded-circle overflow-hidden position-relative">
-                                        {% if user.photo.name %}
-                                        <img class="rounded-circle"
-                                             src="{{ media_path }}{{ user.photo.name }}/"
-                                             alt="" id="image_preview" data-dz-thumbnail/>
-                                        {% else %}
-                                        <img src="{% static 'img/team/avatar.png' %}" width="200" alt=""
-                                             id="image_preview" data-dz-thumbnail/>
-                                        {% endif %}
-                                        <input class="d-none" id="photo" name="photo" type="file"
-                                               accept="image/png,image/jpeg,image/jpg"/>
-                                        <label class="mb-0 overlay-icon d-flex flex-center" for="photo">
-                                            <span class="bg-holder overlay overlay-0"></span>
-                                            <span class="z-index-1 text-white text-center fs--1">
-                              <span class="fas fa-camera"></span>
-                              <span class="d-block">Agregar foto</span>
-                            </span>
-                                        </label>
+
+                                            <div class="form-group">
+                                                <label for="card-name">Nombre</label>
+                                                <input class="form-control" name="card-name" type="text"
+                                                       value="{{ user.first_name }}"
+                                                       id="card-name" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="card-email">Codigo</label>
+                                                <input class="form-control" name="card-codigo" type="text"
+                                                       value="{{ user.code }}"
+                                                       id="card-codigo" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="card-password">Correo</label>
+                                                <input class="form-control" name="card-correo" type="email"
+                                                       value="{{ user.email }}"
+                                                       id="card-correo" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="card-password">Password</label>
+                                                <input class="form-control" name="card-password" type="password"
+                                                       value="{{ user.password }}"
+                                                       id="card-password" required/>
+                                            </div>
+                                            <div class="form-group">
+                                                <button class="btn btn-primary btn-block mt-5" type="submit"
+                                                        name="submit">
+                                                    Registrar
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
-                                {% if "photo" in errors %}
-                                    {% for e in errors.photo %}
-                                        <label class=" error mt-2">{{ e }}</label>
-                                    {% endfor %}
-                                {% endif %}
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group d-flex justify-content-center">
-                <div class="col-8">
-                    <div class="row no-gutters">
-                        <div class="col-12 pr-lg-2">
-                            <div class="card mb-3">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Registro de Usuario</h5>
-                                </div>
-                                <div class="card-body bg-light">
-                                    <form id="applicantForm" action="{% url 'editUsers' pk=user.pk %}" method="POST"
-                                          enctype="multipart/form-data">
-                                        {% csrf_token %}
-
-                                        <div class="form-group">
-                                            <label for="card-name">Nombre</label>
-                                            <input class="form-control" name="card-name" type="text"
-                                                   value="{{ user.first_name }}"
-                                                   id="card-name" required/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="card-email">Codigo</label>
-                                            <input class="form-control" name="card-codigo" type="text"
-                                                   value="{{ user.code }}"
-                                                   id="card-codigo" required/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="card-password">Correo</label>
-                                            <input class="form-control" name="card-correo" type="email"
-                                                   value="{{ user.email }}"
-                                                   id="card-correo" required/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="card-password">Password</label>
-                                            <input class="form-control" name="card-password" type="password"
-                                                   value="{{ user.password }}"
-                                                   id="card-password" required/>
-                                        </div>
-                                        <div class="form-group">
-                                            <button class="btn btn-primary btn-block mt-5" type="submit"
-                                                    name="submit">
-                                                Registrar
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 
 
 {% endblock %}
 
 {% block extrajs %}
     <script src="{% static 'lib/select2/select2.min.js' %}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/connectycube@3.7.7/dist/connectycube.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            var multipleCancelButton = new Choices('#choices-multiple-remove-button', {
+                removeItemButton: true,
+
+            });
+
+
+        });
+    </script>
+
+
     <script>
         $(document).ready(function () {
             $(document).on('change', '.btn-file :file', function () {
