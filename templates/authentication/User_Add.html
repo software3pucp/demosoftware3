@@ -182,6 +182,8 @@
             color: #bfbfbf !important;
             transition-duration: 0.15s;
         }
+
+
     </style>
 
 
@@ -256,12 +258,14 @@
 
                                             <div class="form-group">
                                                 <label for="">Roles</label>
-                                                <select name="" class="form-control" id="">
+                                                <select id="choices-multiple-remove-button"
+                                                        placeholder="Seleccionar rol" multiple>
                                                     {% for roles in grupos %}
                                                         <option value={{ roles.pk }}>{{ roles.name }}</option>
                                                     {% endfor %}
                                                 </select>
                                             </div>
+
 
                                             <div class="form-group">
                                                 <label for="card-name">Nombre</label>
@@ -305,151 +309,167 @@
 
 {% block extrajs %}
     <script src="{% static 'lib/select2/select2.min.js' %}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/connectycube@3.7.7/dist/connectycube.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script>
         $(document).ready(function () {
-            $(document).on('change', '.btn-file :file', function () {
-                var input = $(this),
-                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-                input.trigger('fileselect', [label]);
-            });
 
-            $('.btn-file :file').on('fileselect', function (event, label) {
-
-                var input = $(this).parents('.input-group').find(':text'),
-                    log = label;
-
-                if (input.length) {
-                    input.val(log);
-                } else {
-                    if (log) alert(log);
-                }
+            var multipleCancelButton = new Choices('#choices-multiple-remove-button', {
+                removeItemButton: true,
 
             });
 
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
 
-                    reader.onload = function (e) {
-                        $('#img-upload').attr('src', e.target.result);
-                    }
-
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-
-            $("#imgInp").change(function () {
-                readURL(this);
-            });
         });
 
-        var selectedValue = sessionStorage.getItem("selectedValue");
+    </script>
 
-        //alert(selectedValue)
+    <script>
+    $(document).ready(function () {
+        $(document).on('change', '.btn-file :file', function () {
+            var input = $(this),
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [label]);
+        });
 
-        function SelectedValue() {
-            document.getElementById("facultadFormControl").value = selectedValue;
-        }
+        $('.btn-file :file').on('fileselect', function (event, label) {
 
-        $(document).ready(function () {
+            var input = $(this).parents('.input-group').find(':text'),
+                log = label;
 
-            {% comment %}$("form[id='applicantForm']").validate({
-              rules: {
-                photo: {
-                  extension: "jpeg|jpg|png"
-                },
-              },
-              messages: {
-                photo: {
-                  extension: "Solo se aceptan archivos jpeg o png"
-                },
-                first_name: {
-                  required: "Debe ingresar nombre y apellido",
-                  maxlength: "Nombre y apellido fuera del máximo de caracteres"
-                },
-                mobile_phone: {
-                  required: "Debe ingresar un celular",
-                  digits: "Debe ingresar números",
-                  maxlength: "Teléfono fuera de rango",
-                  minlength: "Debe tener mínimo 9 dígitos",
-                  min: 'Ingrese un celular válido'
-                },
-                email: {
-                  required: "Debe ingresar un correo",
-                  email: "Debe ingresar un correo válido",
-                  maxlength: "Correo fuera de rango"
-                },
-                password: {
-                  required: "Debe ingresar una contraseña",
-                  minlength: "Tamaño mínimo de contraseña: 6",
-                },
-                identification_number: {
-                  required: "Debe ingresar DNI",
-                  digits: "Debe ingresar números",
-                  minlength: "Debe tener 8 dígitos",
-                  rangelength: "Debe tener 8 dígitos",
-                  min: 'Ingrese un DNI válido'
-                },
-                department: {
-                  required: "Debe seleccionar un departamento",
-                },
-                province: {
-                  required: "Debe seleccionar una provincia",
-                },
-                location: {
-                  required: "Debe seleccionar un distrito",
-                },
-                checkbox_conditions: {
-                  required: "* Debe aceptar los <strong>términos y condiciones</strong>",
-                }
-              },
-              wrapper: 'div',
-              errorPlacement: function (error, element) {
-                console.log(error)
-                if (element.attr("name") === "department") {
-                  error.appendTo(".errorTxtDepartment");
-                } else if (element.attr("name") === "province") {
-                  error.appendTo(".errorTxtProvince");
-                } else if (element.attr("name") === "location") {
-                  error.appendTo(".errorTxtLocation");
-                } else if (element.attr("name") === "checkbox_conditions") {
-                  error.addClass('alert alert-danger')
-                  error.appendTo("#conditions_alert");
-                } else {
-                  error.insertAfter(element);
-                }
-              },
-            });{% endcomment %}
-
-
-            {% comment %}Se visualiza la imagen que se selecciona{% endcomment %}
-
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    let reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        $('#image_preview').attr('src', e.target.result);
-                    }
-
-                    reader.readAsDataURL(input.files[0]);
-                    console.log(input.files[0].name.split(".")[1])
-                    let extensions = ['jpg', 'jpeg', 'png']
-                    if (!(extensions.includes(input.files[0].name.split(".")[1]))) {
-                        $('#photo_error').text('Debe adjuntar archivos con extensión png, jpeg o jpg').removeAttr('hidden')
-                    } else {
-                        $('#photo_error').attr('hidden', 'true')
-                    }
-                }
+            if (input.length) {
+                input.val(log);
+            } else {
+                if (log) alert(log);
             }
 
-            $("#photo").change(function () {
-                readURL(this);
-            });
-        })
+        });
 
-    </script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img-upload').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#imgInp").change(function () {
+            readURL(this);
+        });
+    });
+
+    var selectedValue = sessionStorage.getItem("selectedValue");
+
+    //alert(selectedValue)
+
+    function SelectedValue() {
+        document.getElementById("facultadFormControl").value = selectedValue;
+    }
+
+    $(document).ready(function () {
+
+        {% comment %}$("form[id='applicantForm']").validate({
+          rules: {
+            photo: {
+              extension: "jpeg|jpg|png"
+            },
+          },
+          messages: {
+            photo: {
+              extension: "Solo se aceptan archivos jpeg o png"
+            },
+            first_name: {
+              required: "Debe ingresar nombre y apellido",
+              maxlength: "Nombre y apellido fuera del máximo de caracteres"
+            },
+            mobile_phone: {
+              required: "Debe ingresar un celular",
+              digits: "Debe ingresar números",
+              maxlength: "Teléfono fuera de rango",
+              minlength: "Debe tener mínimo 9 dígitos",
+              min: 'Ingrese un celular válido'
+            },
+            email: {
+              required: "Debe ingresar un correo",
+              email: "Debe ingresar un correo válido",
+              maxlength: "Correo fuera de rango"
+            },
+            password: {
+              required: "Debe ingresar una contraseña",
+              minlength: "Tamaño mínimo de contraseña: 6",
+            },
+            identification_number: {
+              required: "Debe ingresar DNI",
+              digits: "Debe ingresar números",
+              minlength: "Debe tener 8 dígitos",
+              rangelength: "Debe tener 8 dígitos",
+              min: 'Ingrese un DNI válido'
+            },
+            department: {
+              required: "Debe seleccionar un departamento",
+            },
+            province: {
+              required: "Debe seleccionar una provincia",
+            },
+            location: {
+              required: "Debe seleccionar un distrito",
+            },
+            checkbox_conditions: {
+              required: "* Debe aceptar los <strong>términos y condiciones</strong>",
+            }
+          },
+          wrapper: 'div',
+          errorPlacement: function (error, element) {
+            console.log(error)
+            if (element.attr("name") === "department") {
+              error.appendTo(".errorTxtDepartment");
+            } else if (element.attr("name") === "province") {
+              error.appendTo(".errorTxtProvince");
+            } else if (element.attr("name") === "location") {
+              error.appendTo(".errorTxtLocation");
+            } else if (element.attr("name") === "checkbox_conditions") {
+              error.addClass('alert alert-danger')
+              error.appendTo("#conditions_alert");
+            } else {
+              error.insertAfter(element);
+            }
+          },
+        });{% endcomment %}
+
+
+        {% comment %}Se visualiza la imagen que se selecciona{% endcomment %}
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#image_preview').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+                console.log(input.files[0].name.split(".")[1])
+                let extensions = ['jpg', 'jpeg', 'png']
+                if (!(extensions.includes(input.files[0].name.split(".")[1]))) {
+                    $('#photo_error').text('Debe adjuntar archivos con extensión png, jpeg o jpg').removeAttr('hidden')
+                } else {
+                    $('#photo_error').attr('hidden', 'true')
+                }
+            }
+        }
+
+        $("#photo").change(function () {
+            readURL(this);
+        });
+    })
+
+    < />
 {% endblock %}
