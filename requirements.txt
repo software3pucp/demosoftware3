@@ -12,3 +12,4 @@ user-agents
 django-user-agents
 requests
 pillow==8.1.0
+django-allauth==0.44.0

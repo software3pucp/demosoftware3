@@ -1,6 +1,9 @@
 {#Heredar toda la estructura de base#}
 {% extends 'authentication/base/login_base.html' %}
 {% load static %}
+{% load socialaccount %}
+{%  providers_media_js %}
+
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
@@ -84,7 +87,7 @@
                                             <div class="row no-gutters">
                                                 <div class="col-sm-12 pr-sm-1"><a
                                                         class="btn btn-outline-google-plus btn-sm btn-block mt-2"
-                                                        href="#"><span class="fab fa-google-plus-g mr-2"
+                                                        href="{% provider_login_url 'google' %}"><span class="fab fa-google-plus-g mr-2"
                                                                        data-fa-transform="grow-8"></span> google</a>
                                                 </div>
 

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'authentication',
     'home',
     'gestionarREAcreditadoras',
@@ -50,7 +51,11 @@ INSTALLED_APPS = [
     'gestionarEvaluacion',
     'gestionarPlanMedicion',
     'gestionarIndicadores',
-    'gestionarRubrica'
+    'gestionarRubrica',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -166,5 +171,13 @@ logging.debug('Comienza el programa')
 logging.info('Procesando con normalidad')
 logging.warning('Advertencia')
 
-LOGIN_REDIRECT_URL='listarFacultad'
-LOGOUT_REDIRECT_URL='login'
+ACCOUNT_EMAIL_REQUIRED = True
+
+# Django all auth settings
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL = 'validation'
