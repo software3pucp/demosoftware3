@@ -13,6 +13,7 @@ from gestionarRubrica.models import Rubrica
 
 def editarIndicador(request, pk):
     editado = False
+    guardado = False
     indicador = Indicador.objects.get(pk=pk)
     id_resultado = indicador.resultado_id
     nivelLista = Nivel.objects.filter(state=1).order_by('value')
@@ -36,12 +37,14 @@ def editarIndicador(request, pk):
         indicador.descripcion = request.POST['descripcion']
         indicador.save()
         editado = True
+        guardado = True
         context = {
             'indicador': indicador,
             'editado': editado,
             'id_resultado': id_resultado,
             'nivelLista': nivelLista,
             'rubrica':rubrica,
+            'guardado' : guardado
         }
         return render(request, 'gestionarIndicadores/editarIndicador.html', context)
 

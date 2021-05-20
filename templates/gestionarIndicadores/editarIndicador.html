@@ -79,7 +79,9 @@
                             <input type="submit" class="btn btn-primary"  value="Guardar">
                         </div>
                     </div>
-
+                {% if guardado %}
+                    <div class="alert alert-success" role="alert">¡Se han guardado los cambios!</div>
+                {% endif %}
                     <div class="row d-flex justify-content-center ">
                         <div class="col-12">
                             <h4 style="font-family: Montserrat"> Rúbrica del Indicador</h4>
