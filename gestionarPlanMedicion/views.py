@@ -33,12 +33,12 @@ def listarPlanMedicion(request):
                 planMedicion.estado = '1'
             planMedicion.save()
         elif request.POST['operacion'] == 'eliminar':
-            print('***************************************************************************************************')
-            print(request.POST)
-            print('***************************************************************************************************')
+            # print('***************************************************************************************************')
+            # print(request.POST)
+            # print('***************************************************************************************************')
             planMedicion = PlanMedicion.objects.get(pk=request.POST['planPk'])
             planMedicion.delete()
-            print(planMedicion)
+            # print(planMedicion)
 
     facultades = Facultad.objects.filter()
     especialidades = Especialidad.objects.filter()
@@ -67,9 +67,9 @@ def crearPlanMedicion(request,pk):
     indicadoresSelec = []
     if request.POST:
         if request.POST['operacion'] == 'editar':
-            print('***************************************************************************************************')
-            print(request.POST)
-            print('***************************************************************************************************')
+            # print('***************************************************************************************************')
+            # print(request.POST)
+            # print('***************************************************************************************************')
             flag = 1
         elif request.POST['operacion'] == 'insertar':
             planes = PlanMedicion.objects.filter(curso_id=request.POST['curso'])
@@ -110,7 +110,7 @@ def crearPlanMedicion(request,pk):
             data = serializers.serialize("json", indicador)
             return JsonResponse({"resp": data}, status=200)
         elif request.POST['operacion'] == 'agregarHorario':
-            print(request.POST["horarioPk"])
+            #print(request.POST["horarioPk"])
             horario = Horario.objects.filter(pk=request.POST["horarioPk"])
             plan = PlanMedicion.objects.get(pk=request.POST["planPK"])
             horarios = plan.horario.all()
@@ -123,8 +123,8 @@ def crearPlanMedicion(request,pk):
             horario = Horario.objects.filter(pk=request.POST["horarioPk"])
             plan = PlanMedicion.objects.get(pk=request.POST["planPK"])
             horarios = plan.horario.all()
-            print(horarios)
-            print(horario[0])
+            #print(horarios)
+            #print(horario[0])
             if horario[0] not in horarios:
                 return JsonResponse({'status': 'false', 'message': 'Indicador ya ingresado'}, status=500)
             plan.horario.remove(horario[0].pk)
