@@ -38,19 +38,10 @@ def listarResultado(request):
 
 
 def editarResultado(request, pk):
-    flag = 0
-    if request.POST:
-        resultado = ResultadoPUCP.objects.get(pk=pk)
-        resultado.codigo = request.POST['codigo']
-        resultado.descripcion = request.POST['descripcion']
-        resultado.save()
-        flag = True
-
     context = {
         'listaIndicadores': Indicador.objects.filter(resultado_id=pk, estado=1),
         'listaResultado': ResultadoPUCP.objects.all(),
         'resultado': ResultadoPUCP.objects.get(pk=pk),
-        'flag': flag
     }
     return render(request, 'gestionarIndicadores/listarIndicadorxResultado.html', context)
 
