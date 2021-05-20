@@ -211,14 +211,19 @@
                                 <div class="mb-3 text-center absolute-vertical-center">
                                     <div class="avatar avatar-5xl shadow-sm img-thumbnail rounded-circle">
                                         <div class="h-100 w-100 rounded-circle overflow-hidden position-relative">
-                                            {% if user.photo.name %}
-                                                <img class="rounded-circle"
-                                                     src="{{ media_path }}{{ user.photo.name }}/"
-                                                     alt="" id="image_preview" data-dz-thumbnail/>
-                                            {% else %}
-                                                <img src="{% static 'img/team/avatar.png' %}" width="200" alt=""
-                                                     id="image_preview" data-dz-thumbnail/>
-                                            {% endif %}
+
+
+
+
+
+
+                                            <img class="rounded-circle"
+                                                 src="
+                                                         {% if user.photo.name %}{{ media_path }}{{ user.photo.name }}{% else %}{% static 'img/team/avatar.png' %}{% endif %}"
+                                                 alt="" id="image_preview" data-dz-thumbnail/>
+
+
+
                                             <input class="d-none" id="photo" name="photo" type="file"
                                                    accept="image/png,image/jpeg,image/jpg"/>
                                             <label class="mb-0 overlay-icon d-flex flex-center" for="photo">
