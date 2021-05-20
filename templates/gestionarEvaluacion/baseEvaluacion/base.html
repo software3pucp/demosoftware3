@@ -66,6 +66,7 @@
 
     {# Botones Agregar e Importar Estudiantes #}
     <div class="row align-items-center mb-3 justify-content-between">
+
         <div class="col-8 col-sm-auto ml-auto text-right pl-0">
 
             <div id="dashboard-actions">
@@ -498,7 +499,7 @@
                                 '<th>' +
                                 '<div class="row">' +
                                 ' <div class="col">' +
-                                '<button class="badge badge-pill badge-primary" onclick="subirEvidencia()">Subir Evidencia></button>' +
+                                '<button class="badge badge-pill badge-primary" onclick="subirEvidencia()">Subir Evidencia</button>' +
                                 '</div>' +
                                 '<div class="col">' +
                                 '<button class="badge badge-pill badge-secondary" onclick="evaluarEditar(\''+instance[i]["fields"].nombreAlumno +'\',' + instance[i]["fields"].codigoAlumno + ','+instance[i]["pk"]+')">Editar</button>' +
@@ -526,6 +527,7 @@
             });
 
         }
+
 
         function muestraRubrica() {
             $.ajax({
