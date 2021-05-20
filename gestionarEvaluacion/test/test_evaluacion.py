@@ -103,6 +103,7 @@ class TestingClasses(TestCase):
             print('Correcto llamado de muestraRubrica!')
         elif response.status_code == 404:
             self.assertFalse(False)
-        print("==================================================")
+
+        print("=================================================")
 
 
