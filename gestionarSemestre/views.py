@@ -39,6 +39,7 @@ def agregarSemestre(request):
     return JsonResponse({"nuevoSemestre": ser_instance}, status=200)
 
 def enviarCursoHorario(request,nombreCodigo):
+    print("HOLA")
     semestre = Semestre.objects.get(nombreCodigo=nombreCodigo)
     cursoLista = Curso.objects.all()
     context = {
