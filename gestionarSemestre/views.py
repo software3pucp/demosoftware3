@@ -4,9 +4,10 @@ from django.core import serializers
 # Create your views here.
 from datetime import datetime
 from gestionarSemestre.models import Semestre
-
+from gestionarCurso.models import Curso
 def listarSemestre(request):
     semestreLista = reversed(Semestre.objects.filter())
+
     context = {
         'ListaSemestre':semestreLista
     }
@@ -39,7 +40,9 @@ def agregarSemestre(request):
 
 def enviarCursoHorario(request,nombreCodigo):
     semestre = Semestre.objects.get(nombreCodigo=nombreCodigo)
+    cursoLista = Curso.objects.all()
     context = {
-        "semestreSeleccionado": semestre
+        "semestreSeleccionado": semestre,
+        "cursoLista": cursoLista
     }
     return  render(request, 'gestionarSemestre/semestre/semestreDetalle.html', context)

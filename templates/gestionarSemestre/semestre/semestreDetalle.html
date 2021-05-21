@@ -72,118 +72,16 @@
                 </div>
             </div>
 
-
+        {% for curso in cursoLista %}
             <div class="card-body fs--1 p-0">
                 <a class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300"  href="/gestionarEvaluacion/evaluar">
                     <div class="notification-body">
-                        <p class="mb-1">INF245 - Ingenieria de Software</p>
+                        <p class="mb-1">{{ curso.nombre}}</p>
                     </div>
                 </a>
-
-                <div class="card-body fs--1 p-0">
-                    <a class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300" href="/gestionarEvaluacion/evaluar">
-                        <div class="notification-body">
-                            <p class="mb-1">INF227 - Desarrollo de Programas 2</p>
-                        </div>
-                    </a>
-                    <div class="card-body fs--1 p-0">
-                        <a class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300" href="/gestionarEvaluacion/evaluar">
-                            <div class="notification-body">
-                                <p class="mb-1">INF295 - Planeamiento estratégico en informática</p>
-                            </div>
-                        </a>
-                        <div class="card-body fs--1 p-0">
-                            <a class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300"  href="/gestionarEvaluacion/evaluar">
-                                <div class="notification-body">
-                                    <p class="mb-1">INF265 - Aplicaciones de Ciencias de la Computación</p>
-                                </div>
-                            </a>
-                        </div>
-
-                    </div>
-                </div>
             </div>
-        </div>
-
-<!--
-        <div id="accordion" class="col-12">
-            <div class="card">
-
-                <div class="card-header" id="cabecera">
-                    <h5 class="mb-0">
-                           Cursos del ciclo
-                    </h5>
-                </div>
-
-                <div class="card-header" id="headingOne">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"
-                                aria-expanded="true" aria-controls="collapseOne">
-                            INF245 - Ingenieria de Software
-                        </button>
-                    </h5>
-                </div>
-
-                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                    <div class="card-body ">
-                        <ul>
-                            <li>
-                                Mediciones
-                            </li>
-                            <li>
-                                Horarios
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header" id="headingTwo">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
-                                aria-expanded="false" aria-controls="collapseTwo">
-                            INF227 - Desarrollo de Programas 2
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                    <div class="card-body">
-                        <ul>
-                            <li>
-                                Mediciones
-                            </li>
-                            <li>
-                                Horarios
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header" id="headingThree">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree"
-                                aria-expanded="false" aria-controls="collapseThree">
-                            INF295 - Planeamiento estratégico en informática
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                    <div class="card-body">
-                       <ul>
-                            <li>
-                                Mediciones
-                            </li>
-                            <li>
-                                Horarios
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
--->
-
+        {% endfor %}
+</div>
     </div>
 
 
