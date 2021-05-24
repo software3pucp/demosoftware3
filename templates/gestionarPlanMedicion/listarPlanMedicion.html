@@ -200,6 +200,7 @@
 
             <div class="d-flex justify-content-between m-3">
                 <div class="form-group">
+                    <label for="FormControlSelect1">Facultad:</label>
                     <select id="facultades" name="facultades" class="form-control" id="FormControlSelect1" onchange="listarEspecialidades()">
                         {% for facultad in facultades %}
                             <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
@@ -207,11 +208,13 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="especialidades">Especialidades:</label>
                     <select id="especialidades" name="especialidades" class="form-control" id="FormControlSelect1" onchange="listarCursos()">
                     </select>
                 </div>
 
                 <div class="form-group">
+                    <label for="estado">Estado:</label>
                     <select id="estado" name="estado" class="form-control" id="ControlSelect2" onchange="listarCursos()">
                         {% for estado in estados %}
                             <option value={{ estado.0 }}>{{ estado.1 }}</option>
@@ -321,8 +324,11 @@
                             '       <div class="product card">' +
                             '           <div class="row">' +
                             '               <div class="col-md-4">' +
-                            '                   <button class="btn btn-falcon-primary mr-1 mb-1" type="button">Primar</button>' +
+
                             '               </div>' +
+                            '           </div>' +
+                            '           <div class="row">' +
+
                             '           </div>' +
                             '           <div class="specifies">' +
                             '               <h5 class="card-title ml-2" style="text-align: left">' + instance1[instance.length-i-1]["fields"].nombre + '</h5>' +

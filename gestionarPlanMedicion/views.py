@@ -22,6 +22,8 @@ def listarPlanMedicion(request):
             planes = PlanMedicion.objects.filter(curso__especialidad_id__exact=request.POST['especialidad'],estado = request.POST['estado'])
             pks = planes.values_list('curso_id',flat=True)
             cursos = Curso.objects.filter(pk__in=pks)
+            horarios = planes.values_list('horario')
+            print(horarios)
             dataP = serializers.serialize("json", planes)
             dataC = serializers.serialize("json", cursos)
             return JsonResponse({"resp": dataP,"resp1": dataC}, status=200)
