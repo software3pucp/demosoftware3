@@ -113,7 +113,7 @@
                         <div class="col-md-12">
                             <select name="horarios" class="form-control" id="indicador">
                                 {% for indicador in listaIndicadores %}
-                                    <option value={{ indicador.pk }}>{{ indicador.codigo }}</option>
+                                    <option value={{ indicador.pk }}>{{ indicador.codigo }} - {{ indicador.descripcion }}</option>
                                 {% endfor %}
                             </select>
                         </div>
