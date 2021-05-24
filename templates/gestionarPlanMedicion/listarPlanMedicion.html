@@ -233,22 +233,24 @@
                     <div id="cursos" class="row">
 
                         <div id="nuevo" class="col-md-4 equal">
-                            <form class="d-flex justify-content-center" action="{% url 'crearPlanMedicion' pk='0' %}" method="post">
-                                {% csrf_token %}
-                                <input id="hid" type="hidden" name="operacion" value="entrada">
-                                <button type="submit" class="recent-work product card border-0 shadow-lg overflow-hidden h-125">
-                                    <div class="nav-link icon-indicator" role="button">
-                                        <div class="mt-4" style="text-align: center;">
-                                            <span class="fas fa-plus fa-9x" style="text-align: center"></span>
+                            <div class="card-group service-work">
+                                <form class="recent-work card mr-4 mb-4" action="{% url 'crearPlanMedicion' pk='0' %}" method="post" style="height: 250px">
+                                    {% csrf_token %}
+                                    <input id="hid" type="hidden" name="operacion" value="entrada">
+                                    <button type="submit" class="btn btn-outline-light">
+                                        <div class="nav-link icon-indicator" role="button">
+                                            <div class="mt-4" style="text-align: center;">
+                                                <span class="fas fa-plus fa-9x" style="text-align: center"></span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="recent-work-vertical-ruk card-img-overlay d-flex align-items-end">
-                                        <div class="service-work-content text-left text-light">
-                                            <h5 class="card-title mt-6">Agregar Curso</h5>
+                                        <div class="recent-work-vertical-ruk card-img-overlay">
+                                            <div class="service-work-content">
+                                                <h5 class="card-title" style="text-align: center; margin-top: 11.4rem"> Agregar Curso</h5>
+                                            </div>
                                         </div>
-                                    </div>
-                                </button>
-                            </form>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -322,14 +324,11 @@
                         data = '<div class="curso col-md-4 equal">' +
                             '   <div class="d-flex justify-content-center">'+
                             '       <div class="product card">' +
-                            '           <div class="row">' +
-                            '               <div class="col-md-4">' +
-
-                            '               </div>' +
-                            '           </div>' +
-                            '           <div class="row">' +
-
-                            '           </div>' +
+                            '           <div class="card-img-top imgbox" style="height: 15rem">'+
+                            '               <a href="#">'+
+                            '                    <img class="" src="{% static 'img/illustrations/3.png' %}">'+
+                            '                </a>'+
+                            '            </div>'+
                             '           <div class="specifies">' +
                             '               <h5 class="card-title ml-2" style="text-align: left">' + instance1[instance.length-i-1]["fields"].nombre + '</h5>' +
                             '               <hr>' +
