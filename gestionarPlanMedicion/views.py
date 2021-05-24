@@ -33,9 +33,6 @@ def listarPlanMedicion(request):
                 planMedicion.estado = '1'
             planMedicion.save()
         elif request.POST['operacion'] == 'eliminar':
-            # print('***************************************************************************************************')
-            # print(request.POST)
-            # print('***************************************************************************************************')
             planMedicion = PlanMedicion.objects.get(pk=request.POST['planPk'])
             planMedicion.delete()
             # print(planMedicion)

@@ -231,10 +231,10 @@
                         </div>
                     </div>
                     <div id="cursos" class="row">
-
                         <div id="nuevo" class="col-md-4 equal">
-                            <div class="card-group service-work">
-                                <form class="recent-work card mr-4 mb-4" action="{% url 'crearPlanMedicion' pk='0' %}" method="post" style="height: 250px">
+                            <div class="d-flex justify-content-center">
+                                <form class="product recent-work card" action="{% url 'crearPlanMedicion' pk='0' %}"
+                                      method="post" style="height: 250px; width: 250px;">
                                     {% csrf_token %}
                                     <input id="hid" type="hidden" name="operacion" value="entrada">
                                     <button type="submit" class="btn btn-outline-light">
@@ -245,7 +245,8 @@
                                         </div>
                                         <div class="recent-work-vertical-ruk card-img-overlay">
                                             <div class="service-work-content">
-                                                <h5 class="card-title" style="text-align: center; margin-top: 11.4rem"> Agregar Curso</h5>
+                                                <h5 class="card-title" style="text-align: center; margin-top: 11.4rem">
+                                                    Agregar Curso</h5>
                                             </div>
                                         </div>
                                     </button>
