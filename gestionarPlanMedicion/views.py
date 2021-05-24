@@ -22,8 +22,6 @@ def listarPlanMedicion(request):
             planes = PlanMedicion.objects.filter(curso__especialidad_id__exact=request.POST['especialidad'],estado = request.POST['estado'])
             pks = planes.values_list('curso_id',flat=True)
             cursos = Curso.objects.filter(pk__in=pks)
-            horarios = planes.values_list('horario')
-            print(horarios)
             dataP = serializers.serialize("json", planes)
             dataC = serializers.serialize("json", cursos)
             return JsonResponse({"resp": dataP,"resp1": dataC}, status=200)
@@ -69,9 +67,6 @@ def crearPlanMedicion(request,pk):
     indicadoresSelec = []
     if request.POST:
         if request.POST['operacion'] == 'editar':
-            # print('***************************************************************************************************')
-            # print(request.POST)
-            # print('***************************************************************************************************')
             flag = 1
         elif request.POST['operacion'] == 'insertar':
             planes = PlanMedicion.objects.filter(curso_id=request.POST['curso'])
@@ -82,7 +77,36 @@ def crearPlanMedicion(request,pk):
                 flag = 2
             else:
                 errorInsert = 1
-        elif request.POST['operacion'] == 'listHorarios':
+        listaCursos = Curso.objects.filter(especialidad=request.POST['especialidad'])
+        especialidad = Especialidad.objects.get(pk=request.POST['especialidad'])
+
+    if pk == '0':
+        insert = True
+    else:
+        plan = PlanMedicion.objects.get(pk=pk)
+        manyInd = plan.indicador.all()
+        manyHor = plan.horario.all()
+        indicadoresSelec = manyInd
+        horariosSelec = manyHor
+
+    context = {
+        'especialidad': especialidad,
+        'listaCursos': listaCursos,
+        'listaHorarios': listaHorarios,
+        'listaEstados': listaEstados,
+        'listaIndicadores': listaIndicadores,
+        'horariosSelec': horariosSelec,
+        'indicadoresSelec': indicadoresSelec,
+        'plan': plan,
+        'insert': insert,
+        'flag': flag,
+        'errorInsert': errorInsert,
+    }
+    return render(request,'gestionarPlanMedicion/crearPlanMedicion.html',context)
+
+def crearAjax(request):
+    if request.POST:
+        if request.POST['operacion'] == 'listHorarios':
             listaHorarios = Horario.objects.filter(curso_id=request.POST['curso'])
             data = serializers.serialize("json", listaHorarios)
             return JsonResponse({"resp": data}, status=200)
@@ -112,7 +136,6 @@ def crearPlanMedicion(request,pk):
             data = serializers.serialize("json", indicador)
             return JsonResponse({"resp": data}, status=200)
         elif request.POST['operacion'] == 'agregarHorario':
-            #print(request.POST["horarioPk"])
             horario = Horario.objects.filter(pk=request.POST["horarioPk"])
             plan = PlanMedicion.objects.get(pk=request.POST["planPK"])
             horarios = plan.horario.all()
@@ -125,36 +148,8 @@ def crearPlanMedicion(request,pk):
             horario = Horario.objects.filter(pk=request.POST["horarioPk"])
             plan = PlanMedicion.objects.get(pk=request.POST["planPK"])
             horarios = plan.horario.all()
-            #print(horarios)
-            #print(horario[0])
             if horario[0] not in horarios:
                 return JsonResponse({'status': 'false', 'message': 'Indicador ya ingresado'}, status=500)
             plan.horario.remove(horario[0].pk)
             data = serializers.serialize("json", horario)
             return JsonResponse({"resp": data}, status=200)
-        listaCursos = Curso.objects.filter(especialidad=request.POST['especialidad'])
-        especialidad = Especialidad.objects.get(pk=request.POST['especialidad'])
-
-    if pk == '0':
-        insert = True
-    else:
-        plan = PlanMedicion.objects.get(pk=pk)
-        manyInd = plan.indicador.all()
-        manyHor = plan.horario.all()
-        indicadoresSelec = manyInd
-        horariosSelec = manyHor
-
-    context = {
-        'especialidad': especialidad,
-        'listaCursos': listaCursos,
-        'listaHorarios': listaHorarios,
-        'listaEstados': listaEstados,
-        'listaIndicadores': listaIndicadores,
-        'horariosSelec': horariosSelec,
-        'indicadoresSelec': indicadoresSelec,
-        'plan': plan,
-        'insert': insert,
-        'flag': flag,
-        'errorInsert': errorInsert,
-    }
-    return render(request,'gestionarPlanMedicion/crearPlanMedicion.html',context)

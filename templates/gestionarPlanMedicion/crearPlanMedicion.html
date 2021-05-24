@@ -302,7 +302,7 @@
         function  mostrarHorario(pk){
             $.ajax({
                 type: 'POST',
-                url: "{% url 'crearPlanMedicion' pk=plan.pk %}",
+                url: "{% url 'crearPlanMedicionAjax' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     operacion: "mostrarHorario",
@@ -325,7 +325,7 @@
         function listarHorarios(){
             $.ajax({
                 type: 'POST',
-                url: "{% url 'crearPlanMedicion' pk=plan.pk %}",
+                url: "{% url 'crearPlanMedicionAjax' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     operacion: "listHorarios",
@@ -348,7 +348,7 @@
         function agregarHorario(){
             $.ajax({
                 type: 'POST',
-                url: "{% url 'crearPlanMedicion' pk=plan.pk %}",
+                url: "{% url 'crearPlanMedicionAjax' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     operacion: "agregarHorario",
@@ -385,7 +385,7 @@
         function  quitarHorario(pk){
             $.ajax({
                 type: 'POST',
-                url: "{% url 'crearPlanMedicion' pk=plan.pk %}",
+                url: "{% url 'crearPlanMedicionAjax' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     operacion: "quitarHorario",
@@ -406,7 +406,7 @@
         function mostrarIndicador(pk){
             $.ajax({
                 type: 'POST',
-                url: "{% url 'crearPlanMedicion' pk=plan.pk %}",
+                url: "{% url 'crearPlanMedicionAjax' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     operacion: "mostrarIndicador",
@@ -430,7 +430,7 @@
         function agregarIndicador(){
             $.ajax({
                 type: 'POST',
-                url: "{% url 'crearPlanMedicion' pk=plan.pk %}",
+                url: "{% url 'crearPlanMedicionAjax' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     operacion: "agregarIndicador",
@@ -467,7 +467,7 @@
         function quitarIndicador(pk){
             $.ajax({
                 type: 'POST',
-                url: "{% url 'crearPlanMedicion' pk=plan.pk %}",
+                url: "{% url 'crearPlanMedicionAjax' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     operacion: "quitarIndicador",

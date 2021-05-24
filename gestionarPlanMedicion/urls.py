@@ -6,4 +6,5 @@ urlpatterns = [
     # path( url hijo, backend, nombre de la variable)
     path('listar/', views.listarPlanMedicion, name="listarPlanMedicion"),
     path('crear/<pk>', views.crearPlanMedicion, name="crearPlanMedicion"),
+    path('crearPlanMedicionAjax', views.crearAjax, name='crearPlanMedicionAjax'),
 ]
