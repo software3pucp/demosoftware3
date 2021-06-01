@@ -38,9 +38,8 @@ def agregarSemestre(request):
     ser_instance = serializers.serialize('json', [semestre,])
     return JsonResponse({"nuevoSemestre": ser_instance}, status=200)
 
-def enviarCursoHorario(request,nombreCodigo):
-    print("HOLA")
-    semestre = Semestre.objects.get(nombreCodigo=nombreCodigo)
+def enviarCursoHorario(request,pk):
+    semestre = Semestre.objects.get(pk=pk)
     cursoLista = Curso.objects.all()
     context = {
         "semestreSeleccionado": semestre,
