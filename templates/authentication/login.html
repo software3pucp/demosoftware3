@@ -1,9 +1,6 @@
 {#Heredar toda la estructura de base#}
 {% extends 'authentication/base/login_base.html' %}
 {% load static %}
-{% load socialaccount %}
-{%  providers_media_js %}
-
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
@@ -84,14 +81,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group mb-0">
-                                            <div class="row no-gutters">
-                                                <div class="col-sm-12 pr-sm-1"><a
-                                                        class="btn btn-outline-google-plus btn-sm btn-block mt-2"
-                                                        href="{% provider_login_url 'google' %}"><span class="fab fa-google-plus-g mr-2"
-                                                                       data-fa-transform="grow-8"></span> google</a>
-                                                </div>
-
-                                            </div>
+                                            <div id="firebaseui-auth-container"  data-theme="light"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -109,7 +99,47 @@
 {#Bloque de extra JS -> JS#}
 
 {% block extrajs %}
+    {% include 'firebase/scripts.html' %}
     <script>
+        $(document).ready(function (){
+     SingInGoogle();
+  });
 
+  function sign_in_social(name, email, password) {
+      $.ajax({
+        type: 'POST',
+        url: "{% url 'social_sign_in'%}",
+        data: {
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          name: name,
+          email: email,
+          password: password
+        },
+        success: function (response) {
+          console.log("Exito Ajax");
+          console.log(response)
+          window.location.replace(document.location.origin+response.url);
+        },
+        error: function (response) {
+          // alert the error if any error occured
+          alert(response["responseJSON"]["error"]);
+        }
+      });
+
+    }
     </script>
+
+    {% if error %}
+    <script>
+      $(document).ready(function () {
+        console.log('hola');
+        $('#message').text('{{ error }}');
+        $('#signinError').modal({
+          backdrop: 'static',
+          keyboard: false
+        })
+        $('#signinError').modal('show');
+      });
+    </script>
+  {% endif %}
 {% endblock %}

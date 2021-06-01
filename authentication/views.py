@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.urls import reverse
 
 # Create your views here.
 
@@ -105,3 +107,19 @@ def select_rol(request):
 
 def validation(request):
     return redirect(listarFacultad)
+
+def social_sign_in(request):
+    print("Entra a social_sign_in:")
+    print(request.POST)
+    email = request.POST['email']
+    try:
+        user = User.objects.get(username=email)
+    except User.DoesNotExist:
+        print("Usuario no existe")
+        url = reverse('login')
+        return JsonResponse({"url": url}, safe=False)
+    else:
+        print(user.password)
+        login(request, user)
+        url = reverse('listarFacultad')
+        return JsonResponse({"url": url}, safe=False)
