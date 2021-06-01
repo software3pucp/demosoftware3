@@ -102,7 +102,7 @@
 
         {% for semestre in ListaSemestre %}
             <div class=" col-xl-3 col-md-4 col-sm-6 p-2">
-                <a href="../enviarCursoHorario/{{semestre.nombreCodigo}}">
+                <a href="../enviarCursoHorario/{{semestre.pk}}">
                     <div class="card ">
                         <div class="card-body">
                             <p class="card-title">{{ semestre.nombreCodigo }}</p>
@@ -175,6 +175,53 @@
         </div>
     </div>
 
+
+    <div class="modal fade" id="modalDuplicado" tabindex="-1" role="dialog" aria-labelledby="modalDuplicadoLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalDuplicadoLabel">Aviso</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                  <div class="modal-body">
+                    <form id="formError" name="formError">
+                        <div class="form-group">
+                            ¡El ciclo ingresado ya se encuentra registrado!
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnModalDuplicado" class="btn btn-primary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalFecha" tabindex="-1" role="dialog" aria-labelledby="modalFechaLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalFechaLabel">Aviso</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                  <div class="modal-body">
+                    <form id="formErrorFecha" name="formErrorFecha">
+                        <div class="form-group">
+                            ¡La fecha de fin debe ser mayor que la fecha inicio!
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnModalErrorFecha" class="btn btn-primary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {#Aquí coloco el JS particular de la web#}
@@ -214,13 +261,25 @@
             });
 
         };
-    $("#agr").on('click',function (){
-       if($("#formAgregar").valid()){
-           agregar();
-       }
-    });
-
+        $("#agr").on('click', function () {
+            if ($("#formAgregar").valid()) {
+                if (ValidarFechas()) {
+                    agregar();
+                } else {
+                    $("#modalFecha").modal('show');
+                }
+            }
+        });
     </script>
+
+    <script>
+        function ValidarFechas() {
+            var fechainicial = document.getElementById("dateInicio").value;
+            var fechafinal = document.getElementById("dateFin").value;
+            return (Date.parse(fechafinal) > Date.parse(fechainicial));
+        }
+    </script>
+
     <script>
         function agregar(){
             $.ajax({
@@ -235,9 +294,9 @@
                 success: function (response) {
                     var instance = JSON.parse(response["nuevoSemestre"]);
                     var fields = instance[0]["fields"];
-
+                    console.log(instance);
                     data = '<div class=" col-xl-3 col-md-4 col-sm-6 p-2">'+
-                        '<a href="../enviarCursoHorario/'+fields.nombreCodigo+'">'+
+                        '<a href="../enviarCursoHorario/'+instance[0]["pk"]+'">'+
                         '<div class="card">'+
                         '    <div class="card-body">'+
                         '       <p class="card-title">'+fields.nombreCodigo+'</p>'+
@@ -253,6 +312,7 @@
                 },
                 error: function (response) {
                     // alert the error if any error occured
+                    $("#modalDuplicado").modal('show');
                     alert(response["responseJSON"]["error"]);
                 }
             });
