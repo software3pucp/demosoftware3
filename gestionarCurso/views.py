@@ -25,6 +25,7 @@ def listarCursoxHorario(request, id_curso):
         'ListaHorario': Horario.objects.filter(curso_id=id_curso),
         'ListaCurso': Curso.objects.all(),
         'id_curso': id_curso,
+        'id_especialidad': Curso.objects.get(pk=id_curso).especialidad.pk,
         'media_path': media_path
     }
     return render(request, 'gestionarHorario/listarHorario.html', context)

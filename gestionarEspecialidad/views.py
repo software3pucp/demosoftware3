@@ -29,6 +29,7 @@ def listarEspecialidadxCurso(request, id_especialidad):
         'ListaCurso': Curso.objects.filter(especialidad_id=id_especialidad),
         'ListaEspecialidad': Especialidad.objects.all(),
         'id_especialidad': id_especialidad,
+        'id_facultad': Especialidad.objects.get(pk=id_especialidad).facultad.pk,
         'media_path': media_path
     }
     return render(request, 'gestionarCurso/listarCurso.html', context)
@@ -43,7 +44,7 @@ def agregarEspecialidad(request, id_facultad):
         foto = request.FILES['photo']
         facultad = Facultad.objects.get(pk=id_facultad)
         Especialidad.objects.create(nombre=nombre, responsable=id_responsable, facultad=facultad, foto=foto)
-        return redirect('listarFacultadxEsp',id_facultad)
+        return redirect('listarFacultadxEsp', id_facultad)
 
     context = {
         'ListaUsuarios': User.objects.all(),
@@ -66,8 +67,7 @@ def editarEspecialidad(request, id_especialidad):
         especialidad.responsable = nuevo_responsable
         especialidad.foto = nueva_foto
         especialidad.save()
-        return redirect('listarFacultadxEsp',especialidad.facultad.pk)
-
+        return redirect('listarFacultadxEsp', especialidad.facultad.pk)
 
     context = {
         'especialidad': especialidad,
@@ -80,5 +80,4 @@ def eliminarEspecialidad(request, id_especialidad):
     especialidad = Especialidad.objects.get(pk=id_especialidad)
     fakuPK = especialidad.facultad.pk
     especialidad.delete()
-    return redirect('listarFacultadxEsp',fakuPK)
-
+    return redirect('listarFacultadxEsp', fakuPK)
