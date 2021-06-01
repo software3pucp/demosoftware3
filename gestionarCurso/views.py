@@ -52,7 +52,7 @@ def editarCurso(request, id_curso):
     if request.POST:
         nuevo_nombre = request.POST["name"]
         nuevo_responsable = request.POST["responsable"]
-        curso.codigo = nuevo_nombre
+        curso.nombre = nuevo_nombre
         curso.responsable = nuevo_responsable
         curso.save()
         return redirect('listarEspecialidadxCurso', curso.especialidad_id)
