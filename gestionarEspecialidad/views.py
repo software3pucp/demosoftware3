@@ -56,6 +56,7 @@ def agregarEspecialidad(request, id_facultad):
 
 
 def editarEspecialidad(request, id_especialidad):
+    media_path = MEDIA_URL
     especialidad = Especialidad.objects.get(pk=id_especialidad)
     if request.POST:
         print(request.POST)
@@ -70,6 +71,7 @@ def editarEspecialidad(request, id_especialidad):
         return redirect('listarFacultadxEsp', especialidad.facultad.pk)
 
     context = {
+        'media_path': media_path,
         'especialidad': especialidad,
         'id_responsable': especialidad.responsable,
         'ListaUsuarios': User.objects.all()

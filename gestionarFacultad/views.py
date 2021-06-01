@@ -8,7 +8,6 @@ from gestionarFacultad.models import Facultad
 from django.shortcuts import render, redirect
 from authentication.models import User
 
-
 # Create your views here.
 def listarFacultad(request):
     media_path = MEDIA_URL
@@ -44,6 +43,7 @@ def listarFacultadxEsp(request, id_facultad):
 
 def editarFacultad(request, id_facultad):
     ListaUsuarios = User.objects.filter()
+    media_path = MEDIA_URL
     facultad = Facultad.objects.get(pk=id_facultad)
     if request.POST:
         print(request.POST)
@@ -59,6 +59,7 @@ def editarFacultad(request, id_facultad):
 
     context = {
         'facultad': facultad,
+        'media_path': media_path,
         'ListaUsuarios': ListaUsuarios,
         'id_responsable': facultad.responsable,
     }

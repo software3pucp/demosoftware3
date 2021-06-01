@@ -86,7 +86,7 @@
                                         </span>
                                     </span>
                         </div>
-                        <img id='img-upload'/>
+                        <img id='img-upload' src="{% if facultad.foto %}{{ media_path }}{{ facultad.foto }}{% else %}{% static 'img/team/avatar.png' %}{% endif %}"/>
                     </div>
                 </div>
                 <div class="wrapper">
