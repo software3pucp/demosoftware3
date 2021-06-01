@@ -71,6 +71,7 @@ def editarEspecialidad(request, id_especialidad):
 
     context = {
         'especialidad': especialidad,
+        'id_responsable': especialidad.responsable,
         'ListaUsuarios': User.objects.all()
     }
     return render(request, 'gestionarEspecialidad/editarEspecialidad.html', context)

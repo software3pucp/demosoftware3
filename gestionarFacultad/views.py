@@ -59,7 +59,8 @@ def editarFacultad(request, id_facultad):
 
     context = {
         'facultad': facultad,
-        'ListaUsuarios': ListaUsuarios
+        'ListaUsuarios': ListaUsuarios,
+        'id_responsable': facultad.responsable,
     }
     return render(request, 'gestionarFacultad/editarFacultad.html', context)
 

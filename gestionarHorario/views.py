@@ -46,7 +46,8 @@ def editarHorario(request, id_horario):
 
     context = {
         'horario': horario,
-        'ListaUsuarios': User.objects.all()
+        'ListaUsuarios': User.objects.all(),
+        'id_responsable': horario.responsable,
     }
     return render(request, 'gestionarHorario/editarHorario.html', context)
 

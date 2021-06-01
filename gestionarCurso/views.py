@@ -59,7 +59,8 @@ def editarCurso(request, id_curso):
 
     context = {
         'curso': curso,
-        'ListaUsuarios': User.objects.all()
+        'ListaUsuarios': User.objects.all(),
+        'id_responsable': curso.responsable,
     }
     return render(request, 'gestionarCurso/editarCurso.html', context)
 

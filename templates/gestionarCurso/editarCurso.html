@@ -67,7 +67,11 @@
                         <label for="exampleFormControlSelect1">Seleccione responsable(s)</label>
                         <select name="responsable" class="form-control" id="exampleFormControlSelect1">
                             {% for responsable in ListaUsuarios %}
-                                <option value={{responsable.pk}}>{{ responsable.first_name }} {{ responsable.last_name }}</option>
+                                {% if id_responsable|add:"0" == responsable.pk %}
+                                    <option value={{ responsable.pk }} selected>{{ responsable.first_name }} {{ responsable.last_name }}</option>
+                                {% else %}
+                                    <option value={{ responsable.pk }}>{{ responsable.first_name }} {{ responsable.last_name }}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                     </div>
