@@ -19,7 +19,7 @@ def evaluar(request):
 
 
 def agregarAlumno(request):
-    niveles = Nivel.objects.all()
+    niveles = Nivel.objects.filter(state=1)
     nuevoAlumno = Alumno.objects.create(nombreAlumno=request.POST["nombreAlumno"],
                                         codigoAlumno=request.POST["codigoAlumno"],
                                         horario=request.POST["horario"])
@@ -50,7 +50,9 @@ def eliminarAlumno(request):
     return JsonResponse({}, status=200)
 
 def muestraRubrica(request):
-    niveles = Nivel.objects.all()
+    niveles = Nivel.objects.filter(state=1)
+    print(len(niveles))
+    print(niveles)
     rubrica = Rubrica.objects.filter(indicador_id=request.POST["indicadorSeleccionado"])
     indicador = Indicador.objects.get(pk=request.POST["indicadorSeleccionado"])
     ser_instance = serializers.serialize('json', list(rubrica),fields=('id','descripcion','especialidad','indicador','nivel'))
@@ -60,7 +62,7 @@ def muestraRubrica(request):
 
 def listarAlumno(request):
     filtrado = request.POST["filtrado"]
-    niveles = Nivel.objects.all()
+    niveles = Nivel.objects.filter(state=1)
     if (filtrado!=""):
         if (filtrado.isnumeric()):
             listaAlumno = reversed(Alumno.objects.filter(codigoAlumno=filtrado, horario=request.POST["horarioSeleccionado"],estado=1))
