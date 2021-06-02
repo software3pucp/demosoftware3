@@ -20,4 +20,10 @@ class Facultad(models.Model):
     nombre = models.CharField(max_length=30)
     responsable = models.CharField(max_length=50)
     foto = models.ImageField(null=True, blank=True, upload_to=upload_location)
+    ESTADOS = [
+        ('0', 'Eliminado'),
+        ('1', 'Activo'),
+        ('2', 'Inactivo'),
+    ]
+    estado = models.CharField(max_length=2, choices=ESTADOS, default=None, null=True, blank=True)
 

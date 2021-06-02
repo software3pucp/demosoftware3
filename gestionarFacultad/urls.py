@@ -9,6 +9,7 @@ urlpatterns = [
 
     path('editar/<id_facultad>/', views.editarFacultad, name="editarFacultad"),
     path('eliminar/<id_facultad>/', views.eliminarFacultad, name="eliminarFacultad"),
+    path('desactivar/<id_facultad>/', views.eliminarFacultad2, name="eliminarFacultad2"),
 
     path('crear/', views.agregarFacultad, name="agregarFacultad")
 ]

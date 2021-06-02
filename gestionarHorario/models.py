@@ -24,3 +24,9 @@ class Horario(models.Model):
     codigo = models.CharField(max_length=30)
     responsable = models.CharField(max_length=50)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=True)
+    ESTADOS = [
+        ('0', 'Eliminado'),
+        ('1', 'Activo'),
+        ('2', 'Inactivo'),
+    ]
+    estado = models.CharField(max_length=2, choices=ESTADOS, default=None, null=True, blank=True)

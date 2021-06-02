@@ -23,3 +23,9 @@ class Especialidad(models.Model):
     responsable = models.CharField(max_length=50)
     facultad = models.ForeignKey(Facultad, on_delete=models.CASCADE, null=True)
     foto = models.ImageField(null=True, blank=True, upload_to=upload_location)
+    ESTADOS = [
+        ('0', 'Eliminado'),
+        ('1', 'Activo'),
+        ('2', 'Inactivo'),
+    ]
+    estado = models.CharField(max_length=2, choices=ESTADOS, default=None, null=True, blank=True)

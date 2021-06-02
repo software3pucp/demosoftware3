@@ -13,9 +13,10 @@ from gestionarFacultad.views import listarFacultadxEsp, listarFacultad
 def listarEspecialidad(request):
     media_path = MEDIA_URL
     context = {
-        'ListaEspecialidad': Especialidad.objects.all(),
+        'ListaEspecialidad': Especialidad.objects.filter(estado=Facultad.ESTADOS[1][0]),
         'ListaFacultad': Facultad.objects.all(),
-        'media_path': media_path
+        'media_path': media_path,
+        'ListaEstados': Especialidad.ESTADOS[1:],
     }
     return render(request, 'gestionarEspecialidad/listarEspecialidad.html', context)
 
@@ -26,11 +27,12 @@ def listarEspecialidadxCurso(request, id_especialidad):
     print("==================================")
     media_path = MEDIA_URL
     context = {
-        'ListaCurso': Curso.objects.filter(especialidad_id=id_especialidad),
+        'ListaCurso': Curso.objects.filter(especialidad_id=id_especialidad, estado=Especialidad.ESTADOS[1][0]),
         'ListaEspecialidad': Especialidad.objects.all(),
         'id_especialidad': id_especialidad,
         'id_facultad': Especialidad.objects.get(pk=id_especialidad).facultad.pk,
-        'media_path': media_path
+        'media_path': media_path,
+        'ListaEstados': Especialidad.ESTADOS[1:],
     }
     return render(request, 'gestionarCurso/listarCurso.html', context)
 
@@ -43,7 +45,8 @@ def agregarEspecialidad(request, id_facultad):
         id_responsable = request.POST['responsable']
         foto = request.FILES['photo']
         facultad = Facultad.objects.get(pk=id_facultad)
-        Especialidad.objects.create(nombre=nombre, responsable=id_responsable, facultad=facultad, foto=foto)
+        Especialidad.objects.create(nombre=nombre, responsable=id_responsable, facultad=facultad, foto=foto,
+                                    estado=Especialidad.ESTADOS[1][0])
         return redirect('listarFacultadxEsp', id_facultad)
 
     context = {
@@ -83,4 +86,12 @@ def eliminarEspecialidad(request, id_especialidad):
     especialidad = Especialidad.objects.get(pk=id_especialidad)
     fakuPK = especialidad.facultad.pk
     especialidad.delete()
+    return redirect('listarFacultadxEsp', fakuPK)
+
+
+def eliminarEspecialidad2(request, id_especialidad):
+    especialidad = Especialidad.objects.get(pk=id_especialidad)
+    fakuPK = especialidad.facultad.pk
+    especialidad.estado = Especialidad.ESTADOS[2][0]
+    especialidad.save()
     return redirect('listarFacultadxEsp', fakuPK)

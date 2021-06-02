@@ -13,6 +13,7 @@ def listarHorario(request):
     context = {
         'ListaCurso': Curso.objects.all(),
         'ListaHorario': Horario.objects.all(),
+        'ListaEstados': Horario.ESTADOS[1:],
     }
     return render(request, 'gestionarHorario/listarHorario.html', context)
 
@@ -23,7 +24,7 @@ def agregarHorario(request, id_curso):
         codigo = request.POST['name']
         id_responsable = request.POST['responsable']
         curso = Curso.objects.get(pk=id_curso)
-        Horario.objects.create(codigo=codigo, responsable=id_responsable, curso=curso)
+        Horario.objects.create(codigo=codigo, responsable=id_responsable, curso=curso, estado=Horario.ESTADOS[1][0])
         return redirect('listarCursoxHorario', id_curso)
 
     context = {
@@ -56,4 +57,12 @@ def eliminarHorario(request, id_horario):
     horario = Horario.objects.get(pk=id_horario)
     cursoPK = horario.curso_id
     horario.delete()
+    return redirect('listarCursoxHorario', cursoPK)
+
+
+def eliminarHorario2(request, id_horario):
+    horario = Horario.objects.get(pk=id_horario)
+    cursoPK = horario.curso_id
+    horario.estado = Horario.ESTADOS[2][0]
+    horario.save()
     return redirect('listarCursoxHorario', cursoPK)

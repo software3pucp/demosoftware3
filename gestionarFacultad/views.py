@@ -8,11 +8,14 @@ from gestionarFacultad.models import Facultad
 from django.shortcuts import render, redirect
 from authentication.models import User
 
+
 # Create your views here.
 def listarFacultad(request):
     media_path = MEDIA_URL
     context = {
-        'ListaFacultad': Facultad.objects.all(),
+        'ListaFacultad': Facultad.objects.filter(estado=Facultad.ESTADOS[1][0]),
+        'ListaFacultadInactivos': Facultad.objects.filter(estado=Facultad.ESTADOS[2][0]),
+        'ListaEstados': Facultad.ESTADOS[1:],
         'media_path': media_path
     }
     return render(request, 'gestionarFacultad/listarFacultad.html', context)
@@ -23,7 +26,7 @@ def agregarFacultad(request):
         nombre = request.POST['name']
         id_responsable = request.POST['responsable']
         foto = request.FILES['photo']
-        Facultad.objects.create(nombre=nombre, responsable=id_responsable, foto=foto)
+        Facultad.objects.create(nombre=nombre, responsable=id_responsable, foto=foto, estado=Facultad.ESTADOS[1][0])
         return redirect('listarFacultad')
     context = {
         'ListaUsuarios': User.objects.all(),
@@ -34,12 +37,14 @@ def agregarFacultad(request):
 def listarFacultadxEsp(request, id_facultad):
     media_path = MEDIA_URL
     context = {
-        'ListaEspecialidad': Especialidad.objects.filter(facultad_id=id_facultad),
+        'ListaEspecialidad': Especialidad.objects.filter(facultad_id=id_facultad, estado=Facultad.ESTADOS[1][0]),
         'ListaFacultad': Facultad.objects.all(),
         'id_facultad': id_facultad,
-        'media_path': media_path
+        'media_path': media_path,
+        'ListaEstados': Especialidad.ESTADOS[1:],
     }
     return render(request, 'gestionarEspecialidad/listarEspecialidad.html', context)
+
 
 def editarFacultad(request, id_facultad):
     ListaUsuarios = User.objects.filter()
@@ -70,4 +75,12 @@ def eliminarFacultad(request, id_facultad):
     facultad = Facultad.objects.get(pk=id_facultad)
     facultad.delete()
     print("Correcto eliminar Facultad!")
+    return redirect('listarFacultad')
+
+
+def eliminarFacultad2(request, id_facultad):
+    facultad = Facultad.objects.get(pk=id_facultad)
+    facultad.estado = Facultad.ESTADOS[2][0]
+    facultad.save()
+    print("Correcto desactivar Facultad!")
     return redirect('listarFacultad')

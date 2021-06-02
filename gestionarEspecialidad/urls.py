@@ -8,5 +8,6 @@ urlpatterns = [
     path('listar/<id_especialidad>/', views.listarEspecialidadxCurso, name="listarEspecialidadxCurso"),
     path('editar/<id_especialidad>/', views.editarEspecialidad, name="editarEspecialidad"),
     path('eliminar/<id_especialidad>/', views.eliminarEspecialidad, name="eliminarEspecialidad"),
+    path('desactivar/<id_especialidad>/', views.eliminarEspecialidad2, name="eliminarEspecialidad2"),
     path('agregar/<id_facultad>/', views.agregarEspecialidad, name="agregarEspecialidad"),
 ]
