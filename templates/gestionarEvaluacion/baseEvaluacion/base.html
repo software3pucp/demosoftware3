@@ -387,10 +387,7 @@
 
 
         function guardarPuntuacion(idAlumno, nivelS) {
-            var aux = idAlumno+''+nivelS
-            var r =$("body").find('#' + aux);
-            console.log(r[0].id);
-            $('#'+r).prop('checked', true);
+
 
             $.ajax({
                 type: 'POST',
@@ -492,15 +489,16 @@
                             data += ('<tr class="btn-reveal-trigger">' +
                                 '<th class="align-middle">' + instance[i]["fields"].codigoAlumno + '</th>' +
                                 '<th class="align-middle">' + instance[i]["fields"].nombreAlumno + '</th>' +
-                                '                             <th class="align-middle">');
+                                '                             <th class="align-middle">'+
+                                '<div class="form-check-inline" >' );
                              for (j = 1; j <= numeroN; j++) {
-                                data += ('<div class="form-check-inline" >' +
-                                    '<input class="form-check-input" type="radio"  id="'+instance[i]["pk"]+''+instanceN[j - 1]["pk"]+'"  name="inlineRadioOptions"' +
-                                    'value="' + j + ' " onclick="guardarPuntuacion(' + instance[i]["pk"] + ',' + instanceN[j - 1]["pk"] + ',)">' +
-                                    '<label class="form-check-label" for="'+instance[i]["pk"]+''+instanceN[j - 1]["pk"]+'">' + j + '</label>' +
-                                    '</div>');
+                                data += ('<input class="form-check-input" type="radio"  id="'+instance[i]["pk"]+''+instanceN[j - 1]["pk"]+'" "' +
+                                    'value="' + j + '"name="'+instance[i]["pk"]+ '" onclick="guardarPuntuacion(' + instance[i]["pk"] + ',' + instanceN[j - 1]["pk"] + ',)">' +
+                                    '<label class="form-check-label" for="'+instance[i]["pk"]+''+instanceN[j - 1]["pk"]+'">' + j + '</label>'
+                                    );
                             }
-                            data += ('</th>' +
+                            data += ('</div>'+
+                                '</th>' +
                                 '<th>' +
                                 '<div class="row">' +
                                 ' <div class="col">' +
