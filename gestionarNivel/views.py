@@ -31,17 +31,17 @@ from gestionarNivel.models import Nivel
 #     return render(request, 'gestionarNivel/crearNiv.html', context)
 #
 def editarNiv(request,pk):
-     flag = False
+
      if request.POST:
          nivel = Nivel.objects.get(pk=pk)
          nivel.name = request.POST['name']
          nivel.value = request.POST['value']
          nivel.save()
-         flag = True
+         return redirect('listarNivel')
+
      nivel = Nivel.objects.get(pk=pk)
      context = {
          'nivel': nivel,
-         'flag': flag,
      }
      return render(request, 'gestionarNivel/editarNiv.html', context)
 
