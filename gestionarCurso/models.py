@@ -15,7 +15,7 @@ def substring_after(s, delim):
 
 def upload_location(instance, filename):
     extension = substring_after(filename, '.')
-    return 'img/%s.%s' % (remove_accents(instance.nombre), extension)
+    return 'evidencias/horarios/%s.%s' % (remove_accents(instance.nombre), extension)
 
 
 class Curso(models.Model):
@@ -28,3 +28,8 @@ class Curso(models.Model):
         ('2', 'Inactivo'),
     ]
     estado = models.CharField(max_length=2, choices=ESTADOS, default=None, null=True, blank=True)
+
+class Horario(models.Model):
+    codigo = models.CharField(max_length=30)
+    evidencia = models.FileField(null=True, blank=True, upload_to=upload_location)
+    curso = models.ForeignKey(Especialidad,on_delete=models.CASCADE, null=True)
