@@ -3,6 +3,15 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
+    <link href="{% static 'lib/flatpickr/flatpickr.min.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <style>
+        #Titulo {
+            color: #0154ae;
+            font-family: "Montserrat";
+        }
+
+    </style>
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
@@ -12,9 +21,16 @@
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <div class="col-12">
-                     <div style="margin: 1%;">
+                    <div class="row d-flex justify-content-center ">
+                        <div class="col-12">
+                            <h4 id="Titulo" style="font-family: Montserrat">Resultados del estudiante </h4>
+                            <hr style="background-color: #0154ae;">
+                        </div>
+                    </div>
+
+                    <div style="margin: 1%;">
                         <a href="{% url 'crearResultado' %}" class="btn btn-primary mr-1 mb-1">Añadir</a>
-                     </div>
+                    </div>
                     {% for resultado in resultados %}
                         <div style="margin: 1%;">
                             <div class="card text-white bg-primary">
@@ -28,7 +44,8 @@
                                             <div class="col-md-9 border-left border-right p-2">
                                                 <p>{{ resultado.0.descripcion }}</p>
                                                 {% if not resultado.1 %}
-                                                    <p>Nota: El resultado aun no tiene indicadores asociados</p>
+                                                    <p>Nota: El resultado aun no tiene indicadores asociados,
+                                                        si desea asociar indicadores, por favor dar click en editar</p>
                                                 {% endif %}
                                             </div>
                                             <div class="col-md-2 ">
