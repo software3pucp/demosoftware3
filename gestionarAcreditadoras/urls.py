@@ -6,4 +6,5 @@ urlpatterns = [
     # path( url hijo, backend, nombre de la variable)
     path('listar/', views.listarAcreditadoras, name="listarAcreditadoras"),
     path('crear/<pk>', views.crearAcreditadoras, name="crearAcreditadoras"),
+    path('desactivar/<id_acreditadora>/', views.eliminarAcreditadora, name="eliminarAcreditadora"),
 ]

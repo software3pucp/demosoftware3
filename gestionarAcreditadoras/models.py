@@ -1,5 +1,5 @@
 from django.db import models
-
+import unicodedata
 # Create your models here.
 
 def remove_accents(input_str):
@@ -20,6 +20,7 @@ class Acreditadora(models.Model):
     ESTADOS = [
         ('0','Eliminado'),
         ('1','Activo'),
+        ('2', 'Inactivo'),
     ]
     nombre = models.CharField(max_length=100,default='',null=True,blank=True)
     foto = models.ImageField(null=True, blank=True, upload_to=upload_location)
