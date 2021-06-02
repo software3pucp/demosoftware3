@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'authentication',
     'home',
+    'gestionarAcreditadoras',
     'gestionarREAcreditadoras',
     'gestionarResultados',
     'gestionarNivel',
