@@ -8,9 +8,10 @@
 {#Bloque de extra body -> HTML#}
 {% block body %}
 
-    <div class="card">
-        <div class="card-body">
-            <div class="d-flex justify-content-center">
+    <div class="card p-5">
+        <form action="{% url 'editarResultado' pk=resultado.pk %}" method="post">
+            {% csrf_token %}
+            <div class="row-12">
                 <div class="col-12">
                     <div class="row d-flex justify-content-center ">
                         <div class="col-10">
@@ -55,64 +56,65 @@
                     </div>
                     <div class="row mt-1">
                         <div class="col-md-12 d-flex justify-content-end">
-                            <a class="btn btn-outline-primary m-1" type="button" href="{% url 'listarResultado' %}">Cancelar</a>
-                            <span class="btn btn-primary m-1" onclick="actualizarResultado({{ resultado.pk }})">Guardar</span>
+                            <a class="btn btn-outline-primary m-1" type="button"
+                               href="{% url 'listarResultado' %}">Cancelar</a>
+                            <input type="submit" class="btn btn-primary m-1" value="Guardar">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h4>Indicadores del Resultado del Estudiante</h4>
-                        </div>
-                    </div>
-                    <hr style="background-color: #0154ae;">
-                    <div class="row-12">
-                        <div class="btn btn-falcon-primary mb-2" href="#agregarIndicadorNuevo" data-toggle="modal"
-                             role="button">
-                            <span class="fa fa-plus"></span>
-                        </div>
-                        <div class="dashboard-data-table">
-                            <table class="table table-sm table-dashboard fs--1 data-table border-bottom"
-                                   data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
-                                <thead class="bg-200 text-900">
-                                <tr>
-                                    <th class="sort pr-1 align-middle">N°</th>
-                                    <th class="sort pr-1 align-middle">Codigo</th>
-                                    <th class="sort pr-1 align-middle">Descripción</th>
-                                    <th class="sort pr-1 align-middle text-center">Acción</th>
-                                </tr>
-                                </thead>
-                                <tbody id="purchases">
-                                {% for indicador in listaIndicadores %}
-                                    <tr class="btn-reveal-trigger">
-                                        <th class="align-middle"> {{ forloop.counter }}</th>
-                                        <th class="align-middle">{{ indicador.codigo }}</th>
-                                        <td class="align-middle">{{ indicador.descripcion }}</td>
-                                        <td class="align-middle text-right fs-0">
-                                            <form action="{% url 'eliminarIndicadorxResultado' id_resultado=resultado.pk %}"
-                                                  method="post">
-                                                {% csrf_token %}
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <a href="{% url 'editarIndicador' pk=indicador.pk %}"
-                                                           class="badge badge rounded-capsule badge-soft-info">Editar</a>
-                                                    </div>
-                                                    <div class="col">
-                                                        <button type="submit"
-                                                                class="badge rounded-capsule badge-soft-danger outline-none">
-                                                            <span>Eliminar</span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <input type="hidden" id="indicador_pk" name="indicador_pk"
-                                                       value="{{ indicador.pk }}">
-                                            </form>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row-12">
+            <div class="col-md-12">
+                <h4>Indicadores del Resultado del Estudiante</h4>
+            </div>
+            <hr style="background-color: #0154ae;">
+            <div class="row-12">
+                <div class="btn btn-falcon-primary mb-2" href="#agregarIndicadorNuevo" data-toggle="modal"
+                     role="button">
+                    <span class="fa fa-plus"></span>
+                </div>
+                <div class="dashboard-data-table">
+                    <table class="table table-sm table-dashboard fs--1 data-table border-bottom"
+                           data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
+                        <thead class="bg-200 text-900">
+                        <tr>
+                            <th class="sort pr-1 align-middle">N°</th>
+                            <th class="sort pr-1 align-middle">Codigo</th>
+                            <th class="sort pr-1 align-middle">Descripción</th>
+                            <th class="sort pr-1 align-middle text-center">Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody id="purchases">
+                        {% for indicador in listaIndicadores %}
+                            <tr class="btn-reveal-trigger">
+                                <th class="align-middle"> {{ forloop.counter }}</th>
+                                <th class="align-middle">{{ indicador.codigo }}</th>
+                                <td class="align-middle">{{ indicador.descripcion }}</td>
+                                <td class="align-middle text-right fs-0">
+                                    <form action="{% url 'eliminarIndicadorxResultado' id_resultado=resultado.pk %}"
+                                          method="post">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            <div class="col">
+                                                <a href="{% url 'editarIndicador' pk=indicador.pk %}"
+                                                   class="badge badge rounded-capsule badge-soft-info">Editar</a>
+                                            </div>
+                                            <div class="col">
+                                                <button type="submit"
+                                                        class="badge rounded-capsule badge-soft-danger outline-none">
+                                                    <span>Eliminar</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="indicador_pk" name="indicador_pk"
+                                               value="{{ indicador.pk }}">
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -186,28 +188,6 @@
                 },
                 success: function (response) {
                     location.reload()
-                },
-                error: function (response) {
-                    // alert the error if any error occured
-                    alert(response["responseJSON"]["error"]);
-                }
-            });
-        }
-
-        function actualizarResultado() {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'actualizarResultado' pk=resultado.pk %}",
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    codigo: $("#codigo").val(),
-                    descripcion: $("#descripcion").val(),
-                },
-                success: function (response) {
-                    $("#codigo").prop("disabled", true)
-                    $("#descripcion").prop("disabled", true)
-                    $("#codigo").val($("#codigo").val())
-                    $("#descripcion").val($("#descripcion").val())
                 },
                 error: function (response) {
                     // alert the error if any error occured

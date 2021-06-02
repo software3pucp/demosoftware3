@@ -9,5 +9,4 @@ urlpatterns = [
     path('listar/<id_resultado>/', views.listarIndicadorxResultado, name="listarIndicadorxResultado"),
     path('eliminar/<id_resultado>/', views.eliminarIndicadorxResultado, name="eliminarIndicadorxResultado"),
     path('agregarDescripcion/', views.agregarDescipcionNivel, name="agregarDescipcionNivel"),
-    # path('editarDescripcion/', views.editarDescripcion, name="editarDescripcion"),
 ]
