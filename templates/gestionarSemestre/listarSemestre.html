@@ -11,6 +11,10 @@
             color: #0154ae
         }
 
+        .numInputWrapper{
+            visibility:hidden;
+        }
+
         p{
             line-height: 20%;
             text-align: center;
@@ -228,7 +232,20 @@
 {% block extrajs %}
     <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
     <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
-
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+    <script>
+        $(document).ready(function () {
+            flatpickr(dateInicio, {
+                "locale": "es",
+                "dateFormat": "d/m",
+            });
+            flatpickr(dateFin, {
+                "locale": "es",
+                "dateFormat": "d/m",
+            });
+        });
+        ;
+    </script>
 
     <script>
         function validar(){
@@ -276,7 +293,15 @@
         function ValidarFechas() {
             var fechainicial = document.getElementById("dateInicio").value;
             var fechafinal = document.getElementById("dateFin").value;
-            return (Date.parse(fechafinal) > Date.parse(fechainicial));
+
+            var fechaIniFix = fechainicial[3]+fechainicial[4]+'/'+fechainicial[0]+fechainicial[1];
+            var fechaFinFix = fechafinal[3]+fechafinal[4]+'/'+fechafinal[0]+fechafinal[1];
+            fechaIniFix += '/2000';
+            fechaFinFix += '/2000';
+            var fechaIni = new Date(fechaIniFix);
+            var fechaFin = new Date(fechaFinFix);
+
+            return (fechaFin > fechaIni);
         }
     </script>
 
@@ -307,6 +332,9 @@
                         '</a>'+
                         '</div>'
 
+                    $("#dateInicio").val("");
+                    $("#dateFin").val("");
+                    $("#boxSemestre").val("");
                     $(data).insertAfter($("#Anadir"));
 
                 },
