@@ -1,10 +1,146 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base/base.html' %}
+{% load static %}
 
-</body>
-</html>
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+    <style>
+
+        hr {
+            height: .5px;
+            background-color: #2F5496;
+        }
+
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: center;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+
+    </style>
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+
+    {#AQUI COLOQUEN EL CÓDIGO#}
+    <form action="{% url 'crearAcreditadoras' pk=acreditadora.pk %}" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <div style="float: right;">
+                    <a class="btn btn-outline-primary" type="button" href="{% url 'listarRE' %}">
+                        <img class="img-fluid" style="height: 20px"
+                             src="https://image.flaticon.com/icons/png/512/60/60577.png">
+                        Volver
+                    </a>
+                </div>
+                {% if acreditadora.pk == "0" %}
+                    <h3>Ingresar Acreditadora</h3>
+                {% else %}
+                    <h3>{{ acreditadora.nombre }} - Editar Acreditadora</h3>
+                {% endif %}
+                <hr>
+            </div>
+        </div>
+
+        <div class="row" style="padding-left: 1%;padding-right: 1%">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <input name="nombre" class="form-control" id="nombre" type="text" placeholder="Ingrese el nombre" value="{{ acreditadora.nombre }}">
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="padding-left: 1%;padding-right: 1%">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="exampleFormControlFile1">Ingrese una imagen para la facultad: </label>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input name="photo_name" type="text" class="form-control" readonly>
+                        <span class="input-group-btn pb-3">
+                            <span class="btn btn-primary btn-file ml-3 " type="button">
+                                Examinar <input name="photo" type="file" id="imgInp" required/>
+                            </span>
+                        </span>
+                    </div>
+                    <img id='img-upload'/>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" style="text-align: right;">
+                <a class="btn btn-outline-primary" type="button" href="{% url 'listarAcreditadoras' %}">Cancelar</a>
+                {% if acreditadora.pk == "0" %}
+                    <input type="hidden" name="operacion" value="insertar">
+                {% else %}
+                    <input type="hidden" name="operacion" value="editar">
+                {% endif %}
+                <input type="submit" class="btn btn-primary" value="Guardar">
+            </div>
+        </div>
+        <!--<button class="btn btn-primary mb-3" type="submit">Save</button>-->
+    </form>
+{% endblock %}
+
+{% block extrajs %}
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(document).on('change', '.btn-file :file', function () {
+                var input = $(this),
+                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                input.trigger('fileselect', [label]);
+            });
+            $('.btn-file :file').on('fileselect', function (event, label) {
+
+                var input = $(this).parents('.input-group').find(':text'),
+                    log = label;
+
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+            });
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#img-upload').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#imgInp").change(function () {
+                readURL(this);
+            });
+        });
+    </script>
+{% endblock %}
