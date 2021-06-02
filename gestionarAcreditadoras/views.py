@@ -8,8 +8,8 @@ def listarAcreditadoras(request):
     }
     return render(request,'gestionarAcreditadoras/listarAcreditadoras.html',context)
 
-def editarAcreditadoras(request,pk):
+def crearAcreditadoras(request,pk):
     context = {
 
     }
-    return render(request,'gestionarAcreditadoras/editarAcreditadoras.html',context)
+    return render(request,'gestionarAcreditadoras/crearAcreditadoras.html',context)
