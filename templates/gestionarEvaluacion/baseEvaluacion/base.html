@@ -419,43 +419,6 @@
                     horario: $("#cboHorario").val()
                 },
                 success: function (response) {
-                    /*
-                        var instance = JSON.parse(response["nuevoAlumno"]);
-                        var instanceN = JSON.parse(response["niveles"]);
-                        var fields = instance[0]["fields"];
-                        var i;
-                        var numero = instanceN.length;
-                        data = '<tr class="btn-reveal-trigger">' +
-                            '<th class="align-middle">' + fields.codigoAlumno + '</th>' +
-                            '<th class="align-middle">' + fields.nombreAlumno + '</th>' +
-                            '                             <th class="align-middle">';
-                        for (i = 1; i <= numero; i++) {
-                            data += ('<div class="form-check form-check-inline">' +
-                                '<input class="radioBtnClass" type="radio" name="inlineRadioOptions"' +
-                                'value="' + i + ' " onclick="guardarPuntuacion(' + instance[0]["pk"]+ ',' + instanceN[i - 1]["pk"] + ',)">' +
-                                '<label class="form-check-label" for="inlineRadio1">' + i + '</label>' +
-                                '</div>');
-                        }
-
-                        data += ('</th>'+
-                                '<th>'+
-                                '<div class="row">'+
-                                   ' <div class="col">'+
-                                        '<a href="" class="badge badge-pill badge-primary">Subir Evidencia</a>'+
-                                    '</div>'+
-                                    '<div class="col">'+
-                                        '<a href="" class="badge badge-pill badge-secondary">Editar</a>'+
-                                    '</div>'+
-                                    '<div class="col">'+
-                                        '<button class="badge badge-pill badge-danger" onclick="evaluarEliminar('+fields.codigoAlumno+','+instance[0]["pk"]+',)">Eliminar</button>'+
-                                    '</div>'+
-                               ' </div>'+
-                            '</th>'+
-                             '</tr>');
-
-                        $("#tablaAlumno").prepend(data);
-
-                     */
                     listarAlumno();
                 },
                 error: function (response) {
