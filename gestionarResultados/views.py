@@ -5,6 +5,7 @@ from django.core import serializers
 from django.db.models import Q
 # Create your views here.
 from gestionarIndicadores.models import Indicador
+from gestionarNivel.models import Nivel
 from gestionarResultados.models import ResultadoPUCP
 
 
@@ -31,8 +32,20 @@ def listarResultado(request):
         eliminado = True
 
     resultados = ResultadoPUCP.objects.filter(Q(estado='1') | Q(estado='2'))
+    listaResultados=[]
+    for result in resultados:
+        tiene_niveles = False
+        indicadores = Indicador.objects.filter(resultado_id=result.pk)
+        if(len(indicadores)>0):
+            tiene_niveles=True
+        registro=[result,tiene_niveles]
+        listaResultados.append(registro)
+
+    print("-------------------------")
+    print(listaResultados)
+    print("-------------------------")
     context = {
-        'resultados': resultados,
+        'resultados': listaResultados,
     }
     return render(request, 'gestionarResultados/listarResultados.html', context)
 

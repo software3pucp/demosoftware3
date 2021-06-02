@@ -23,24 +23,22 @@
                                         {% csrf_token %}
                                         <div class="row no-gutters">
                                             <div class="col-md-1">
-                                                <h2 class="card-text text-white">{{ resultado.codigo }}</h2>
+                                                <h2 class="card-text text-white">{{ resultado.0.codigo }}</h2>
                                             </div>
                                             <div class="col-md-9 border-left border-right p-2">
-                                                <p>{{ resultado.descripcion }}</p>
+                                                <p>{{ resultado.0.descripcion }}</p>
+                                                {% if not resultado.1 %}
+                                                    <p>Nota: El resultado aun no tiene indicadores asociados</p>
+                                                {% endif %}
                                             </div>
                                             <div class="col-md-2 ">
                                                 <div class="d-flex justify-content-center">
-                                                    <a href="{% url 'editarResultado' pk=resultado.pk %}"
+                                                    <a href="{% url 'editarResultado' pk=resultado.0.pk %}"
                                                        class="btn btn-falcon-primary mr-1 mb-1">Editar</a>
                                                 </div>
-                                                {% comment %}<div class="d-flex justify-content-center">
-                                                    <button class="btn btn-falcon-primary mr-1 mb-1" type="button">
-                                                        Activar
-                                                    </button>
-                                                </div>{% endcomment %}
                                                 <div class="d-flex justify-content-center">
                                                     <input type="hidden" id="resultadoPk" name="resultadoPk"
-                                                           value="{{ resultado.pk }}">
+                                                           value="{{ resultado.0.pk }}">
                                                     <button type="submit" class="btn btn-falcon-primary mr-1 mb-1">
                                                         Eliminar
                                                     </button>
