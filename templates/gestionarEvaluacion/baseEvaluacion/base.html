@@ -128,7 +128,6 @@
 
                 <tbody id="tablaAlumno">
 
-                {# Al acabar borra este for#}
                 </tbody>
             </table>
         </div>
@@ -149,15 +148,16 @@
                 <div class="modal-body">
                     <form id="formAgregarAlumno" name="formAgregarAlumno">
                         <div class="form-group">
-                            <label for="nombreAlumno">Nombre</label>
-                            <input class="form-control" id="nombreAlumno" name="nombreAlumno" type="text"
-                                   placeholder="Nombre">
-                        </div>
-                        <div class="form-group">
                             <label for="codigoAlumno">Código</label>
                             <input class="form-control" id="codigoAlumno" name="codigoAlumno" type="text" maxlength="8"
                                    placeholder="Código">
                         </div>
+                        <div class="form-group">
+                            <label for="nombreAlumno">Nombre</label>
+                            <input class="form-control" id="nombreAlumno" name="nombreAlumno" type="text"
+                                   placeholder="Nombre">
+                        </div>
+
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -387,6 +387,11 @@
 
 
         function guardarPuntuacion(idAlumno, nivelS) {
+            var aux = idAlumno+''+nivelS
+            var r =$("body").find('#' + aux);
+            console.log(r[0].id);
+            $('#'+r).prop('checked', true);
+
             $.ajax({
                 type: 'POST',
                 url: "{% url 'guardarPuntuacion'%}",
@@ -488,11 +493,11 @@
                                 '<th class="align-middle">' + instance[i]["fields"].codigoAlumno + '</th>' +
                                 '<th class="align-middle">' + instance[i]["fields"].nombreAlumno + '</th>' +
                                 '                             <th class="align-middle">');
-                            for (j = 1; j <= numeroN; j++) {
-                                data += ('<div class="form-check form-check-inline">' +
-                                    '<input class="radioBtnClass" type="radio" name="inlineRadioOptions"' +
+                             for (j = 1; j <= numeroN; j++) {
+                                data += ('<div class="form-check-inline" >' +
+                                    '<input class="form-check-input" type="radio"  id="'+instance[i]["pk"]+''+instanceN[j - 1]["pk"]+'"  name="inlineRadioOptions"' +
                                     'value="' + j + ' " onclick="guardarPuntuacion(' + instance[i]["pk"] + ',' + instanceN[j - 1]["pk"] + ',)">' +
-                                    '<label class="form-check-label" for="inlineRadio1">' + j + '</label>' +
+                                    '<label class="form-check-label" for="'+instance[i]["pk"]+''+instanceN[j - 1]["pk"]+'">' + j + '</label>' +
                                     '</div>');
                             }
                             data += ('</th>' +
