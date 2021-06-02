@@ -38,7 +38,7 @@
 {% block body %}
 
     {#AQUI COLOQUEN EL CÓDIGO#}
-    <form action="{% url 'crearAcreditadoras' pk=acreditadora.pk %}" method="post">
+    <form action="{% url 'crearAcreditadoras' pk=acreditadora.pk %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
             <div class="col-md-12">
@@ -82,12 +82,16 @@
                     <div class="input-group">
                         <input name="photo_name" type="text" class="form-control" readonly>
                         <span class="input-group-btn pb-3">
-                            <span class="btn btn-primary btn-file ml-3 " type="button">
-                                Examinar <input name="photo" type="file" id="imgInp" required/>
-                            </span>
-                        </span>
+                                        <span class="btn btn-primary btn-file ml-3 " type="button">
+                                            Buscar… <input name="photo" type="file" id="imgInp" required/>
+                                        </span>
+                                    </span>
                     </div>
-                    <img id='img-upload'/>
+                    {% if acreditadora.pk == "0" %}
+                        <img id='img-upload'/>
+                    {% else %}
+                        <img id='img-upload' src="{% if acreditadora.foto %}{{ media_path }}{{ acreditadora.foto }}{% else %}{% static 'img/team/avatar.png' %}{% endif %}"/>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -117,6 +121,7 @@
                     label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
                 input.trigger('fileselect', [label]);
             });
+
             $('.btn-file :file').on('fileselect', function (event, label) {
 
                 var input = $(this).parents('.input-group').find(':text'),
@@ -127,17 +132,21 @@
                 } else {
                     if (log) alert(log);
                 }
+
             });
 
             function readURL(input) {
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
+
                     reader.onload = function (e) {
                         $('#img-upload').attr('src', e.target.result);
                     }
+
                     reader.readAsDataURL(input.files[0]);
                 }
             }
+
             $("#imgInp").change(function () {
                 readURL(this);
             });

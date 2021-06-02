@@ -17,15 +17,34 @@ def listarAcreditadoras(request):
     return render(request,'gestionarAcreditadoras/listarAcreditadoras.html',context)
 
 def crearAcreditadoras(request,pk):
+    media_path = MEDIA_URL
     acreditadora = Acreditadora()
-    acreditadora.pk = pk
+
+    print('***********************************************************************************************************')
+    print(request.POST)
+    print(request.FILES)
+    print('***********************************************************************************************************')
 
     if request.POST:
-        if request.POST['operacion'] == 'entrada':
-            print('Insertar')
+        if request.POST['operacion'] == 'insertar':
+            nombre = request.POST['nombre']
+            foto = request.FILES['photo']
+            Acreditadora.objects.create(nombre=nombre,foto=foto)
+            return redirect('listarAcreditadoras')
+        elif request.POST['operacion'] == 'editar':
+            acreditadora = Acreditadora.objects.get(pk=pk)
+            acreditadora.nombre = request.POST['nombre']
+            acreditadora.foto = request.FILES['photo']
+            acreditadora.save()
+
+    if ( int(pk) > 0):
+        acreditadora = Acreditadora.objects.get(pk=pk)
+    else:
+        acreditadora.pk = pk
 
     context = {
         'acreditadora': acreditadora,
+        'media_path': media_path,
     }
     return render(request,'gestionarAcreditadoras/crearAcreditadoras.html',context)
 
