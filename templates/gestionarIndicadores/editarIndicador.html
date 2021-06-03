@@ -76,18 +76,19 @@
                             </a>
                         </div>
                         <div class="d-flex p-2">
-                            <input type="submit" class="btn btn-primary"  value="Guardar">
+                            <input type="submit" class="btn btn-primary" value="Guardar">
                         </div>
                     </div>
-                {% if guardado %}
-                    <div class="alert alert-success" role="alert">¡Se han guardado los cambios!</div>
-                {% endif %}
+
                     <div class="row d-flex justify-content-center ">
                         <div class="col-12">
                             <h4 style="font-family: Montserrat"> Rúbrica del Indicador</h4>
                         </div>
                     </div>
                     <hr style="background-color: #0154ae;">
+                    {% if not hay_niveles %}
+                        <div class="alert alert-info" role="alert">Aun no se han registrado niveles de desempeño!</div>
+                    {% endif %}
                     <div class="dashboard-data-table">
                         <table class="table table-sm table-dashboard fs--1 data-table border-bottom"
                                data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>

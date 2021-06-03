@@ -17,6 +17,9 @@ def editarIndicador(request, pk):
     nivelLista = Nivel.objects.filter(state=1).order_by('value')
     rubrica = Rubrica.objects.filter(indicador_id=pk)
     nivelLista2 =[]
+    hay_niveles = False
+    if (len(nivelLista)>0):
+        hay_niveles = True
 
     for nivel in nivelLista:
         registro=[nivel,'']
@@ -29,6 +32,7 @@ def editarIndicador(request, pk):
                 nivelLista2[nivel.value-1][1]=desc_nivel
     nivelLista=nivelLista2
 
+
     if request.POST:
         indicador = Indicador.objects.get(pk=pk)
         indicador.codigo = request.POST['codigo']
@@ -39,6 +43,7 @@ def editarIndicador(request, pk):
             'id_resultado': id_resultado,
             'nivelLista': nivelLista,
             'rubrica':rubrica,
+            'hay_niveles': hay_niveles,
         }
         return redirect('editarResultado', pk=id_resultado)
 
