@@ -18,11 +18,13 @@
                 </div>
             </div>
             <div class="col-3">
+                {%comment%}
                 <select id="estado" name="estado" class="form-control" id="ControlSelect2" onchange="">
                     {% for estado in ListaEstados %}
                         <option value={{ estado.0 }}>{{ estado.1 }}</option>
                     {% endfor %}
                 </select>
+                {%endcomment%}
             </div>
         </div>
         <div class="row mt-4">

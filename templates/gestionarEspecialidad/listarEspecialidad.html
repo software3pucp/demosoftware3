@@ -24,11 +24,13 @@
                 </select>
             </div>
             <div class="col-3">
+                {%comment%}
                 <select id="estado" name="estado" class="form-control" id="ControlSelect2" onchange="">
                     {% for estado in ListaEstados %}
                         <option value={{ estado.0 }}>{{ estado.1 }}</option>
                     {% endfor %}
                 </select>
+                {%endcomment%}
             </div>
             <div class="col-3 text-right">
                 <a class="d-flex flex-row justify-content-end mt-2 mr-3" href="{% url 'listarFacultad' %}">
