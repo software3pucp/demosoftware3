@@ -11,6 +11,7 @@ class Alumno(models.Model):
     horario = models.CharField(max_length=5, null=True, blank=True)
     descripcionP = models.CharField(max_length=200,null=False,blank=True)
     estado = models.CharField(max_length=2,default=1)
+    calificado = models.CharField(max_length=2,null=True, default=0)
 
 class MedicionDeIndicador(models.Model):
     codigo = models.CharField(max_length=10, default='', null=True, blank=True)
