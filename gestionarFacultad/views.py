@@ -54,11 +54,12 @@ def editarFacultad(request, id_facultad):
         print(request.POST)
         nuevo_nombre = request.POST["name"]
         nuevo_responsable = request.POST["responsable"]
-        nueva_foto = request.FILES["photo"]
+        if request.FILES.get('photo'):
+            nueva_foto = request.FILES["photo"]
+            facultad.foto = nueva_foto
 
         facultad.nombre = nuevo_nombre
         facultad.responsable = nuevo_responsable
-        facultad.foto = nueva_foto
         facultad.save()
         return redirect('listarFacultad')
 

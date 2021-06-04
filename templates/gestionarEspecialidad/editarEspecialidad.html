@@ -83,11 +83,12 @@
                             <input name="photo_name" type="text" class="form-control" readonly>
                             <span class="input-group-btn pb-3">
                                         <span class="btn btn-primary btn-file ml-3 " type="button">
-                                            Buscar… <input name="photo" type="file" id="imgInp" required/>
+                                            Buscar… <input name="photo" type="file" id="imgInp"/>
                                         </span>
                                     </span>
                         </div>
-                        <img id='img-upload' src="{% if especialidad.foto %}{{ media_path }}{{ especialidad.foto }}{% else %}{% static 'img/team/avatar.png' %}{% endif %}"/>
+                        <img id='img-upload' src="
+                                {% if especialidad.foto %}{{ media_path }}{{ especialidad.foto }}{% else %}{% static 'img/team/avatar.png' %}{% endif %}"/>
                     </div>
 
                 </div>

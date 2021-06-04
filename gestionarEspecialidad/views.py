@@ -65,11 +65,12 @@ def editarEspecialidad(request, id_especialidad):
         print(request.POST)
         nuevo_nombre = request.POST["name"]
         nuevo_responsable = request.POST["responsable"]
-        nueva_foto = request.FILES["photo"]
+        if request.FILES.get('photo'):
+            nueva_foto = request.FILES["photo"]
+            especialidad.foto = nueva_foto
 
         especialidad.nombre = nuevo_nombre
         especialidad.responsable = nuevo_responsable
-        especialidad.foto = nueva_foto
         especialidad.save()
         return redirect('listarFacultadxEsp', especialidad.facultad.pk)
 
