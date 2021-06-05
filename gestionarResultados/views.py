@@ -32,11 +32,14 @@ def listarResultado(request):
     resultados = ResultadoPUCP.objects.filter(Q(estado='1') | Q(estado='2'))
     listaResultados=[]
     for result in resultados:
-        tiene_niveles = False
-        indicadores = Indicador.objects.filter(resultado_id=result.pk)
+        tiene_indicadores = False
+        indicadores = Indicador.objects.filter(resultado_id=result.pk, estado='1')
+        print("Idicadores del resultado",result.pk,':',indicadores)
         if(len(indicadores)>0):
-            tiene_niveles=True
-        registro=[result,tiene_niveles]
+            tiene_indicadores = True
+        else:
+            tiene_indicadores = False
+        registro=[result,tiene_indicadores]
         listaResultados.append(registro)
 
     context = {
