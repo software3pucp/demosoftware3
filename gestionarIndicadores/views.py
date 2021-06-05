@@ -21,27 +21,29 @@ def editarIndicador(request, pk):
     if (len(nivelLista)>0):
         hay_niveles = True
 
-    for nivel in nivelLista:
-        registro=[nivel,'']
+    for nivel in nivelLista: # Creamos una lista de registros- registo (nivel, descripcion)
+        registro=[nivel,''] # incialmente la descripción esta vacía
         nivelLista2.append(registro)
 
     for nivel in nivelLista:
-        for rub in rubrica:
+        for rub in rubrica: # se verifica en la rúbrica si ya existen descripciones para un determinado nivel
             if nivel.pk == rub.nivel_id:
-                desc_nivel= rub.descripcion
-                nivelLista2[nivel.value-1][1]=desc_nivel
-    nivelLista=nivelLista2
-
+                desc_nivel = rub.descripcion
+                nivelLista2[nivel.value-1][1] = desc_nivel
 
     if request.POST:
         indicador = Indicador.objects.get(pk=pk)
         indicador.codigo = request.POST['codigo']
         indicador.descripcion = request.POST['descripcion']
         indicador.save()
+        for nivel in nivelLista: # se agrega las descripciones por cada nivel
+            desc = request.POST['desc_nivel'+ str(nivel.pk)]
+            agregarDescipcionNivel(indicador.pk, nivel.pk, desc)
+
         context = {
             'indicador': indicador,
             'id_resultado': id_resultado,
-            'nivelLista': nivelLista,
+            'nivelLista': nivelLista2,
             'rubrica':rubrica,
             'hay_niveles': hay_niveles,
         }
@@ -51,18 +53,10 @@ def editarIndicador(request, pk):
         'rubrica':rubrica,
         'indicador': indicador,
         'id_resultado': id_resultado,
-        'nivelLista': nivelLista,
+        'nivelLista': nivelLista2,
+        'hay_niveles': hay_niveles,
     }
     return render(request, 'gestionarIndicadores/editarIndicador.html', context)
-
-def listarIndicadorxResultado(request, id_resultado):
-
-    listaIndicadores = Indicador.objects.filter(estado=1, resultado_id=id_resultado)
-    context = {
-        'listaIndicadores': listaIndicadores,
-        'resultado': ResultadoPUCP.objects.get(pk=id_resultado)
-    }
-    return render(request, 'gestionarIndicadores/listarIndicadorxResultado.html', context)
 
 
 def eliminarIndicadorxResultado(request, id_resultado):
@@ -71,9 +65,7 @@ def eliminarIndicadorxResultado(request, id_resultado):
         indicador = Indicador.objects.get(pk=request.POST['indicador_pk'])
         indicador.estado = 0 #eliminación lógica
         indicador.save()
-        flag = True
         return redirect('editarResultado', pk=id_resultado)
-    return redirect('home')
 
 
 def agregarIndicador(request, id_resultado):
@@ -84,17 +76,13 @@ def agregarIndicador(request, id_resultado):
     ser_instance = serializers.serialize('json', [indicador, ])
     return JsonResponse({"nuevoIndicador": ser_instance}, status=200)
 
-def agregarDescipcionNivel(request):
+def agregarDescipcionNivel(indicardorpk, nivelpk, desc):
     try:
-        desc_nivel = Rubrica.objects.get(indicador_id=request.POST['indicadorpk'], nivel_id=request.POST['nivelpk'])
-        desc_nivel.descripcion = request.POST['desc_nivel']
+        desc_nivel = Rubrica.objects.get(indicador_id=indicardorpk, nivel_id=nivelpk)
+        desc_nivel.descripcion = desc
         desc_nivel.save()
     except:
         esp = Especialidad.objects.get(pk=1)  # por ahora solo para una especialidad (Infomatica)
-        niv = Nivel.objects.get(pk=request.POST['nivelpk'])
-        ind = Indicador.objects.get(pk=request.POST['indicadorpk'])
-        desc = request.POST['desc_nivel']
-        desc_nivel = Rubrica.objects.create(especialidad=esp, nivel=niv, indicador=ind, descripcion=desc)
-        #print('se registró')
-    ser_instance = serializers.serialize('json', [desc_nivel, ])
-    return JsonResponse({"nuevaDesc_nivel": ser_instance}, status=200)
+        niv = Nivel.objects.get(pk=nivelpk)
+        ind = Indicador.objects.get(pk=indicardorpk)
+        Rubrica.objects.create(especialidad=esp, nivel=niv, indicador=ind, descripcion=desc)
