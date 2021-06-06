@@ -150,8 +150,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
-                    <button id="btnSubirEvidencia" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                    <button type="button" class="btn btn-secondary btn-sm"  data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm" id="btnSubirEvidencia" >Guardar</button>
                 </div>
             </div>
         </div>
@@ -205,11 +205,11 @@
         $("#btnSubirEvidencia").on('click', function (e) {
             e.preventDefault();
             if ($("#formSubirEvidencia").valid()) {
-
-                a=$("#nombre_archivo").val('');
-                b=$("#archivo").val('');
-                console.log(a);
-                console.log(b);
+                subirEvidencia();
+                $("#nombre_archivo").val('');
+                $("#archivo").val('');
+                console.log($("#nombre_archivo").val(''));
+                console.log( $("#archivo").val(''));
             }
         });
 
