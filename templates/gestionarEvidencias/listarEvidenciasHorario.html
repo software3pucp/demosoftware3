@@ -3,232 +3,249 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
-    <link href="{% static 'lib/flatpickr/flatpickr.min.css' %}" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <style>
-        #Titulo {
-            color: #0154ae
-        }
+  <link href="{% static 'lib/flatpickr/flatpickr.min.css' %}" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <style>
+      #Titulo {
+          color: #0154ae
+      }
 
-        p {
-            line-height: 20%;
-            text-align: center;
-            font-family: "Montserrat";
-        }
+      p {
+          line-height: 20%;
+          text-align: center;
+          font-family: "Montserrat";
+      }
 
-        label {
-            color: #f9fafd;
-            font-family: "Montserrat";
-        }
+      label {
+          color: #f9fafd;
+          font-family: "Montserrat";
+      }
 
-        .btn-file {
-            position: relative;
-            overflow: hidden;
-        }
+      .btn-file {
+          position: relative;
+          overflow: hidden;
+      }
 
-        .btn-file input[type=file] {
-            position: absolute;
-            top: 0;
-            right: 0;
-            min-width: 100%;
-            min-height: 100%;
-            font-size: 100px;
-            text-align: center;
-            filter: alpha(opacity=0);
-            opacity: 0;
-            outline: none;
-            background: white;
-            cursor: inherit;
-            display: block;
-        }
-        #file-upload {
-            width: 100%;
-        }
+      .btn-file input[type=file] {
+          position: absolute;
+          top: 0;
+          right: 0;
+          min-width: 100%;
+          min-height: 100%;
+          font-size: 100px;
+          text-align: center;
+          filter: alpha(opacity=0);
+          opacity: 0;
+          outline: none;
+          background: white;
+          cursor: inherit;
+          display: block;
+      }
 
-    </style>
+      #file-upload {
+          width: 100%;
+      }
+
+  </style>
 
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
 {% block body %}
 
-    <div class="card">
-        <div class="card-body">
-            <div class="d-flex justify-content-center">
-                <div class="col-12">
-                    <div class="row d-flex justify-content-center ">
-                        <div class="col-10">
-                            <h4 id="Titulo" style="font-family: Montserrat">Evidencias de evaluación de
-                                horario </h4>
-                        </div>
-                        <div class="col-2">
-                            <a href="{% url 'evaluar' pk=curso.pk %}" style="font-family: Roboto"><h5 id="Retroceder">
-                                <img class="img-fluid" style="height: 20px"
-                                     src="https://image.flaticon.com/icons/png/512/60/60577.png">
-                                <u>Volver</u>
-                            </h5></a>
-                        </div>
-                    </div>
-                    <hr style="background-color: #0154ae;">
-                    {% if not tiene_evidencias %}
-                        <div class="alert alert-info" role="alert">Aun no se han registrado evidencias de
-                            Evaluación!
-                        </div>
-                    {% endif %}
-                    <div class="btn btn-falcon-primary mb-2" href="#subirEvidencia" data-toggle="modal"
-                         role="button">
-                        <span class="fa fa-plus"></span>
-                    </div>
-                    <div class="dashboard-data-table">
-                        <table class="table table-sm table-dashboard fs--1 data-table border-bottom"
-                               data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
-                            <thead class="bg-200 text-900">
-                            <tr>
-                                <th class="sort pr-1 align-middle">N°</th>
-                                <th class="sort pr-1 align-middle">Nombre</th>
-                                <th class="sort pr-1 align-middle text-center">Acción</th>
-                            </tr>
-                            </thead>
-                            <tbody id="purchases">
-                            {% for item in listaEvidencias %}
-                                <tr class="btn-reveal-trigger">
-                                    <th class="align-middle"> {{ forloop.counter }} </th>
-                                    <th class="align-middle">{{ item.evidencia }}</th>
-                                    <td class="align-middle text-right fs-0">
-                                        <form action="{% url 'listarEvidenciasHorario' id_curso=curso.pk id_horario=1 %}" method="post">
-                                            {% csrf_token %}
-                                            <div class="row">
-                                                <div class="col">
-                                                    <a href="{% url 'editarNiv' pk=nivel.pk %}"
-                                                       class="badge badge rounded-capsule badge-soft-info">Editar</a>
-                                                </div>
-                                                <div class="col">
-                                                    <button type="submit"
-                                                            class="badge rounded-capsule badge-soft-danger outline-none">
-                                                        <span>Eliminar</span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <input type="hidden" id="nivelPk" name="nivelPk"
-                                                   value="{{ nivel.pk }}">
-                                        </form>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex justify-content-center">
+        <div class="col-12">
+          <div class="row d-flex justify-content-center ">
+            <div class="col-10">
+              <h4 id="Titulo" style="font-family: Montserrat">Evidencias de evaluación de
+                horario </h4>
             </div>
+            <div class="col-2">
+              <a href="{% url 'evaluar' pk=curso.pk %}" style="font-family: Roboto"><h5 id="Retroceder">
+                <img class="img-fluid" style="height: 20px"
+                     src="https://image.flaticon.com/icons/png/512/60/60577.png">
+                <u>Volver</u>
+              </h5></a>
+            </div>
+          </div>
+          <hr style="background-color: #0154ae;">
+          {% if not tiene_evidencias %}
+            <div class="alert alert-info" role="alert">Aun no se han registrado evidencias de
+              Evaluación!
+            </div>
+          {% endif %}
+          <div class="btn btn-falcon-primary mb-2" href="#subirEvidencia" data-toggle="modal"
+               role="button">
+            <span class="fa fa-plus"></span>
+          </div>
+          <div class="dashboard-data-table">
+            <table class="table table-sm table-dashboard fs--1 data-table border-bottom"
+                   data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
+              <thead class="bg-200 text-900">
+              <tr>
+                <th class="sort pr-1 align-middle">N°</th>
+                <th class="sort pr-1 align-middle">Nombre</th>
+                <th class="sort pr-1 align-middle text-center">Acción</th>
+              </tr>
+              </thead>
+              <tbody id="purchases">
+              {% for item in listaEvidencias %}
+                <tr class="btn-reveal-trigger">
+                  <th class="align-middle"> {{ forloop.counter }} </th>
+                  <th class="align-middle">{{ item.evidencia }}</th>
+                  <td class="align-middle text-right fs-0">
+                    <form action="{% url 'listarEvidenciasHorario' id_curso=curso.pk id_horario=1 %}" method="post">
+                      {% csrf_token %}
+                      <div class="row">
+                        <div class="col">
+                          <a href="{% url 'editarNiv' pk=nivel.pk %}"
+                             class="badge badge rounded-capsule badge-soft-info">Editar</a>
+                        </div>
+                        <div class="col">
+                          <button type="submit"
+                                  class="badge rounded-capsule badge-soft-danger outline-none">
+                            <span>Eliminar</span>
+                          </button>
+                        </div>
+                      </div>
+                      <input type="hidden" id="nivelPk" name="nivelPk"
+                             value="{{ nivel.pk }}">
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-    <div class="modal fade" id="subirEvidencia" tabindex="-1" role="dialog" aria-labelledby="subirEvidenciaLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="subirEvidenciaLabel">Subir Evidencia</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
-                            class="font-weight-light" aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formSubirEvidencia" name="formSubirEvidencia" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="nombre_archivo">Seleccione un archivo: </label>
-                            <div class="input-group">
-                                <input name="nombre_archivo" id="nombre_archivo" type="text" class="form-control"
-                                       readonly>
-                                <span class="input-group-btn pb-3">
-                                        <span class="btn btn-primary btn-file ml-3 " type="button">Buscar...
+  <div class="modal fade" id="subirEvidencia" tabindex="-1" role="dialog" aria-labelledby="subirEvidenciaLabel"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="subirEvidenciaLabel">Subir Evidencia</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+              class="font-weight-light" aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <form id="formSubirEvidencia" name="formSubirEvidencia" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="nombre_archivo">Seleccione un archivo: </label>
+              <div class="input-group">
+                <input name="nombre_archivo" id="nombre_archivo" type="text" class="form-control"
+                       readonly>
+                <span class="input-group-btn pb-3">
+                                        <span class="btn btn-primary btn-file ml-3 " type="button">Seleccionar
                                         <input name="archivo" id="archivo" type="file" required/>
                                         </span>
                                 </span>
-                            </div>
-                            <img id='file-upload'/>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm"  data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary btn-sm" id="btnSubirEvidencia" >Guardar</button>
-                </div>
+              </div>
+              <img id='file-upload'/>
             </div>
+          </form>
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary btn-sm" id="btnSubirEvidencia">Guardar</button>
+        </div>
+      </div>
     </div>
+  </div>
 
 
 {% endblock %}
 
 {% block extrajs %}
-    <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
-    <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
+  <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
+  <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
 
-    <script>
+  <script>
 
-        $(document).ready(function () {
-            $(document).on('change', '.btn-file :file', function () {
-                var input = $(this),
-                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-                input.trigger('fileselect', [label]);
-            });
+    $(document).ready(function () {
+      $(document).on('change', '.btn-file :file', function () {
+        var input = $(this),
+            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+        input.trigger('fileselect', [label]);
+      });
 
-            $('.btn-file :file').on('fileselect', function (event, label) {
-                var input = $(this).parents('.input-group').find(':text'),
-                    log = label;
+      $('.btn-file :file').on('fileselect', function (event, label) {
+        var input = $(this).parents('.input-group').find(':text'),
+            log = label;
 
-                if (input.length) {
-                    input.val(log);
-                } else {
-                    if (log) alert(log);
-                }
-            });
-
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-
-                    reader.onload = function(e){
-                        $('#file-upload').atr('src', e.target.result);
-                    }
-
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-
-            $("#archivo").change(function () {
-                readURL(this);
-            });
-        });
-
-
-        $("#btnSubirEvidencia").on('click', function (e) {
-            e.preventDefault();
-            if ($("#formSubirEvidencia").valid()) {
-                subirEvidencia();
-                $("#nombre_archivo").val('');
-                $("#archivo").val('');
-                console.log($("#nombre_archivo").val(''));
-                console.log( $("#archivo").val(''));
-            }
-        });
-
-        function subirEvidencia() {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'subirEvidenciaHorario' %}",
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    nombre_archivo: $("#nombre_archivo").val(),
-                    archivo: $("#archivo").val(),
-                },
-                success: function (response) {
-                    location.reload();
-                },
-                error: function (response) {
-                    alert(response["responseJSON"]["error"]);
-                }
-            });
+        if (input.length) {
+          input.val(log);
+        } else {
+          if (log) alert(log);
         }
-    </script>
+      });
+
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            $('#file-upload').atr('src', e.target.result);
+          }
+
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+
+      $("#archivo").change(function () {
+        readURL(this);
+      });
+    });
+
+
+    $("#btnSubirEvidencia").on('click', function (e) {
+      e.preventDefault();
+      if ($("#formSubirEvidencia").valid()) {
+        subirEvidencia();
+        $("#nombre_archivo").val('');
+        $("#archivo").val('');
+        console.log($("#nombre_archivo").val(''));
+        console.log($("#archivo").val(''));
+      }
+    });
+
+    function subirEvidencia() {
+
+      var fd = new FormData();
+      var files = $('#archivo')[0].files;
+
+      // Check file selected or not
+      if (files.length > 0) {
+        fd.append('archivo', files[0]);
+        fd.append('horariopk', {{ horario.pk }});
+        fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        fd.append('nombre_archivo', $("#nombre_archivo").val());
+
+        console.log(files)
+        console.log(files[0])
+
+        $.ajax({
+          type: 'POST',
+          url: "{% url 'subirEvidenciaHorario' %}",
+          data: fd,
+          contentType: false,
+          processData: false,
+          success: function (response) {
+            console.log("EXITO")
+            console.log(response)
+          },
+          error: function (response) {
+            console.log("ERROR")
+            console.log(response)
+          }
+        });
+      }
+      }
+
+  </script>
 {% endblock %}

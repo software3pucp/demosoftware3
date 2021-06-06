@@ -45,6 +45,10 @@ def editarEvidencia(request, pk):
     return render(request, 'gestionarEvidencias/editarEvidencia.html', context)
 
 def subirEvidenciaHorario(request):
+
+    print(request.POST)
+    print(request.FILES)
+
     archivo = request.FILES['archivo']
     horario = Horario.objects.get(pk=request.POST['horariopk'])
     evidencia = EvidenciasxHorario.objects.create(horario=horario, archivo=archivo)
