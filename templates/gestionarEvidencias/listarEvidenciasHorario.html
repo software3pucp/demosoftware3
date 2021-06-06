@@ -41,6 +41,9 @@
             cursor: inherit;
             display: block;
         }
+        #file-upload {
+            width: 100%;
+        }
 
     </style>
 
@@ -59,7 +62,7 @@
                                 horario </h4>
                         </div>
                         <div class="col-2">
-                            <a href="{% url 'evaluar' %}" style="font-family: Roboto"><h5 id="Retroceder">
+                            <a href="{% url 'evaluar' pk=curso.pk %}" style="font-family: Roboto"><h5 id="Retroceder">
                                 <img class="img-fluid" style="height: 20px"
                                      src="https://image.flaticon.com/icons/png/512/60/60577.png">
                                 <u>Volver</u>
@@ -92,7 +95,7 @@
                                     <th class="align-middle"> {{ forloop.counter }} </th>
                                     <th class="align-middle">{{ item.evidencia }}</th>
                                     <td class="align-middle text-right fs-0">
-                                        <form action="{% url 'listarEvidenciasHorario' pk=Horario.pk %}" method="post">
+                                        <form action="{% url 'listarEvidenciasHorario' id_curso=curso.pk id_horario=1 %}" method="post">
                                             {% csrf_token %}
                                             <div class="row">
                                                 <div class="col">
@@ -130,18 +133,19 @@
                             class="font-weight-light" aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formSubirEvidencia" name="formSubirEvidencia">
+                    <form id="formSubirEvidencia" name="formSubirEvidencia" method="post" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="filename">Seleccione un archivo: </label>
+                            <label for="nombre_archivo">Seleccione un archivo: </label>
                             <div class="input-group">
-                                <input name="filename" id="filename" type="text" class="form-control"
+                                <input name="nombre_archivo" id="nombre_archivo" type="text" class="form-control"
                                        readonly>
                                 <span class="input-group-btn pb-3">
                                         <span class="btn btn-primary btn-file ml-3 " type="button">Buscar...
-                                        <input name="file" id="file" type="file" required/>
+                                        <input name="archivo" id="archivo" type="file" required/>
                                         </span>
-                                    </span>
+                                </span>
                             </div>
+                            <img id='file-upload'/>
                         </div>
                     </form>
                 </div>
@@ -156,7 +160,6 @@
 
 {% endblock %}
 
-{#Aquí coloco el JS particular de la web#}
 {% block extrajs %}
     <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
     <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
@@ -185,47 +188,47 @@
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
 
+                    reader.onload = function(e){
+                        $('#file-upload').atr('src', e.target.result);
+                    }
+
                     reader.readAsDataURL(input.files[0]);
                 }
             }
 
-            $("#file").change(function () {
+            $("#archivo").change(function () {
                 readURL(this);
             });
         });
 
 
-        $("#btnSubirEvidencia").on('click', function () {
-            console.log('HOLA 111111')
+        $("#btnSubirEvidencia").on('click', function (e) {
+            e.preventDefault();
             if ($("#formSubirEvidencia").valid()) {
-                console.log('HOLA 22222')
-                agregarEvidencia();
-                $("#filename").val('');
-                $("#file").val('');
+
+                a=$("#nombre_archivo").val('');
+                b=$("#archivo").val('');
+                console.log(a);
+                console.log(b);
             }
         });
 
-        function agregarEvidencia() {
+        function subirEvidencia() {
             $.ajax({
                 type: 'POST',
                 url: "{% url 'subirEvidenciaHorario' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    filename: $("#filename").val(),
-                    file: $("#file").val(),
+                    nombre_archivo: $("#nombre_archivo").val(),
+                    archivo: $("#archivo").val(),
                 },
                 success: function (response) {
-                    {% comment %}var instance = JSON.parse(response["nuevaEvidencia"]);
-                    var fields = instance[0]["fields"];{% endcomment %}
                     location.reload();
                 },
                 error: function (response) {
-                    // alert the error if any error occured
                     alert(response["responseJSON"]["error"]);
                 }
             });
         }
-
-
     </script>
 {% endblock %}
