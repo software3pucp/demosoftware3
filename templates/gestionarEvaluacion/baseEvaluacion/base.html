@@ -23,7 +23,7 @@
     <div class="card p-5">
         <div class="row d-flex justify-content-center ">
             <div class="col-10">
-                <h4 id="Titulo" style="font-family: Montserrat">Evaluación</h4>
+                <h4 id="Titulo" style="font-family: Montserrat">Evaluación - {{ cursoSeleccionado.nombre }}</h4>
             </div>
             <div class="col-2">
             </div>
@@ -34,10 +34,9 @@
                 <label for="cboHorario">Horario:</label>
                 <select class="custom-select custom-select-sm mb-3" id="cboHorario" name="cboHorario"
                         onchange="listarAlumno()">
-                    <option selected="" value="H101">H101</option>
-                    <option value="H102">H102</option>
-                    <option value="H103">H103</option>
-                    <option value="H104">H104</option>
+                    {% for horarioItem in listaHorario %}
+                        <option value={{ horarioItem.pk }}>{{ horarioItem.codigo }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="col-3">
@@ -189,12 +188,12 @@
                 <div class="modal-body">
                     <form id="formEditarAlumno" name="formEditarAlumno">
                         <div class="form-group">
-                            <label for="nombreAlumno">Nombre</label>
-                            <div id="editNombre"></div>
-                        </div>
-                        <div class="form-group">
                             <label for="codigoAlumno">Código</label>
                             <div id="editCodigo"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombreAlumno">Nombre</label>
+                            <div id="editNombre"></div>
                         </div>
                     </form>
                 </div>
@@ -452,6 +451,7 @@
                 success: function (response) {
                     estado = ''
                     var instance = JSON.parse(response["listaAlumno"]);
+                    console.log(instance)
                     var cont = 0;
                     var x = 0;
                     var i;
@@ -475,11 +475,15 @@
                                 '                             <th class="align-middle">' +
                                 '<div class="form-check-inline" >');
                             for (j = 1; j <= numeroN; j++) {
-                                data += ('<input class="form-check-input" type="radio"  id="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '" "' +
+                                if (instance[i]["fields"].valorNota!=null && instance[i]["fields"].valorNota == j){
+                                    data += ('<input class="form-check-input mr-1" type="radio"  id="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '" "' +
+                                    'value="' + j + '"name="' + instance[i]["pk"] + '" onclick="guardarPuntuacion(' + instance[i]["pk"] + ',' + instanceN[j - 1]["pk"] + ',)" checked>' +
+                                    '<label class="form-check-label mr-2" for="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '">' + j + '</label>');
+                                }else{
+                                    data += ('<input class="form-check-input mr-1" type="radio"  id="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '" "' +
                                     'value="' + j + '"name="' + instance[i]["pk"] + '" onclick="guardarPuntuacion(' + instance[i]["pk"] + ',' + instanceN[j - 1]["pk"] + ',)">' +
-                                    '<label class="form-check-label" for="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '">' + j + '</label>'
-                                );
-
+                                    '<label class="form-check-label mr-2" for="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '">' + j + '</label>');
+                                }
                             }
                             data += ('</div>' +
                                 '</th>' +
