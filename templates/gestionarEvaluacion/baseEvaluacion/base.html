@@ -10,6 +10,8 @@
         #Titulo {
             color: #0154ae
         }
+
+
     </style>
 
 {% endblock %}
@@ -18,121 +20,126 @@
 {% block body %}
     {#AQUI COLOQUEN EL CÓDIGO#}
     {# Rubrica #}
-    <div class="row d-flex justify-content-center ">
-        <div class="col-10">
-            <h4 id="Titulo" style="font-family: Montserrat">Evaluación</h4>
+    <div class="card p-5">
+        <div class="row d-flex justify-content-center ">
+            <div class="col-10">
+                <h4 id="Titulo" style="font-family: Montserrat">Evaluación</h4>
+            </div>
+            <div class="col-2">
+            </div>
         </div>
-        <div class="col-2">
+        <hr class="mb-3" style="background-color: #0154ae;">
+        <div class="row-12 d-flex mb-3">
+            <div class="col-3">
+                <label for="cboHorario">Horario:</label>
+                <select class="custom-select custom-select-sm mb-3" id="cboHorario" name="cboHorario"
+                        onchange="listarAlumno()">
+                    <option selected="" value="H101">H101</option>
+                    <option value="H102">H102</option>
+                    <option value="H103">H103</option>
+                    <option value="H104">H104</option>
+                </select>
+            </div>
+            <div class="col-3">
+                <label for="cboIndicador">Indicador:</label>
+                <select class="custom-select custom-select-sm mb-3" id="cboIndicador" name="cboIndicador"
+                        onchange="muestraRubrica()">
+                    {% for indicador in listaIndicador %}
+                        <option value={{ indicador.pk }}>{{ indicador.codigo }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-3">
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-outline-primary">
+                        <i class="fa fa-download"></i>Rúbrica
+                    </button>
+                </div>
+            </div>
+            <div class="col-3 justify-content-center">
+                <div class="d-flex justify-content-center">
+                    <a href="{% url 'listarEvidenciasHorario' id_horario=horario.pk %}"
+                       class="btn btn-primary ">Evidencias</a>
+                </div>
+            </div>
+
         </div>
-    </div>
-    <hr class="mb-3" style="background-color: #0154ae;">
-    <div class="row d-flex mb-3">
-        <div class="col-3">
-            <label for="cboHorario">Horario:</label>
-            <select class="custom-select custom-select-sm mb-3" id="cboHorario" name="cboHorario"
-                    onchange="listarAlumno()">
-                <option selected="" value="H101">H101</option>
-                <option value="H102">H102</option>
-                <option value="H103">H103</option>
-                <option value="H104">H104</option>
-            </select>
-        </div>
-        <div class="col-3">
-            <label for="cboIndicador">Indicador:</label>
-            <select class="custom-select custom-select-sm mb-3" id="cboIndicador" name="cboIndicador"
-                    onchange="muestraRubrica()">
-                {% for indicador in listaIndicador %}
-                    <option value={{ indicador.pk }}>{{ indicador.codigo }}</option>
-                {% endfor %}
-            </select>
+
+        <div class="col-12">
+            <div id="contenidoRubrica"></div>
         </div>
 
 
-        <div class="col-1"></div>
-        <div class="col-2">
-            <button class="btn btn-outline-primary"
-            ><i class="fa fa-download"></i> Rubrica
-            </button>
-        </div>
-        <div class="col-3">
-            <button class="btn btn-outline-primary"><i class="fa fa-download"></i> Evidencias</button>
-        </div>
 
-    </div>
+        {# Botones Agregar e Importar Estudiantes #}
+        <div class="row align-items-center mb-3 justify-content-between">
+            <div id="estado"></div>
+            <div class="col-8 col-sm-auto ml-auto text-right pl-0">
 
-    <div class="col-12">
-        <div id="contenidoRubrica"></div>
-    </div>
+                <div id="dashboard-actions">
 
-    {# Botones Agregar e Importar Estudiantes #}
-    <div class="row align-items-center mb-3 justify-content-between">
-        <div id="estado"></div>
-        <div class="col-8 col-sm-auto ml-auto text-right pl-0">
-
-            <div id="dashboard-actions">
-
-                <input class="form-control mr-sm-2 mb-2" id="textBuscar" type="search" placeholder="Buscar"
-                       aria-label="Search">
-                <button class="btn btn-primary my-2 my-sm-0" onclick="listarAlumno()">Buscar</button>
+                    <input class="form-control mr-sm-2 mb-2" id="textBuscar" type="search" placeholder="Buscar"
+                           aria-label="Search">
+                    <button class="btn btn-primary my-2 my-sm-0" onclick="listarAlumno()">Buscar</button>
 
 
-                <!-- Button trigger modal-->
-                <a href="" data-toggle="modal" data-target="#agregarAlumno"
-                   class="btn btn-falcon-default btn-sm" type="button">
-                    <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
-                         aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
-                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
-                         style="transform-origin: 0.4375em 0.625em;">
-                        <g transform="translate(224 256)">
-                            <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
-                                <path fill="currentColor"
-                                      d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
-                                      transform="translate(-224 -256)"></path>
+                    <!-- Button trigger modal-->
+                    <a href="" data-toggle="modal" data-target="#agregarAlumno"
+                       class="btn btn-falcon-default btn-sm" type="button">
+                        <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
+                             aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
+                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
+                             style="transform-origin: 0.4375em 0.625em;">
+                            <g transform="translate(224 256)">
+                                <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
+                                    <path fill="currentColor"
+                                          d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                                          transform="translate(-224 -256)"></path>
+                                </g>
                             </g>
-                        </g>
-                    </svg>
-                    <span class="d-none d-sm-inline-block ml-1">Agregar Estudiante</span>
-                </a>
-                <a href="" class="btn btn-falcon-default btn-sm" type="button" hidden>
-                    <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
-                         aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
-                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
-                         style="transform-origin: 0.4375em 0.625em;">
-                        <g transform="translate(224 256)">
-                            <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
-                                <path fill="currentColor"
-                                      d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
-                                      transform="translate(-224 -256)"></path>
+                        </svg>
+                        <span class="d-none d-sm-inline-block ml-1">Agregar Estudiante</span>
+                    </a>
+                    <a href="" class="btn btn-falcon-default btn-sm" type="button" hidden>
+                        <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
+                             aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
+                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
+                             style="transform-origin: 0.4375em 0.625em;">
+                            <g transform="translate(224 256)">
+                                <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
+                                    <path fill="currentColor"
+                                          d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                                          transform="translate(-224 -256)"></path>
+                                </g>
                             </g>
-                        </g>
-                    </svg>
-                    <span class="d-none d-sm-inline-block ml-1">Importar Estudiante</span>
-                </a>
+                        </svg>
+                        <span class="d-none d-sm-inline-block ml-1">Importar Estudiante</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {# Listado De Alumnos #}
+        <div class="card mb-3">
+            <div class="card-body p-0">
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Codigo</th>
+                        <th scope="col">Estudiante</th>
+                        <th scope="col">Puntuacion</th>
+                        <th class="white-space-nowrap">Acciones</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="tablaAlumno">
+
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-
-
-    {# Listado De Alumnos #}
-    <div class="card mb-3">
-        <div class="card-body p-0">
-            <table class="table table-hover">
-                <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Codigo</th>
-                    <th scope="col">Estudiante</th>
-                    <th scope="col">Puntuacion</th>
-                    <th class="white-space-nowrap">Acciones</th>
-                </tr>
-                </thead>
-
-                <tbody id="tablaAlumno">
-
-                </tbody>
-            </table>
-        </div>
-    </div>
-
 
 
     <!-- Modal Agregar Alumno -->
@@ -593,7 +600,6 @@
                 }
             });
         }
-
 
     </script>
 {% endblock %}

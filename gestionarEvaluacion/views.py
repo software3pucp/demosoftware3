@@ -3,20 +3,24 @@ from django.http import JsonResponse
 from django.core import serializers
 
 # Create your views here.
-
+from demosoftware3.settings import MEDIA_URL
 from gestionarEvaluacion.models import Alumno
+from gestionarHorario.models import Horario
 from gestionarIndicadores.models import Indicador
 from gestionarRubrica.models import Rubrica
 from gestionarNivel.models import Nivel
 def evaluar(request):
+    media_path = MEDIA_URL
     listaAlumno = reversed(Alumno.objects.filter(estado=1)) #Lista de horarios
-    listaIndicador = Indicador.objects.filter()
+    listaIndicador = Indicador.objects.filter(estado=1)
+    horario= Horario.objects.get(pk=1) # por ahora se trabaja con un horario, estan harcodeados
     context = {
+        'media_path': media_path,
         'listaAlumno': listaAlumno,
-        'listaIndicador':listaIndicador
+        'listaIndicador': listaIndicador,
+        'horario':horario,
     }
     return render(request, 'gestionarEvaluacion/baseEvaluacion/base.html',context)
-
 
 def agregarAlumno(request):
     niveles = Nivel.objects.filter(state=1)
