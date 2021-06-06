@@ -29,7 +29,3 @@ class Curso(models.Model):
     ]
     estado = models.CharField(max_length=2, choices=ESTADOS, default=None, null=True, blank=True)
 
-class Horario(models.Model):
-    codigo = models.CharField(max_length=30)
-    evidencia = models.FileField(null=True, blank=True, upload_to=upload_location)
-    curso = models.ForeignKey(Especialidad,on_delete=models.CASCADE, null=True)
