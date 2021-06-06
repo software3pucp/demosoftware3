@@ -40,7 +40,7 @@ def agregarSemestre(request):
 
 def enviarCursoHorario(request,pk):
     semestre = Semestre.objects.get(pk=pk)
-    cursoLista = Curso.objects.all()
+    cursoLista = Curso.objects.filter(estado=1)
     context = {
         "semestreSeleccionado": semestre,
         "cursoLista": cursoLista
