@@ -15,7 +15,7 @@ def substring_after(s, delim):
 
 def upload_location_archive(instance, filename):
     extension = substring_after(filename, '.')
-    return 'archive/%s.%s' % (remove_accents(instance.codigo), extension)
+    return 'archive/%s.%s' % (remove_accents(instance.horario.codigo), extension)
 
 class EvidenciasxHorario(models.Model):
     ESTADOS = [
@@ -25,4 +25,4 @@ class EvidenciasxHorario(models.Model):
     ]
     estado = models.CharField(max_length=2, choices=ESTADOS, default='1', null=True, blank=True)
     horario = models.ForeignKey(Horario, on_delete=models.DO_NOTHING, null=False)
-    archivo = models.FileField(null=True, blank=True, upload_to=upload_location_archive)
+    archivo = models.FileField(null=True, blank=True, upload_to='archive/')
