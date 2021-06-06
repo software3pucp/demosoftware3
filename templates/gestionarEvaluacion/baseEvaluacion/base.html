@@ -58,8 +58,7 @@
             </div>
             <div class="col-3 justify-content-center">
                 <div class="d-flex justify-content-center">
-                    <a href="{% url 'listarEvidenciasHorario' id_curso=cursoSeleccionado.pk id_horario=1 %}"
-                       class="btn btn-primary ">Evidencias</a>
+                    <span class="btn btn-primary" onclick="redirectEvidencia()">Evidencias</span>
                 </div>
             </div>
 
@@ -259,6 +258,16 @@
     <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
     <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
     <script>
+
+    function redirectEvidencia() {
+      var pk_horario = $("#cboHorario").val();
+      var pk_curso = "{{ cursoSeleccionado.pk }}";
+
+      document.location.href = "../../gestionarEvidencia/listarEvidenciasHorario/"+pk_curso+'/'+pk_horario;
+    }
+
+
+
         $(document).ready(function () {
             muestraRubrica();
             listarAlumno();
