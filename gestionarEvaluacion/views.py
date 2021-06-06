@@ -12,18 +12,16 @@ from gestionarNivel.models import Nivel
 from gestionarCurso.models import Curso
 def evaluar(request,pk):
     media_path = MEDIA_URL
-    listaAlumno = reversed(Alumno.objects.filter(estado=1)) #Lista de horarios
+    listaAlumno = reversed(Alumno.objects.filter(estado=1))
     listaIndicador = Indicador.objects.filter(estado=1)
     cursoSeleccionado = Curso.objects.get(pk=pk)
-    horario= Horario.objects.get(pk=1) # por ahora se trabaja con un horario, estan harcodeados
-    listaHorario= Horario.objects.filter(curso_id=pk); #listaDeHorario asociado a un curso
+    listaHorario= Horario.objects.filter(curso_id=pk) #listaDeHorario asociado a un curso
     context = {
         'media_path': media_path,
         'listaAlumno': listaAlumno,
         'listaIndicador': listaIndicador,
-        'horario':horario,
-        'cursoSeleccionado':cursoSeleccionado,
-        'listaHorario':listaHorario,
+        'cursoSeleccionado': cursoSeleccionado,
+        'listaHorario': listaHorario,
     }
     return render(request, 'gestionarEvaluacion/baseEvaluacion/base.html',context)
 
