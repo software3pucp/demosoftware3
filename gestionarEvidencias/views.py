@@ -46,4 +46,4 @@ def subirEvidenciaHorario(request):
     horario = Horario.objects.get(pk=request.POST['horariopk'])
     evidencia = EvidenciasxHorario.objects.create(horario=horario, archivo=archivo)
     ser_instance = serializers.serialize('json', [evidencia, ])
-    return JsonResponse({"nuevoNivel": ser_instance}, status=200)
+    return JsonResponse({"nuevaEvidencia": ser_instance}, status=200)
