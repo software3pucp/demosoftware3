@@ -88,7 +88,7 @@ def importarAlumno(request):
     rows = excel.read().decode().split('\n')
     for row in rows:
         codigo = row[:8]
-        nombre = row[9:]
+        nombre = row[9:-1]
         if(codigo!=""):
             RespuestaEvaluacion.objects.create(nombreAlumno=nombre,codigoAlumno=codigo,horario_id=request.POST["horariopk"])
     return JsonResponse({}, status=200)
