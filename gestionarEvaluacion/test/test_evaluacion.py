@@ -3,7 +3,7 @@ from io import BytesIO  # StringIO and BytesIO are parts of io module in python3
 from django.test import Client
 import base64  # for decoding base64 image
 from django.test import TestCase, override_settings
-from gestionarEvaluacion.models import Alumno
+from gestionarEvaluacion.models import RespuestaEvaluacion
 from gestionarIndicadores.models import Indicador
 from gestionarRubrica.models import Rubrica
 from gestionarNivel.models import Nivel
@@ -17,7 +17,7 @@ class TestingClasses(TestCase):
         print("+++++++++++++++++++++++++++++++++++++++++++++++++")
         print("Inicio de prueba del módulo EVALUACION          ||")
         print("==================================================")
-        Alumno.objects.create(nombreAlumno= 'Mario Calderon',codigoAlumno='20101585')
+        RespuestaEvaluacion.objects.create(nombreAlumno='Mario Calderon', codigoAlumno='20101585')
         Nivel.objects.create(name='Inicial',value=1,state=1)
         ResultadoPUCP.objects.create(codigo='RE01', estado='1', descripcion='Resultado del estudiante de pruebas 1')
         Indicador.objects.create(codigo='ID101',descripcion='2.1 Diseña una solucion informatica bvuscando satisfacer necesidades.',

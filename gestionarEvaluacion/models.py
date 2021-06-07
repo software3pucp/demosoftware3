@@ -7,7 +7,7 @@ from gestionarRubrica.models import Rubrica
 
 # Create your models here.
 
-class Alumno(models.Model):
+class RespuestaEvaluacion(models.Model):
     nombreAlumno = models.CharField(max_length=10, null=True, blank=True)
     codigoAlumno = models.CharField(max_length=9, null=True, blank=True)
     horario = models.ForeignKey(Horario, on_delete=models.RESTRICT)
@@ -24,6 +24,6 @@ class MedicionDeIndicador(models.Model):
     resultado = models.CharField(max_length=4, default='', null=True, blank=True)
     semestre = models.ForeignKey(Semestre, on_delete=models.RESTRICT)
     curso = models.ForeignKey(Curso, on_delete=models.RESTRICT)
-    alumno = models.ForeignKey(Alumno, on_delete=models.RESTRICT)
+    alumno = models.ForeignKey(RespuestaEvaluacion, on_delete=models.RESTRICT,null=True,blank=True)
 
 
