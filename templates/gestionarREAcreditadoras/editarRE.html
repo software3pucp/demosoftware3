@@ -94,22 +94,19 @@
                     <tr>
                         <th scope="col">Código</th>
                         <th scope="col">Descripción</th>
-                        <th scope="col">Acciones</th>
+                        <th scope="col">Seleccionar</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for resultado in resultados %}
+                    {% for indicador in indicadores %}
                         <tr>
-                            <td>{{ resultado.codigo }}</td>
-                            <td>{{ resultado.descripcion }}</td>
+                            <td>{{ indicador.codigo }}</td>
+                            <td>{{ indicador.descripcion }}</td>
                             <td>
-                                <input type="hidden" name="select{{ resultado.pk }}" value="0">
-                                {% if resultado in resultadosSelec %}
-                                    <label>Seleccionar</label>
-                                    <input type="checkbox" name="select{{ resultado.pk }}" value="1" checked>
+                                {% if indicador in indicadorSelec %}
+                                    <input id="id{{ indicador.pk }}" onchange="actualizarData('{{ indicador.pk }}')" type="checkbox" name="select{{ indicador.pk }}" value="1" checked>
                                 {% else %}
-                                    <label>Seleccionar</label>
-                                    <input type="checkbox" name="select{{ resultado.pk }}" value="1">
+                                    <input id="id{{ indicador.pk }}" onchange="actualizarData('{{ indicador.pk }}')" type="checkbox" name="select{{ indicador.pk }}" value="1">
                                 {% endif %}
                             </td>
                         </tr>
@@ -145,4 +142,24 @@
         </div>
         <!--<button class="btn btn-primary mb-3" type="submit">Save</button>-->
     </form>
+{% endblock %}
+
+{#Bloque de Javascript -> JS#}
+{% block extrajs %}
+<script>
+    function enviarData(){
+        {% for indicador in indicadores %}
+            console.log(document.getElementById("id{{ indicador.pk }}").checked);
+        {% endfor %}
+
+    }
+    function actualizarData(idEtiqueta){
+        // console.log(idEtiqueta);
+        // console.log($("#id"+idEtiqueta).val());
+        // if ($("#id"+idEtiqueta).val()==1) {$("#id"+idEtiqueta).val(0);}
+        // else {$("#id"+idEtiqueta).val(1);}
+        console.log(idEtiqueta);
+        console.log($("#id"+idEtiqueta).val());
+    }
+</script>
 {% endblock %}
