@@ -126,7 +126,7 @@
                         <th scope="col">Codigo</th>
                         <th scope="col">Estudiante</th>
                         <th scope="col">Puntuacion</th>
-                        <th class="white-space-nowrap">Acciones</th>
+                        <th scope="col">Acciones</th>
                     </tr>
                     </thead>
 
@@ -258,6 +258,8 @@
     <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
     <script>
 
+        var pkEditar ;
+        var pkEliminar;
         function redirectEvidencia() {
             var pk_horario = $("#cboHorario").val();
             var pk_curso = "{{ cursoSeleccionado.pk }}";
@@ -281,6 +283,13 @@
             });
 
         }
+
+        $("#btnEditarAlumno").on('click', function () {
+            if ($("#formEditarAlumno").valid()) {
+                editarAlumno(pkEditar);
+                $("#editarAlumno").modal('hide');
+            }
+        });
 
         function evaluarEditar(nombreAlumno, codigoAlumno, pk) {
             var nomb = nombreAlumno.toString();
@@ -311,12 +320,7 @@
                 }
             });
 
-            $("#btnEditarAlumno").on('click', function () {
-                if ($("#formEditarAlumno").valid()) {
-                    editarAlumno(pk);
-                    $("#editarAlumno").modal('hide');
-                }
-            });
+            pkEditar = pk;
 
         };
 
@@ -341,15 +345,17 @@
             });
         }
 
+        $("#btnEliminarAlumno").on('click', function () {
+                eliminarAlumno(pkEliminar);
+                $("#eliminarAlumno").modal('hide');
+        });
+
         function evaluarEliminar(codigoAlumno, pk) {
             data = '<h5 class="modal-title" id="eliminarAlumnoLabel">Se eliminara el alumno ' + codigoAlumno + '</h5>';
             $("#eliminarAlumnoLabel").html(data);
             $("#eliminarAlumno").modal('show');
 
-            $("#btnEliminarAlumno").on('click', function () {
-                eliminarAlumno(pk);
-                $("#eliminarAlumno").modal('hide');
-            });
+            pkEliminar = pk;
         };
 
         function eliminarAlumno(idAlumno) {
