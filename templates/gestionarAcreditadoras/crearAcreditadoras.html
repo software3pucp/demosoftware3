@@ -83,7 +83,11 @@
                         <input name="photo_name" type="text" class="form-control" readonly>
                         <span class="input-group-btn pb-3">
                                         <span class="btn btn-primary btn-file ml-3 " type="button">
-                                            Buscar… <input name="photo" type="file" id="imgInp" required/>
+                                            {% if acreditadora.pk == "0" %}
+                                                Buscar… <input name="photo" type="file" id="imgInp" required/>
+                                            {% else %}
+                                                Buscar… <input name="photo" type="file" id="imgInp"/>
+                                            {% endif %}
                                         </span>
                                     </span>
                     </div>

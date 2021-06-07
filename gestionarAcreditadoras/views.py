@@ -34,8 +34,10 @@ def crearAcreditadoras(request,pk):
         elif request.POST['operacion'] == 'editar':
             acreditadora = Acreditadora.objects.get(pk=pk)
             acreditadora.nombre = request.POST['nombre']
-            acreditadora.foto = request.FILES['photo']
+            if request.POST['photo'] != '':
+                acreditadora.foto = request.FILES['photo']
             acreditadora.save()
+            return redirect('listarAcreditadoras')
 
     if ( int(pk) > 0):
         acreditadora = Acreditadora.objects.get(pk=pk)
