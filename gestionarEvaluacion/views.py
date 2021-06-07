@@ -82,3 +82,13 @@ def listarAlumno(request):
     ser_instance = serializers.serialize('json', list(listaAlumno),fields=('id', 'nombreAlumno', 'codigoAlumno', 'horario','calificado', 'valorNota'))
     ser_instance2 = serializers.serialize('json', list(niveles), fields=('id', 'name', 'value', 'state'))
     return JsonResponse({"listaAlumno": ser_instance, "niveles": ser_instance2},  status=200)
+
+def importarAlumno(request):
+    excel = request.FILES['archivo']
+    rows = excel.read().decode().split('\n')
+    for row in rows:
+        codigo = row[:8]
+        nombre = row[9:]
+        if(codigo!=""):
+            RespuestaEvaluacion.objects.create(nombreAlumno=nombre,codigoAlumno=codigo,horario_id=request.POST["horariopk"])
+    return JsonResponse({}, status=200)

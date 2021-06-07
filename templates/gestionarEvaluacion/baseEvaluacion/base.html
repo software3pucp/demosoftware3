@@ -11,6 +11,26 @@
             color: #0154ae
         }
 
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: center;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
 
     </style>
 
@@ -20,123 +40,171 @@
 {% block body %}
     {#AQUI COLOQUEN EL CÓDIGO#}
     {# Rubrica #}
-    <div class="card p-5">
-        <div class="row d-flex justify-content-center ">
-            <div class="col-10">
-                <h4 id="Titulo" style="font-family: Montserrat">Evaluación - {{ cursoSeleccionado.nombre }}</h4>
-            </div>
-            <div class="col-2">
-            </div>
+    <div class="card p-3">
+        <div class="col-12 d-flex justify-content-start">
+            <h4 id="Titulo" style="font-family: Montserrat">Evaluación - {{ cursoSeleccionado.nombre }}</h4>
         </div>
         <hr class="mb-3" style="background-color: #0154ae;">
-        <div class="row-12 d-flex mb-3">
-            <div class="col-3">
-                <label for="cboHorario">Horario:</label>
-                <select class="custom-select custom-select-sm mb-3" id="cboHorario" name="cboHorario"
-                        onchange="listarAlumno()">
-                    {% for horarioItem in listaHorario %}
-                        <option value={{ horarioItem.pk }}>{{ horarioItem.codigo }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-3">
-                <label for="cboIndicador">Indicador:</label>
-                <select class="custom-select custom-select-sm mb-3" id="cboIndicador" name="cboIndicador"
-                        onchange="muestraRubrica()">
-                    {% for indicador in listaIndicador %}
-                        <option value={{ indicador.pk }}>{{ indicador.codigo }}</option>
-                    {% endfor %}
-                </select>
-            </div>
 
-            <div class="col-3">
-                <div class="d-flex justify-content-center">
+
+        <div class="col-12 mb-3">
+            <div class="d-flex flex-row align-items-center">
+                <div class="mr-2">
+                    <label for="cboHorario">Horario:</label>
+                    <select class="custom-select custom-select-sm mb-3" id="cboHorario" name="cboHorario"
+                            onchange="listarAlumno()">
+                        {% for horarioItem in listaHorario %}
+                            <option value={{ horarioItem.pk }}>{{ horarioItem.codigo }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="cboIndicador">Indicador:</label>
+                    <select class="custom-select custom-select-sm mb-3" id="cboIndicador" name="cboIndicador"
+                            onchange="muestraRubrica()">
+                        {% for indicador in listaIndicador %}
+                            <option value={{ indicador.pk }}>{{ indicador.codigo }}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+
+                <div class="ml-auto">
                     <button class="btn btn-outline-primary">
                         <i class="fa fa-download"></i>Rúbrica
                     </button>
-                </div>
-            </div>
-            <div class="col-3 justify-content-center">
-                <div class="d-flex justify-content-center">
                     <span class="btn btn-primary" onclick="redirectEvidencia()">Evidencias</span>
                 </div>
-            </div>
 
+
+            </div>
         </div>
+
 
         <div class="col-12">
             <div id="contenidoRubrica"></div>
         </div>
 
-
-        {# Botones Agregar e Importar Estudiantes #}
-        <div class="row align-items-center mb-3 justify-content-between">
-            <div id="estado"></div>
-            <div class="col-8 col-sm-auto ml-auto text-right pl-0">
-
-                <div id="dashboard-actions">
-
-                    <input class="form-control mr-sm-2 mb-2" id="textBuscar" type="search" placeholder="Buscar"
-                           aria-label="Search">
-                    <button class="btn btn-primary my-2 my-sm-0" onclick="listarAlumno()">Buscar</button>
-
-
-                    <!-- Button trigger modal-->
-                    <a href="" data-toggle="modal" data-target="#agregarAlumno"
-                       class="btn btn-falcon-default btn-sm" type="button">
-                        <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
-                             aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
-                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
-                             style="transform-origin: 0.4375em 0.625em;">
-                            <g transform="translate(224 256)">
-                                <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
-                                    <path fill="currentColor"
-                                          d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
-                                          transform="translate(-224 -256)"></path>
-                                </g>
-                            </g>
-                        </svg>
-                        <span class="d-none d-sm-inline-block ml-1">Agregar Estudiante</span>
-                    </a>
-                    <a href="" class="btn btn-falcon-default btn-sm" type="button" hidden>
-                        <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
-                             aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
-                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
-                             style="transform-origin: 0.4375em 0.625em;">
-                            <g transform="translate(224 256)">
-                                <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
-                                    <path fill="currentColor"
-                                          d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
-                                          transform="translate(-224 -256)"></path>
-                                </g>
-                            </g>
-                        </svg>
-                        <span class="d-none d-sm-inline-block ml-1">Importar Estudiante</span>
-                    </a>
+        <div class="col-12">
+            {# Botones Agregar e Importar Estudiantes #}
+            <div class="row mb-3">
+                <div class="col-12 d-flex justify-content-start mx-1">
+                    <div id="estado"></div>
                 </div>
             </div>
+
+            <div class="row mb-3">
+                <div class="input-group col-12 mb-3 mx-1">
+                    <input class="form-control" id="textBuscar" type="search" placeholder="Buscar">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary shadow-none" type="button" onclick="listarAlumno()">Buscar
+                        </button>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end">
+                    <div id="dashboard-actions">
+                        <!-- Button trigger modal-->
+                        <a href="" data-toggle="modal" data-target="#agregarAlumno"
+                           class="btn btn-falcon-default btn-sm" type="button">
+                            <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
+                                 aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
+                                 style="transform-origin: 0.4375em 0.625em;">
+                                <g transform="translate(224 256)">
+                                    <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
+                                        <path fill="currentColor"
+                                              d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                                              transform="translate(-224 -256)"></path>
+                                    </g>
+                                </g>
+                            </svg>
+                            <span class="d-none d-sm-inline-block ml-1">Agregar Estudiante</span>
+                        </a>
+
+                        <a href="" data-toggle="modal" data-target="#importarAlumnos"
+                           class="btn btn-falcon-default btn-sm" type="button">
+                            <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
+                                 aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
+                                 style="transform-origin: 0.4375em 0.625em;">
+                                <g transform="translate(224 256)">
+                                    <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
+                                        <path fill="currentColor"
+                                              d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                                              transform="translate(-224 -256)"></path>
+                                    </g>
+                                </g>
+                            </svg>
+                            <span class="d-none d-sm-inline-block ml-1">Importar Estudiante</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
 
         {# Listado De Alumnos #}
-        <div class="card mb-3">
-            <div class="card-body p-0">
-                <table class="table table-hover">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Codigo</th>
-                        <th scope="col">Estudiante</th>
-                        <th scope="col">Puntuacion</th>
-                        <th scope="col">Acciones</th>
-                    </tr>
-                    </thead>
+        <div class="col-12">
+            <div class="card mb-3">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Codigo</th>
+                                <th scope="col">Estudiante</th>
+                                <th scope="col">Puntuacion</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                            </thead>
 
-                    <tbody id="tablaAlumno">
+                            <tbody id="tablaAlumno">
 
-                    </tbody>
-                </table>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Modal Importar Alumnos -->
+    <div class="modal fade" id="importarAlumnos" tabindex="-1" role="dialog" aria-labelledby="importarAlumnosLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importarAlumnosLabel">Subir Archivo</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                     <form id="formImportar" name="formImportar" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="nombre_archivo">Seleccione un archivo csv: </label>
+                            <div class="input-group">
+                                <input name="nombre_archivo" id="nombre_archivo" type="text" class="form-control"
+                                       readonly>
+                                <span class="input-group-btn pb-3">
+                                        <span class="btn btn-primary btn-file ml-3 " type="button">Seleccionar
+                                        <input name="archivo" id="archivo" type="file" required/>
+                                        </span>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm" id="btnImportar">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <!-- Modal Agregar Alumno -->
@@ -258,8 +326,9 @@
     <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
     <script>
 
-        var pkEditar ;
+        var pkEditar;
         var pkEliminar;
+
         function redirectEvidencia() {
             var pk_horario = $("#cboHorario").val();
             var pk_curso = "{{ cursoSeleccionado.pk }}";
@@ -271,7 +340,73 @@
         $(document).ready(function () {
             muestraRubrica();
             listarAlumno();
+                $(document).on('change', '.btn-file :file', function () {
+                var input = $(this),
+                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                input.trigger('fileselect', [label]);
+            });
+
+            $('.btn-file :file').on('fileselect', function (event, label) {
+                var input = $(this).parents('.input-group').find(':text'),
+                    log = label;
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+            });
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#img-upload').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#archivo").change(function () {
+                readURL(this);
+            });
         });
+
+
+        $("#btnImportar").on('click', function (e) {
+            e.preventDefault();
+            if ($("#formImportar").valid()) {
+                importarAlumnos();
+                $("#importarAlumnos").modal('hide')
+            }
+        });
+
+        function importarAlumnos() {
+            var fd = new FormData();
+            var files = $('#archivo')[0].files;
+
+            // Check file selected or not
+            if (files.length > 0) {
+                fd.append('archivo', files[0]);
+                fd.append('horariopk', $("#cboHorario").val());
+                fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+                fd.append('nombre_archivo', $("#nombre_archivo").val());
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'importarAlumno' %}",
+                    data: fd,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        listarAlumno();
+                    },
+                    error: function (response) {
+                        console.log("ERROR")
+                        console.log(response)
+                    }
+                });
+            }
+        }
 
         function subirEvidencia() {
             {% comment %} data = '<h5 class="modal-title" id="eliminarAlumnoLabel">Estamos trabajando en esta funcionalidad</h5>';
@@ -346,8 +481,8 @@
         }
 
         $("#btnEliminarAlumno").on('click', function () {
-                eliminarAlumno(pkEliminar);
-                $("#eliminarAlumno").modal('hide');
+            eliminarAlumno(pkEliminar);
+            $("#eliminarAlumno").modal('hide');
         });
 
         function evaluarEliminar(codigoAlumno, pk) {
