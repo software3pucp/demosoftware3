@@ -63,6 +63,9 @@ def eliminarHorario(request, id_horario):
 def eliminarHorario2(request, id_horario):
     horario = Horario.objects.get(pk=id_horario)
     cursoPK = horario.curso_id
-    horario.estado = Horario.ESTADOS[2][0]
+    if horario.estado == Horario.ESTADOS[2][0]:
+        horario.estado = Horario.ESTADOS[1][0]
+    elif horario.estado == Horario.ESTADOS[1][0]:
+        horario.estado = Horario.ESTADOS[2][0]
     horario.save()
     return redirect('listarCursoxHorario', cursoPK)

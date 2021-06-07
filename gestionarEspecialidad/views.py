@@ -93,6 +93,9 @@ def eliminarEspecialidad(request, id_especialidad):
 def eliminarEspecialidad2(request, id_especialidad):
     especialidad = Especialidad.objects.get(pk=id_especialidad)
     fakuPK = especialidad.facultad.pk
-    especialidad.estado = Especialidad.ESTADOS[2][0]
+    if especialidad.estado == Especialidad.ESTADOS[2][0]:
+        especialidad.estado = Especialidad.ESTADOS[1][0]
+    elif especialidad.estado == Especialidad.ESTADOS[1][0]:
+        especialidad.estado = Especialidad.ESTADOS[2][0]
     especialidad.save()
     return redirect('listarFacultadxEsp', fakuPK)

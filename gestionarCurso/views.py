@@ -78,6 +78,9 @@ def eliminarCurso(request, id_curso):
 def eliminarCurso2(request, id_curso):
     curso = Curso.objects.get(pk=id_curso)
     espPK = curso.especialidad_id
-    curso.estado = Curso.ESTADOS[2][0]
+    if curso.estado == Curso.ESTADOS[2][0]:
+        curso.estado = Curso.ESTADOS[1][0]
+    elif curso.estado == Curso.ESTADOS[1][0]:
+        curso.estado = Curso.ESTADOS[2][0]
     curso.save()
     return redirect('listarEspecialidadxCurso', espPK)

@@ -81,7 +81,10 @@ def eliminarFacultad(request, id_facultad):
 
 def eliminarFacultad2(request, id_facultad):
     facultad = Facultad.objects.get(pk=id_facultad)
-    facultad.estado = Facultad.ESTADOS[2][0]
+    if facultad.estado == Facultad.ESTADOS[2][0]:
+        facultad.estado = Facultad.ESTADOS[1][0]
+    elif facultad.estado == Facultad.ESTADOS[1][0]:
+        facultad.estado = Facultad.ESTADOS[2][0]
     facultad.save()
     print("Correcto desactivar Facultad!")
     return redirect('listarFacultad')
