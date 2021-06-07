@@ -184,6 +184,9 @@
 
     <script>
 
+        var pkEditar ;
+        var pkEliminar;
+
         $(document).ready(function () {
             listarEvidencias();
             $(document).on('change', '.btn-file :file', function () {
@@ -257,6 +260,14 @@
             }
         }
 
+        $("#btnEditarEvidencia").on('click', function () {
+                if ($("#formEditarEvidencia").valid()) {
+                    console.log('Despues de boton');
+                    editarEvidencia(pkEditar);
+                    console.log(pkEditar);
+                    $("#editarEvidencia").modal('hide');
+                }
+        });
 
         function evidenciasEditar(archivo, pk){
             var nomb =archivo.toString();
@@ -267,15 +278,11 @@
                 '<input name="archivoMod" id="archivoMod" type="file" value="'+nomb+ '"/>'+
                 '</span>')
             $("#editArchivo").html(data);
-
+            console.log('Antes de boton');
+            console.log(pk)
             $("#editarEvidencia").modal('show');
 
-            $("#btnEditarEvidencia").on('click', function () {
-                if ($("#formEditarEvidencia").valid()) {
-                    editarEvidencia(pk);
-                    $("#editarEvidencia").modal('hide');
-                }
-            });
+            pkEditar = pk;
         }
 
         function editarEvidencia(evidenciapk) {
@@ -308,6 +315,11 @@
             }
         }
 
+        $("#btnEliminarEvidencia").on('click', function () {
+            eliminarEvidencia(pkEliminar);
+            $("#eliminarEvidencia").modal('hide');
+        });
+
         function evidenciasEliminar(archivo, pk) {
             console.log("evidencia eliminar ----")
             console.log(archivo)
@@ -318,10 +330,7 @@
             $("#eliminarEvidenciaLabel").html(data);
             $("#eliminarEvidencia").modal('show');
 
-            $("#btnEliminarEvidencia").on('click', function () {
-                eliminarEvidencia(pk);
-                $("#eliminarEvidencia").modal('hide');
-            });
+            pkEliminar = pk;
         };
 
         function eliminarEvidencia(evidenciapk) {

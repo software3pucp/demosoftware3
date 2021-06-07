@@ -1,6 +1,7 @@
 from django.core import serializers
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.contrib.staticfiles import finders
 
 # Create your views here.
 from gestionarCurso.models import Curso
@@ -37,7 +38,13 @@ def editarEvidenciaxHorario(request):
     print('Editar evidencia------------------------------------')
     print(request.POST)
     print(request.FILES)
+    # result = finders.find('css/theme.css')
+    # searched_locations = finders.searched_locations
+    # print(result)
+    # print(searched_locations)
     print('----------------------------------------------------')
+
+
     evidencia = EvidenciasxHorario.objects.get(pk = request.POST['evidenciapk'])
     nuevoArchivo = request.FILES['archivoMod']
     evidencia.archivo = nuevoArchivo
