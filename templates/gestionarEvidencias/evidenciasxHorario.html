@@ -1,0 +1,403 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+    <link href="{% static 'lib/flatpickr/flatpickr.min.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <style>
+        #Titulo {
+            color: #0154ae
+        }
+
+        p {
+            line-height: 20%;
+            text-align: center;
+            font-family: "Montserrat";
+        }
+
+        label {
+            color: #f9fafd;
+            font-family: "Montserrat";
+        }
+
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: center;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+
+    </style>
+
+{% endblock %}
+
+
+{% block body %}
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="col-12">
+                    <div class="row d-flex justify-content-center ">
+                        <div class="col-10">
+                            <h4 id="Titulo" style="font-family: Montserrat">Evidencias de evaluación del
+                                horario {{ horario.codigo }} </h4>
+                        </div>
+                        <div class="col-2">
+                            <a href="{% url 'evaluar' pk=curso.pk %}" style="font-family: Roboto"><h5 id="Retroceder">
+                                <img class="img-fluid" style="height: 20px"
+                                     src="https://image.flaticon.com/icons/png/512/60/60577.png">
+                                <u>Volver</u>
+                            </h5></a>
+                        </div>
+                    </div>
+                    <hr style="background-color: #0154ae;">
+
+                    <div class="btn btn-falcon-primary mb-2" href="#subirEvidencia" data-toggle="modal"
+                         role="button">
+                        <span class="fa fa-plus"></span>
+                    </div>
+                    <div class="dashboard-data-table">
+                        <table class="table table-sm table-dashboard fs--1 data-table border-bottom"
+                               data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
+                            <thead class="bg-200 text-900">
+                            <tr>
+                                <th class="sort pr-1 align-middle">N°</th>
+                                <th class="sort pr-1 align-middle">Nombre</th>
+                                <th class="sort pr-1 align-middle text-center">Acciónes</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tablaEvidencias">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal subir Evidencia -->
+    <div class="modal fade" id="subirEvidencia" tabindex="-1" role="dialog" aria-labelledby="subirEvidenciaLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="subirEvidenciaLabel">Subir Evidencia</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formSubirEvidencia" name="formSubirEvidencia" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="nombre_archivo">Seleccione un archivo: </label>
+                            <div class="input-group">
+                                <input name="nombre_archivo" id="nombre_archivo" type="text" class="form-control"
+                                       readonly>
+                                <span class="input-group-btn pb-3">
+                                        <span class="btn btn-primary btn-file ml-3 " type="button">Seleccionar
+                                        <input name="archivo" id="archivo" type="file" required/>
+                                        </span>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm" id="btnSubirEvidencia">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal editar Evidencia -->
+    <div class="modal fade" id="editarEvidencia" tabindex="-1" role="dialog" aria-labelledby="editarEvidenciaLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarEvidenciaLabel">Editar evidencia</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditarEvidencia" name="formEditarEvidencia" method="post"
+                          enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="nombre_archivo_mod">Seleccione un archivo: </label>
+                            <div class="input-group">
+                                <input name="nombre_archivo_mod" id="nombre_archivo_mod" type="text" class="form-control"
+                                       readonly>
+                                <div id="editArchivo">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
+                    <button id="btnEditarEvidencia" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal eliminar Evidencia -->
+    <div class="modal fade" id="eliminarEvidencia" tabindex="-1" role="dialog" aria-labelledby="eliminarEvidenciaLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarEvidenciaLabel">Ingresar alumno a evaluar</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                    <button id="btnEliminarEvidencia" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block extrajs %}
+    <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
+    <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            listarEvidencias();
+            $(document).on('change', '.btn-file :file', function () {
+                var input = $(this),
+                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                input.trigger('fileselect', [label]);
+            });
+
+            $('.btn-file :file').on('fileselect', function (event, label) {
+                var input = $(this).parents('.input-group').find(':text'),
+                    log = label;
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+            });
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#img-upload').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#archivo").change(function () {
+                readURL(this);
+            });
+
+            $("#archivoMod").change(function () {
+                readURL(this);
+            });
+        });
+
+
+        $("#btnSubirEvidencia").on('click', function (e) {
+            e.preventDefault();
+            if ($("#formSubirEvidencia").valid()) {
+                subirEvidencia();
+            }
+        });
+
+        function subirEvidencia() {
+            var fd = new FormData();
+            var files = $('#archivo')[0].files;
+
+            // Check file selected or not
+            if (files.length > 0) {
+                fd.append('archivo', files[0]);
+                fd.append('horariopk', {{ horario.pk }});
+                fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+                fd.append('nombre_archivo', $("#nombre_archivo").val());
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'subirEvidenciaHorario' %}",
+                    data: fd,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        listarEvidencias();
+                    },
+                    error: function (response) {
+                        console.log("ERROR")
+                        console.log(response)
+                    }
+                });
+            }
+        }
+
+
+        function evidenciasEditar(archivo, pk){
+            var nomb =archivo.toString();
+            data='';
+            data +=(
+                '<span class="input-group-btn pb-3">'+
+                '<span class="btn btn-primary btn-file ml-3 " type="button">Seleccionar'+
+                '<input name="archivoMod" id="archivoMod" type="file" value="'+nomb+ '"/>'+
+                '</span>')
+            $("#editArchivo").html(data);
+
+            $("#editarEvidencia").modal('show');
+
+            $("#btnEditarEvidencia").on('click', function () {
+                if ($("#formEditarEvidencia").valid()) {
+                    editarEvidencia(pk);
+                    $("#editarEvidencia").modal('hide');
+                }
+            });
+        }
+
+        function editarEvidencia(evidenciapk) {
+
+            var fd = new FormData();
+            var files = $('#archivoMod')[0].files;
+            console.log(files)
+            // Check file selected or not
+            if (files.length > 0) {
+                fd.append('archivoMod', files[0]);
+                fd.append('evidenciapk', evidenciapk);
+                fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+                fd.append('nombre_archivo_mod', $("#nombre_archivo").val());
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'editarEvidencia' %}",
+                    data: fd,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        console.log('Se ha editado correctamente')
+                        listarEvidencias();
+                    },
+                    error: function (response) {
+                        console.log("ERROR")
+                        console.log(response)
+                    }
+                });
+            }
+        }
+
+        function evidenciasEliminar(archivo, pk) {
+            console.log("evidencia eliminar ----")
+            console.log(archivo)
+            console.log(pk)
+
+            var nombreArchivo = archivo.toString();
+            data = '<h5 class="modal-title" id="eliminarEvidenciaLabel">Se eliminará la evidencia ' + nombreArchivo + '</h5>';
+            $("#eliminarEvidenciaLabel").html(data);
+            $("#eliminarEvidencia").modal('show');
+
+            $("#btnEliminarEvidencia").on('click', function () {
+                eliminarEvidencia(pk);
+                $("#eliminarEvidencia").modal('hide');
+            });
+        };
+
+        function eliminarEvidencia(evidenciapk) {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'eliminarEvidendia' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    evidenciapk: evidenciapk,
+                },
+                success: function (response) {
+                    console.log("Se ha eliminado correctamente!");
+                    listarEvidencias();
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+
+        function listarEvidencias() {
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'listarEvidencias' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    horariopk: {{ horario.pk }},
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["listaEvidencias"]);
+                    var x = 0;
+                    var numero = instance.length;
+                    data = ''
+
+                    if (numero>0){
+                      for (i=0; i<numero; i++){
+                            data += (
+                                '<tr class="btn-reveal-trigger">' +
+                                '<th class="align-middle">' + instance[i]["pk"] +
+                                '</th>' +
+                                '<th class="align-middle">' + instance[i]["fields"].archivo +
+                                '</th>' +
+                                '<td class="align-middle text-right fs-0">' +
+                                '<div class="row">' +
+                                '<div class="col">' +
+                                '<button class="badge badge-pill badge-primary" onclick="evidenciasDescargar(\'' + instance[i]["fields"].archivo + '\',' + instance[i]["pk"] + ')">' +
+                                '<i class="fa fa-download"></i>  Descargar</button>'+
+                                '</div>' +
+                                '<div class="col">' +
+                                '<button class="badge badge-pill badge-secondary" onclick="evidenciasEditar(\'' + instance[i]["fields"].archivo + '\',' + instance[i]["pk"] + ')">Editar</button>' +
+                                '</div>' +
+                                '<div class="col">' +
+                                '<button class="badge badge-pill badge-danger" onclick="evidenciasEliminar(\'' + instance[i]["fields"].archivo + '\',' + instance[i]["pk"] + ')">Eliminar</button>' +
+                                '</div>' +
+                                '</div>' +
+                                '</td>' +
+                                '</tr>');
+                        }
+
+                    }else{
+                        data += '<th colspan="4">' +
+                            '<p class="m-2 text-center"> No se encontraron evidencias del horario</p>' +
+                            '</th>';
+                    }
+                    $("#tablaEvidencias").html(data);
+
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+    </script>
+{% endblock %}
