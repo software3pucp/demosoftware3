@@ -69,7 +69,6 @@
         </div>
 
 
-
         {# Botones Agregar e Importar Estudiantes #}
         <div class="row align-items-center mb-3 justify-content-between">
             <div id="estado"></div>
@@ -127,7 +126,7 @@
                         <th scope="col">Codigo</th>
                         <th scope="col">Estudiante</th>
                         <th scope="col">Puntuacion</th>
-                        <th scope="col">Acciones</th>
+                        <th class="white-space-nowrap">Acciones</th>
                     </tr>
                     </thead>
 
@@ -259,13 +258,12 @@
     <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
     <script>
 
-    function redirectEvidencia() {
-      var pk_horario = $("#cboHorario").val();
-      var pk_curso = "{{ cursoSeleccionado.pk }}";
+        function redirectEvidencia() {
+            var pk_horario = $("#cboHorario").val();
+            var pk_curso = "{{ cursoSeleccionado.pk }}";
 
-      document.location.href = "../../gestionarEvidencia/listarEvidenciasHorario/"+pk_curso+'/'+pk_horario;
-    }
-
+            document.location.href = "../../gestionarEvidencia/evidenciasxHorario/" + pk_curso + '/' + pk_horario;
+        }
 
 
         $(document).ready(function () {
@@ -484,14 +482,14 @@
                                 '                             <th class="align-middle">' +
                                 '<div class="form-check-inline" >');
                             for (j = 1; j <= numeroN; j++) {
-                                if (instance[i]["fields"].valorNota!=null && instance[i]["fields"].valorNota == j){
+                                if (instance[i]["fields"].valorNota != null && instance[i]["fields"].valorNota == j) {
                                     data += ('<input class="form-check-input mr-1" type="radio"  id="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '" "' +
-                                    'value="' + j + '"name="' + instance[i]["pk"] + '" onclick="guardarPuntuacion(' + instance[i]["pk"] + ',' + instanceN[j - 1]["pk"] + ',)" checked>' +
-                                    '<label class="form-check-label mr-2" for="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '">' + j + '</label>');
-                                }else{
+                                        'value="' + j + '"name="' + instance[i]["pk"] + '" onclick="guardarPuntuacion(' + instance[i]["pk"] + ',' + instanceN[j - 1]["pk"] + ',)" checked>' +
+                                        '<label class="form-check-label mr-2" for="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '">' + j + '</label>');
+                                } else {
                                     data += ('<input class="form-check-input mr-1" type="radio"  id="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '" "' +
-                                    'value="' + j + '"name="' + instance[i]["pk"] + '" onclick="guardarPuntuacion(' + instance[i]["pk"] + ',' + instanceN[j - 1]["pk"] + ',)">' +
-                                    '<label class="form-check-label mr-2" for="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '">' + j + '</label>');
+                                        'value="' + j + '"name="' + instance[i]["pk"] + '" onclick="guardarPuntuacion(' + instance[i]["pk"] + ',' + instanceN[j - 1]["pk"] + ',)">' +
+                                        '<label class="form-check-label mr-2" for="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '">' + j + '</label>');
                                 }
                             }
                             data += ('</div>' +
