@@ -31,6 +31,7 @@ urlpatterns = [
     path('gestionarSemestre/', include('gestionarSemestre.urls')),
     path('gestionarNivel/', include('gestionarNivel.urls')),
     path('gestionarResultados/', include('gestionarResultados.urls')),
+    path('gestionarResultadosMediciones/', include('gestionarResultadosMediciones.urls')),
     path('gestionarEvaluacion/',include('gestionarEvaluacion.urls')),
     path('gestionarPlanMedicion/',include('gestionarPlanMedicion.urls')),
     path('gestionarIndicadores/', include('gestionarIndicadores.urls')),
