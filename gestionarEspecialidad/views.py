@@ -28,6 +28,7 @@ def listarEspecialidadxCurso(request, id_especialidad):
     media_path = MEDIA_URL
     context = {
         'ListaCurso': Curso.objects.filter(especialidad_id=id_especialidad, estado=Especialidad.ESTADOS[1][0]),
+        'ListaCursoInactivos': Curso.objects.filter(especialidad_id=id_especialidad, estado=Especialidad.ESTADOS[2][0]),
         'ListaEspecialidad': Especialidad.objects.all(),
         'id_especialidad': id_especialidad,
         'id_facultad': Especialidad.objects.get(pk=id_especialidad).facultad.pk,

@@ -12,7 +12,7 @@
 {% block body %}
 
     {#AQUI COLOQUEN EL CÓDIGO#}
-    <div class="container-fluid content-row">
+    <div class="container-fluid content-row mt-3">
         <div class="row" style="margin-right: 0.8rem">
             <div class="col-6">
                 <select disabled="true" class="form-control" id="facultadFormControl">
@@ -24,13 +24,11 @@
                 </select>
             </div>
             <div class="col-3">
-                {%comment%}
                 <select id="estado" name="estado" class="form-control" id="ControlSelect2" onchange="">
                     {% for estado in ListaEstados %}
                         <option value={{ estado.0 }}>{{ estado.1 }}</option>
                     {% endfor %}
                 </select>
-                {%endcomment%}
             </div>
             <div class="col-3 text-right">
                 <a class="d-flex flex-row justify-content-end mt-2 mr-3" href="{% url 'listarFacultad' %}">
@@ -41,7 +39,7 @@
         </div>
         <div class="row mt-4">
             {% for especialidad in ListaEspecialidad %}
-                <div class="col-sm-12 col-md-6 col-lg-4">
+                <div class="col-sm-12 col-md-6 col-lg-4 especialidadesActivas">
                     <div class="card-group">
                         <div class="product card mr-4 mb-4" style="height: 16rem">
                             <div class="card-img-top imgbox" style="height: 15rem">
@@ -56,7 +54,42 @@
                                     <div class="col">
                                         <a class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip"
                                            data-placement="top"
-                                           title="Eliminar"
+                                           title="Desactivar"
+                                           href="{% url 'eliminarEspecialidad2' id_especialidad=especialidad.pk %}"
+                                           role="link">
+                                            <div class="fas fa-power-off"></div>
+                                        </a>
+                                        <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip"
+                                           data-placement="top"
+                                           title="Editar"
+                                           href="{% url 'editarEspecialidad' id_especialidad=especialidad.pk %}"
+                                           role="link">
+                                            <div class="fas fa-pen"></div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {% for especialidad in ListaEspecialidadInactivos %}
+                <div class="col-sm-12 col-md-6 col-lg-4 especialidadesInactivos">
+                    <div class="card-group">
+                        <div class="product card mr-4 mb-4" style="height: 16rem">
+                            <div class="card-img-top imgbox" style="height: 15rem">
+                                <a href="{% url 'listarEspecialidadxCurso' id_especialidad=especialidad.pk %}">
+                                    <img class="" src="{{ media_path }}{{ especialidad.foto.name }}/">
+                                </a>
+                            </div>
+                            <div class="specifies card-body p-1">
+                                <h5 class="card-title ml-2">{{ especialidad.nombre }}</h5>
+                                <hr class="divider">
+                                <div class="row">
+                                    <div class="col">
+                                        <a class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip"
+                                           data-placement="top"
+                                           title="Activar"
                                            href="{% url 'eliminarEspecialidad2' id_especialidad=especialidad.pk %}"
                                            role="link">
                                             <div class="fas fa-power-off"></div>
@@ -99,5 +132,20 @@
 
 {% block extrajs %}
     <script>
+        $(function () {    // Makes sure the code contained doesn't run until
+            //     all the DOM elements have loaded
+            $('#estado').change(function () {
+                if (this.value == 1) {
+                    $('.especialidadesActivas').show();
+                    $('.especialidadesInactivos').hide();
+                } else {
+                    $('.especialidadesActivas').hide();
+                    $('.especialidadesInactivos').show();
+                }
+            });
+        });
+
+        $('.especialidadesActivas').show();
+        $('.especialidadesInactivos').hide();
     </script>
 {% endblock %}

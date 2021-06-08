@@ -38,6 +38,7 @@ def listarFacultadxEsp(request, id_facultad):
     media_path = MEDIA_URL
     context = {
         'ListaEspecialidad': Especialidad.objects.filter(facultad_id=id_facultad, estado=Facultad.ESTADOS[1][0]),
+        'ListaEspecialidadInactivos': Especialidad.objects.filter(facultad_id=id_facultad, estado=Facultad.ESTADOS[2][0]),
         'ListaFacultad': Facultad.objects.all(),
         'id_facultad': id_facultad,
         'media_path': media_path,

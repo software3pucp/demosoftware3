@@ -24,13 +24,11 @@
                 </select>
             </div>
             <div class="col-3">
-                {%comment%}
                 <select id="estado" name="estado" class="form-control" id="ControlSelect2" onchange="">
                     {% for estado in ListaEstados %}
                         <option value={{ estado.0 }}>{{ estado.1 }}</option>
                     {% endfor %}
                 </select>
-                {%endcomment%}
             </div>
             <div class="col-3 text-right">
                 <a class="d-flex flex-row justify-content-end mt-2 mr-3"
@@ -42,7 +40,7 @@
         </div>
         <div class="row mt-4">
             {% for curso in ListaCurso %}
-                <div class="col-sm-12 col-md-6 col-lg-4">
+                <div class="col-sm-12 col-md-6 col-lg-4 CursoActivos">
                     <div class="card-group">
                         <div class="product card mr-4 mb-4" style="height: 16rem">
                             <div class="card-img-top imgbox" style="height: 15rem">
@@ -57,7 +55,42 @@
                                     <div class="col">
                                         <a class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip"
                                            data-placement="top"
-                                           title="Eliminar"
+                                           title="Desactivar"
+                                           href="{% url 'eliminarCurso2' id_curso=curso.pk %}"
+                                           role="link">
+                                            <div class="fas fa-power-off iconColorNBorder"></div>
+                                        </a>
+                                        <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip"
+                                           data-placement="top"
+                                           title="Editar"
+                                           href="{% url 'editarCurso'  id_curso=curso.pk %}"
+                                           role="link">
+                                            <div class="fas fa-pen iconColorNBorder"></div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {% for curso in ListaCursoInactivos %}
+                <div class="col-sm-12 col-md-6 col-lg-4 CursoInactivos">
+                    <div class="card-group">
+                        <div class="product card mr-4 mb-4" style="height: 16rem">
+                            <div class="card-img-top imgbox" style="height: 15rem">
+                                <a href="{% url 'listarCursoxHorario' id_curso=curso.pk %}">
+                                    <img class="" src="{% static 'img/illustrations/3.png' %}">
+                                </a>
+                            </div>
+                            <div class="specifies card-body p-1">
+                                <h5 class="card-title ml-2">{{ curso.nombre }}</h5>
+                                <hr class="divider">
+                                <div class="row">
+                                    <div class="col">
+                                        <a class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip"
+                                           data-placement="top"
+                                           title="Activar"
                                            href="{% url 'eliminarCurso2' id_curso=curso.pk %}"
                                            role="link">
                                             <div class="fas fa-power-off iconColorNBorder"></div>
@@ -100,5 +133,20 @@
 
 {% block extrajs %}
     <script>
+        $(function () {    // Makes sure the code contained doesn't run until
+            //     all the DOM elements have loaded
+            $('#estado').change(function () {
+                if (this.value == 1) {
+                    $('.CursoActivos').show();
+                    $('.CursoInactivos').hide();
+                } else {
+                    $('.CursoActivos').hide();
+                    $('.CursoInactivos').show();
+                }
+            });
+        });
+
+        $('.CursoActivos').show();
+        $('.CursoInactivos').hide();
     </script>
 {% endblock %}

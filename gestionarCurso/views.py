@@ -24,6 +24,7 @@ def listarCursoxHorario(request, id_curso):
     media_path = MEDIA_URL
     context = {
         'ListaHorario': Horario.objects.filter(curso_id=id_curso, estado=Horario.ESTADOS[1][0]),
+        'ListaHorarioInactivos': Horario.objects.filter(curso_id=id_curso, estado=Horario.ESTADOS[2][0]),
         'ListaCurso': Curso.objects.all(),
         'id_curso': id_curso,
         'id_especialidad': Curso.objects.get(pk=id_curso).especialidad.pk,
