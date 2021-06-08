@@ -22,8 +22,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div style="float: right;">
-                    <a class="btn btn-outline-primary" type="button" href="{% url 'listarRE' %}">
-                        <img class="img-fluid" style="height: 20px" src="https://image.flaticon.com/icons/png/512/60/60577.png">
+                    <a class="btn btn-outline-primary" type="button" href="{% url 'listarRE' pk=resultadoAcreditadora.acreditadora_id %}">
+                        <img class="img-fluid" style="height: 20px"
+                             src="https://image.flaticon.com/icons/png/512/60/60577.png">
                         Volver
                     </a>
                 </div>
@@ -70,19 +71,16 @@
 
         <div class="row">
             <div class="col-md-6">
-                <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
-                    <option selected>Facultad</option>
-                    <option value="1">Facultad de Derecho</option>
-                    <option value="2">Facultad de Ciencias e Ingeniería</option>
-                    <option value="3">Facultad de Ciencias Sociales</option>
+                <label for="FormControlSelect1">Facultad:</label>
+                <select id="facultades" name="facultades" class="form-control" id="FormControlSelect1" onchange="listarEspecialidades()">
+                    {% for facultad in facultades %}
+                        <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="col-md-6">
-                <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelect">
-                    <option selected>Especialidad</option>
-                    <option value="1">Ingeniería Geológica</option>
-                    <option value="2">Ingeniería Industrial</option>
-                    <option value="3">Ingeniería Industrial con Teclado</option>
+                <label for="especialidades">Especialidades:</label>
+                <select id="especialidades" name="especialidades" class="form-control" id="FormControlSelect1" onchange="listarIndicadores()">
                 </select>
             </div>
         </div>
@@ -97,20 +95,7 @@
                         <th scope="col">Seleccionar</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    {% for indicador in indicadores %}
-                        <tr>
-                            <td>{{ indicador.codigo }}</td>
-                            <td>{{ indicador.descripcion }}</td>
-                            <td>
-                                {% if indicador in indicadorSelec %}
-                                    <input id="id{{ indicador.pk }}" onchange="actualizarData('{{ indicador.pk }}')" type="checkbox" name="select{{ indicador.pk }}" value="1" checked>
-                                {% else %}
-                                    <input id="id{{ indicador.pk }}" onchange="actualizarData('{{ indicador.pk }}')" type="checkbox" name="select{{ indicador.pk }}" value="1">
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
+                    <tbody id="indicadores" name="indicadoress">
                     </tbody>
                 </table>
             </div>
@@ -130,7 +115,7 @@
         {% endif %}
         <div class="row">
             <div class="col-md-12" style="text-align: right;">
-                <a class="btn btn-outline-primary" type="button" href="{% url 'listarRE' %}">Cancelar</a>
+                <a class="btn btn-outline-primary" type="button" href="{% url 'listarRE' pk=resultadoAcreditadora.acreditadora_id %}">Cancelar</a>
                 {% if resultadoAcreditadora.pk == "0" %}
                     <input type="hidden" name="operacion" value="insertar">
                 {% else %}
@@ -146,20 +131,70 @@
 
 {#Bloque de Javascript -> JS#}
 {% block extrajs %}
-<script>
-    function enviarData(){
-        {% for indicador in indicadores %}
-            console.log(document.getElementById("id{{ indicador.pk }}").checked);
-        {% endfor %}
+    <script>
+        $(document).ready(function () {
+            console.log("ready!");
+            listarEspecialidades();
+        });
 
-    }
-    function actualizarData(idEtiqueta){
-        // console.log(idEtiqueta);
-        // console.log($("#id"+idEtiqueta).val());
-        // if ($("#id"+idEtiqueta).val()==1) {$("#id"+idEtiqueta).val(0);}
-        // else {$("#id"+idEtiqueta).val(1);}
-        console.log(idEtiqueta);
-        console.log($("#id"+idEtiqueta).val());
-    }
-</script>
+        function listarEspecialidades() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'ajaxEditar' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: 'listEspe',
+                    facultad: $("#facultades").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["resp"]);
+                    $(".especialidad").remove();
+                    for (var i = 0; i < instance.length; i++) {
+                        data = '<option class="especialidad" onclick="listarCursos()" value=' +
+                            instance[i]["pk"] + '>' +
+                            instance[i]["fields"].nombre + '</option>';
+                        $("#especialidades").append(data);
+                    }
+                    listarIndicadores();
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                },
+            });
+        }
+
+        function listarIndicadores() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'ajaxEditar' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: 'listIndi',
+                    facultad: $("#especialidades").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["resp"]);
+                    $(".indicador").remove();
+                    for (var i = 0; i < instance.length; i++) {
+                        data = '<tr class="indicador">' +
+                            '   <td>' + instance[i]["fields"].codigo + '</td>' +
+                            '   <td>' + instance[i]["fields"].descripcion + '</td>' +
+                            '   <td>' +
+                            '       {% if indicador in indicadorSelec %}' +
+                            '           <input id="id'+instance[i]["pk"]+'" type="checkbox" name="select'+instance[i]["pk"]+'" value="1" checked>' +
+                            '       {% else %}' +
+                            '           <input id="id'+instance[i]["pk"]+'" type="checkbox" name="select'+instance[i]["pk"]+'" value="1">' +
+                            '       {% endif %}' +
+                            '   </td>' +
+                            '</tr>';
+                        $("#indicadores").append(data);
+                    }
+                    listarCursos();
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                },
+            });
+        }
+    </script>
 {% endblock %}

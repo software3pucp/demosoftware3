@@ -32,7 +32,8 @@
                     <div class="card-group">
                         <div class="product card mr-4 mb-4" style="height: 16rem">
                             <div class="card-img-top imgbox" style="height: 15rem">
-                                <a>
+                                <a href="{% url 'listarRE'  pk=acreditadora.pk %}"
+                                   role="link">
                                     <img class="" src="{{ media_path }}{{ acreditadora.foto.name }}/">
                                 </a>
                             </div>
@@ -64,7 +65,7 @@
             {% endfor %}
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <div class="card-group service-work">
-                    <a class="recent-work card mr-4 mb-4" href="{% url 'agregarFacultad' %}" style="height: 16rem">
+                    <a class="recent-work card mr-4 mb-4" href="{% url 'crearAcreditadoras' pk="0" %}" style="height: 16rem">
                         <div class="nav-link icon-indicator" role="button">
                             <div class="mt-4" style="text-align: center;">
                                 <span class="fas fa-plus fa-9x" style="text-align: center"></span>

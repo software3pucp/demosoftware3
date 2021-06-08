@@ -275,7 +275,6 @@
         });
 
         function listarEspecialidades(){
-            console.log($("#facultades").val());
             $.ajax({
                 type: 'POST',
                 url: "{% url 'listarPlanMedicion' %}",

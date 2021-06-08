@@ -39,7 +39,7 @@ def crearAcreditadoras(request,pk):
             acreditadora.save()
             return redirect('listarAcreditadoras')
 
-    if ( int(pk) > 0):
+    if pk != '0':
         acreditadora = Acreditadora.objects.get(pk=pk)
     else:
         acreditadora.pk = pk

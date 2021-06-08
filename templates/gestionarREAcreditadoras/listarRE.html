@@ -347,7 +347,7 @@
                     <form action="{% url 'editarRE' pk='0' %}" method="post" style="text-align: right; margin: 1%;">
                         {% csrf_token %}
                         <input type="hidden" name="operacion" value="entrada">
-                        <input type="hidden" name="acreditadora" value="1">
+                        <input type="hidden" name="acreditadora" value={{ acreditadora.pk }}>
                         <input type="submit" class="btn btn-primary mr-1 mb-1" value="Añadir">
                     </form>
                     {% for resultado in resultados %}
@@ -365,7 +365,7 @@
                                             <form action="{% url 'editarRE' pk=resultado.pk %}" method="post">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="operacion" value="entrada">
-                                                <input type="hidden" name="acreditadora" value="1">
+                                                <input type="hidden" name="acreditadora" value={{ acreditadora.pk }}>
                                                 <input type="submit" class="btn btn-falcon-primary mr-1 mb-1" value="Editar">
                                             </form>
                                             <button class="btn btn-falcon-primary mr-1 mb-1" type="button">Activar</button>
