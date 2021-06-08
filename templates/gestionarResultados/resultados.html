@@ -1,0 +1,207 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+    <link href="{% static 'lib/flatpickr/flatpickr.min.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <style>
+        #Titulo {
+            color: #0154ae;
+            font-family: "Montserrat";
+        }
+
+    </style>
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="col-12">
+                    <div class="row d-flex justify-content-center ">
+                        <div class="col-12">
+                            <h4 id="Titulo" style="font-family: Montserrat">Resultados del estudiante </h4>
+                            <hr style="background-color: #0154ae;">
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <div class="d-flex flex-row align-items-center">
+                            <div class="mr-2">
+                                <label for="cboFacultad">Facultad:</label>
+                                <select class="custom-select custom-select-sm mb-3" id="cboFacultad" name="cboFacultad"
+                                        onchange="obtenerEspecialidades()">
+                                    {% for facultad in facultades %}
+                                        <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="cboEspecialidad">Especialidad:</label>
+                                <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
+                                        name="cboEspecialidad"
+                                        onchange="listaResultados()">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin: 1%;">
+                       <span class="btn btn-primary" onclick="redirectCrearResultado()">Crear</span>
+                    </div>
+                   {% comment %} {% for resultado in resultados %}
+                        <div style="margin: 1%;">
+                            <div class="card text-white bg-primary">
+                                <div class="card-body">
+                                    <form action="{% url 'listarResultado' %}" method="post">
+                                        {% csrf_token %}
+                                        <div class="row no-gutters">
+                                            <div class="col-md-1">
+                                                <h2 class="card-text text-white">{{ resultado.0.codigo }}</h2>
+                                            </div>
+                                            <div class="col-md-9 border-left border-right p-2">
+                                                <p>{{ resultado.0.descripcion }}</p>
+                                                {% if not resultado.1 %}
+                                                    <hr style="background-color: #FFFFFF;">
+                                                    <p>Nota: El resultado no tiene indicadores asociados,
+                                                        si desea asociar indicadores, por favor dar click en editar</p>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-2 ">
+                                                <div class="d-flex justify-content-center">
+                                                    <a href="{% url 'editarResultado' pk=resultado.0.pk %}"
+                                                       class="btn btn-falcon-primary mr-1 mb-1">Editar</a>
+                                                </div>
+                                                <div class="d-flex justify-content-center">
+                                                    <input type="hidden" id="resultadoPk" name="resultadoPk"
+                                                           value="{{ resultado.0.pk }}">
+                                                    <button type="submit" class="btn btn-falcon-primary mr-1 mb-1">
+                                                        Eliminar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}{% endcomment %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+
+        $(document).ready(function () {
+            console.log("ready!");
+            obtenerEspecialidades();
+        });
+
+        function redirectCrearResultado() {
+            var pk_especialidad = $("#cboEspecialidad").val();
+
+            document.location.href = "../../gestionarResultados/crear/" + pk_especialidad;
+        }
+
+
+        function obtenerEspecialidades(){
+            console.log($("#cboFacultad").val());
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'obtenerEspecialidades' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    facultad: $("#cboFacultad").val(),
+                },
+                success: function (response){
+                    var instance = JSON.parse(response["resp"]);
+                    $(".especialidad").remove();
+                    for(var i=0; i<instance.length; i++){
+                        data = '<option class="especialidad" onclick="listarCursos()" value='+
+                            instance[i]["pk"]+'>'+
+                            instance[i]["fields"].nombre+'</option>';
+                        $("#cboEspecialidad").append(data);
+                    }
+                    {% comment %}listarResultados();{% endcomment %}
+                },
+                error: function (response){
+                    alert(response["responseJSON"]["error"]);
+                },
+            });
+        }
+
+        {% comment %}function listarCursos() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'listarPlanMedicion'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: 'listCur',
+                    especialidad: $("#especialidades").val(),
+                    estado: $("#estado").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["resp"]);
+                    var instance1 = JSON.parse(response["resp1"]);
+                    $("#esp").remove();
+                    data='<input id="esp" type="hidden" name="especialidad" value="'+$("#especialidades").val()+'">';
+                    $("#hid").after(data);
+                    $("#selectEspeTit").remove();
+
+                    data = '<div id="selectEspeTit">' +
+                        '   <h4>' + $("#facultades option:selected").text() + ' - ' + $("#especialidades option:selected").text()+'</h4>' +
+                        '   <hr>' +
+                        '</div>';
+                    $("#selectEspe").append(data);
+                    $(".curso").remove();
+                    for(var i=0; i<instance.length; i++){
+                        data = '<div class="curso col-md-4 equal">' +
+                            '   <div class="d-flex justify-content-center">'+
+                            '       <div class="product card">' +
+                            '           <div class="card-img-top imgbox" style="height: 15rem">'+
+                            '               <a href="#">'+
+                            '                    <img class="" src="{% static 'img/illustrations/3.png' %}">'+
+                            '                </a>'+
+                            '            </div>'+
+                            '           <div class="specifies">' +
+                            '               <h5 class="card-title ml-2" style="text-align: left">' + instance1[instance.length-i-1]["fields"].nombre + '</h5>' +
+                            '               <hr>' +
+                            '               <div class="row d-flex justify-content-end">' +
+                            '                   <form class="p-2" action="/gestionarPlanMedicion/crear/'+ instance[instance.length-i-1]["pk"] + '" method="post">'+
+                            '                       {% csrf_token %}'+
+                            '                       <input type="hidden" name="operacion" value="entrada">'+
+                            '                       <input type="hidden" name="especialidad" value="'+$("#especialidades").val()+'">'+
+                            '                       <button class="btn btn-falcon-primary nav-link icon-indicator fas fa-pen iconSize iconColoNBorder" style="text-align: center;"></button>' +
+                            '                   </form>'+
+                            '                   <form class="p-2 pr-3" action="{% url 'listarPlanMedicion' %}" method="post">'+
+                            '                       {% csrf_token %}'+
+                            '                       <input type="hidden" name="operacion" value="estado">'+
+                            '                       <input type="hidden" name="planpk" value= "'+instance[instance.length-i-1]["pk"] +'"'+
+                            '                       <input type="hidden" name="especialidad" value="'+$("#especialidades").val()+'">'+
+                            '                       <button class="btn btn-falcon-primary nav-link icon-indicator fas fa-power-off iconSize iconColorNBorder" style="text-align: center;"></button>' +
+                            '                   </form>'+
+                            '               </div>'+
+                            '           </div>'+
+                            '       </div>'+
+                            '   </div>'+
+                            '</div>' ;
+                        $("#cursos").prepend(data);
+                    }
+                    console.log('terminado');
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }{% endcomment %}
+
+    </script>
+{% endblock %}

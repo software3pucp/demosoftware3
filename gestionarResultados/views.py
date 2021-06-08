@@ -1,26 +1,35 @@
 import requests
+from django.core import serializers
+from django.http import JsonResponse
 
 from django.shortcuts import render, redirect
 from django.db.models import Q
 # Create your views here.
+from gestionarEspecialidad.models import Especialidad
+from gestionarFacultad.models import Facultad
 from gestionarIndicadores.models import Indicador
 from gestionarResultados.models import ResultadoPUCP
 
 
-def crearResultado(request):
-    registrado = False
+def crearResultado(request, id_especialidad):
+    try:
+        especialidad = Especialidad.objects.get(pk=id_especialidad)
+    except:
+        print("Error al buscar la especialidad")
+
     if request.POST:
-        newResultado = ResultadoPUCP.objects.create(codigo=request.POST['codigo'],
-                                                    descripcion=request.POST['descripcion'])
-        return redirect('listarResultado')
+        codigo = request.POST['codigo']
+        descripcion = request.POST['descripcion']
+        newResultado = ResultadoPUCP.objects.create(codigo= codigo, descripcion=descripcion, especialidad=especialidad)
+        return redirect('resultados')
 
     context = {
-        'registrado': registrado,
+        'especialidad': especialidad,
     }
     return render(request, 'gestionarResultados/crearResultado.html', context)
 
 
-def listarResultado(request):
+def Resultados(request):
     eliminado = False
     if request.POST:
         resultadoPk = request.POST['resultadoPk']
@@ -34,7 +43,6 @@ def listarResultado(request):
     for result in resultados:
         tiene_indicadores = False
         indicadores = Indicador.objects.filter(resultado_id=result.pk, estado='1')
-        print("Idicadores del resultado",result.pk,':',indicadores)
         if(len(indicadores)>0):
             tiene_indicadores = True
         else:
@@ -42,10 +50,19 @@ def listarResultado(request):
         registro=[result,tiene_indicadores]
         listaResultados.append(registro)
 
+    facultades = Facultad.objects.filter(estado='1')
     context = {
+        'facultades': facultades,
         'resultados': listaResultados,
     }
-    return render(request, 'gestionarResultados/listarResultados.html', context)
+    return render(request, 'gestionarResultados/resultados.html', context)
+
+
+def obtenerEspecialidades(request):
+    id_facultad = request.POST['facultad']
+    especialidades = Especialidad.objects.filter(facultad_id=id_facultad, estado='1')
+    data = serializers.serialize("json", especialidades)
+    return JsonResponse({"resp": data}, status=200)
 
 
 def editarResultado(request,pk):

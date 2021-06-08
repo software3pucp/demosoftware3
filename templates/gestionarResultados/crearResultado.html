@@ -17,7 +17,7 @@
                             <h4 id="Titulo">Crear Resultado del Estudiante</h4>
                         </div>
                         <div class="col-2">
-                            <a href="{% url 'listarResultado' %}">
+                            <a href="{% url 'resultados' %}">
                                 <div class="row">
                                     <img class="img-fluid" style="height: 20px"
                                          src="https://image.flaticon.com/icons/png/512/60/60577.png">
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <hr style="background-color: #0154ae;">
-                    <form action="{% url 'crearResultado' %}" method="post">
+                    <form action="{% url 'crearResultado' id_especialidad=especialidad.pk %}" method="post">
                         {% csrf_token %}
                         <div class="row p-1">
                             <div class="col-md-2">
@@ -58,7 +58,7 @@
                         </div>
                         <div class="row mt-4">
                             <div class="col-md-12 d-flex justify-content-end">
-                                <a class="btn btn-outline-primary m-1" type="button" href="{% url 'listarResultado' %}">Cancelar</a>
+                                <a class="btn btn-outline-primary m-1" type="button" href="{% url 'resultados' %}">Cancelar</a>
                                 <input type="submit" class="btn btn-primary m-1" value="Guardar">
                             </div>
                         </div>
@@ -67,6 +67,5 @@
             </div>
         </div>
     </div>
-
 
 {% endblock %}

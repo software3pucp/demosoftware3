@@ -4,7 +4,8 @@ from gestionarResultados import views
 
 urlpatterns = [
     # path( url hijo, backend, nombre de la variable)
-    path('crear/', views.crearResultado, name="crearResultado"),
-    path('listar/', views.listarResultado, name="listarResultado"),
+    path('crear/<id_especialidad>', views.crearResultado, name="crearResultado"),
+    path('resultados/', views.Resultados, name="resultados"),
     path('editar/<pk>', views.editarResultado, name="editarResultado"),
+    path('obtenerEspecialidades/', views.obtenerEspecialidades, name="obtenerEspecialidades"),
 ]
