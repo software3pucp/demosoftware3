@@ -21,15 +21,15 @@
     <div class="col-12">
         <div class="fancy-tab">
             <div class="nav-bar nav-bar-center">
-                <div class="nav-bar-item px-3 px-sm-4 active">
+                <div class="nav-bar-item px-3 px-sm-4 ">
                     <div class="mt-1">Información</div>
                 </div>
-                <div class="nav-bar-item px-3 px-sm-4">
+                <div class="nav-bar-item px-3 px-sm-4 active" >
                     <div class="mt-1">Resultados</div>
                 </div>
             </div>
             <div class="tab-contents">
-                <div class="tab-content active">
+                <div class="tab-content ">
                     <div class="row">
                         <div class="col-auto">
                             <div class="sticky-top sticky-kit pt-7">
@@ -344,7 +344,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-content">
+                <div class="tab-content active">
                     <form action="{% url 'editarRE' pk='0' %}" method="post" style="text-align: right; margin: 1%;">
                         {% csrf_token %}
                         <input type="hidden" name="operacion" value="entrada">

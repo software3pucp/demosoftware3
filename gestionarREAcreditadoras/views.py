@@ -1,6 +1,6 @@
 import requests
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.core import serializers
 from gestionarEspecialidad.models import Especialidad
@@ -9,6 +9,7 @@ from gestionarREAcreditadoras.models import Acreditadora, ResultadoAcreditadora
 from gestionarIndicadores.models import Indicador
 
 # Create your views here.
+from gestionarResultados.models import ResultadoPUCP
 
 
 def listarRE(request,pk):
@@ -24,11 +25,13 @@ def listarRE(request,pk):
 def editarRE(request,pk):
     insert = False
     flag = 0
-    indicadorSelec = []
+    resultadoSeleccionado = 0
+    especialidadSeleccionada = 0
+    facultadSeleccionada = 0
     resultadoAcreditadora = ResultadoAcreditadora()
     resultadoAcreditadora.pk = pk
-    facultades = Facultad.objects.filter()
-
+    acreditadora = Acreditadora.objects.get(pk=request.POST["acreditadora"])
+    facultades = Facultad.objects.filter( estado='1')
     if request.POST:
         print(request.POST)
         if request.POST['operacion'] == 'entrada':
@@ -41,28 +44,37 @@ def editarRE(request,pk):
             resultadoAcreditadora = ResultadoAcreditadora.objects.get(pk=pk)
             resultadoAcreditadora.codigo = request.POST["codigo"]
             resultadoAcreditadora.descripcion = request.POST["descripcion"]
+            resultadoAcreditadora.resultadoPUCP_id = request.POST["select"]
+            resultadoAcreditadora.acreditadora_id = request.POST["acreditadora"]
             resultadoAcreditadora.save()
             flag = 1
+            return redirect('listarRE', acreditadora.pk)
 
         elif request.POST['operacion'] == 'insertar':
             resultadoAcreditadora = ResultadoAcreditadora.objects.create(codigo=request.POST["codigo"],descripcion=request.POST["descripcion"],
-                                                      acreditadora_id=request.POST["acreditadora"])
+                                                      acreditadora_id=request.POST["acreditadora"],resultadoPUCP_id=request.POST["select"])
             pk = resultadoAcreditadora.pk
             insert = True
             flag = 2
+            return redirect('listarRE', acreditadora.pk)
 
     if pk != '0':
         resultadoAcreditadora = ResultadoAcreditadora.objects.get(pk=pk)
-        #indicadorSelec = REAcred_Indicador.objects.filter(resultadoAcreditadora=pk)
+        resultadoSeleccionado = resultadoAcreditadora.resultadoPUCP_id
+        especialidadSeleccionada = ResultadoPUCP.objects.get(pk=resultadoSeleccionado).especialidad_id
+        facultadSeleccionada = Especialidad.objects.get(pk=especialidadSeleccionada).facultad_id
+
         titulo = 'Editar'
     else:
         titulo = 'Nuevo'
 
-    acreditadora = Acreditadora.objects.get(pk=request.POST["acreditadora"])
+
     context = {
         'insert': insert,
-        'indicadorSelec': indicadorSelec,
+        'resultadoSeleccionado': resultadoSeleccionado,
         'resultadoAcreditadora': resultadoAcreditadora,
+        'facultadSeleccionada': facultadSeleccionada,
+        'especialidadSeleccionada': especialidadSeleccionada,
         'facultades': facultades,
         'flag': flag,
         'acreditadora': acreditadora,
@@ -78,11 +90,11 @@ def eliminarRE(request,pk):
 def ajaxEditar(request):
     if request.POST:
         if request.POST['operacion'] == 'listEspe':
-            especialidades = Especialidad.objects.filter(facultad_id=request.POST['facultad'])
+            especialidades = Especialidad.objects.filter(facultad_id=request.POST['facultad'], estado='1')
             data = serializers.serialize("json", especialidades)
             return JsonResponse({"resp": data}, status=200)
-        if request.POST['operacion'] == 'listIndi':
-            indicadores = Indicador.objects.filter()
-            data = serializers.serialize("json", indicadores)
+        if request.POST['operacion'] == 'listREPUCP':
+            resultadosPUCP = ResultadoPUCP.objects.filter(especialidad_id=request.POST['especialidadPk'], estado='1');
+            data = serializers.serialize("json", resultadosPUCP)
             return JsonResponse({"resp": data}, status=200)
     return

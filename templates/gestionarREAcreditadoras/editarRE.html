@@ -23,7 +23,7 @@
             <div class="col-md-12">
                 <div style="float: right;">
                     <a class="btn btn-outline-primary" type="button"
-                       href="{% url 'listarRE' pk=resultadoAcreditadora.acreditadora_id %}">
+                       href="{% url 'listarRE' pk=acreditadora.pk %}">
                         <img class="img-fluid" style="height: 20px"
                              src="https://image.flaticon.com/icons/png/512/60/60577.png">
                         Volver
@@ -73,7 +73,7 @@
         <div class="row">
             <div class="col-md-6">
                 <label for="FormControlSelect1">Facultad:</label>
-                <select id="facultades" name="facultades" class="form-control" id="FormControlSelect1"
+                <select id="facultades" name="facultades" class="form-control" id="facultades"
                         onchange="listarEspecialidades()">
                     {% for facultad in facultades %}
                         <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
@@ -82,25 +82,27 @@
             </div>
             <div class="col-md-6">
                 <label for="especialidades">Especialidades:</label>
-                <select id="especialidades" name="especialidades" class="form-control" id="FormControlSelect1"
-                        onchange="listarIndicadores()">
+                <select id="especialidades" name="especialidades" class="form-control" id="especialidades"
+                        onchange="listarResultadosPUCP()">
                 </select>
             </div>
         </div>
         <p></p>
         <div class="row">
             <div class="col-md-12">
-                <table class="table">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Código</th>
-                        <th scope="col">Descripción</th>
-                        <th scope="col">Seleccionar</th>
-                    </tr>
-                    </thead>
-                    <tbody id="indicadores" name="indicadoress">
-                    </tbody>
-                </table>
+                <div class="form-check">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Código</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Seleccionar</th>
+                        </tr>
+                        </thead>
+                        <tbody id="indicadores" name="indicadoress">
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         {% if flag == 1 %}
@@ -125,7 +127,7 @@
                 {% else %}
                     <input type="hidden" name="operacion" value="editar">
                 {% endif %}
-                <input type="hidden" name="acreditadora" value="{{ resultadoAcreditadora.acreditadora_id }}">
+                <input type="hidden" name="acreditadora" value="{{ acreditadora.pk }}">
                 <input type="submit" class="btn btn-primary" value="Guardar">
             </div>
         </div>
@@ -138,6 +140,9 @@
     <script>
         $(document).ready(function () {
             console.log("ready!");
+            if ("{{ facultadSeleccionada }}" != 0) {
+                $("#facultades").val("{{ facultadSeleccionada }}");
+            }
             listarEspecialidades();
         });
 
@@ -154,12 +159,17 @@
                     var instance = JSON.parse(response["resp"]);
                     $(".especialidad").remove();
                     for (var i = 0; i < instance.length; i++) {
-                        data = '<option class="especialidad" onclick="listarCursos()" value=' +
+                        data = '<option class="especialidad" value=' +
                             instance[i]["pk"] + '>' +
                             instance[i]["fields"].nombre + '</option>';
                         $("#especialidades").append(data);
                     }
-                    listarIndicadores();
+                    if ("{{ facultadSeleccionada }}"== $("#facultades").val() &&"{{ especialidadSeleccionada }}" != 0) {
+                        console.log($("#facultades").val());
+                        console.log("{{ facultadSeleccionada }}");
+                        $("#especialidades").val("{{ especialidadSeleccionada }}");
+                    }
+                    listarResultadosPUCP();
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);
@@ -167,35 +177,49 @@
             });
         }
 
-        function listarIndicadores() {
+        function listarResultadosPUCP() {
             $.ajax({
                 type: 'POST',
                 url: "{% url 'ajaxEditar' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    operacion: 'listIndi',
-                    facultad: $("#especialidades").val(),
+                    operacion: 'listREPUCP',
+                    especialidadPk: $("#especialidades").val(),
                 },
                 success: function (response) {
                     var instance = JSON.parse(response["resp"]);
-                    $(".indicador").remove();
-                    for (var i = 0; i < instance.length; i++) {
-                        data = '<tr class="indicador">' +
-                            '   <td>' + instance[i]["fields"].codigo + '</td>' +
-                            '   <td>' + instance[i]["fields"].descripcion + '</td>' +
-                            '   <td>' +
-                            '       {% if indicador in indicadorSelec %}' +
-                                '           <input id="id'+instance[i]["pk"]+'" type="checkbox" name="select'
-                                +instance[i]["pk"]+'" value="1" checked>' +
-                                '       {% else %}' +
-                                '           <input id="id'+instance[i]["pk"]+'" type="checkbox" name="select'
-                                +instance[i]["pk"]+'" value="1">' +
-                                '       {% endif %}' +
-                            '   </td>' +
+                    $(".resultado").remove();
+
+                    if (instance.length != 0) {
+                        for (var i = 0; i < instance.length; i++) {
+                            data = '<tr class="resultado">' +
+                                '   <td>' + instance[i]["fields"].codigo + '</td>' +
+                                '   <td>' + instance[i]["fields"].descripcion + '</td>' +
+                                '   <td>';
+
+                            if ("{{ resultadoSeleccionado }}" != 0 && "{{ resultadoSeleccionado }}" == instance[i]["pk"]) {
+                                data += '   <input class="form-check-input" id="' + instance[i]["pk"]
+                                    + '" type="radio" name="select" value="' + instance[i]["pk"] + '" checked>' +
+                                    '<label class="form-check-label" for="' + instance[i]["pk"] + '"></label>';
+
+
+                            } else {
+                                data += '           <input class="form-check-input" id="' + instance[i]["pk"]
+                                    + '" type="radio" name="select" value="' + instance[i]["pk"] + '" required >' +
+                                    '<label class="form-check-label" for="' + instance[i]["pk"] + '"></label>';
+                            }
+
+                            data += '   </td>' +
+                                '</tr>';
+                            $("#indicadores").append(data);
+                        }
+                    } else {
+                        data = '<tr class="resultado">' +
+                            '<th colspan="3" style="text-align: center">No se encontraron Resultados del estudiante asociados a esta Especialidad</th>' +
                             '</tr>';
                         $("#indicadores").append(data);
                     }
-                    listarCursos();
+
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);
