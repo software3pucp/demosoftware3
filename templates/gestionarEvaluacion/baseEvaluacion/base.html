@@ -3,756 +3,800 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
-    <link href="{% static 'lib/flatpickr/flatpickr.min.css' %}" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        #Titulo {
-            color: #0154ae
-        }
+  <link href="{% static 'lib/flatpickr/flatpickr.min.css' %}" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+      #Titulo {
+          color: #0154ae
+      }
 
-        .btn-file {
-            position: relative;
-            overflow: hidden;
-        }
+      .btn-file {
+          position: relative;
+          overflow: hidden;
+      }
 
-        .btn-file input[type=file] {
-            position: absolute;
-            top: 0;
-            right: 0;
-            min-width: 100%;
-            min-height: 100%;
-            font-size: 100px;
-            text-align: center;
-            filter: alpha(opacity=0);
-            opacity: 0;
-            outline: none;
-            background: white;
-            cursor: inherit;
-            display: block;
-        }
+      .btn-file input[type=file] {
+          position: absolute;
+          top: 0;
+          right: 0;
+          min-width: 100%;
+          min-height: 100%;
+          font-size: 100px;
+          text-align: center;
+          filter: alpha(opacity=0);
+          opacity: 0;
+          outline: none;
+          background: white;
+          cursor: inherit;
+          display: block;
+      }
 
-    </style>
+  </style>
 
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
 {% block body %}
-    {#AQUI COLOQUEN EL CÓDIGO#}
-    {# Rubrica #}
-    <div class="card p-3">
-        <div class="col-12 d-flex justify-content-start">
-            <h4 id="Titulo" style="font-family: Montserrat">Evaluación - {{ cursoSeleccionado.nombre }}</h4>
-        </div>
-        <hr class="mb-3" style="background-color: #0154ae;">
+  {#AQUI COLOQUEN EL CÓDIGO#}
+  {# Rubrica #}
+  <div class="card p-3">
+    <div class="col-12 d-flex justify-content-start">
+      <h4 id="Titulo" style="font-family: Montserrat">Evaluación - {{ cursoSeleccionado.nombre }}</h4>
+    </div>
+    <hr class="mb-3" style="background-color: #0154ae;">
 
 
-        <div class="col-12 mb-3">
-            <div class="d-flex flex-row align-items-center">
-                <div class="mr-2">
-                    <label for="cboHorario">Horario:</label>
-                    <select class="custom-select custom-select-sm mb-3" id="cboHorario" name="cboHorario"
-                            onchange="listarAlumno()">
-                        {% for horarioItem in listaHorario %}
-                            <option value={{ horarioItem.pk }}>{{ horarioItem.codigo }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div>
-                    <label for="cboIndicador">Indicador:</label>
-                    <select class="custom-select custom-select-sm mb-3" id="cboIndicador" name="cboIndicador"
-                            onchange="muestraRubrica()">
-                        {% for indicador in listaIndicador %}
-                            <option value={{ indicador.pk }}>{{ indicador.codigo }}</option>
-                        {% endfor %}
-                    </select>
-
-                </div>
-
-                <div class="ml-auto">
-                    <button class="btn btn-outline-primary">
-                        <i class="fa fa-download"></i>Rúbrica
-                    </button>
-                    <span class="btn btn-primary" onclick="redirectEvidencia()">Evidencias</span>
-                </div>
-
-
-            </div>
+    <div class="col-12 mb-3">
+      <div class="d-flex flex-row align-items-center">
+        <div class="mr-2">
+          <label for="cboHorario">Horario:</label>
+          <select class="custom-select custom-select-sm mb-3" id="cboHorario" name="cboHorario"
+                  onchange="listarAlumno()">
+            {% for horarioItem in listaHorario %}
+              <option value={{ horarioItem.pk }}>{{ horarioItem.codigo }}</option>
+            {% endfor %}
+          </select>
         </div>
 
-
-        <div class="col-12">
-            <div id="contenidoRubrica"></div>
-        </div>
-
-        <div class="col-12">
-            {# Botones Agregar e Importar Estudiantes #}
-            <div class="row mb-3">
-                <div class="col-12 d-flex justify-content-start mx-1">
-                    <div id="estado"></div>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="input-group col-12 mb-3 mx-1">
-                    <input class="form-control" id="textBuscar" type="search" placeholder="Buscar">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary shadow-none" type="button" onclick="listarAlumno()">Buscar
-                        </button>
-                    </div>
-                </div>
-                <div class="col-12 d-flex justify-content-end">
-                    <div id="dashboard-actions">
-                        <!-- Button trigger modal-->
-                        <a href="" data-toggle="modal" data-target="#agregarAlumno"
-                           class="btn btn-falcon-default btn-sm" type="button">
-                            <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
-                                 aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
-                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
-                                 style="transform-origin: 0.4375em 0.625em;">
-                                <g transform="translate(224 256)">
-                                    <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
-                                        <path fill="currentColor"
-                                              d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
-                                              transform="translate(-224 -256)"></path>
-                                    </g>
-                                </g>
-                            </svg>
-                            <span class="d-none d-sm-inline-block ml-1">Agregar Estudiante</span>
-                        </a>
-
-                        <a href="" data-toggle="modal" data-target="#importarAlumnos"
-                           class="btn btn-falcon-default btn-sm" type="button">
-                            <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
-                                 aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
-                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
-                                 style="transform-origin: 0.4375em 0.625em;">
-                                <g transform="translate(224 256)">
-                                    <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
-                                        <path fill="currentColor"
-                                              d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
-                                              transform="translate(-224 -256)"></path>
-                                    </g>
-                                </g>
-                            </svg>
-                            <span class="d-none d-sm-inline-block ml-1">Importar Estudiante</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
+        <div>
+          <label for="cboIndicador">Indicador:</label>
+          <select class="custom-select custom-select-sm mb-3" id="cboIndicador" name="cboIndicador"
+                  onchange="muestraRubrica()">
+            {% for indicador in listaIndicador %}
+              <option value={{ indicador.pk }}>{{ indicador.codigo }}</option>
+            {% endfor %}
+          </select>
 
         </div>
 
-        {# Listado De Alumnos #}
-        <div class="col-12">
-            <div class="card mb-3">
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Codigo</th>
-                                <th scope="col">Estudiante</th>
-                                <th scope="col">Puntuacion</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                            </thead>
-
-                            <tbody id="tablaAlumno">
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+        <div class="ml-auto">
+          <button class="btn btn-outline-primary">
+            <i class="fa fa-download"></i>Rúbrica
+          </button>
+          <span class="btn btn-primary" onclick="redirectEvidencia()">Evidencias</span>
         </div>
+
+
+      </div>
     </div>
 
-    <!-- Modal Importar Alumnos -->
-    <div class="modal fade" id="importarAlumnos" tabindex="-1" role="dialog" aria-labelledby="importarAlumnosLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="importarAlumnosLabel">Subir Archivo</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
-                            class="font-weight-light" aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                     <form id="formImportar" name="formImportar" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="nombre_archivo">Seleccione un archivo csv: </label>
-                            <div class="input-group">
-                                <input name="nombre_archivo" id="nombre_archivo" type="text" class="form-control"
-                                       readonly>
-                                <span class="input-group-btn pb-3">
+
+    <div class="col-12">
+      <div id="contenidoRubrica"></div>
+    </div>
+
+    <div class="col-12">
+      {# Botones Agregar e Importar Estudiantes #}
+      <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-start mx-1">
+          <div id="estado"></div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="input-group col-12 mb-3 mx-1">
+          <input class="form-control" id="textBuscar" type="search" placeholder="Buscar">
+          <div class="input-group-append">
+            <button class="btn btn-primary shadow-none" type="button" onclick="listarAlumno()">Buscar
+            </button>
+          </div>
+        </div>
+        <div class="col-12 d-flex justify-content-end">
+          <div id="dashboard-actions">
+            <!-- Button trigger modal-->
+            <a href="" data-toggle="modal" data-target="#agregarAlumno"
+               class="btn btn-falcon-default btn-sm" type="button">
+              <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
+                   aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
+                   xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
+                   style="transform-origin: 0.4375em 0.625em;">
+                <g transform="translate(224 256)">
+                  <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
+                    <path fill="currentColor"
+                          d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                          transform="translate(-224 -256)"></path>
+                  </g>
+                </g>
+              </svg>
+              <span class="d-none d-sm-inline-block ml-1">Agregar Estudiante</span>
+            </a>
+
+            <a href="" data-toggle="modal" data-target="#importarAlumnos"
+               class="btn btn-falcon-default btn-sm" type="button">
+              <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
+                   aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
+                   xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
+                   style="transform-origin: 0.4375em 0.625em;">
+                <g transform="translate(224 256)">
+                  <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
+                    <path fill="currentColor"
+                          d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                          transform="translate(-224 -256)"></path>
+                  </g>
+                </g>
+              </svg>
+              <span class="d-none d-sm-inline-block ml-1">Importar Estudiante</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    {# Listado De Alumnos #}
+    <div class="col-12">
+      <div class="card mb-3">
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="thead-dark">
+              <tr>
+                <th scope="col">Codigo</th>
+                <th scope="col">Estudiante</th>
+                <th scope="col">Puntuacion</th>
+                <th scope="col">Estado de Evidencia</th>
+                <th scope="col">Acciones</th>
+              </tr>
+              </thead>
+
+              <tbody id="tablaAlumno">
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Importar Alumnos -->
+  <div class="modal fade" id="importarAlumnos" tabindex="-1" role="dialog" aria-labelledby="importarAlumnosLabel"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="importarAlumnosLabel">Subir Archivo</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+              class="font-weight-light" aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <form id="formImportar" name="formImportar" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="nombre_archivo">Seleccione un archivo csv: </label>
+              <div class="input-group">
+                <input name="nombre_archivo" id="nombre_archivo" type="text" class="form-control"
+                       readonly>
+                <span class="input-group-btn pb-3">
                                         <span class="btn btn-primary btn-file ml-3 " type="button">Seleccionar
                                         <input name="archivo" id="archivo" type="file" required/>
                                         </span>
                                 </span>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary btn-sm" id="btnImportar">Guardar</button>
-                </div>
+              </div>
             </div>
+          </form>
         </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary btn-sm" id="btnImportar">Guardar</button>
+        </div>
+      </div>
     </div>
+  </div>
 
 
 
-    <!-- Modal Agregar Alumno -->
-    <div class="modal fade" id="agregarAlumno" tabindex="-1" role="dialog" aria-labelledby="agregarAlumnoLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="agregarAlumnoLabel">Ingresar alumno a evaluar</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
-                            class="font-weight-light" aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formAgregarAlumno" name="formAgregarAlumno">
-                        <div class="form-group">
-                            <label for="codigoAlumno">Código</label>
-                            <input class="form-control" id="codigoAlumno" name="codigoAlumno" type="text" maxlength="8"
-                                   placeholder="Código">
-                        </div>
-                        <div class="form-group">
-                            <label for="nombreAlumno">Nombre</label>
-                            <input class="form-control" id="nombreAlumno" name="nombreAlumno" type="text"
-                                   placeholder="Nombre">
-                        </div>
-
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
-                    <button id="btnAgregarAlumno" class="btn btn-primary btn-sm" type="button"
-                            onclick="validarAlumno()">Agregar
-                    </button>
-                </div>
+  <!-- Modal Agregar Alumno -->
+  <div class="modal fade" id="agregarAlumno" tabindex="-1" role="dialog" aria-labelledby="agregarAlumnoLabel"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="agregarAlumnoLabel">Ingresar alumno a evaluar</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+              class="font-weight-light" aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <form id="formAgregarAlumno" name="formAgregarAlumno">
+            <div class="form-group">
+              <label for="codigoAlumno">Código</label>
+              <input class="form-control" id="codigoAlumno" name="codigoAlumno" type="text" maxlength="8"
+                     placeholder="Código">
             </div>
-        </div>
-    </div>
-    <!-- Modal Editar Alumno -->
-    <div class="modal fade" id="editarAlumno" tabindex="-1" role="dialog" aria-labelledby="editarAlumnoLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editarAlumnoLabel">Editar al alumno</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
-                            class="font-weight-light" aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formEditarAlumno" name="formEditarAlumno">
-                        <div class="form-group">
-                            <label for="codigoAlumno">Código</label>
-                            <div id="editCodigo"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="nombreAlumno">Nombre</label>
-                            <div id="editNombre"></div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
-                    <button id="btnEditarAlumno" class="btn btn-primary btn-sm" type="button">Confirmar</button>
-                </div>
+            <div class="form-group">
+              <label for="nombreAlumno">Nombre</label>
+              <input class="form-control" id="nombreAlumno" name="nombreAlumno" type="text"
+                     placeholder="Nombre">
             </div>
+
+          </form>
         </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
+          <button id="btnAgregarAlumno" class="btn btn-primary btn-sm" type="button"
+                  onclick="validarAlumno()">Agregar
+          </button>
+        </div>
+      </div>
     </div>
-
-    <!-- Modal Rubrica Alumno -->
-
-    <div class="modal fade" id="rubricaAlumno" tabindex="-1" role="dialog" aria-labelledby="rubricaAlumnoLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="rubricaAlumnoLabel">Aviso</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
-                            class="font-weight-light" aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formEvidenciaAlumno" name="formEvidenciaAlumno">
-                        <div class="form-group">
-                            Estamos trabajando en esta funcionalidad
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button id="btnRubricaAlumno" class="btn btn-primary btn-sm" type="button" data-dismiss="modal">
-                        Cerrar
-                    </button>
-                </div>
+  </div>
+  <!-- Modal Editar Alumno -->
+  <div class="modal fade" id="editarAlumno" tabindex="-1" role="dialog" aria-labelledby="editarAlumnoLabel"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editarAlumnoLabel">Editar al alumno</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+              class="font-weight-light" aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <form id="formEditarAlumno" name="formEditarAlumno">
+            <div class="form-group">
+              <label for="codigoAlumno">Código</label>
+              <div id="editCodigo"></div>
             </div>
-        </div>
-    </div>
-
-    <!-- Modal Eliminar Alumno -->
-
-    <div class="modal fade" id="eliminarAlumno" tabindex="-1" role="dialog" aria-labelledby="eliminarAlumnoLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="eliminarAlumnoLabel">Ingresar alumno a evaluar</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
-                            class="font-weight-light" aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
-                    <button id="btnEliminarAlumno" class="btn btn-primary btn-sm" type="button">Confirmar</button>
-                </div>
+            <div class="form-group">
+              <label for="nombreAlumno">Nombre</label>
+              <div id="editNombre"></div>
             </div>
+          </form>
         </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
+          <button id="btnEditarAlumno" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <!-- Modal Subir Evidencia Alumno -->
+
+  <div class="modal fade" id="subirEvidenciaModal" tabindex="-1" role="dialog" aria-labelledby="subirEvidenciaModal"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="subirEvidenciaLabel">Aviso</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+              class="font-weight-light" aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <form id="formEvidenciaAlumno" name="formEvidenciaAlumno">
+            <div class="form-group">
+
+
+              <div class="form-group">
+                <label for="nombre_archivo">Seleccione un archivo csv: </label>
+                <div class="input-group">
+                  <input name="nombre_archivo" id="archivo" type="text" class="form-control"
+                         readonly>
+                  <span class="input-group-btn pb-3">
+                                        <span class="btn btn-primary btn-file ml-3 " type="button">Seleccionar
+                                        <input onchange="subirEvidencia()" name="evidenciaArchivo" id="evidenciaArchivo" type="file" required/>
+                                        </span>
+                  </span>
+                </div>
+              </div>
+
+
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button id="btnRubricaAlumno" class="btn btn-primary btn-sm" type="button" data-dismiss="modal">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Eliminar Alumno -->
+
+  <div class="modal fade" id="eliminarAlumno" tabindex="-1" role="dialog" aria-labelledby="eliminarAlumnoLabel"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="eliminarAlumnoLabel">Ingresar alumno a evaluar</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+              class="font-weight-light" aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+          <button id="btnEliminarAlumno" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 {% endblock %}
 
 {#Aquí coloco el JS particular de la web#}
 {% block extrajs %}
-    <script src=https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.3.0/math.min.js></script>
-    <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
-    <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
-    <script>
+  <script src=https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.3.0/math.min.js></script>
+  <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
+  <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
+  <script>
 
-        var pkEditar;
-        var pkEliminar;
+    let pkEditar;
+    let pkEliminar;
+    let pkSubirEvidencia;
 
-        function redirectEvidencia() {
-            var pk_horario = $("#cboHorario").val();
-            var pk_curso = "{{ cursoSeleccionado.pk }}";
+    function redirectEvidencia() {
+      var pk_horario = $("#cboHorario").val();
+      var pk_curso = "{{ cursoSeleccionado.pk }}";
 
-            document.location.href = "../../gestionarEvidencia/evidenciasxHorario/" + pk_curso + '/' + pk_horario;
+      document.location.href = "../../gestionarEvidencia/evidenciasxHorario/" + pk_curso + '/' + pk_horario;
+    }
+
+
+    $(document).ready(function () {
+      muestraRubrica();
+      listarAlumno();
+      $(document).on('change', '.btn-file :file', function () {
+        var input = $(this),
+            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+        input.trigger('fileselect', [label]);
+      });
+
+      $('.btn-file :file').on('fileselect', function (event, label) {
+        var input = $(this).parents('.input-group').find(':text'),
+            log = label;
+        if (input.length) {
+          input.val(log);
+        } else {
+          if (log) alert(log);
         }
+      });
+
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            $('#img-upload').attr('src', e.target.result);
+          }
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+
+      $("#archivo").change(function () {
+        readURL(this);
+      });
+    });
 
 
-        $(document).ready(function () {
-            muestraRubrica();
+    $("#btnImportar").on('click', function (e) {
+      e.preventDefault();
+      if ($("#formImportar").valid()) {
+        importarAlumnos();
+        $("#importarAlumnos").modal('hide')
+      }
+    });
+
+    function importarAlumnos() {
+      var fd = new FormData();
+      var files = $('#archivo')[0].files;
+
+      // Check file selected or not
+      if (files.length > 0) {
+        fd.append('archivo', files[0]);
+        fd.append('horariopk', $("#cboHorario").val());
+        fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        fd.append('nombre_archivo', $("#nombre_archivo").val());
+
+        $.ajax({
+          type: 'POST',
+          url: "{% url 'importarAlumno' %}",
+          data: fd,
+          contentType: false,
+          processData: false,
+          success: function (response) {
             listarAlumno();
-                $(document).on('change', '.btn-file :file', function () {
-                var input = $(this),
-                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-                input.trigger('fileselect', [label]);
-            });
-
-            $('.btn-file :file').on('fileselect', function (event, label) {
-                var input = $(this).parents('.input-group').find(':text'),
-                    log = label;
-                if (input.length) {
-                    input.val(log);
-                } else {
-                    if (log) alert(log);
-                }
-            });
-
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $('#img-upload').attr('src', e.target.result);
-                    }
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-
-            $("#archivo").change(function () {
-                readURL(this);
-            });
+          },
+          error: function (response) {
+            console.log("ERROR")
+            console.log(response)
+          }
         });
+      }
+    }
+
+    function mostrarModal(pk) {
+      $("#subirEvidenciaModal").modal('show');
+      pkSubirEvidencia = pk;
 
 
-        $("#btnImportar").on('click', function (e) {
-            e.preventDefault();
-            if ($("#formImportar").valid()) {
-                importarAlumnos();
-                $("#importarAlumnos").modal('hide')
-            }
-        });
 
-        function importarAlumnos() {
+    }
+
+    function subirEvidencia(pk) {
             var fd = new FormData();
-            var files = $('#archivo')[0].files;
+      var files = $('#evidenciaArchivo')[0].files;
+      {% comment %}TODO::: Enviar data por ajax{% endcomment %}
+      fd.append('archivo', files[0]);
+      fd.append('evaluadopk', pkSubirEvidencia);
+      fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 
-            // Check file selected or not
-            if (files.length > 0) {
-                fd.append('archivo', files[0]);
-                fd.append('horariopk', $("#cboHorario").val());
-                fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-                fd.append('nombre_archivo', $("#nombre_archivo").val());
+      $.ajax({
+        type: 'POST',
+        url: "{% url 'subirEvidencia' %}",
+        data: fd,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+         $("#evidenciaSubidaFlag"+pkSubirEvidencia.toString()).html('<span class="fas fa-check-circle text-primary ml-1" data-toggle="tooltip" data-placement="right" title="Verified" data-fa-transform="shrink-1 down-1"></span>');
+        },
+        error: function (response) {
+      {% comment %}TODO::: Si se subió mal, enviar un alert{% endcomment %}
+          console.log("ERROR")
+          alert(response);
+        }
+      });
+    }
 
-                $.ajax({
-                    type: 'POST',
-                    url: "{% url 'importarAlumno' %}",
-                    data: fd,
-                    contentType: false,
-                    processData: false,
-                    success: function (response) {
-                        listarAlumno();
-                    },
-                    error: function (response) {
-                        console.log("ERROR")
-                        console.log(response)
-                    }
-                });
+    $("#btnEditarAlumno").on('click', function () {
+      if ($("#formEditarAlumno").valid()) {
+        editarAlumno(pkEditar);
+        $("#editarAlumno").modal('hide');
+      }
+    });
+
+    function evaluarEditar(nombreAlumno, codigoAlumno, pk) {
+      var nomb = nombreAlumno.toString();
+      data = '';
+      data += '<input class="form-control" id="nombreAlumnoMod" name="nombreAlumnoMod" type="text" value="' + nomb + '">';
+      $("#editNombre").html(data);
+
+      data = '<input class="form-control" id="codigoAlumnoMod" name="codigoAlumnoMod" type="text" value=' + codigoAlumno + '>';
+      $("#editCodigo").html(data);
+      $("#editarAlumno").modal('show');
+
+      $("form[name='formEditarAlumno']").validate({
+        rules: {
+          nombreAlumnoMod: {
+            required: true,
+          },
+          codigoAlumnoMod: {
+            required: true,
+          },
+        },
+        messages: {
+          nombreAlumnoMod: {
+            required: "Por favor ingrese el nombre"
+          },
+          codigoAlumnoMod: {
+            required: "Por favor ingrese el codigo"
+          }
+        }
+      });
+
+      pkEditar = pk;
+
+    };
+
+    function editarAlumno(idAlumno) {
+      $.ajax({
+        type: 'POST',
+        url: "{% url 'editarAlumno'%}",
+        data: {
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          idAlumno: idAlumno,
+          codigoAlumno: $("#codigoAlumnoMod").val(),
+          nombreAlumno: $("#nombreAlumnoMod").val()
+        },
+        success: function (response) {
+          console.log("Se ha editado correctamente!");
+          listarAlumno();
+        },
+        error: function (response) {
+          // alert the error if any error occured
+          alert(response["responseJSON"]["error"]);
+        }
+      });
+    }
+
+    $("#btnEliminarAlumno").on('click', function () {
+      eliminarAlumno(pkEliminar);
+      $("#eliminarAlumno").modal('hide');
+    });
+
+    function evaluarEliminar(codigoAlumno, pk) {
+      data = '<h5 class="modal-title" id="eliminarAlumnoLabel">Se eliminara el alumno ' + codigoAlumno + '</h5>';
+      $("#eliminarAlumnoLabel").html(data);
+      $("#eliminarAlumno").modal('show');
+
+      pkEliminar = pk;
+    };
+
+    function eliminarAlumno(idAlumno) {
+      $.ajax({
+        type: 'POST',
+        url: "{% url 'eliminarAlumno'%}",
+        data: {
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          idAlumno: idAlumno,
+        },
+        success: function (response) {
+          console.log("Se ha eliminado correctamente!");
+          listarAlumno();
+        },
+        error: function (response) {
+          // alert the error if any error occured
+          alert(response["responseJSON"]["error"]);
+        }
+      });
+    }
+
+
+    function validarAlumno() {
+      $("form[name='formAgregarAlumno']").validate({
+        rules: {
+          nombreAlumno: {
+            required: true,
+          },
+          codigoAlumno: {
+            required: true,
+          },
+        },
+        messages: {
+          nombreAlumno: {
+            required: "Por favor ingrese el nombre"
+          },
+          codigoAlumno: {
+            required: "Por favor ingrese el codigo"
+          }
+        }
+      });
+
+    };
+    $("#btnAgregarAlumno").on('click', function () {
+      if ($("#formAgregarAlumno").valid()) {
+        agregarAlumno();
+        $("#nombreAlumno").val('');
+        $("#codigoAlumno").val('');
+        {#$("#cboHorario").val('');#}
+      }
+    });
+
+
+    function guardarPuntuacion(idAlumno, nivelS) {
+
+
+      $.ajax({
+        type: 'POST',
+        url: "{% url 'guardarPuntuacion'%}",
+        data: {
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          idAlumno: idAlumno,
+          nivelSeleccionado: nivelS,
+          indicadorSeleccionado: $("#cboIndicador").val()
+        },
+        success: function (response) {
+          console.log("Se ha guardado correctamente!");
+          listarAlumno();
+        },
+        error: function (response) {
+          // alert the error if any error occured
+          alert(response["responseJSON"]["error"]);
+        }
+      });
+    }
+
+    function agregarAlumno() {
+      $.ajax({
+        type: 'POST',
+        url: "{% url 'agregarAlumno'%}",
+        data: {
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          nombreAlumno: $("#nombreAlumno").val(),
+          codigoAlumno: $("#codigoAlumno").val(),
+          horario: $("#cboHorario").val()
+        },
+        success: function (response) {
+          listarAlumno();
+        },
+        error: function (response) {
+          // alert the error if any error occured
+          alert(response["responseJSON"]["error"]);
+        }
+      });
+    }
+
+
+    function listarAlumno() {
+      $.ajax({
+        type: 'POST',
+        url: "{% url 'listarAlumno'%}",
+        data: {
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          horarioSeleccionado: $("#cboHorario").val(),
+          filtrado: $("#textBuscar").val()
+        },
+        success: function (response) {
+          estado = ''
+          var instance = JSON.parse(response["listaAlumno"]);
+          console.log(instance)
+          var cont = 0;
+          var x = 0;
+          var i;
+          var j;
+          var numero = instance.length;
+          var instanceN = JSON.parse(response["niveles"]);
+          var numeroN = instanceN.length;
+          data = ''
+          for (x = 0; x < numero; x++) {
+            if (instance[x]["fields"].calificado == '1')
+              cont++;
+          }
+          cont = cont * 100 / numero;
+          cont = Math.round(cont);
+          if (numero > 0) {
+
+            for (i = 0; i < numero; i++) {
+              data += ('<tr class="btn-reveal-trigger">' +
+                  '<th class="align-middle">' + instance[i]["fields"].codigoAlumno + '</th>' +
+                  '<th class="align-middle">' + instance[i]["fields"].nombreAlumno + '</th>' +
+                  '                             <th class="align-middle">' +
+                  '<div class="form-check-inline" >');
+              for (j = 1; j <= numeroN; j++) {
+                if (instance[i]["fields"].valorNota != null && instance[i]["fields"].valorNota == j) {
+                  data += ('<input class="form-check-input mr-1" type="radio"  id="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '" "' +
+                      'value="' + j + '"name="' + instance[i]["pk"] + '" onclick="guardarPuntuacion(' + instance[i]["pk"] + ',' + instanceN[j - 1]["pk"] + ',)" checked>' +
+                      '<label class="form-check-label mr-2" for="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '">' + j + '</label>');
+                } else {
+                  data += ('<input class="form-check-input mr-1" type="radio"  id="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '" "' +
+                      'value="' + j + '"name="' + instance[i]["pk"] + '" onclick="guardarPuntuacion(' + instance[i]["pk"] + ',' + instanceN[j - 1]["pk"] + ',)">' +
+                      '<label class="form-check-label mr-2" for="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '">' + j + '</label>');
+                }
+              }
+              data += ('</div>' +
+                  '<th>' +
+                  '<div class="col">' +
+                  '<div id="evidenciaSubidaFlag' + instance[i]["pk"] + '"></div>'+
+                  ' </div>' +
+                  '</th>' +
+                  '<th>' +
+                  '<div class="row justify-content-between">' +
+                  ' <div class="col">' +
+                  '<button class="badge badge-pill badge-primary" onclick="mostrarModal(' + instance[i]["pk"] + ')">Subir Evidencia</button>' +
+                  '</div>' +
+                  '<div class="col">' +
+                  '<button class="badge badge-pill badge-secondary" onclick="evaluarEditar(\'' + instance[i]["fields"].nombreAlumno + '\',' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ')">Editar</button>' +
+                  '</div>' +
+                  '<div class="col">' +
+                  '<button class="badge badge-pill badge-danger" onclick="evaluarEliminar(' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ',)">Eliminar</button>' +
+                  '</div>' +
+                  ' </div>' +
+                  '</th>' +
+                  '</tr>'+
+              '   </th>' );
+
+              estado = ('<div> Alumnos Evaluados: ' +
+                  cont + '%' + '</div>'
+              );
             }
+          } else {
+            data += '<th colspan="4">' +
+                '<p class="m-2 text-center"> No se encontraron alumnos asignados al horario</p>' +
+                '</th>';
+          }
+          $("#tablaAlumno").html(data);
+          $("#textBuscar").val('');
+          $("#estado").html(estado);
+        },
+        error: function (response) {
+          // alert the error if any error occured
+          alert(response["responseJSON"]["error"]);
         }
+      });
 
-        function subirEvidencia() {
-            {% comment %} data = '<h5 class="modal-title" id="eliminarAlumnoLabel">Estamos trabajando en esta funcionalidad</h5>';
-             $("#rubricaAlumnoLabel").html(data);{% endcomment %}
-            $("#rubricaAlumno").modal('show');
+    }
 
-            $("#btnRubricaAlumno").on('click', function () {
-                $("#rubricaAlumno").modal('hide');
-            });
 
-        }
+    function muestraRubrica() {
+      $.ajax({
+        type: 'POST',
+        url: "{% url 'muestraRubrica'%}",
+        data: {
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          indicadorSeleccionado: $("#cboIndicador").val()
+        },
+        success: function (response) {
+          var instanceRubricas = JSON.parse(response["rubrica"]);
+          var instanceIndicador = JSON.parse(response["indicador"]);
+          var instanceNivel = JSON.parse(response["niveles"]);
+          var i;
+          var numero = instanceRubricas.length;
+          var camposIndicador = instanceIndicador[0]["fields"];
 
-        $("#btnEditarAlumno").on('click', function () {
-            if ($("#formEditarAlumno").valid()) {
-                editarAlumno(pkEditar);
-                $("#editarAlumno").modal('hide');
+          dataIndicador = '<div class="row d-flex justify-content-start mb-4">' +
+              '<div class="col-12 mb-4">' +
+              '<div class="card text-white bg-primary">' +
+              '<div class="card-body">' +
+              '<div class="card-title">' + camposIndicador.codigo +
+              '</div>' +
+              '<p class="card-text">' + camposIndicador.descripcion +
+              '</p>' +
+              '</div>' +
+              '</div>' +
+              '</div>';
+
+          if (instanceRubricas.length > 0) {
+            dataNiveles = '<div class="col-12">' +
+                '<div class="card bg-light">' +
+                '<div class="card-body p-0">' +
+                '<div class="table-responsive">' +
+                '<table class="table">' +
+                '<thead class="thead-dark">' +
+                '<tr>';
+            dataDescripcion = '</tr>' +
+                '</thead>' +
+                '<tbody>' +
+                '<tr>';
+
+            for (i = 0; i < numero - 1; i++) {
+              dataNiveles += ('<th scope="col"">' + instanceNivel[i]["fields"].name + ' (' + instanceNivel[i]["fields"].value + ')</th>');
+              dataDescripcion += ('<td scope="row"> ' + instanceRubricas[i]["fields"].descripcion + '</td>');
             }
-        });
+            dataNiveles += '<th  scope="col">' + instanceNivel[numero - 1]["fields"].name + ' (' + instanceNivel[i]["fields"].value + ')</th>';
+            dataDescripcion += '<td >' + instanceRubricas[numero - 1]["fields"].descripcion + '</td>';
+            dataDescripcion += ('</tr>' +
+                '</tbody>' +
+                '</table>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>');
+            dataIndicador += dataNiveles;
+            dataIndicador += dataDescripcion;
 
-        function evaluarEditar(nombreAlumno, codigoAlumno, pk) {
-            var nomb = nombreAlumno.toString();
-            data = '';
-            data += '<input class="form-control" id="nombreAlumnoMod" name="nombreAlumnoMod" type="text" value="' + nomb + '">';
-            $("#editNombre").html(data);
+          } else {
+            dataNiveles = '<div class="col-12">' +
+                '<div class="card bg-light">' +
+                '<div class="card-body">' +
+                '<div class="card-title"> Aún no se han asignado niveles a este indicador' +
+                '</div>' +
+                '<p class="card-text"> Por favor agregar los correspondientes en la pestaña "Resultados"' +
+                '</p>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+            dataIndicador += dataNiveles;
+          }
 
-            data = '<input class="form-control" id="codigoAlumnoMod" name="codigoAlumnoMod" type="text" value=' + codigoAlumno + '>';
-            $("#editCodigo").html(data);
-            $("#editarAlumno").modal('show');
-
-            $("form[name='formEditarAlumno']").validate({
-                rules: {
-                    nombreAlumnoMod: {
-                        required: true,
-                    },
-                    codigoAlumnoMod: {
-                        required: true,
-                    },
-                },
-                messages: {
-                    nombreAlumnoMod: {
-                        required: "Por favor ingrese el nombre"
-                    },
-                    codigoAlumnoMod: {
-                        required: "Por favor ingrese el codigo"
-                    }
-                }
-            });
-
-            pkEditar = pk;
-
-        };
-
-        function editarAlumno(idAlumno) {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'editarAlumno'%}",
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    idAlumno: idAlumno,
-                    codigoAlumno: $("#codigoAlumnoMod").val(),
-                    nombreAlumno: $("#nombreAlumnoMod").val()
-                },
-                success: function (response) {
-                    console.log("Se ha editado correctamente!");
-                    listarAlumno();
-                },
-                error: function (response) {
-                    // alert the error if any error occured
-                    alert(response["responseJSON"]["error"]);
-                }
-            });
+          $("#contenidoRubrica").html(dataIndicador);
+        },
+        error: function (response) {
+          // alert the error if any error occured
+          alert(response["responseJSON"]["error"]);
         }
+      });
+    }
 
-        $("#btnEliminarAlumno").on('click', function () {
-            eliminarAlumno(pkEliminar);
-            $("#eliminarAlumno").modal('hide');
-        });
-
-        function evaluarEliminar(codigoAlumno, pk) {
-            data = '<h5 class="modal-title" id="eliminarAlumnoLabel">Se eliminara el alumno ' + codigoAlumno + '</h5>';
-            $("#eliminarAlumnoLabel").html(data);
-            $("#eliminarAlumno").modal('show');
-
-            pkEliminar = pk;
-        };
-
-        function eliminarAlumno(idAlumno) {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'eliminarAlumno'%}",
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    idAlumno: idAlumno,
-                },
-                success: function (response) {
-                    console.log("Se ha eliminado correctamente!");
-                    listarAlumno();
-                },
-                error: function (response) {
-                    // alert the error if any error occured
-                    alert(response["responseJSON"]["error"]);
-                }
-            });
-        }
-
-
-        function validarAlumno() {
-            $("form[name='formAgregarAlumno']").validate({
-                rules: {
-                    nombreAlumno: {
-                        required: true,
-                    },
-                    codigoAlumno: {
-                        required: true,
-                    },
-                },
-                messages: {
-                    nombreAlumno: {
-                        required: "Por favor ingrese el nombre"
-                    },
-                    codigoAlumno: {
-                        required: "Por favor ingrese el codigo"
-                    }
-                }
-            });
-
-        };
-        $("#btnAgregarAlumno").on('click', function () {
-            if ($("#formAgregarAlumno").valid()) {
-                agregarAlumno();
-                $("#nombreAlumno").val('');
-                $("#codigoAlumno").val('');
-                {#$("#cboHorario").val('');#}
-            }
-        });
-
-
-        function guardarPuntuacion(idAlumno, nivelS) {
-
-
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'guardarPuntuacion'%}",
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    idAlumno: idAlumno,
-                    nivelSeleccionado: nivelS,
-                    indicadorSeleccionado: $("#cboIndicador").val()
-                },
-                success: function (response) {
-                    console.log("Se ha guardado correctamente!");
-                    listarAlumno();
-                },
-                error: function (response) {
-                    // alert the error if any error occured
-                    alert(response["responseJSON"]["error"]);
-                }
-            });
-        }
-
-        function agregarAlumno() {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'agregarAlumno'%}",
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    nombreAlumno: $("#nombreAlumno").val(),
-                    codigoAlumno: $("#codigoAlumno").val(),
-                    horario: $("#cboHorario").val()
-                },
-                success: function (response) {
-                    listarAlumno();
-                },
-                error: function (response) {
-                    // alert the error if any error occured
-                    alert(response["responseJSON"]["error"]);
-                }
-            });
-        }
-
-
-        function listarAlumno() {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'listarAlumno'%}",
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    horarioSeleccionado: $("#cboHorario").val(),
-                    filtrado: $("#textBuscar").val()
-                },
-                success: function (response) {
-                    estado = ''
-                    var instance = JSON.parse(response["listaAlumno"]);
-                    console.log(instance)
-                    var cont = 0;
-                    var x = 0;
-                    var i;
-                    var j;
-                    var numero = instance.length;
-                    var instanceN = JSON.parse(response["niveles"]);
-                    var numeroN = instanceN.length;
-                    data = ''
-                    for (x = 0; x < numero; x++) {
-                        if (instance[x]["fields"].calificado == '1')
-                            cont++;
-                    }
-                    cont = cont * 100 / numero;
-                    cont = Math.round(cont);
-                    if (numero > 0) {
-
-                        for (i = 0; i < numero; i++) {
-                            data += ('<tr class="btn-reveal-trigger">' +
-                                '<th class="align-middle">' + instance[i]["fields"].codigoAlumno + '</th>' +
-                                '<th class="align-middle">' + instance[i]["fields"].nombreAlumno + '</th>' +
-                                '                             <th class="align-middle">' +
-                                '<div class="form-check-inline" >');
-                            for (j = 1; j <= numeroN; j++) {
-                                if (instance[i]["fields"].valorNota != null && instance[i]["fields"].valorNota == j) {
-                                    data += ('<input class="form-check-input mr-1" type="radio"  id="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '" "' +
-                                        'value="' + j + '"name="' + instance[i]["pk"] + '" onclick="guardarPuntuacion(' + instance[i]["pk"] + ',' + instanceN[j - 1]["pk"] + ',)" checked>' +
-                                        '<label class="form-check-label mr-2" for="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '">' + j + '</label>');
-                                } else {
-                                    data += ('<input class="form-check-input mr-1" type="radio"  id="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '" "' +
-                                        'value="' + j + '"name="' + instance[i]["pk"] + '" onclick="guardarPuntuacion(' + instance[i]["pk"] + ',' + instanceN[j - 1]["pk"] + ',)">' +
-                                        '<label class="form-check-label mr-2" for="' + instance[i]["pk"] + '' + instanceN[j - 1]["pk"] + '">' + j + '</label>');
-                                }
-                            }
-                            data += ('</div>' +
-                                '</th>' +
-                                '<th>' +
-                                '<div class="row">' +
-                                ' <div class="col">' +
-                                '<button class="badge badge-pill badge-primary" onclick="subirEvidencia()">Subir Evidencia</button>' +
-                                '</div>' +
-                                '<div class="col">' +
-                                '<button class="badge badge-pill badge-secondary" onclick="evaluarEditar(\'' + instance[i]["fields"].nombreAlumno + '\',' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ')">Editar</button>' +
-                                '</div>' +
-                                '<div class="col">' +
-                                '<button class="badge badge-pill badge-danger" onclick="evaluarEliminar(' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ',)">Eliminar</button>' +
-                                '</div>' +
-                                ' </div>' +
-                                '</th>' +
-                                '</tr>');
-
-                            estado = ('<div> Alumnos Evaluados: ' +
-                                cont + '%' + '</div>'
-                            );
-                        }
-                    } else {
-                        data += '<th colspan="4">' +
-                            '<p class="m-2 text-center"> No se encontraron alumnos asignados al horario</p>' +
-                            '</th>';
-                    }
-                    $("#tablaAlumno").html(data);
-                    $("#textBuscar").val('');
-                    $("#estado").html(estado);
-                },
-                error: function (response) {
-                    // alert the error if any error occured
-                    alert(response["responseJSON"]["error"]);
-                }
-            });
-
-        }
-
-
-        function muestraRubrica() {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'muestraRubrica'%}",
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    indicadorSeleccionado: $("#cboIndicador").val()
-                },
-                success: function (response) {
-                    var instanceRubricas = JSON.parse(response["rubrica"]);
-                    var instanceIndicador = JSON.parse(response["indicador"]);
-                    var instanceNivel = JSON.parse(response["niveles"]);
-                    var i;
-                    var numero = instanceRubricas.length;
-                    var camposIndicador = instanceIndicador[0]["fields"];
-
-                    dataIndicador = '<div class="row d-flex justify-content-start mb-4">' +
-                        '<div class="col-12 mb-4">' +
-                        '<div class="card text-white bg-primary">' +
-                        '<div class="card-body">' +
-                        '<div class="card-title">' + camposIndicador.codigo +
-                        '</div>' +
-                        '<p class="card-text">' + camposIndicador.descripcion +
-                        '</p>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>';
-
-                    if (instanceRubricas.length > 0) {
-                        dataNiveles = '<div class="col-12">' +
-                            '<div class="card bg-light">' +
-                            '<div class="card-body p-0">' +
-                            '<div class="table-responsive">' +
-                            '<table class="table">' +
-                            '<thead class="thead-dark">' +
-                            '<tr>';
-                        dataDescripcion = '</tr>' +
-                            '</thead>' +
-                            '<tbody>' +
-                            '<tr>';
-
-                        for (i = 0; i < numero - 1; i++) {
-                            dataNiveles += ('<th scope="col"">' + instanceNivel[i]["fields"].name + ' (' + instanceNivel[i]["fields"].value + ')</th>');
-                            dataDescripcion += ('<td scope="row"> ' + instanceRubricas[i]["fields"].descripcion + '</td>');
-                        }
-                        dataNiveles += '<th  scope="col">' + instanceNivel[numero - 1]["fields"].name + ' (' + instanceNivel[i]["fields"].value + ')</th>';
-                        dataDescripcion += '<td >' + instanceRubricas[numero - 1]["fields"].descripcion + '</td>';
-                        dataDescripcion += ('</tr>' +
-                            '</tbody>' +
-                            '</table>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>');
-                        dataIndicador += dataNiveles;
-                        dataIndicador += dataDescripcion;
-
-                    } else {
-                        dataNiveles = '<div class="col-12">' +
-                            '<div class="card bg-light">' +
-                            '<div class="card-body">' +
-                            '<div class="card-title"> Aún no se han asignado niveles a este indicador' +
-                            '</div>' +
-                            '<p class="card-text"> Por favor agregar los correspondientes en la pestaña "Resultados"' +
-                            '</p>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>';
-                        dataIndicador += dataNiveles;
-                    }
-
-                    $("#contenidoRubrica").html(dataIndicador);
-                },
-                error: function (response) {
-                    // alert the error if any error occured
-                    alert(response["responseJSON"]["error"]);
-                }
-            });
-        }
-
-    </script>
+  </script>
 {% endblock %}
