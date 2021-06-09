@@ -46,5 +46,27 @@
     "fields": {
       "name": "Usuario"
     }
+  },
+  {
+  "model": "authentication.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$216000$GVNjJSaPbZHL$RxlI8L9l+fKz67VR8vj/rWESDblC986h6kBZDYgzn2I=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "admin@apolo.pe",
+    "first_name": "Administrador",
+    "last_name": "",
+    "email": "admin@apolo.pe",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2021-06-09T04:35:29.555Z",
+    "code": "00000000",
+    "photo": "",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
   }
+}
 ]
