@@ -25,3 +25,13 @@ class REAcred_Indicador(models.Model):
     resultadoAcreditadora = models.ForeignKey(ResultadoAcreditadora, on_delete=models.DO_NOTHING, null=True)
     indicador = models.ForeignKey(Indicador, on_delete=models.DO_NOTHING, null=True)
     estado = models.CharField(max_length=2, choices=ESTADOS, default='1', null=True, blank=True)
+
+class REAcred_REPucp(models.Model):
+    ESTADOS = [
+        ('0', 'Eliminado'),
+        ('1', 'Activo'),
+        ('2','Inactivo'),
+    ]
+    resultadoAcreditadora = models.ForeignKey(ResultadoAcreditadora, on_delete=models.DO_NOTHING, null=True)
+    resultadoPUCP = models.ForeignKey(ResultadoPUCP, on_delete=models.DO_NOTHING, null=True)
+    estado = models.CharField(max_length=2, choices=ESTADOS, default='1', null=True, blank=True)
