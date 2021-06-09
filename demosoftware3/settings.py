@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'gestionarIndicadores',
     'gestionarRubrica',
     'gestionarEvidencias',
+    'gestionarHistoricoEv',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
