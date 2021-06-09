@@ -10,5 +10,6 @@ urlpatterns = [
     path('guardarPuntuacion/',views.guardarPuntuacion,name='guardarPuntuacion'),
     path('eliminarAlumno/',views.eliminarAlumno,name='eliminarAlumno'),
     path('editarAlumno/',views.editarAlumno,name='editarAlumno'),
-    path('importarAlumno',views.importarAlumno,name='importarAlumno'),
+    path('importarAlumno',views.importarAlumno,name='importarAlumno'), #TODO::: FIX colocar "/" y refactorizar
+    path('subirEvidencia/',views.subirEvidencia,name='subirEvidencia')
 ]

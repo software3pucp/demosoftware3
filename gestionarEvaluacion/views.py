@@ -10,6 +10,7 @@ from gestionarIndicadores.models import Indicador
 from gestionarRubrica.models import Rubrica
 from gestionarNivel.models import Nivel
 from gestionarCurso.models import Curso
+
 def evaluar(request,pk):
     media_path = MEDIA_URL
     listaAlumno = reversed(RespuestaEvaluacion.objects.filter(estado=1))
@@ -91,4 +92,12 @@ def importarAlumno(request):
         nombre = row[9:-1]
         if(codigo!=""):
             RespuestaEvaluacion.objects.create(nombreAlumno=nombre,codigoAlumno=codigo,horario_id=request.POST["horariopk"])
+    return JsonResponse({}, status=200)
+
+def subirEvidencia(request):
+    # TODO::: Subir archivo a BBDD del PK del Evaluado
+    print(request.POST["evaluadopk"])
+    # TODO::: Agregar una columna para guardar la evidencia
+    # TODO::: Mandar una respuesta adecuada al front (Se hace con un IF y en dos JSONRESPONSE
+    print(request.FILES["archivo"])
     return JsonResponse({}, status=200)
