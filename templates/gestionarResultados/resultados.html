@@ -45,6 +45,7 @@
                                 <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
                                         name="cboEspecialidad"
                                         onchange="listaResultados()">
+
                                 </select>
                             </div>
                         </div>
@@ -53,55 +54,44 @@
                     <div style="margin: 1%;">
                        <span class="btn btn-primary" onclick="redirectCrearResultado()">Crear</span>
                     </div>
-                   {% comment %} {% for resultado in resultados %}
-                        <div style="margin: 1%;">
-                            <div class="card text-white bg-primary">
-                                <div class="card-body">
-                                    <form action="{% url 'listarResultado' %}" method="post">
-                                        {% csrf_token %}
-                                        <div class="row no-gutters">
-                                            <div class="col-md-1">
-                                                <h2 class="card-text text-white">{{ resultado.0.codigo }}</h2>
-                                            </div>
-                                            <div class="col-md-9 border-left border-right p-2">
-                                                <p>{{ resultado.0.descripcion }}</p>
-                                                {% if not resultado.1 %}
-                                                    <hr style="background-color: #FFFFFF;">
-                                                    <p>Nota: El resultado no tiene indicadores asociados,
-                                                        si desea asociar indicadores, por favor dar click en editar</p>
-                                                {% endif %}
-                                            </div>
-                                            <div class="col-md-2 ">
-                                                <div class="d-flex justify-content-center">
-                                                    <a href="{% url 'editarResultado' pk=resultado.0.pk %}"
-                                                       class="btn btn-falcon-primary mr-1 mb-1">Editar</a>
-                                                </div>
-                                                <div class="d-flex justify-content-center">
-                                                    <input type="hidden" id="resultadoPk" name="resultadoPk"
-                                                           value="{{ resultado.0.pk }}">
-                                                    <button type="submit" class="btn btn-falcon-primary mr-1 mb-1">
-                                                        Eliminar
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}{% endcomment %}
+
+                    <div id="listadoResultados"></div>
+
                 </div>
             </div>
         </div>
     </div>
+
+      <!-- Modal Eliminar Resultado -->
+
+    <div class="modal fade" id="eliminarResultado" tabindex="-1" role="dialog" aria-labelledby="eliminarResultadoLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarResultadoLabel"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                    <button id="btnEliminarResultado" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
 
 {% block extrajs %}
     <script>
 
+        var pkEliminar;
+
         $(document).ready(function () {
-            console.log("ready!");
             obtenerEspecialidades();
+            listarResultados();
         });
 
         function redirectCrearResultado() {
@@ -110,9 +100,45 @@
             document.location.href = "../../gestionarResultados/crear/" + pk_especialidad;
         }
 
+        function redirectEditarResultado(id_resultado){
+
+            document.location.href = "../../gestionarResultados/editar/" + id_resultado;
+        }
+
+        $("#btnEliminarResultado").on('click', function () {
+            eliminarResultado(pkEliminar);
+            $("#eliminarResultado").modal('hide');
+        });
+
+        function resultadosEliminar(codigoResultado, pk) {
+            console.log(codigoResultado)
+            console.log(pk)
+
+            data = '<h5 class="modal-title" id="eliminarResultadoLabel">Se eliminará el resultado ' + codigoResultado + '</h5>';
+            $("#eliminarResultadoLabel").html(data);
+            $("#eliminarResultado").modal('show');
+            pkEliminar = pk;
+        };
+
+
+        function eliminarResultado(resultadopk){
+             $.ajax({
+                type: 'POST',
+                url: "{% url 'eliminarResultado' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    resultadopk: resultadopk,
+                },
+                success: function (response) {
+                    listarResultados();
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
 
         function obtenerEspecialidades(){
-            console.log($("#cboFacultad").val());
             $.ajax({
                 type: 'POST',
                 url: "{% url 'obtenerEspecialidades' %}",
@@ -122,14 +148,15 @@
                 },
                 success: function (response){
                     var instance = JSON.parse(response["resp"]);
+
                     $(".especialidad").remove();
                     for(var i=0; i<instance.length; i++){
-                        data = '<option class="especialidad" onclick="listarCursos()" value='+
+                        data = '<option class="especialidad" onclick="listarResultados()" value='+
                             instance[i]["pk"]+'>'+
                             instance[i]["fields"].nombre+'</option>';
                         $("#cboEspecialidad").append(data);
                     }
-                    {% comment %}listarResultados();{% endcomment %}
+                    listarResultados();
                 },
                 error: function (response){
                     alert(response["responseJSON"]["error"]);
@@ -137,71 +164,61 @@
             });
         }
 
-        {% comment %}function listarCursos() {
+        function listarResultados() {
             $.ajax({
                 type: 'POST',
-                url: "{% url 'listarPlanMedicion'%}",
+                url: "{% url 'listarResultados'%}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    operacion: 'listCur',
-                    especialidad: $("#especialidades").val(),
-                    estado: $("#estado").val(),
+                    especialidad: $("#cboEspecialidad").val(),
                 },
                 success: function (response) {
-                    var instance = JSON.parse(response["resp"]);
-                    var instance1 = JSON.parse(response["resp1"]);
-                    $("#esp").remove();
-                    data='<input id="esp" type="hidden" name="especialidad" value="'+$("#especialidades").val()+'">';
-                    $("#hid").after(data);
-                    $("#selectEspeTit").remove();
+                    var instance =JSON.parse(response['resultados']);
+                    var instance2 =JSON.parse(response['tiene_niveles']);
+                    var i = 0;
+                    var numero = instance.length;
 
-                    data = '<div id="selectEspeTit">' +
-                        '   <h4>' + $("#facultades option:selected").text() + ' - ' + $("#especialidades option:selected").text()+'</h4>' +
-                        '   <hr>' +
-                        '</div>';
-                    $("#selectEspe").append(data);
-                    $(".curso").remove();
-                    for(var i=0; i<instance.length; i++){
-                        data = '<div class="curso col-md-4 equal">' +
-                            '   <div class="d-flex justify-content-center">'+
-                            '       <div class="product card">' +
-                            '           <div class="card-img-top imgbox" style="height: 15rem">'+
-                            '               <a href="#">'+
-                            '                    <img class="" src="{% static 'img/illustrations/3.png' %}">'+
-                            '                </a>'+
-                            '            </div>'+
-                            '           <div class="specifies">' +
-                            '               <h5 class="card-title ml-2" style="text-align: left">' + instance1[instance.length-i-1]["fields"].nombre + '</h5>' +
-                            '               <hr>' +
-                            '               <div class="row d-flex justify-content-end">' +
-                            '                   <form class="p-2" action="/gestionarPlanMedicion/crear/'+ instance[instance.length-i-1]["pk"] + '" method="post">'+
-                            '                       {% csrf_token %}'+
-                            '                       <input type="hidden" name="operacion" value="entrada">'+
-                            '                       <input type="hidden" name="especialidad" value="'+$("#especialidades").val()+'">'+
-                            '                       <button class="btn btn-falcon-primary nav-link icon-indicator fas fa-pen iconSize iconColoNBorder" style="text-align: center;"></button>' +
-                            '                   </form>'+
-                            '                   <form class="p-2 pr-3" action="{% url 'listarPlanMedicion' %}" method="post">'+
-                            '                       {% csrf_token %}'+
-                            '                       <input type="hidden" name="operacion" value="estado">'+
-                            '                       <input type="hidden" name="planpk" value= "'+instance[instance.length-i-1]["pk"] +'"'+
-                            '                       <input type="hidden" name="especialidad" value="'+$("#especialidades").val()+'">'+
-                            '                       <button class="btn btn-falcon-primary nav-link icon-indicator fas fa-power-off iconSize iconColorNBorder" style="text-align: center;"></button>' +
-                            '                   </form>'+
-                            '               </div>'+
-                            '           </div>'+
-                            '       </div>'+
-                            '   </div>'+
-                            '</div>' ;
-                        $("#cursos").prepend(data);
+                    for (i=0; i<numero; i++ ) {
+                        data +=(
+                        '<div style="margin: 1%;">'+
+                        '   <div class="card text-white bg-primary">'+
+                        '        <div class="card-body">'+
+                        '                <div class="row no-gutters">'+
+                        '                    <div class="col-md-1">'+
+                        '                        <h2 class="card-text text-white">'+ instance[i]["fields"].codigo +'</h2>'+
+                        '                    </div>'+
+                        '                    <div class="col-md-9 border-left border-right p-2">'+
+                        '                        <p>'+ instance[i]["fields"].descripcion +'</p>')
+                        {% comment %}if (instance2[i]==false){
+                            data +=(
+                        '                            <hr style="background-color: #FFFFFF;">'+
+                        '                            <p>Nota: El resultado no tiene indicadores asociados,'+
+                        '                                si desea asociar indicadores, por favor dar click en editar</p>')
+                        }{% endcomment %}
+
+                        data+=(
+                        '                    </div>'+
+                        '                    <div class="col-md-2 ">'+
+                        '                        <div class="d-flex justify-content-center">'+
+                        '                        <button class="btn btn-falcon-primary mr-1 mb-1" onclick="redirectEditarResultado('+ instance[i]["pk"] +')">Editar</button>'+
+                        '                        </div>'+
+                        '                        <div class="d-flex justify-content-center">'+
+                        '                        <button class="btn btn-falcon-primary mr-1 mb-1" onclick="resultadosEliminar(\''+ instance[i]["fields"].codigo +'\','+ instance[i]["pk"] +')">Eliminar</button>'+
+                        '                        </div>'+
+                        '                    </div>'+
+                        '                </div>'+
+                        '        </div>'+
+                        '    </div>'+
+                        '</div>')
                     }
-                    console.log('terminado');
+                    $("#listadoResultados").html(data);
                 },
                 error: function (response) {
                     // alert the error if any error occured
                     alert(response["responseJSON"]["error"]);
                 }
             });
-        }{% endcomment %}
+        }
 
     </script>
 {% endblock %}

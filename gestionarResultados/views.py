@@ -1,6 +1,7 @@
-import requests
+import json
 from django.core import serializers
 from django.http import JsonResponse
+
 
 from django.shortcuts import render, redirect
 from django.db.models import Q
@@ -30,32 +31,19 @@ def crearResultado(request, id_especialidad):
 
 
 def Resultados(request):
-    eliminado = False
-    if request.POST:
-        resultadoPk = request.POST['resultadoPk']
-        resultado = ResultadoPUCP.objects.get(pk=resultadoPk)
-        resultado.estado = '0'  # eliminación lógica
-        resultado.save()
-        eliminado = True
-
-    resultados = ResultadoPUCP.objects.filter(Q(estado='1') | Q(estado='2'))
-    listaResultados=[]
-    for result in resultados:
-        tiene_indicadores = False
-        indicadores = Indicador.objects.filter(resultado_id=result.pk, estado='1')
-        if(len(indicadores)>0):
-            tiene_indicadores = True
-        else:
-            tiene_indicadores = False
-        registro=[result,tiene_indicadores]
-        listaResultados.append(registro)
 
     facultades = Facultad.objects.filter(estado='1')
     context = {
         'facultades': facultades,
-        'resultados': listaResultados,
     }
     return render(request, 'gestionarResultados/resultados.html', context)
+
+def eliminarResultado(request):
+    resultadoPk = request.POST['resultadopk']
+    resultado = ResultadoPUCP.objects.get(pk=resultadoPk)
+    resultado.estado = '0'  # eliminación lógica
+    resultado.save()
+    return JsonResponse({}, status=200)
 
 
 def obtenerEspecialidades(request):
@@ -64,6 +52,28 @@ def obtenerEspecialidades(request):
     data = serializers.serialize("json", especialidades)
     return JsonResponse({"resp": data}, status=200)
 
+def listarResultados(request):
+    id_especialidad = request.POST['especialidad']
+    resultados = ResultadoPUCP.objects.filter(especialidad_id=id_especialidad, estado=1)
+    listaResultados = []
+    lista2 = []
+    for result in resultados:
+        tiene_indicadores = False
+        indicadores = Indicador.objects.filter(resultado_id=result.pk, estado='1')
+        if (len(indicadores) > 0):
+            tiene_indicadores = True
+        else:
+            tiene_indicadores = False
+        registro = [result, tiene_indicadores]
+        listaResultados.append(registro)
+        lista2.append(tiene_indicadores)
+
+    ser_instance = serializers.serialize('json', resultados)
+    ser_instance2 = json.dumps(lista2)
+    #ser_instance2 = serializers.serialize('json', listaResultados)
+    return JsonResponse({"resultados": ser_instance,"tiene_niveles": ser_instance2}, status=200)
+
+
 
 def editarResultado(request,pk):
     if request.POST:
@@ -71,7 +81,7 @@ def editarResultado(request,pk):
         resultado.codigo = request.POST['codigo']
         resultado.descripcion = request.POST['descripcion']
         resultado.save()
-        return redirect('listarResultado')
+        return redirect('resultados')
 
     resultado = ResultadoPUCP.objects.get(pk=pk)
     listaIndicares = Indicador.objects.filter(resultado_id=pk, estado=1)
