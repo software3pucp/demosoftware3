@@ -44,7 +44,7 @@
                                 <label for="cboEspecialidad">Especialidad:</label>
                                 <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
                                         name="cboEspecialidad"
-                                        onchange="listaResultados()">
+                                        onchange="listarResultados()">
 
                                 </select>
                             </div>
@@ -55,6 +55,10 @@
                        <span class="btn btn-primary" onclick="redirectCrearResultado()">Crear</span>
                     </div>
 
+                    <div id="tituloEspecialidadResultados">
+
+                    </div>
+                    <hr style="background-color: #0154ae;">
                     <div id="listadoResultados"></div>
 
                 </div>
@@ -96,7 +100,6 @@
 
         function redirectCrearResultado() {
             var pk_especialidad = $("#cboEspecialidad").val();
-
             document.location.href = "../../gestionarResultados/crear/" + pk_especialidad;
         }
 
@@ -156,6 +159,7 @@
                             instance[i]["fields"].nombre+'</option>';
                         $("#cboEspecialidad").append(data);
                     }
+
                     listarResultados();
                 },
                 error: function (response){
@@ -175,9 +179,10 @@
                 success: function (response) {
                     var instance =JSON.parse(response['resultados']);
                     var instance2 =JSON.parse(response['tiene_niveles']);
+                    console.log(instance);
                     var i = 0;
                     var numero = instance.length;
-
+                    var data ='';
                     for (i=0; i<numero; i++ ) {
                         data +=(
                         '<div style="margin: 1%;">'+
@@ -211,6 +216,8 @@
                         '    </div>'+
                         '</div>')
                     }
+                    data2 = '<h4>Resultados del estudiante de '+$("#cboEspecialidad option:selected").text()+'</h4>';
+                    $("#tituloEspecialidadResultados").html(data2);
                     $("#listadoResultados").html(data);
                 },
                 error: function (response) {
