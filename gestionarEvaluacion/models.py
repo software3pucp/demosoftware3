@@ -16,7 +16,8 @@ class RespuestaEvaluacion(models.Model):
     rubrica = models.ForeignKey(Rubrica,on_delete=models.RESTRICT, null=True, blank=True)
     estado = models.CharField(max_length=2,default=1)
     calificado = models.CharField(max_length=2,null=True, default=0)
-
+    evidencia = models.CharField(max_length=2, null=True, default=0)
+    archivo = models.FileField(null=True, blank=True, upload_to='archive/')
 
 
 class MedicionDeIndicador(models.Model):

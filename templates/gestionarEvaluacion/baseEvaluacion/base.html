@@ -449,7 +449,8 @@
         processData: false,
         success: function (response) {
          $("#evidenciaSubidaFlag"+pkSubirEvidencia.toString()).html('<span class="fas fa-check-circle text-primary ml-1" data-toggle="tooltip" data-placement="right" title="Verified" data-fa-transform="shrink-1 down-1"></span>');
-        },
+             listarAlumno();
+         },
         error: function (response) {
       {% comment %}TODO::: Si se subió mal, enviar un alert{% endcomment %}
           console.log("ERROR")
@@ -647,12 +648,15 @@
           var numero = instance.length;
           var instanceN = JSON.parse(response["niveles"]);
           var numeroN = instanceN.length;
-          data = ''
+          data = '';
+          var total = numero*2;
           for (x = 0; x < numero; x++) {
             if (instance[x]["fields"].calificado == '1')
-              cont++;
+                cont++;
+            if (instance[x]["fields"].evidencia == '1')
+                cont++;
           }
-          cont = cont * 100 / numero;
+          cont = cont * 100 / total;
           cont = Math.round(cont);
           if (numero > 0) {
 

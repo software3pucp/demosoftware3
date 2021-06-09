@@ -80,7 +80,7 @@ def listarAlumno(request):
     else:
         listaAlumno = reversed(RespuestaEvaluacion.objects.filter(horario_id=request.POST["horarioSeleccionado"], estado=1))
 
-    ser_instance = serializers.serialize('json', list(listaAlumno),fields=('id', 'nombreAlumno', 'codigoAlumno', 'horario','calificado', 'valorNota'))
+    ser_instance = serializers.serialize('json', list(listaAlumno),fields=('id', 'nombreAlumno', 'codigoAlumno', 'horario','calificado', 'valorNota','evidencia'))
     ser_instance2 = serializers.serialize('json', list(niveles), fields=('id', 'name', 'value', 'state'))
     return JsonResponse({"listaAlumno": ser_instance, "niveles": ser_instance2},  status=200)
 
@@ -97,7 +97,11 @@ def importarAlumno(request):
 def subirEvidencia(request):
     # TODO::: Subir archivo a BBDD del PK del Evaluado
     print(request.POST["evaluadopk"])
+    alumno = RespuestaEvaluacion.objects.get(pk=request.POST["evaluadopk"])
     # TODO::: Agregar una columna para guardar la evidencia
+    alumno.evidencia = 1
+    alumno.archivo = request.FILES["archivo"]
+    alumno.save()
     # TODO::: Mandar una respuesta adecuada al front (Se hace con un IF y en dos JSONRESPONSE
     print(request.FILES["archivo"])
     return JsonResponse({}, status=200)
