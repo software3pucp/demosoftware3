@@ -18,7 +18,7 @@
     {# Rubrica #}
     <div class="card p-3">
         <div class="col-12 d-flex justify-content-start">
-            <h4 id="Titulo" style="font-family: Montserrat">Curso </h4>
+            <h4 id="Titulo" style="font-family: Montserrat">{{ cursoSeleccionado.nombre }}</h4>
         </div>
         <hr class="mb-3" style="background-color: #0154ae;">
 
@@ -28,10 +28,26 @@
         </div>
         <hr class="mb-3" style="background-color: #0154ae;">
 
+         {% for documento in listaDocumentos %}
+                <br>
+                <h6>{{ documento.archivo}} Publicado el {{ documento.fecha_creacion }}</h6>
+              <hr class="mb-3" style="background-color: gray;">
+            {% endfor %}
+
         <div class="col-12 d-flex justify-content-start">
-            <h4 id="Titulo2" style="font-family: Montserrat">Rubricas pasadas </h4>
+            <h4 id="Titulo2" style="font-family: Montserrat">Rubricas Pasadas </h4>
         </div>
+
+
         <hr class="mb-3" style="background-color: #0154ae;">
     </div>
 
+{% endblock %}
+{% block extrajs %}
+<script>
+    $(document).ready(function (){
+        console.log("{{listaDocumentos}}");
+    })
+
+</script>
 {% endblock %}

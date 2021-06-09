@@ -6,14 +6,23 @@ from datetime import datetime
 from gestionarHistoricoEv.models import Historico
 from gestionarHorario.models import Horario
 from gestionarCurso.models import Curso
+from gestionarEvidencias.models import EvidenciasxHorario
 from demosoftware3.settings import MEDIA_URL
+from itertools import chain
 def listarHistorico(request,pk):
     media_path = MEDIA_URL
-    #la lista debe ser por un horario de un curso en especifico
-    historicoLista = reversed(Historico.objects.filter())
     cursoSeleccionado = Curso.objects.get(pk=pk)
+    listaHorarios = list(Horario.objects.filter(curso_id=pk,estado=1))
+    #listaDocumentos = EvidenciasxHorario.objects.filter(estado=1)
+    listaDocumentos = EvidenciasxHorario.objects.none()
+    for i in range(len(listaHorarios)):
+        listaEDocumentos = EvidenciasxHorario.objects.filter(horario_id=listaHorarios[i].id, estado=1)
+        if listaEDocumentos:
+            listaDocumentos = listaDocumentos|listaEDocumentos
+
     context = {
-        'ListaHistorico':historicoLista,
-        'cursoSeleccionado': cursoSeleccionado
+       # 'ListaHistorico':historicoLista,
+        'cursoSeleccionado': cursoSeleccionado,
+        'listaDocumentos': listaDocumentos
     }
     return render(request, 'gestionarHistoricoEv/listarHistorico.html', context)
