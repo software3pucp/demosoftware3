@@ -13,11 +13,22 @@ from gestionarResultados.models import ResultadoPUCP
 
 
 def listarRE(request, pk):
+    lista=[]
     acreditadora = Acreditadora.objects.get(pk=pk)
     resultados = ResultadoAcreditadora.objects.filter(acreditadora=pk)
+    repucps=ResultadoPUCP.objects.filter(especialidad_id=1)
+    for repucp in repucps:
+        id_especialidad = repucp.especialidad_id
+        especialidad = Especialidad.objects.get(pk=id_especialidad)
+        id_facultad = especialidad.facultad_id
+        facultad = Facultad.objects.get(pk=id_facultad)
+
+        reg=[repucp,especialidad,facultad]
+        lista.append(reg)
     context = {
         'acreditadora': acreditadora,
         'resultados': resultados,
+        'repucps' : lista,
     }
     return render(request, 'gestionarREAcreditadoras/listarRE.html', context)
 

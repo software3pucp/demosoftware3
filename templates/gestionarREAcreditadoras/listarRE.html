@@ -27,6 +27,9 @@
                 <div class="nav-bar-item px-3 px-sm-4 active" >
                     <div class="mt-1">Resultados</div>
                 </div>
+                <div class="nav-bar-item px-3 px-sm-4">
+                    <div class="mt-1">Relaciones</div>
+                </div>
             </div>
             <div class="tab-contents">
                 <div class="tab-content ">
@@ -379,6 +382,39 @@
                             </div>
                         </div>
                     {% endfor %}
+                </div>
+                <div class="tab-content">
+                        {% for repucp in repucps %}
+                        <div style="margin: 1%;">
+                            <div class="card text-white bg-primary">
+                                <div class="card-body">
+                                    <div>
+                                        <div class="d-flex justify-content-end">
+                                            <h2 style="color: #fff;">{{ repucp.2.nombre }}</h2>
+                                        </div>
+
+                                        <div class="d-flex justify-content-end">
+                                            <h2 style="color: #fff;">{{ repucp.1.nombre }}</h2>
+                                        </div>
+                                        <div class="col no-gutters">
+                                            <div class="row no-gutters">
+                                                <div class="col-md-1">
+                                                    <h2 style="color: #fff;">{{ repucp.0.codigo }}</h2>
+                                                </div>
+                                                <div class="col-md-9"
+                                                     style="border-left: 1px solid #fff;border-right: 1px solid #fff;padding-left: 2%;">
+                                                    <p>{{ repucp.0.descripcion }}</p>
+                                                </div>
+                                                <div class="col-md-2" style="text-align: center;padding-left: 2%;">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
                 </div>
             </div>
         </div>
