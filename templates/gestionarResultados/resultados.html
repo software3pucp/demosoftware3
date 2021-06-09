@@ -192,12 +192,12 @@
                             '                    </div>' +
                             '                    <div class="col-md-9 border-left border-right p-2">' +
                             '                        <p>' + instance[i]["fields"].descripcion + '</p>')
-                        {% comment %}if (instance2[i]==false){
+                        if (instance2[i]==false){
                             data +=(
                         '                            <hr style="background-color: #FFFFFF;">'+
                         '                            <p>Nota: El resultado no tiene indicadores asociados,'+
                         '                                si desea asociar indicadores, por favor dar click en editar</p>')
-                        }{% endcomment %}
+                        }
 
                         data += (
                             '                    </div>' +
@@ -214,7 +214,7 @@
                             '    </div>' +
                             '</div>')
                     }
-                    data2 = '<h5>Resultados del estudiante de ' + $("#cboEspecialidad option:selected").text() + '</h5>';
+                    data2 = '<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>';
                     $("#tituloEspecialidadResultados").html(data2);
                     $("#listadoResultados").html(data);
                 },
