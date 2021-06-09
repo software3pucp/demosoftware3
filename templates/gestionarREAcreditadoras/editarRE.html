@@ -22,13 +22,14 @@
         <div class="row">
             <div class="col-md-12">
                 <div style="float: right;">
-                    <a class="btn btn-outline-primary" type="button" href="{% url 'listarRE' pk=resultadoAcreditadora.acreditadora_id %}">
+                    <a class="btn btn-outline-primary" type="button"
+                       href="{% url 'listarRE' pk=resultadoAcreditadora.acreditadora_id %}">
                         <img class="img-fluid" style="height: 20px"
                              src="https://image.flaticon.com/icons/png/512/60/60577.png">
                         Volver
                     </a>
                 </div>
-                <h3>ABET - Editar Resultado del Estudiante </h3>
+                <h3>{{ acreditadora.nombre }} - {{ titulo }} Resultado del Estudiante </h3>
                 <hr>
             </div>
         </div>
@@ -42,7 +43,7 @@
             <div class="col-md-8">
                 <div class="form-group">
                     <input name="codigo" class="form-control" id="codigo" type="text" placeholder="Ingrese un código"
-                           value="{{ resultadoAcreditadora.codigo }}">
+                           value="{{ resultadoAcreditadora.codigo }}" required>
                 </div>
             </div>
         </div>
@@ -57,14 +58,14 @@
                 <div class="form-group">
                     <textarea name="descripcion" class="form-control" id="descripcion"
                               placeholder="Ingrese una descripción"
-                              rows="4">{{ resultadoAcreditadora.descripcion }}</textarea>
+                              rows="4" required>{{ resultadoAcreditadora.descripcion }}</textarea>
                 </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
-                <h3>Asociación ABET - PUCP</h3>
+                <h3>Asociación {{ acreditadora.nombre }} - PUCP</h3>
                 <hr>
             </div>
         </div>
@@ -72,7 +73,8 @@
         <div class="row">
             <div class="col-md-6">
                 <label for="FormControlSelect1">Facultad:</label>
-                <select id="facultades" name="facultades" class="form-control" id="FormControlSelect1" onchange="listarEspecialidades()">
+                <select id="facultades" name="facultades" class="form-control" id="FormControlSelect1"
+                        onchange="listarEspecialidades()">
                     {% for facultad in facultades %}
                         <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
                     {% endfor %}
@@ -80,7 +82,8 @@
             </div>
             <div class="col-md-6">
                 <label for="especialidades">Especialidades:</label>
-                <select id="especialidades" name="especialidades" class="form-control" id="FormControlSelect1" onchange="listarIndicadores()">
+                <select id="especialidades" name="especialidades" class="form-control" id="FormControlSelect1"
+                        onchange="listarIndicadores()">
                 </select>
             </div>
         </div>
@@ -115,7 +118,8 @@
         {% endif %}
         <div class="row">
             <div class="col-md-12" style="text-align: right;">
-                <a class="btn btn-outline-primary" type="button" href="{% url 'listarRE' pk=resultadoAcreditadora.acreditadora_id %}">Cancelar</a>
+                <a class="btn btn-outline-primary" type="button"
+                   href="{% url 'listarRE' pk=resultadoAcreditadora.acreditadora_id %}">Cancelar</a>
                 {% if resultadoAcreditadora.pk == "0" %}
                     <input type="hidden" name="operacion" value="insertar">
                 {% else %}
@@ -181,10 +185,12 @@
                             '   <td>' + instance[i]["fields"].descripcion + '</td>' +
                             '   <td>' +
                             '       {% if indicador in indicadorSelec %}' +
-                            '           <input id="id'+instance[i]["pk"]+'" type="checkbox" name="select'+instance[i]["pk"]+'" value="1" checked>' +
-                            '       {% else %}' +
-                            '           <input id="id'+instance[i]["pk"]+'" type="checkbox" name="select'+instance[i]["pk"]+'" value="1">' +
-                            '       {% endif %}' +
+                                '           <input id="id'+instance[i]["pk"]+'" type="checkbox" name="select'
+                                +instance[i]["pk"]+'" value="1" checked>' +
+                                '       {% else %}' +
+                                '           <input id="id'+instance[i]["pk"]+'" type="checkbox" name="select'
+                                +instance[i]["pk"]+'" value="1">' +
+                                '       {% endif %}' +
                             '   </td>' +
                             '</tr>';
                         $("#indicadores").append(data);

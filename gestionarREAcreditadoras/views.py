@@ -33,34 +33,44 @@ def editarRE(request,pk):
         print(request.POST)
         if request.POST['operacion'] == 'entrada':
             resultadoAcreditadora.acreditadora_id = request.POST["acreditadora"]
-
-        elif request.POST['operacion'] == 'editar':
             print('***************************************************************************************************')
             print(request.POST)
             print('***************************************************************************************************')
+
+        elif request.POST['operacion'] == 'editar':
+            resultadoAcreditadora = ResultadoAcreditadora.objects.get(pk=pk)
+            resultadoAcreditadora.codigo = request.POST["codigo"]
+            resultadoAcreditadora.descripcion = request.POST["descripcion"]
+            resultadoAcreditadora.save()
             flag = 1
 
         elif request.POST['operacion'] == 'insertar':
-            print('***************************************************************************************************')
-            print(request.POST)
-            print('***************************************************************************************************')
+            resultadoAcreditadora = ResultadoAcreditadora.objects.create(codigo=request.POST["codigo"],descripcion=request.POST["descripcion"],
+                                                      acreditadora_id=request.POST["acreditadora"])
+            pk = resultadoAcreditadora.pk
+            insert = True
             flag = 2
 
     if pk != '0':
         resultadoAcreditadora = ResultadoAcreditadora.objects.get(pk=pk)
         #indicadorSelec = REAcred_Indicador.objects.filter(resultadoAcreditadora=pk)
+        titulo = 'Editar'
+    else:
+        titulo = 'Nuevo'
 
+    acreditadora = Acreditadora.objects.get(pk=request.POST["acreditadora"])
     context = {
         'insert': insert,
         'indicadorSelec': indicadorSelec,
         'resultadoAcreditadora': resultadoAcreditadora,
         'facultades': facultades,
         'flag': flag,
+        'acreditadora': acreditadora,
+        'titulo':titulo,
     }
     return render(request,'gestionarREAcreditadoras/editarRE.html',context)
 
 def eliminarRE(request,pk):
-
     #Candidate.objects.filter(pk=pk).delete()
     print(request.POST)
     return

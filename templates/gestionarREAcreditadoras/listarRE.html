@@ -3,14 +3,14 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
-<style>
+    <style>
 
-    hr{
-        height: .5px;
-        background-color: #2F5496;
-    }
+        hr {
+            height: .5px;
+            background-color: #2F5496;
+        }
 
-</style>
+    </style>
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
@@ -45,7 +45,8 @@
                         <div class="col">
                             <div class="row d-flex justify-content-between ml-0">
                                 <h3 id="v-pills-home">Home</h3>
-                                <button class="btn dropdown-toggle btn-falcon-primary mb-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class="btn dropdown-toggle btn-falcon-primary mb-2" type="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v"></i>
                                 </button>
                                 <div class="dropdown-menu">
@@ -358,7 +359,8 @@
                                         <div class="col-md-1">
                                             <h2 style="color: #fff;">{{ resultado.codigo }}</h2>
                                         </div>
-                                        <div class="col-md-9" style="border-left: 1px solid #fff;border-right: 1px solid #fff;padding-left: 2%;">
+                                        <div class="col-md-9"
+                                             style="border-left: 1px solid #fff;border-right: 1px solid #fff;padding-left: 2%;">
                                             <p>{{ resultado.descripcion }}</p>
                                         </div>
                                         <div class="col-md-2" style="text-align: center;padding-left: 2%;">
@@ -366,9 +368,11 @@
                                                 {% csrf_token %}
                                                 <input type="hidden" name="operacion" value="entrada">
                                                 <input type="hidden" name="acreditadora" value={{ acreditadora.pk }}>
-                                                <input type="submit" class="btn btn-falcon-primary mr-1 mb-1" value="Editar">
+                                                <input type="submit" class="btn btn-falcon-primary mr-1 mb-1"
+                                                       value="Editar">
                                             </form>
-                                            <button class="btn btn-falcon-primary mr-1 mb-1" type="button">Activar</button>
+                                            <button class="btn btn-falcon-primary mr-1 mb-1" type="button">Activar
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
