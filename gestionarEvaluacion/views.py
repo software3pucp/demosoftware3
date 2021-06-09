@@ -1,7 +1,8 @@
 from django.shortcuts import render
+from django.http.response import HttpResponse
 from django.http import JsonResponse
 from django.core import serializers
-
+from openpyxl import Workbook
 # Create your views here.
 from demosoftware3.settings import MEDIA_URL
 from gestionarEvaluacion.models import RespuestaEvaluacion
@@ -105,3 +106,20 @@ def subirEvidencia(request):
     # TODO::: Mandar una respuesta adecuada al front (Se hace con un IF y en dos JSONRESPONSE
     print(request.FILES["archivo"])
     return JsonResponse({}, status=200)
+
+
+def exportarMedicion(request):
+    horarioSeleccionado = request.POST['cboHorario']
+    rows = RespuestaEvaluacion.objects.filter(horario_id=horarioSeleccionado,estado="1")
+    for row in rows:
+        print(row.codigoAlumno)
+    wb= Workbook()
+    ws= wb.active
+    #Establecer el nombre del archivo
+    nombre_archivo = "Reporte.xlsx"
+    #Definir el tipo de respuesta que se va a dar
+    response= HttpResponse(content_type="application/ms-excel")
+    contenido = "attachment; filename = {0}".format(nombre_archivo)
+    response["Content-Disposition"] = contenido
+    wb.save(response)
+    return response

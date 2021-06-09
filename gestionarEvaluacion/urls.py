@@ -11,5 +11,6 @@ urlpatterns = [
     path('eliminarAlumno/',views.eliminarAlumno,name='eliminarAlumno'),
     path('editarAlumno/',views.editarAlumno,name='editarAlumno'),
     path('importarAlumno',views.importarAlumno,name='importarAlumno'), #TODO::: FIX colocar "/" y refactorizar
-    path('subirEvidencia/',views.subirEvidencia,name='subirEvidencia')
+    path('subirEvidencia/',views.subirEvidencia,name='subirEvidencia'),
+    path('exportarMedicion/',views.exportarMedicion,name='exportarMedicion'),
 ]

@@ -46,40 +46,43 @@
         </div>
         <hr class="mb-3" style="background-color: #0154ae;">
 
+        <form action="{% url 'exportarMedicion' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-12 mb-3">
+                <div class="d-flex flex-row align-items-center">
+                    <div class="mr-2">
+                        <label for="cboHorario">Horario:</label>
+                        <select class="custom-select custom-select-sm mb-3" id="cboHorario" name="cboHorario"
+                                onchange="listarAlumno()">
+                            {% for horarioItem in listaHorario %}
+                                <option value={{ horarioItem.pk }}>{{ horarioItem.codigo }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-        <div class="col-12 mb-3">
-            <div class="d-flex flex-row align-items-center">
-                <div class="mr-2">
-                    <label for="cboHorario">Horario:</label>
-                    <select class="custom-select custom-select-sm mb-3" id="cboHorario" name="cboHorario"
-                            onchange="listarAlumno()">
-                        {% for horarioItem in listaHorario %}
-                            <option value={{ horarioItem.pk }}>{{ horarioItem.codigo }}</option>
-                        {% endfor %}
-                    </select>
+                    <div>
+                        <label for="cboIndicador">Indicador:</label>
+                        <select class="custom-select custom-select-sm mb-3" id="cboIndicador" name="cboIndicador"
+                                onchange="muestraRubrica()">
+                            {% for indicador in listaIndicador %}
+                                <option value={{ indicador.pk }}>{{ indicador.codigo }}</option>
+                            {% endfor %}
+                        </select>
+
+                    </div>
+
+                    <div class="ml-auto">
+                        <button class="btn btn-outline-primary" type="submit" name="submit">
+                            <i class="fa fa-download"></i>Rúbrica
+                        </button>
+                        <span class="btn btn-primary" onclick="redirectEvidencia()">Evidencias</span>
+                    </div>
+
+
                 </div>
-
-                <div>
-                    <label for="cboIndicador">Indicador:</label>
-                    <select class="custom-select custom-select-sm mb-3" id="cboIndicador" name="cboIndicador"
-                            onchange="muestraRubrica()">
-                        {% for indicador in listaIndicador %}
-                            <option value={{ indicador.pk }}>{{ indicador.codigo }}</option>
-                        {% endfor %}
-                    </select>
-
-                </div>
-
-                <div class="ml-auto">
-                    <button class="btn btn-outline-primary">
-                        <i class="fa fa-download"></i>Rúbrica
-                    </button>
-                    <span class="btn btn-primary" onclick="redirectEvidencia()">Evidencias</span>
-                </div>
-
-
             </div>
-        </div>
+        </form>
+
 
 
         <div class="col-12">

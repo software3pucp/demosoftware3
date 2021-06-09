@@ -13,3 +13,4 @@ django-user-agents
 requests
 pillow==8.1.0
 django-allauth==0.44.0
+openpyxl=3.0.7
