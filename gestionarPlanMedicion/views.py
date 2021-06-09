@@ -15,7 +15,7 @@ def listarPlanMedicion(request):
 
     if request.POST:
         if request.POST['operacion'] == 'listEspe':
-            especialidades = Especialidad.objects.filter(facultad_id=request.POST['facultad'])
+            especialidades = Especialidad.objects.filter(facultad_id=request.POST['facultad'], estado='1')
             data = serializers.serialize("json", especialidades)
             return JsonResponse({"resp": data}, status=200)
         elif request.POST['operacion'] == 'listCur':
@@ -37,8 +37,10 @@ def listarPlanMedicion(request):
             planMedicion.delete()
             # print(planMedicion)
 
+
     facultades = Facultad.objects.filter()
-    especialidades = Especialidad.objects.filter()
+    especialidades = Especialidad.objects.filter() # TODO::: Verificar si se usa "Especialidades" en el template gestionarPlanMedicion/listarPlanMedicion
+    print(especialidades)
     estados = PlanMedicion.ESTADOS[1:]
     context = {
         'facultades' : facultades,
