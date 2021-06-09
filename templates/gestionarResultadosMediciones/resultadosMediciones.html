@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+
 {% load static %}
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
@@ -9,9 +10,48 @@
 {#Bloque de extra body -> HTML#}
 {% block body %}
     {#AQUI COLOQUEN EL CÓDIGO#}
+    <h1> Titulo </h1>
+    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+
 {% endblock %}
 
 {% block extrajs %}
     <script>
+        var xValues = [50,60,70,80,90,100,110,120,130,140,150];
+        var yValues = [7,8,8,9,9,9,10,11,14,14,15];
+
+        const data = {
+            labels: xValues,
+            datasets: [
+                {
+                    label: 'Dataset 1',
+                    fill: false,
+                    lineTension: 0,
+                    backgroundColor: "rgba(0,0,255,1.0)",
+                    borderColor: "rgba(0,0,255,0.1)",
+                    data: yValues
+                }
+            ]
+        };
+
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Chart.js Line Chart'
+                    }
+                }
+            },
+        }
+
+        new Chart("myChart", config);
+
     </script>
 {% endblock %}
