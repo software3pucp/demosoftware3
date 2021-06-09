@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.core import serializers
 from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
-from gestionarREAcreditadoras.models import Acreditadora, ResultadoAcreditadora, REAcred_Indicador
+from gestionarREAcreditadoras.models import Acreditadora, ResultadoAcreditadora
 from gestionarIndicadores.models import Indicador
 
 # Create your views here.
@@ -48,7 +48,7 @@ def editarRE(request,pk):
 
     if pk != '0':
         resultadoAcreditadora = ResultadoAcreditadora.objects.get(pk=pk)
-        indicadorSelec = REAcred_Indicador.objects.filter(resultadoAcreditadora=pk)
+        #indicadorSelec = REAcred_Indicador.objects.filter(resultadoAcreditadora=pk)
 
     context = {
         'insert': insert,
