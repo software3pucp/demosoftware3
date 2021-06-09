@@ -17,11 +17,49 @@
 
 {% block extrajs %}
     <script>
-        var xValues = [50,60,70,80,90,100,110,120,130,140,150];
-        var yValues = [7,8,8,9,9,9,10,11,14,14,15];
+        {#var xValues = ["H0811","H0882"];#}
+        {#var yValues = [2021,2022];#}
+
+        $(document).ready(function () {
+            console.log("ready!");
+            agregarData();
+        });
+
+        var xPrueba = [];
+        var yPrueba = [];
+
+        function agregarData() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'resultadosMediciones' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: 'agregar',
+                    {#facultad: $("#facultades").val(),#}
+                },
+                success: function (response) {
+                    var xLabel = JSON.parse(response["xLabel"]);
+                    var yLabel = JSON.parse(response["yLabel"]);
+                    for(var i=0; i<xLabel.length; i++){
+                        xPrueba.push(xLabel[i]["fields"].codigo);
+                    }
+                    for(var i=0; i<yLabel.length; i++){
+                        yPrueba.push(yLabel[i]["fields"].anho);
+                        console.log(yLabel[i]["fields"].anho);
+                    }
+                    console.log(xPrueba);
+                    console.log(yPrueba);
+                    grafiquito.update();
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                },
+            });
+        }
+
 
         const data = {
-            labels: xValues,
+            labels: xPrueba,
             datasets: [
                 {
                     label: 'Dataset 1',
@@ -29,7 +67,7 @@
                     lineTension: 0,
                     backgroundColor: "rgba(0,0,255,1.0)",
                     borderColor: "rgba(0,0,255,0.1)",
-                    data: yValues
+                    data: yPrueba
                 }
             ]
         };
@@ -51,7 +89,6 @@
             },
         }
 
-        new Chart("myChart", config);
-
+        var grafiquito = new Chart("myChart", config);
     </script>
 {% endblock %}
