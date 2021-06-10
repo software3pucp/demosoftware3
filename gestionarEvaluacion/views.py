@@ -2,7 +2,9 @@ from django.shortcuts import render
 from django.http.response import HttpResponse
 from django.http import JsonResponse
 from django.core import serializers
-from openpyxl import Workbook
+from openpyxl import Workbook,load_workbook
+import os
+from django.conf import settings
 # Create your views here.
 from demosoftware3.settings import MEDIA_URL
 from gestionarEvaluacion.models import RespuestaEvaluacion
@@ -113,8 +115,10 @@ def exportarMedicion(request):
     rows = RespuestaEvaluacion.objects.filter(horario_id=horarioSeleccionado,estado="1")
     for row in rows:
         print(row.codigoAlumno)
-    wb= Workbook()
+    filename = os.path.join(settings.BASE_DIR, 'gestionarEvaluacion', 'Resource', 'template.xlsx')
+    wb = load_workbook(filename)
     ws= wb.active
+    ws['P14'] = "REPORTE DE VENTAS"
     #Establecer el nombre del archivo
     nombre_archivo = "Reporte.xlsx"
     #Definir el tipo de respuesta que se va a dar
