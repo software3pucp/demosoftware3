@@ -396,18 +396,27 @@
                                         <div class="d-flex justify-content-end">
                                             <h2 style="color: #fff;">{{ repucp.1.nombre }}</h2>
                                         </div>
-                                        <div class="col no-gutters">
-                                            <div class="row no-gutters">
-                                                <div class="col-md-1">
-                                                    <h2 style="color: #fff;">{{ repucp.0.codigo }}</h2>
-                                                </div>
-                                                <div class="col-md-9"
-                                                     style="border-left: 1px solid #fff;border-right: 1px solid #fff;padding-left: 2%;">
-                                                    <p>{{ repucp.0.descripcion }}</p>
-                                                </div>
-                                                <div class="col-md-2" style="text-align: center;padding-left: 2%;">
-
-                                                </div>
+                                        <div class="row no-gutters">
+                                            <div class="col-md-6 no-gutters">
+                                                {% for reacre in repucp.3 %}
+                                                    <div class="row no-gutters">
+                                                        <div class="col-md-2">
+                                                            <p style="color: #fff;">{{ reacre.codigo }}</p>
+                                                        </div>
+                                                        <div class="col-md-10"
+                                                             style="border-left: 1px solid #fff;border-right: 1px solid #fff;padding-left: 2%;">
+                                                            <p>{{ reacre.descripcion }}</p>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="col-md-2"
+                                                 style="border-left: 1px solid #fff;border-right: 1px solid #fff;padding-left: 2%;">
+                                                <p>{{ repucp.0.codigo }}</p>
+                                            </div>
+                                            <div class="col-md-4"
+                                                 style="border-left: 1px solid #fff; padding-left: 2%;">
+                                                <p style="color: #fff;">{{ repucp.0.descripcion }}</p>
                                             </div>
                                         </div>
                                     </div>

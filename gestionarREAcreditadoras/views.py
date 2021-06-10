@@ -16,15 +16,18 @@ def listarRE(request, pk):
     lista=[]
     acreditadora = Acreditadora.objects.get(pk=pk)
     resultados = ResultadoAcreditadora.objects.filter(acreditadora=pk)
-    repucps=ResultadoPUCP.objects.filter(especialidad_id=1)
-    for repucp in repucps:
-        id_especialidad = repucp.especialidad_id
-        especialidad = Especialidad.objects.get(pk=id_especialidad)
-        id_facultad = especialidad.facultad_id
-        facultad = Facultad.objects.get(pk=id_facultad)
+    repucps=ResultadoPUCP.objects.all()
+    if repucps:
+        for repucp in repucps:
+            id_especialidad = repucp.especialidad_id
+            especialidad = Especialidad.objects.get(pk=id_especialidad)
+            id_facultad = especialidad.facultad_id
+            facultad = Facultad.objects.get(pk=id_facultad)
+            reacres= ResultadoAcreditadora.objects.filter(acreditadora=pk, resultadoPUCP_id=repucp.pk)
+            if reacres:
+                reg=[repucp,especialidad,facultad,reacres]
+                lista.append(reg)
 
-        reg=[repucp,especialidad,facultad]
-        lista.append(reg)
     context = {
         'acreditadora': acreditadora,
         'resultados': resultados,
