@@ -18,7 +18,7 @@ class TestingClasses(TestCase):
         print("Inicio de prueba del módulo EVALUACION          ||")
         print("==================================================")
         RespuestaEvaluacion.objects.create(nombreAlumno='Mario Calderon', codigoAlumno='20101585')
-        Nivel.objects.create(name='Inicial',value=1,state=1)
+        Nivel.objects.create(name='Inicial',value=1,estado=1)
         ResultadoPUCP.objects.create(codigo='RE01', estado='1', descripcion='Resultado del estudiante de pruebas 1')
         Indicador.objects.create(codigo='ID101',descripcion='2.1 Diseña una solucion informatica bvuscando satisfacer necesidades.',
                                  estado=1,resultado_id = '1')

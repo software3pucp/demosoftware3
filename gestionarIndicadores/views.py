@@ -14,7 +14,7 @@ from gestionarRubrica.models import Rubrica
 def editarIndicador(request, pk):
     indicador = Indicador.objects.get(pk=pk)
     id_resultado = indicador.resultado_id
-    nivelLista = Nivel.objects.filter(state=1).order_by('value')
+    nivelLista = Nivel.objects.filter(estado=1).order_by('value')
     rubrica = Rubrica.objects.filter(indicador_id=pk)
     nivelLista2 =[]
     hay_niveles = False
