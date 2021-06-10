@@ -13,6 +13,8 @@
 
     {#AQUI COLOQUEN EL CÓDIGO#}
     <div class="container-fluid content-row">
+     <form action="{% url 'agregarCurso' id_especialidad=id_especialidad %}" method="post">
+            {% csrf_token %}
         <div class="row" style="margin-right: 0.8rem">
             <div class="col-6">
                 <select disabled="true" class="form-control" id="especFormControl">
@@ -145,8 +147,7 @@
             {% endfor %}
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <div class="card-group service-work">
-                    <a class="recent-work card mr-4 mb-4"
-                       href="{% url 'agregarCurso' id_especialidad=id_especialidad %}" style="height: 16rem">
+                    <button type="submit" class="recent-work card mr-4 mb-4" style="height: 16rem">
                         <div class="nav-link icon-indicator" role="button">
                             <div class="mt-4" style="text-align: center;">
                                 <span class="fas fa-plus fa-9x" style="text-align: center"></span>
@@ -158,15 +159,29 @@
                                     Curso</h5>
                             </div>
                         </div>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
+     </form>
     </div>
 {% endblock %}
 
 {% block extrajs %}
     <script>
+
+         $(document).ready(function () {
+            if ("{{estado}}" == 1) {
+                    $('.CursoActivos').show();
+                    $('.CursoInactivos').hide();
+                } else {
+                    $('.CursoActivos').hide();
+                    $('.CursoInactivos').show();
+                }
+
+            $("#estado").val({{ estado }});
+        });
+
         $(function () {    // Makes sure the code contained doesn't run until
             //     all the DOM elements have loaded
             $('#estado').change(function () {
@@ -180,7 +195,5 @@
             });
         });
 
-        $('.CursoActivos').show();
-        $('.CursoInactivos').hide();
     </script>
 {% endblock %}

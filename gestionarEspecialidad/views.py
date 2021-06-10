@@ -35,6 +35,7 @@ def listarEspecialidadxCurso(request, id_especialidad):
         'id_facultad': Especialidad.objects.get(pk=id_especialidad).facultad.pk,
         'media_path': media_path,
         'ListaEstados': Especialidad.ESTADOS[1:],
+        'estado':'1'
     }
     return render(request, 'gestionarCurso/listarCurso.html', context)
 
