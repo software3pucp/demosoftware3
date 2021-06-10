@@ -67,7 +67,7 @@ def guardarPuntuacion(request):
     alumno = RespuestaEvaluacion.objects.get(pk=request.POST["idAlumno"])
     descripcion = Rubrica.objects.get(indicador_id=request.POST["indicadorSeleccionado"],nivel_id=request.POST["nivelSeleccionado"]).descripcion
     alumno.descripcionP = descripcion
-    alumno.valorNota = Nivel.objects.get(pk =request.POST["nivelSeleccionado"]).value
+    alumno.valorNota = Nivel.objects.get(pk=request.POST["nivelSeleccionado"]).valor
     alumno.rubrica_id = Rubrica.objects.get(indicador_id=request.POST["indicadorSeleccionado"],nivel_id=request.POST["nivelSeleccionado"]).pk
     alumno.calificado = 1
     alumno.save()
@@ -147,7 +147,7 @@ def exportarMedicion(request):
     #CABECERAS
     ws['E3'] = f'MEDICIÓN DEL CURSO -  {curso.nombre.upper()}'
     ws['D5'] = curso.nombre.upper()
-    ws['G5'] = Horario.objects.get(id=horarioSeleccionado).codigo
+    ws['F5'] = Horario.objects.get(id=horarioSeleccionado).codigo
     ws['D7'] = User.objects.get(id = Horario.objects.get(id=horarioSeleccionado).responsable).first_name
     #Establecer el nombre del archivo
     nombre_archivo = "Reporte.xlsx"
