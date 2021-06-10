@@ -29,6 +29,12 @@ def crearAcreditadoras(request,pk):
     media_path = MEDIA_URL
     acreditadora = Acreditadora()
 
+    print('***********************************************************************************************************')
+    print(request.POST)
+    print('***********************************************************************************************************')
+    print(request.FILES)
+    print('***********************************************************************************************************')
+
     if request.POST:
         if request.POST['operacion'] == 'insertar':
             nombre = request.POST['nombre']
@@ -38,7 +44,7 @@ def crearAcreditadoras(request,pk):
         elif request.POST['operacion'] == 'editar':
             acreditadora = Acreditadora.objects.get(pk=pk)
             acreditadora.nombre = request.POST['nombre']
-            if request.POST['photo'] != '':
+            if request.POST['photo_name'] != '':
                 acreditadora.foto = request.FILES['photo']
             acreditadora.save()
             return redirect('listarAcreditadoras')
