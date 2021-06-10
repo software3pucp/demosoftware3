@@ -1,12 +1,21 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from demosoftware3.settings import MEDIA_URL
 import unicodedata
 
 # Create your views here.
+from django.core import serializers
 from gestionarAcreditadoras.models import Acreditadora
 
 
 def listarAcreditadoras(request):
+
+    if request.POST:
+        if request.POST['operacion'] == 'listAcred':
+            acreditadoras = Acreditadora.objects.filter(estado=request.POST['estado'])
+            data = serializers.serialize("json", acreditadoras)
+            return JsonResponse({"resp": data}, status=200)
+
     media_path = MEDIA_URL
     context = {
         'ListaAcreditadora': Acreditadora.objects.filter(estado=Acreditadora.ESTADOS[1][0]),
@@ -19,11 +28,6 @@ def listarAcreditadoras(request):
 def crearAcreditadoras(request,pk):
     media_path = MEDIA_URL
     acreditadora = Acreditadora()
-
-    print('***********************************************************************************************************')
-    print(request.POST)
-    print(request.FILES)
-    print('***********************************************************************************************************')
 
     if request.POST:
         if request.POST['operacion'] == 'insertar':

@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="col-3">
-                <select id="estado" name="estado" class="form-control" id="ControlSelect2" onchange="">
+                <select id="estado" name="estado" class="form-control" id="ControlSelect2" onchange="listarAcreditadoras()">
                     {% for estado in ListaEstados %}
                         <option value={{ estado.0 }}>{{ estado.1 }}</option>
                     {% endfor %}
@@ -26,43 +26,7 @@
             </div>
         </div>
 
-        <div class="row mt-4">
-            {% for acreditadora in ListaAcreditadora %}
-                <div class="col-sm-12 col-md-6 col-lg-4">
-                    <div class="card-group">
-                        <div class="product card mr-4 mb-4" style="height: 16rem">
-                            <div class="card-img-top imgbox" style="height: 15rem">
-                                <a href="{% url 'listarRE'  pk=acreditadora.pk %}"
-                                   role="link">
-                                    <img class="" src="{{ media_path }}{{ acreditadora.foto.name }}/">
-                                </a>
-                            </div>
-                            <div class="specifies card-body p-1">
-                                <h5 class="card-title ml-2">{{ acreditadora.nombre }}</h5>
-                                <hr class="divider">
-                                <div class="row">
-                                    <div class="col">
-                                        <a class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip"
-                                           data-placement="top"
-                                           title="Eliminar"
-                                           href="{% url 'eliminarAcreditadora' id_acreditadora=acreditadora.pk %}"
-                                           role="link">
-                                            <div class="fas fa-power-off"></div>
-                                        </a>
-                                        <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip"
-                                           data-placement="top"
-                                           title="Editar"
-                                           href="{% url 'crearAcreditadoras'  pk=acreditadora.pk %}"
-                                           role="link">
-                                            <div class="fas fa-pen"></div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+        <div id="acreditadoras" class="row mt-4">
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <div class="card-group service-work">
                     <a class="recent-work card mr-4 mb-4" href="{% url 'crearAcreditadoras' pk="0" %}" style="height: 16rem">
@@ -73,8 +37,7 @@
                         </div>
                         <div class="recent-work-vertical-ruk card-img-overlay">
                             <div class="service-work-content">
-                                <h5 class="card-title" style="text-align: center; margin-top: 11.4rem">Agregar
-                                    Acreditadora</h5>
+                                <h5 class="card-title" style="text-align: center; margin-top: 11.4rem">Agregar Acreditadora</h5>
                             </div>
                         </div>
                     </a>
@@ -86,5 +49,65 @@
 
 {% block extrajs %}
     <script>
+
+        $(document).ready(function () {
+            console.log("ready!");
+            listarAcreditadoras();
+        });
+
+        function listarAcreditadoras() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'listarAcreditadoras'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: 'listAcred',
+                    estado: $("#estado").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["resp"]);
+                    console.log(instance);
+                    console.log(instance.length)
+                    $(".acreditadora").remove();
+                    for(var i=0; i<instance.length; i++){
+                        data = '<div class="acreditadora col-sm-12 col-md-6 col-lg-4">' +
+                            '   <div class="card-group">' +
+                            '       <div class="product card mr-4 mb-4" style="height: 16rem">' +
+                            '           <div class="card-img-top imgbox" style="height: 15rem">' +
+                            '               <a href="/gestionarREAcreditadoras/listar/'+instance[instance.length-i-1]["pk"]+'" role="link">' +
+                            '                   <img class="" src="{{ media_path }}'+instance[instance.length-i-1]["fields"].foto+'/">' +
+                            '               </a>' +
+                            '           </div>' +
+                            '           <div class="specifies card-body p-1">' +
+                            '               <h5 class="card-title ml-2">'+instance[instance.length-i-1]["fields"].nombre+'</h5>' +
+                            '               <hr class="divider">' +
+                            '               <div class="row">' +
+                            '                   <div class="col">' +
+                            '                       <a class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip" ' +
+                            '                       data-placement="top" title="Eliminar" ' +
+                            '                       href="/gestionarAcreditadoras/desactivar/'+instance[instance.length-i-1]["pk"]+'" role="link">' +
+                            '                           <div class="fas fa-power-off"></div>' +
+                            '                       </a>' +
+                            '                       <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip" ' +
+                            '                       data-placement="top" title="Editar" ' +
+                            '                       href="/gestionarAcreditadoras/crear/'+instance[instance.length-i-1]["pk"]+'" role="link">' +
+                            '                           <div class="fas fa-pen"></div>' +
+                            '                       </a>' +
+                            '                   </div>' +
+                            '               </div>' +
+                            '           </div>' +
+                            '       </div>' +
+                            '   </div>'+
+                            '</div>';
+                        $("#acreditadoras").prepend(data);
+                    }
+                    console.log('terminado');
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
     </script>
 {% endblock %}
