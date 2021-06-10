@@ -26,14 +26,14 @@ def listarHistorico(request,pk):
            # listaEDocumentos.update(archivo=nombArchivo)
             listaDocumentos = listaDocumentos|listaEDocumentos
     cantidad = len(listaNombres)
-    nuevo = zip(listaNombres,listaDocumentos)
-    r = set(nuevo)
+    listaConjunta = zip(listaNombres,listaDocumentos)
+    listaArchivos = set(listaConjunta)
     context = {
        # 'ListaHistorico':historicoLista,
         'cursoSeleccionado': cursoSeleccionado,
         'listaDocumentos': listaDocumentos,
         'listaNombres':listaNombres,
         'cantidad':cantidad,
-        'listaAux':r,
+        'listaAux':listaArchivos,
     }
     return render(request, 'gestionarHistoricoEv/listarHistorico.html', context)

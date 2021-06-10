@@ -26,7 +26,7 @@
         <div class="col-12 d-flex justify-content-start">
             <h4 id="Titulo2" style="font-family: Montserrat">Documentacion General </h4>
         </div>
-
+        <hr class="mb-3" style="background-color: #0154ae;">
         {% for nombre,documento in listaAux%}
 
                <h6> {{ nombre}} Publicado el {{ documento.fecha_creacion|date:"SHORT_DATE_FORMAT" }}</h6>
@@ -35,7 +35,7 @@
          {% endfor %}
 
 
-        <hr class="mb-3" style="background-color: #0154ae;">
+
         <div id="demo"></div>
 
 
