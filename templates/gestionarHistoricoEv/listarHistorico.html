@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %}
+
 {% load static %}
 
 {% block extrastyle %}
@@ -27,29 +27,21 @@
             <h4 id="Titulo2" style="font-family: Montserrat">Documentacion General </h4>
         </div>
         <hr class="mb-3" style="background-color: #0154ae;">
-
-
-            {% for nombre,documento in listaAux%}
-                <div class="d-flex flex-column">
-                    <div class="d-flex justify-content-between">
-                        <div class="mr-auto p-2">{{ nombre}}</div>
-                        <div class="p-2">Publicado el {{ documento.fecha_creacion|date:"SHORT_DATE_FORMAT" }}</div>
-                        <div class="p-2">
-                            <button type="submit" class="badge rounded-capsule badge-soft-success outline-none">
-                                <span>Descargar</span>
-                            </button>
-                        </div>
+        {% for nombre,documento in listaAux%}
+            <div class="d-flex flex-column">
+                <div class="d-flex justify-content-between">
+                    <div class="mr-auto p-2">{{ nombre}}</div>
+                    <div class="p-2">Publicado el {{ documento.fecha_creacion|date:"SHORT_DATE_FORMAT" }}</div>
+                    <div class="p-2">
+                        <button type="submit" class="badge rounded-capsule badge-soft-success outline-none">
+                            <span>Descargar</span>
+                        </button>
                     </div>
-
                 </div>
-                <hr class="mb-3" style="background-color: gray;">
-         {% endfor %}
 
-
-
-
-
-
+            </div>
+            <hr class="mb-3" style="background-color: gray;">
+        {% endfor %}
         <div id="demo"></div>
 
 
