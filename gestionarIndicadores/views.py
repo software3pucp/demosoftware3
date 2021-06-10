@@ -13,8 +13,9 @@ from gestionarRubrica.models import Rubrica
 
 def editarIndicador(request, pk):
     indicador = Indicador.objects.get(pk=pk)
+    especialidadpk = obtenerEspecialidadIndicador(indicador)
     id_resultado = indicador.resultado_id
-    nivelLista = Nivel.objects.filter(estado="1").order_by('valor')
+    nivelLista = Nivel.objects.filter(estado='1', especialidad_id=especialidadpk).order_by('valor')
     rubrica = Rubrica.objects.filter(indicador_id=pk)
     nivelLista2 =[]
     hay_niveles = False
@@ -39,7 +40,6 @@ def editarIndicador(request, pk):
         for nivel in nivelLista: # se agrega las descripciones por cada nivel
             desc = request.POST['desc_nivel'+ str(nivel.pk)]
             agregarDescipcionNivel(indicador.pk, nivel.pk, desc)
-
         context = {
             'indicador': indicador,
             'id_resultado': id_resultado,
@@ -57,6 +57,14 @@ def editarIndicador(request, pk):
         'hay_niveles': hay_niveles,
     }
     return render(request, 'gestionarIndicadores/editarIndicador.html', context)
+
+
+def obtenerEspecialidadIndicador(indicador):
+    id_resultado=indicador.resultado_id;
+    resultado=ResultadoPUCP.objects.get(pk=id_resultado)
+    especialidadpk=resultado.especialidad_id
+    especialidad=Especialidad.objects.get(pk=especialidadpk)
+    return especialidad.pk
 
 
 def eliminarIndicadorxResultado(request, id_resultado):
