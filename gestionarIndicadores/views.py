@@ -29,7 +29,7 @@ def editarIndicador(request, pk):
         for rub in rubrica: # se verifica en la rúbrica si ya existen descripciones para un determinado nivel
             if nivel.pk == rub.nivel_id:
                 desc_nivel = rub.descripcion
-                nivelLista2[nivel.value-1][1] = desc_nivel
+                nivelLista2[nivel.valor-1][1] = desc_nivel
 
     if request.POST:
         indicador = Indicador.objects.get(pk=pk)
