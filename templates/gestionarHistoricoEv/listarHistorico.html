@@ -32,9 +32,15 @@
             {% for nombre,documento in listaAux%}
                 <div class="d-flex flex-column">
                     <div class="d-flex justify-content-between">
-                        <div class="p-2">{{ nombre}}</div>
+                        <div class="mr-auto p-2">{{ nombre}}</div>
                         <div class="p-2">Publicado el {{ documento.fecha_creacion|date:"SHORT_DATE_FORMAT" }}</div>
+                        <div class="p-2">
+                            <button type="submit" class="badge rounded-capsule badge-soft-success outline-none">
+                                <span>Descargar</span>
+                            </button>
+                        </div>
                     </div>
+
                 </div>
                 <hr class="mb-3" style="background-color: gray;">
          {% endfor %}
@@ -51,8 +57,33 @@
             <h4 id="Titulo2" style="font-family: Montserrat">Rubricas Pasadas </h4>
         </div>
 
-
         <hr class="mb-3" style="background-color: #0154ae;">
+        <div class="d-flex flex-column">
+            <div class="d-flex justify-content-between">
+                <div class="mr-auto p-2">Rubrica 1.csv</div>
+                <div class="p-2">Publicado el 07/06/2021</div>
+                <div class="p-2">
+                    <button type="submit" class="badge rounded-capsule badge-soft-success outline-none">
+                        <span>Descargar</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <hr class="mb-3" style="background-color: gray;">
+        <div class="d-flex flex-column">
+            <div class="d-flex justify-content-between">
+                <div class="mr-auto p-2">Rubrica 2.csv</div>
+                <div class="p-2">Publicado el 08/06/2021</div>
+                <div class="p-2">
+                    <button type="submit" class="badge rounded-capsule badge-soft-success outline-none">
+                        <span>Descargar</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <hr class="mb-3" style="background-color: gray;">
     </div>
 
 {% endblock %}
