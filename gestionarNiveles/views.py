@@ -39,7 +39,7 @@ def obtenerEspecialidades(request):
 
 def listarNiveles(request):
     id_especialidad = request.POST['especialidadpk']
-    niveles = Nivel.objects.filter(especialidad_id=id_especialidad, estado='1')
+    niveles = Nivel.objects.filter(especialidad_id=id_especialidad, estado='1').order_by('valor')
     ser_instance = serializers.serialize('json', niveles)
     return JsonResponse({"niveles": ser_instance}, status=200)
 
