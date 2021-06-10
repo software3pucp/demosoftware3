@@ -6,20 +6,20 @@ from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
 from gestionarNiveles.models import Nivel
 
-def editarNiv(request,pk):
-
+def editarNivel(request,pk):
      if request.POST:
+         pk=request.POST['nivelpk']
          nivel = Nivel.objects.get(pk=pk)
-         nivel.name = request.POST['name']
-         nivel.value = request.POST['value']
+         nivel.nombre = request.POST['nombre']
+         nivel.valor = request.POST['valor']
          nivel.save()
-         return redirect('listarNivel')
+         return redirect('niveles')
 
      nivel = Nivel.objects.get(pk=pk)
      context = {
          'nivel': nivel,
      }
-     return render(request, 'gestionarNiveles/editarNiv.html', context)
+     return render(request, 'gestionarNiveles/editarNivel.html', context)
 
 def niveles(request):
 
@@ -37,20 +37,28 @@ def obtenerEspecialidades(request):
     data = serializers.serialize("json", especialidades)
     return JsonResponse({"resp": data}, status=200)
 
+def listarNiveles(request):
+    id_especialidad = request.POST['especialidadpk']
+    niveles = Nivel.objects.filter(especialidad_id=id_especialidad, estado='1')
+    ser_instance = serializers.serialize('json', niveles)
+    return JsonResponse({"niveles": ser_instance}, status=200)
+
+def eliminarNivel(request):
+    id_nivel = request.POST['nivelpk']
+    nivel = Nivel.objects.get(pk=id_nivel)
+    nivel.estado = '0'  # eliminación lógica
+    nivel.save()
+    return JsonResponse({}, status=200)
+
 def crearNivel(request):
-
-    print('----------------------------------------------------')
-    print(request.POST)
-    print('-----------------------------------------------------')
-
     id_especialidad= request.POST['especialidadpk']
     try:
         especialidad = Especialidad.objects.get(pk=id_especialidad)
     except:
         print("Error al buscar la especialidad")
 
-    nombre = request.POST['name']
-    valor = request.POST['value']
-    nivel = Nivel.objects.create(name=nombre, value=valor, especialidad=especialidad)
+    nombre = request.POST['nombreNivel']
+    valor = request.POST['valorNivel']
+    nivel = Nivel.objects.create(nombre=nombre, valor=valor, especialidad=especialidad)
     ser_instance = serializers.serialize('json', [nivel, ])
     return JsonResponse({"nuevoNivel": ser_instance}, status=200)

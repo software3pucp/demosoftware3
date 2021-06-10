@@ -56,8 +56,7 @@
                                 <label for="cboEspecialidad">Especialidad:</label>
                                 <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
                                         name="cboEspecialidad"
-                                        >
-
+                                        onchange="listarNiveles()">
                                 </select>
                             </div>
                         </div>
@@ -66,7 +65,6 @@
                     <div id="tituloEspecialidadNiveles"></div>
 
                     <hr style="background-color: #0154ae;">
-
 
                     <div class="btn btn-falcon-primary mb-2" href="#agregarNivelNuevo" data-toggle="modal"
                          role="button">
@@ -77,7 +75,6 @@
                                data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
                             <thead class="bg-200 text-900">
                             <tr>
-
                                 <th class="sort pr-1 align-middle">N°</th>
                                 <th class="sort pr-1 align-middle">Nombre</th>
                                 <th class="sort pr-1 align-middle">Valor</th>
@@ -85,32 +82,6 @@
                             </tr>
                             </thead>
                             <tbody id="tablaNiveles">
-                           {% comment %} {% for nivel in nivelLista %}
-                                <tr class="btn-reveal-trigger">
-                                    <th class="align-middle"> {{ forloop.counter }} </th>
-                                    <th class="align-middle">{{ nivel.name }}</th>
-                                    <td class="align-middle">{{ nivel.value }}</td>
-                                    <td class="align-middle text-right fs-0">
-                                        <form action="{% url 'niveles' %}" method="post">
-                                            {% csrf_token %}
-                                            <div class="row">
-                                                <div class="col">
-                                                    <a href="{% url 'editarNiv' pk=nivel.pk %}"
-                                                       class="badge badge rounded-capsule badge-soft-info">Editar</a>
-                                                </div>
-                                                <div class="col">
-                                                    <button type="submit"
-                                                            class="badge rounded-capsule badge-soft-danger outline-none">
-                                                        <span>Eliminar</span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <input type="hidden" id="nivelPk" name="nivelPk"
-                                                   value="{{ nivel.pk }}">
-                                        </form>
-                                    </td>
-                                </tr>
-                            {% endfor %}{% endcomment %}
                             </tbody>
                         </table>
                     </div>
@@ -119,6 +90,7 @@
         </div>
     </div>
 
+    <!-- Modal crear Nivel -->
     <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
          id="agregarNivelNuevo" tabindex="-1" role="dialog"
          aria-labelledby="settings-modal-label" aria-hidden="true"
@@ -136,15 +108,15 @@
                     <div class="row d-flex justify-content-center m-2">
                         <form name="formAgregar" id="formAgregar">
                             <div class="form-group row">
-                                <label name="name" for="name"
-                                       class="col-sm-4 col-form-label">Nombre</label>
-                                <input type="text" class="form-control col-sm-8" id="name" name="name">
+                                <label for="nombre"
+                                       class="col-sm-4 col-form-label text-white">Nombre:</label>
+                                <input type="text" class="form-control col-sm-8 " id="nombre" name="nombre">
                             </div>
                             <br>
                             <div class="form-group row">
-                                <label name="value" for="value"
-                                       class="col-sm-4 col-form-label">Valor</label>
-                                <input type="value" class="form-control col-sm-8" id="value" name="value">
+                                <label for="valor"
+                                       class="col-sm-4 col-form-label text-white">Valor:</label>
+                                <input type="value" class="form-control col-sm-8 " id="valor" name="valor">
                             </div>
                             <br>
                             <div class="form-group row m-3 p-2">
@@ -166,6 +138,24 @@
         </div>
     </div>
 
+    <!-- Modal Eliminar Nivel -->
+    <div class="modal fade" id="eliminarNivel" tabindex="-1" role="dialog" aria-labelledby="eliminarNivelLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarNivelLabel"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                    <button id="btnEliminarNivel" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {#Aquí coloco el JS particular de la web#}
@@ -175,49 +165,40 @@
 
     <script>
 
-        var pkEliminar;
+        var pkEliminarN;
 
         $(document).ready(function () {
             filtrarEspecialidades();
-            {% comment %}listarNiveles();{% endcomment %}
+            listarNiveles();
         });
 
-        function redirectCrearCrearNivel() {
-            var pk_especialidad = $("#cboEspecialidad").val();
-            document.location.href = "../../gestionarNiveles/crear/" + pk_especialidad;
-        }
-
         function redirectEditarNivel(id_nivel) {
-
             document.location.href = "../../gestionarNiveles/editar/" + id_nivel;
         }
 
-        $("#btnEliminarResultado").on('click', function () {
-            eliminarResultado(pkEliminar);
-            $("#eliminarResultado").modal('hide');
+        $("#btnEliminarNivel").on('click', function () {
+            eliminarNivel(pkEliminarN);
+            $("#eliminarNivel").modal('hide');
         });
 
-        function resultadosEliminar(codigoResultado, pk) {
-            console.log(codigoResultado)
-            console.log(pk)
-
-            data = '<h5 class="modal-title" id="eliminarResultadoLabel">Se eliminará el resultado ' + codigoResultado + '</h5>';
-            $("#eliminarResultadoLabel").html(data);
-            $("#eliminarResultado").modal('show');
-            pkEliminar = pk;
+        function nivelesEliminar(codigoNivel, pk) {
+            data = '<h5 class="modal-title" id="eliminarNivelLabel">Se eliminará el nivel: ' + codigoNivel + '</h5>';
+            $("#eliminarNivelLabel").html(data);
+            $("#eliminarNivel").modal('show');
+            pkEliminarN = pk;
         };
 
 
-        function eliminarResultado(resultadopk) {
+        function eliminarNivel(nivelpk) {
             $.ajax({
                 type: 'POST',
-                url: "{% url 'eliminarResultado' %}",
+                url: "{% url 'eliminarNivel' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    resultadopk: resultadopk,
+                    nivelpk: nivelpk,
                 },
                 success: function (response) {
-                    listarResultados();
+                    listarNiveles();
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);
@@ -235,16 +216,15 @@
                 },
                 success: function (response) {
                     var instance = JSON.parse(response["resp"]);
-
                     $(".especialidad").remove();
                     for (var i = 0; i < instance.length; i++) {
-                        data = '<option class="especialidad" onclick="listarResultados()" value=' +
+                        data = '<option class="especialidad" onclick="listarNiveles()" value=' +
                             instance[i]["pk"] + '>' +
                             instance[i]["fields"].nombre + '</option>';
                         $("#cboEspecialidad").append(data);
                     }
 
-                    {% comment %}listarNiveles();{% endcomment %}
+                    listarNiveles();
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);
@@ -252,60 +232,50 @@
             });
         }
 
-        function listarResultados() {
+        function listarNiveles() {
+            console.log('dentro de listar niveles')
+            console.log($("#cboEspecialidad").val())
             $.ajax({
                 type: 'POST',
-                url: "{% url 'listarResultados'%}",
+                url: "{% url 'listarNiveles' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    especialidad: $("#cboEspecialidad").val(),
+                    especialidadpk: $("#cboEspecialidad").val(),
                 },
                 success: function (response) {
-                    var instance = JSON.parse(response['resultados']);
-                    var instance2 = JSON.parse(response['tiene_niveles']);
+                    var instance = JSON.parse(response['niveles']);
                     console.log(instance);
+
                     var i = 0;
+                    var j = 1;
                     var numero = instance.length;
                     var data = '';
-                    for (i = 0; i < numero; i++) {
+                    for (i = 0; i < numero; i++,j++) {
                         data += (
-                            '<div style="margin: 1%;">' +
-                            '   <div class="card text-white bg-primary">' +
-                            '        <div class="card-body">' +
-                            '                <div class="row no-gutters">' +
-                            '                    <div class="col-md-1">' +
-                            '                        <h2 class="card-text text-white">' + instance[i]["fields"].codigo + '</h2>' +
-                            '                    </div>' +
-                            '                    <div class="col-md-9 border-left border-right p-2">' +
-                            '                        <p>' + instance[i]["fields"].descripcion + '</p>')
-                        if (instance2[i]==false){
-                            data +=(
-                        '                            <hr style="background-color: #FFFFFF;">'+
-                        '                            <p>Nota: El resultado no tiene indicadores asociados,'+
-                        '                                si desea asociar indicadores, por favor dar click en editar</p>')
-                        }
-
-                        data += (
-                            '                    </div>' +
-                            '                    <div class="col-md-2 ">' +
-                            '                        <div class="d-flex justify-content-center">' +
-                            '                        <button class="btn btn-falcon-primary mr-1 mb-1" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')">Editar</button>' +
-                            '                        </div>' +
-                            '                        <div class="d-flex justify-content-center">' +
-                            '                        <button class="btn btn-falcon-primary mr-1 mb-1" onclick="resultadosEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">Eliminar</button>' +
-                            '                        </div>' +
-                            '                    </div>' +
-                            '                </div>' +
-                            '        </div>' +
-                            '    </div>' +
-                            '</div>')
+                        '        <tr class="btn-reveal-trigger">'+
+                        '            <th class="align-middle"> + '+ j +' + </th>'+
+                        '            <th class="align-middle">'+ instance[i]["fields"].nombre +'</th>'+
+                        '            <td class="align-middle">'+ instance[i]["fields"].valor  +'</td>'+
+                        '            <td class="align-middle text-right fs-0">'+
+                        '                    <div class="row">'+
+                        '                        <div class="col">'+
+                        '                         <button class="badge badge rounded-capsule badge-soft-info" onclick="redirectEditarNivel(' + instance[i]["pk"] + ')">Editar</button>' +
+                        '                        </div>'+
+                        '                        <div class="col">'+
+                        '                        <button class="badge badge rounded-capsule badge-soft-danger" onclick="nivelesEliminar(\'' + instance[i]["fields"].nombre + '\',' + instance[i]["pk"] + ')">Eliminar</button>' +
+                        '                        </div>'+
+                        '                    </div>'+
+                        '            </td>'+
+                        '        </tr>'
+                        )
                     }
+
                     data2 = '<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>';
-                    $("#tituloEspecialidadResultados").html(data2);
-                    $("#listadoResultados").html(data);
+                    $("#tituloEspecialidadNiveles").html(data2);
+                    $("#tablaNiveles").html(data);
                 },
                 error: function (response) {
-                    // alert the error if any error occured
+                    console.log('Ocurrio un error')
                     alert(response["responseJSON"]["error"]);
                 }
             });
@@ -313,25 +283,25 @@
 
 
         function crearNivel() {
-
-            console.log('dentro de crear Nivel')
             $.ajax({
                 type: 'POST',
-                url: "{% url 'crearNivel'%}",
+                url: "{% url 'crearNivel' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    name: $("#name").val(),
-                    value: $("#value").val(),
+                    nombreNivel: $("#nombre").val(),
+                    valorNivel: $("#valor").val(),
                     especialidadpk: $("#cboEspecialidad").val(),
                 },
                 success: function (response) {
                     var instance = JSON.parse(response["nuevoNivel"]);
                     var fields = instance[0]["fields"];
-
-                    {% comment %}listarNiveles();{% endcomment %}
+                    $("#nombre").val('')
+                    $("#valor").val('')
+                    $("#agregarNivelNuevo").modal('hide')
+                    {% comment %}console.log(instance);{% endcomment %}
+                    listarNiveles();
                 },
                 error: function (response) {
-                    // alert the error if any error occured
                     alert(response["responseJSON"]["error"]);
                 }
             });

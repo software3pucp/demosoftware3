@@ -20,7 +20,7 @@
 
 {#Bloque de extra body -> HTML#}
 {% block body %}
-    <form action="{% url 'editarNiv' pk=nivel.pk %}" method="post">
+    <form action="{% url 'editarNivel' pk=nivel.pk %}" method="post">
         {% csrf_token %}
         <div class="container-fluid">
             <form>
@@ -42,16 +42,16 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <label for="name">Nombre:</label>
-                                <input class="form-control p-3" type="text" name="name" id="name"
-                                       value="{{ nivel.name }}">
+                                <input class="form-control p-3" type="text" name="nombre" id="nombre"
+                                       value="{{ nivel.nombre }}">
                             </div>
                         </div>
                         <p></p>
                         <div class="container-fluid">
                             <div class="row">
                                 <label for="value">Valor:</label>
-                                <input class="form-control p-3" type="value" name="value" id="value"
-                                       value="{{ nivel.value }}">
+                                <input class="form-control p-3" type="value" name="valor" id="valor"
+                                       value="{{ nivel.valor }}">
                             </div>
                         </div>
                     </div>
@@ -63,6 +63,7 @@
                             </a>
                         </div>
                         <div class="d-flex p-2">
+                            <input type="hidden" name="nivelpk" value="{{nivel.pk}}">
                             <input type="submit" class="btn btn-primary" value="Guardar">
                         </div>
                     </div>
