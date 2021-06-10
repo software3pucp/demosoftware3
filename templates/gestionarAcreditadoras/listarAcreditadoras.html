@@ -3,6 +3,14 @@
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
     <style>
+        button {
+            background-color: Transparent;
+            background-repeat: no-repeat;
+            border: none;
+            cursor: pointer;
+            overflow: hidden;
+            outline: none;
+        }
     </style>
 {% endblock %}
 
@@ -74,7 +82,7 @@
                             '   <div class="card-group">' +
                             '       <div class="product card mr-4 mb-4" style="height: 16rem">' +
                             '           <div class="card-img-top imgbox" style="height: 15rem">' +
-                            '               <a href="/gestionarREAcreditadoras/listar/'+instance[instance.length-i-1]["pk"]+'" role="link">' +
+                            '               <a href="/gestionarREAcreditadoras/listar/'+instance[instance.length-i-1]["pk"]+'">' +
                             '                   <img class="" src="{{ media_path }}'+instance[instance.length-i-1]["fields"].foto+'/">' +
                             '               </a>' +
                             '           </div>' +
@@ -83,14 +91,17 @@
                             '               <hr class="divider">' +
                             '               <div class="row">' +
                             '                   <div class="col">' +
-                            '                       <a class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip" ' +
-                            '                       data-placement="top" title="Eliminar" ' +
-                            '                       href="/gestionarAcreditadoras/desactivar/'+instance[instance.length-i-1]["pk"]+'" role="link">' +
+                            '                   <form style="" action="/gestionarAcreditadoras/listar/" method="post">'+
+                            '                       {% csrf_token %}'+
+                            '                       <input type="hidden" name="operacion" value="desactivar">'+
+                            '                       <input type="hidden" name="pk" value="'+instance[instance.length-i-1]["pk"]+'">'+
+                            '                       <button type="submit" class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip" ' +
+                            '                       data-placement="top" title="Eliminar">' +
                             '                           <div class="fas fa-power-off"></div>' +
-                            '                       </a>' +
+                            '                       </button>' +
                             '                       <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip" ' +
                             '                       data-placement="top" title="Editar" ' +
-                            '                       href="/gestionarAcreditadoras/crear/'+instance[instance.length-i-1]["pk"]+'" role="link">' +
+                            '                       href="/gestionarAcreditadoras/crear/'+instance[instance.length-i-1]["pk"]+'">' +
                             '                           <div class="fas fa-pen"></div>' +
                             '                       </a>' +
                             '                   </div>' +

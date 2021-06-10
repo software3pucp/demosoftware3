@@ -15,6 +15,13 @@ def listarAcreditadoras(request):
             acreditadoras = Acreditadora.objects.filter(estado=request.POST['estado'])
             data = serializers.serialize("json", acreditadoras)
             return JsonResponse({"resp": data}, status=200)
+        elif request.POST['operacion'] == 'desactivar':
+            acreditadora = Acreditadora.objects.get(pk=request.POST['pk'])
+            if acreditadora.estado == Acreditadora.ESTADOS[2][0]:
+                acreditadora.estado = Acreditadora.ESTADOS[1][0]
+            elif acreditadora.estado == Acreditadora.ESTADOS[1][0]:
+                acreditadora.estado = Acreditadora.ESTADOS[2][0]
+            acreditadora.save()
 
     media_path = MEDIA_URL
     context = {
@@ -60,9 +67,12 @@ def crearAcreditadoras(request,pk):
     }
     return render(request,'gestionarAcreditadoras/crearAcreditadoras.html',context)
 
-def eliminarAcreditadora(request, id_acreditadora):
-    acreditadora = Acreditadora.objects.get(pk=id_acreditadora)
-    acreditadora.estado = Acreditadora.ESTADOS[2][0]
+def eliminarAcreditadora(request,pk):
+    acreditadora = Acreditadora.objects.get(pk=pk)
+    if acreditadora.estado == Acreditadora.ESTADOS[2][0]:
+        acreditadora.estado = Acreditadora.ESTADOS[1][0]
+    elif acreditadora.estado == Acreditadora.ESTADOS[1][0]:
+        acreditadora.estado = Acreditadora.ESTADOS[2][0]
     acreditadora.save()
     print("Correcto desactivar Acreditadora!")
     return redirect('listarAcreditadoras')
