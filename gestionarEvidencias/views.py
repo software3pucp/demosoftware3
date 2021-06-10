@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.staticfiles import finders
 
 # Create your views here.
+from demosoftware3.settings import MEDIA_URL
 from gestionarCurso.models import Curso
 from gestionarEvidencias.models import EvidenciasxHorario
 from gestionarHorario.models import Horario
@@ -22,6 +23,7 @@ def evidenciasxHorario(request, id_curso, id_horario):
         'horario': horario,
         'listaEvidencias': listaEvidencias,
         'tiene_evidencias': tiene_evidencias,
+        'media_path': MEDIA_URL
     }
     return render(request, 'gestionarEvidencias/evidenciasxHorario.html', context)
 
