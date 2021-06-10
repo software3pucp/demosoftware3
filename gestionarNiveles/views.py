@@ -51,7 +51,10 @@ def eliminarNivel(request):
     return JsonResponse({}, status=200)
 
 def crearNivel(request):
+
     id_especialidad= request.POST['especialidadpk']
+
+    print(id_especialidad)
     try:
         especialidad = Especialidad.objects.get(pk=id_especialidad)
     except:

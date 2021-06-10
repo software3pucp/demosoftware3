@@ -4,6 +4,8 @@ from django.test import Client
 import base64  # for decoding base64 image
 from django.test import TestCase, override_settings
 
+from gestionarEspecialidad.models import Especialidad
+from gestionarFacultad.models import Facultad
 from gestionarResultados.models import ResultadoPUCP
 
 
@@ -11,35 +13,38 @@ class TestingClasses(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        print("Inicio de prueba del módulo RESULTADOS")
+        print("Inicio de prueba del módulo gestionarResultados")
         print("=====================================")
-        ResultadoPUCP.objects.create(codigo='COD10101',descripcion='resultado de prueba')
+        facultad = Facultad.objects.create(nombre='facultad', responsable='1')
+        especialidad = Especialidad.objects.create(nombre='especialidad', responsable='1', facultad=facultad)
+        ResultadoPUCP.objects.create(codigo='COD10101',descripcion='resultado de prueba', especialidad=especialidad)
         pass
 
     def setUp(self):
         # print("setUp: Run once for every test method to setup clean data.")
         pass
 
-    def test_listar_resultado(self):
-        print("Comenzando pruebas de: test_listar_resultados")
+    def test_resultados(self):
+        print("Comenzando pruebas de: test_resultados")
         c = Client()
-        response = c.get('/gestionarResultados/listar/')
+        response = c.get('/gestionarResultados/resultados/')
         if response.status_code == 200:
-            print('Correcto Listar Resultados!')
+            print('Correcto Resultados!')
         elif response.status_code == 404:
             self.assertFalse(False)
 
-    def test_agregar_resultado(self):
-        print("Comenzando pruebas de: test_agregar_resultado")
+    def test_crear_resultado(self):
+        print("Comenzando pruebas de: test_crear_resultado")
         c = Client()
-        response = c.get('/gestionarResultados/crear/')
+        id_especialidad='1'
+        response = c.get('/gestionarResultados/crear/'+id_especialidad)
         if response.status_code == 200:
-            print('Correcta inicialización de agregar resultado!')
+            print('Correcta inicialización de crear resultado!')
         elif response.status_code == 404:
             self.assertFalse(False)
 
         c = Client(enforce_csrf_checks=True)
-        response = c.post('/gestionarResultados/crear/', {'codigo': 'COD', 'descripcion': 'Descripcion del resultado'})
+        response = c.post('/gestionarResultados/crear/'+id_especialidad, {'codigo': 'COD', 'descripcion': 'Descripcion del resultado'})
         if response.status_code != 404:
             print('Se agregó un resultado correctamente!')
         elif response.status_code == 404:
@@ -48,7 +53,7 @@ class TestingClasses(TestCase):
     def test_editar_resultado(self):
         print("Comenzando pruebas de: test_editar_resultado")
         c = Client()
-        id_resultado = "1"
+        id_resultado = '1'
         response = c.get('/gestionarResultados/editar/' + id_resultado + '/')
         if response.status_code == 200:
             print('Correcto editar resultado!')
@@ -59,7 +64,7 @@ class TestingClasses(TestCase):
         response = c.post('/gestionarResultados/editar/' + id_resultado + '/',
                           {'codigo': 'CODE01', 'descripcion': 'Descripcion del resultado editado'})
         if response.status_code != 404:
-            print('Se agregó un resultado correctamente!')
+            print('Se editó un resultado correctamente!')
         elif response.status_code == 404:
             self.assertFalse(False)
 
@@ -67,7 +72,7 @@ class TestingClasses(TestCase):
         print("Comenzando pruebas de: test_eliminar_resultado")
         c = Client()
         id_resultado = "1"
-        response = c.post('/gestionarResultados/listar/', {'resultadoPk': id_resultado})
+        response = c.post('/gestionarResultados/eliminar/', {'resultadopk': id_resultado})
         if response.status_code == 200:
             print('Correcto eliminar Resultado!')
         else:
