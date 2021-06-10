@@ -16,18 +16,34 @@ def listarFacultad(request):
         'ListaFacultad': Facultad.objects.filter(estado=Facultad.ESTADOS[1][0]),
         'ListaFacultadInactivos': Facultad.objects.filter(estado=Facultad.ESTADOS[2][0]),
         'ListaEstados': Facultad.ESTADOS[1:],
-        'media_path': media_path
+        'media_path': media_path,
+        'estado': '1'
     }
     return render(request, 'gestionarFacultad/listarFacultad.html', context)
 
 
 def agregarFacultad(request):
+    media_path = MEDIA_URL
     if request.POST:
-        nombre = request.POST['name']
-        id_responsable = request.POST['responsable']
-        foto = request.FILES['photo']
-        Facultad.objects.create(nombre=nombre, responsable=id_responsable, foto=foto, estado=Facultad.ESTADOS[1][0])
-        return redirect('listarFacultad')
+        if ('name' in request.POST):
+            nombre = request.POST['name']
+            id_responsable = request.POST['responsable']
+            foto = request.FILES['photo']
+            Facultad.objects.create(nombre=nombre, responsable=id_responsable, foto=foto, estado=request.POST["estado"])
+            context = {
+                'ListaFacultad': Facultad.objects.filter(estado=Facultad.ESTADOS[1][0]),
+                'ListaFacultadInactivos': Facultad.objects.filter(estado=Facultad.ESTADOS[2][0]),
+                'ListaEstados': Facultad.ESTADOS[1:],
+                'media_path': media_path,
+                'estado':request.POST["estado"]
+            }
+            return render(request, 'gestionarFacultad/listarFacultad.html', context)
+        else:
+            context = {
+                'ListaUsuarios': User.objects.all(),
+                'estado':request.POST['estado'],
+            }
+            return render(request, 'gestionarFacultad/agregarFacultad.html', context)
     context = {
         'ListaUsuarios': User.objects.all(),
     }
@@ -52,17 +68,22 @@ def editarFacultad(request, id_facultad):
     media_path = MEDIA_URL
     facultad = Facultad.objects.get(pk=id_facultad)
     if request.POST:
-        print(request.POST)
         nuevo_nombre = request.POST["name"]
         nuevo_responsable = request.POST["responsable"]
         if request.FILES.get('photo'):
             nueva_foto = request.FILES["photo"]
             facultad.foto = nueva_foto
-
         facultad.nombre = nuevo_nombre
         facultad.responsable = nuevo_responsable
+        context = {
+            'ListaFacultad': Facultad.objects.filter(estado=Facultad.ESTADOS[1][0]),
+            'ListaFacultadInactivos': Facultad.objects.filter(estado=Facultad.ESTADOS[2][0]),
+            'ListaEstados': Facultad.ESTADOS[1:],
+            'media_path': media_path,
+            'estado': facultad.estado,
+        }
         facultad.save()
-        return redirect('listarFacultad')
+        return render(request, 'gestionarFacultad/listarFacultad.html', context)
 
     context = {
         'facultad': facultad,
@@ -74,18 +95,34 @@ def editarFacultad(request, id_facultad):
 
 
 def eliminarFacultad(request, id_facultad):
+    media_path = MEDIA_URL
     facultad = Facultad.objects.get(pk=id_facultad)
+    context = {
+        'ListaFacultad': Facultad.objects.filter(estado=Facultad.ESTADOS[1][0]),
+        'ListaFacultadInactivos': Facultad.objects.filter(estado=Facultad.ESTADOS[2][0]),
+        'ListaEstados': Facultad.ESTADOS[1:],
+        'media_path': media_path,
+        'estado': facultad.estado,
+    }
     facultad.delete()
     print("Correcto eliminar Facultad!")
-    return redirect('listarFacultad')
+    return render(request, 'gestionarFacultad/listarFacultad.html', context)
 
 
 def eliminarFacultad2(request, id_facultad):
+    media_path = MEDIA_URL
     facultad = Facultad.objects.get(pk=id_facultad)
+    context = {
+        'ListaFacultad': Facultad.objects.filter(estado=Facultad.ESTADOS[1][0]),
+        'ListaFacultadInactivos': Facultad.objects.filter(estado=Facultad.ESTADOS[2][0]),
+        'ListaEstados': Facultad.ESTADOS[1:],
+        'media_path': media_path,
+        'estado': facultad.estado,
+    }
     if facultad.estado == Facultad.ESTADOS[2][0]:
         facultad.estado = Facultad.ESTADOS[1][0]
     elif facultad.estado == Facultad.ESTADOS[1][0]:
         facultad.estado = Facultad.ESTADOS[2][0]
     facultad.save()
     print("Correcto desactivar Facultad!")
-    return redirect('listarFacultad')
+    return render(request, 'gestionarFacultad/listarFacultad.html', context)
