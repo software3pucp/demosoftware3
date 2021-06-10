@@ -11,6 +11,7 @@ from gestionarEvaluacion.models import RespuestaEvaluacion
 from gestionarHorario.models import Horario
 from gestionarIndicadores.models import Indicador
 from gestionarRubrica.models import Rubrica
+from gestionarEvidencias.models import EvidenciasxHorario
 from gestionarNiveles.models import Nivel
 from gestionarCurso.models import Curso
 from authentication.models import User
@@ -21,12 +22,34 @@ def evaluar(request,pk):
     listaIndicador = Indicador.objects.filter(estado=1)
     cursoSeleccionado = Curso.objects.get(pk=pk)
     listaHorario= Horario.objects.filter(curso_id=pk) #listaDeHorario asociado a un curso
+
+    listaHorarios = list(Horario.objects.filter(curso_id=pk, estado=1))
+    # listaDocumentos = EvidenciasxHorario.objects.filter(estado=1)
+    listaDocumentos = EvidenciasxHorario.objects.none()
+    listaNombres = []
+    for i in range(len(listaHorarios)):
+        listaEDocumentos = EvidenciasxHorario.objects.filter(horario_id=listaHorarios[i].id, estado=1)
+        if listaEDocumentos:
+            aux = list(listaEDocumentos)
+            for j in range(len(aux)):
+                nombArchivo = str(aux[j].archivo)[8:]
+                listaNombres.append(nombArchivo)
+            # listaEDocumentos.update(archivo=nombArchivo)
+            listaDocumentos = listaDocumentos | listaEDocumentos
+    cantidad = len(listaNombres)
+    listaConjunta = zip(listaNombres, listaDocumentos)
+    listaArchivos = set(listaConjunta)
+
     context = {
         'media_path': media_path,
         'listaAlumno': listaAlumno,
         'listaIndicador': listaIndicador,
         'cursoSeleccionado': cursoSeleccionado,
         'listaHorario': listaHorario,
+        'listaDocumentos': listaDocumentos,
+        'listaNombres': listaNombres,
+        'cantidad': cantidad,
+        'listaAux': listaArchivos,
     }
     return render(request, 'gestionarEvaluacion/baseEvaluacion/base.html',context)
 
