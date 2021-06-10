@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http.response import HttpResponse
 from django.http import JsonResponse
 from django.core import serializers
-from openpyxl import Workbook,load_workbook
+from openpyxl import Workbook,load_workbook,styles
 import os
 from django.conf import settings
 # Create your views here.
@@ -15,6 +15,7 @@ from gestionarEvidencias.models import EvidenciasxHorario
 from gestionarNiveles.models import Nivel
 from gestionarCurso.models import Curso
 from authentication.models import User
+from gestionarResultados.models import ResultadoPUCP
 
 def evaluar(request,pk):
     media_path = MEDIA_URL
@@ -137,20 +138,45 @@ def subirEvidencia(request):
 
 def exportarMedicion(request):
     horarioSeleccionado = request.POST['cboHorario']
+    indicadorSeleccionado = Indicador.objects.get(pk=request.POST['cboIndicador'])
+    resultadoAsociado = ResultadoPUCP.objects.get(pk=indicadorSeleccionado.resultado.pk)
     curso = Curso.objects.get(id=Horario.objects.get(id=horarioSeleccionado).curso_id)
-    rows = RespuestaEvaluacion.objects.filter(horario_id=horarioSeleccionado,estado="1")
-    for row in rows:
-        print(row.codigoAlumno)
+
+    #Apertura de template.xlsx
     filename = os.path.join(settings.BASE_DIR, 'gestionarEvaluacion', 'Resource', 'template.xlsx')
     wb = load_workbook(filename)
     ws= wb.active
+
     #CABECERAS
     ws['E3'] = f'MEDICIÓN DEL CURSO -  {curso.nombre.upper()}'
     ws['D5'] = curso.nombre.upper()
-    ws['F5'] = Horario.objects.get(id=horarioSeleccionado).codigo
+    ws['G5'] = Horario.objects.get(id=horarioSeleccionado).codigo
     ws['D7'] = User.objects.get(id = Horario.objects.get(id=horarioSeleccionado).responsable).first_name
+    ws['E15']= ws['E24'] =  f'{indicadorSeleccionado.codigo}\n{indicadorSeleccionado.descripcion}'
+    ws['E14']= ws['E23'] =  f'{resultadoAsociado.codigo} - {resultadoAsociado.descripcion}'
+
+    #Impresion de Puntajes
+    rows = RespuestaEvaluacion.objects.filter(horario_id=horarioSeleccionado,estado="1")
+    i = 0
+    for row in rows:
+        ws[f'B{25 + i}'] = i + 1
+        ws[f'C{25 + i}'] = row.codigoAlumno
+        ws[f'D{25 + i}'] = row.nombreAlumno
+        ws[f'E{25 + i}'] = row.valorNota if row.valorNota != None else 0
+        i+=1
+
+    #Resultados
+    niveles = Nivel.objects.filter(especialidad_id=curso.especialidad_id, estado='1').order_by('-valor')
+    valorMax = niveles[0].valor
+    ws['E18'] = i
+    if i>0:
+        ws['E16'] = f'=SUMA(E25:H{25+i-1})/{i}'
+        ws['E17'] = f'=SUMA(E25:H{25 + i - 1})/{i}/{valorMax}*100%'
+
+
     #Establecer el nombre del archivo
     nombre_archivo = "Reporte.xlsx"
+
     #Definir el tipo de respuesta que se va a dar
     response= HttpResponse(content_type="application/ms-excel")
     contenido = "attachment; filename = {0}".format(nombre_archivo)
