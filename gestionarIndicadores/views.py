@@ -6,7 +6,7 @@ from django.core import serializers
 from rest_framework.utils import json
 from gestionarEspecialidad.models import Especialidad
 from gestionarIndicadores.models import Indicador
-from gestionarNivel.models import Nivel
+from gestionarNiveles.models import Nivel
 from gestionarResultados.models import ResultadoPUCP
 from gestionarRubrica.models import Rubrica
 

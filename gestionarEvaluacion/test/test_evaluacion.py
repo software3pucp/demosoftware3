@@ -6,7 +6,7 @@ from django.test import TestCase, override_settings
 from gestionarEvaluacion.models import RespuestaEvaluacion
 from gestionarIndicadores.models import Indicador
 from gestionarRubrica.models import Rubrica
-from gestionarNivel.models import Nivel
+from gestionarNiveles.models import Nivel
 from gestionarFacultad.models import Facultad
 from gestionarEspecialidad.models import Especialidad
 from gestionarResultados.models import ResultadoPUCP

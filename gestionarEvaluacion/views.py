@@ -11,7 +11,7 @@ from gestionarEvaluacion.models import RespuestaEvaluacion
 from gestionarHorario.models import Horario
 from gestionarIndicadores.models import Indicador
 from gestionarRubrica.models import Rubrica
-from gestionarNivel.models import Nivel
+from gestionarNiveles.models import Nivel
 from gestionarCurso.models import Curso
 
 def evaluar(request,pk):

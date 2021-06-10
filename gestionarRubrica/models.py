@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 from gestionarEspecialidad.models import Especialidad
 from gestionarIndicadores.models import Indicador
-from gestionarNivel.models import Nivel
+from gestionarNiveles.models import Nivel
 
 
 class Rubrica(models.Model):

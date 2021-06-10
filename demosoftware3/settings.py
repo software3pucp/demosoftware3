@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'gestionarREAcreditadoras',
     'gestionarResultados',
     'gestionarResultadosMediciones',
-    'gestionarNivel',
+    'gestionarNiveles',
     'gestionarFacultad',
     'gestionarEspecialidad',
     'gestionarCurso',
