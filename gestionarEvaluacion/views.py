@@ -13,6 +13,7 @@ from gestionarIndicadores.models import Indicador
 from gestionarRubrica.models import Rubrica
 from gestionarNiveles.models import Nivel
 from gestionarCurso.models import Curso
+from authentication.models import User
 
 def evaluar(request,pk):
     media_path = MEDIA_URL
@@ -112,13 +113,18 @@ def subirEvidencia(request):
 
 def exportarMedicion(request):
     horarioSeleccionado = request.POST['cboHorario']
+    curso = Curso.objects.get(id=Horario.objects.get(id=horarioSeleccionado).curso_id)
     rows = RespuestaEvaluacion.objects.filter(horario_id=horarioSeleccionado,estado="1")
     for row in rows:
         print(row.codigoAlumno)
     filename = os.path.join(settings.BASE_DIR, 'gestionarEvaluacion', 'Resource', 'template.xlsx')
     wb = load_workbook(filename)
     ws= wb.active
-    ws['P14'] = "REPORTE DE VENTAS"
+    #CABECERAS
+    ws['E3'] = f'MEDICIÓN DEL CURSO -  {curso.nombre.upper()}'
+    ws['D5'] = curso.nombre.upper()
+    ws['G5'] = Horario.objects.get(id=horarioSeleccionado).codigo
+    ws['D7'] = User.objects.get(id = Horario.objects.get(id=horarioSeleccionado).responsable).first_name
     #Establecer el nombre del archivo
     nombre_archivo = "Reporte.xlsx"
     #Definir el tipo de respuesta que se va a dar
