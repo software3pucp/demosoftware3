@@ -20,10 +20,11 @@ from gestionarResultados.models import ResultadoPUCP
 def evaluar(request,pk):
     media_path = MEDIA_URL
     listaAlumno = reversed(RespuestaEvaluacion.objects.filter(estado=1))
-    listaIndicador = Indicador.objects.filter(estado=1)
     cursoSeleccionado = Curso.objects.get(pk=pk)
     listaHorario= Horario.objects.filter(curso_id=pk) #listaDeHorario asociado a un curso
-
+    especialidadPk = cursoSeleccionado.especialidad_id
+    resultado = list(ResultadoPUCP.objects.filter(especialidad_id=especialidadPk))
+    listaIndicador = Indicador.objects.filter(resultado_id=resultado[0].id ,estado=1)
     listaHorarios = list(Horario.objects.filter(curso_id=pk, estado=1))
     # listaDocumentos = EvidenciasxHorario.objects.filter(estado=1)
     listaDocumentos = EvidenciasxHorario.objects.none()
@@ -61,7 +62,7 @@ def agregarAlumno(request):
                                                      codigoAlumno=request.POST["codigoAlumno"],
                                                      horario_id=request.POST["horario"])
     ser_instance = serializers.serialize('json', [nuevoAlumno,])
-    ser_instance2 = serializers.serialize('json', list(niveles), fields=('id', 'name', 'value', 'state'))
+    ser_instance2 = serializers.serialize('json', list(niveles), fields=('id', 'nombre', 'valor', 'estado'))
     return JsonResponse({"nuevoAlumno": ser_instance,"niveles": ser_instance2 }, status=200)
 
 def guardarPuntuacion(request):
@@ -95,7 +96,7 @@ def muestraRubrica(request):
     indicador = Indicador.objects.get(pk=request.POST["indicadorSeleccionado"])
     ser_instance = serializers.serialize('json', list(rubrica),fields=('id','descripcion','especialidad','indicador','nivel'))
     ser_instance2 = serializers.serialize('json',[indicador,])
-    ser_instance3 = serializers.serialize('json', list(niveles),fields=('id','name','value','state'))
+    ser_instance3 = serializers.serialize('json', list(niveles),fields=('id','nombre','valor','estado'))
     return JsonResponse({"rubrica": ser_instance,"indicador":ser_instance2, "niveles": ser_instance3 }, status=200)
 
 def listarAlumno(request):
@@ -110,7 +111,7 @@ def listarAlumno(request):
         listaAlumno = reversed(RespuestaEvaluacion.objects.filter(horario_id=request.POST["horarioSeleccionado"], estado=1))
 
     ser_instance = serializers.serialize('json', list(listaAlumno),fields=('id', 'nombreAlumno', 'codigoAlumno', 'horario','calificado', 'valorNota','evidencia'))
-    ser_instance2 = serializers.serialize('json', list(niveles), fields=('id', 'name', 'value', 'state'))
+    ser_instance2 = serializers.serialize('json', list(niveles), fields=('id', 'nombre', 'valor', 'estado'))
     return JsonResponse({"listaAlumno": ser_instance, "niveles": ser_instance2},  status=200)
 
 def importarAlumno(request):

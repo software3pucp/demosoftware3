@@ -796,10 +796,10 @@
                             '<tr>';
 
                         for (i = 0; i < numero - 1; i++) {
-                            dataNiveles += ('<th scope="col"">' + instanceNivel[i]["fields"].name + ' (' + instanceNivel[i]["fields"].value + ')</th>');
+                            dataNiveles += ('<th scope="col"">' + instanceNivel[i]["fields"].nombre + ' (' + instanceNivel[i]["fields"].valor + ')</th>');
                             dataDescripcion += ('<td scope="row"> ' + instanceRubricas[i]["fields"].descripcion + '</td>');
                         }
-                        dataNiveles += '<th  scope="col">' + instanceNivel[numero - 1]["fields"].name + ' (' + instanceNivel[i]["fields"].value + ')</th>';
+                        dataNiveles += '<th  scope="col">' + instanceNivel[numero - 1]["fields"].nombre + ' (' + instanceNivel[i]["fields"].valor + ')</th>';
                         dataDescripcion += '<td >' + instanceRubricas[numero - 1]["fields"].descripcion + '</td>';
                         dataDescripcion += ('</tr>' +
                             '</tbody>' +
