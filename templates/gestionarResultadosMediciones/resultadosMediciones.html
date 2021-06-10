@@ -12,6 +12,12 @@
     {#AQUI COLOQUEN EL CÓDIGO#}
     <div class="card m-3 p-3">
         <h1> Resultados de Mediciones </h1>
+        <div class="col-md-3"
+            <label for="horarios">Horarios:</label>
+            <select id="horarios" name="horarios" class="form-control" onchange="actualizar()">
+                <option value="All">All</option>
+            </select>
+        </div>
         <div class="p-3">
             <canvas id="myChart" style="width:100%;"></canvas>
         </div>
@@ -21,16 +27,13 @@
 
 {% block extrajs %}
     <script>
-        {#var xValues = ["H0811","H0882"];#}
-        {#var yValues = [2021,2022];#}
+        var xValues = [];
+        var matriz=[];
 
         $(document).ready(function () {
             console.log("ready!");
             agregarData();
         });
-
-        var xPrueba = [];
-        var yPrueba = [];
 
         function agregarData() {
             $.ajax({
@@ -42,16 +45,47 @@
                 },
                 success: function (response) {
                     var xLabel = JSON.parse(response["xLabel"]);
-                    var yLabel = JSON.parse(response["yLabel"]);
+                    var yLabel = response["yLabel"];
+
+                    console.log(xLabel);
+                    console.log(yLabel);
+
+                    console.log(yLabel["horarios"][0]["notas"]);
+                    console.log(yLabel["horarios"][0]["notas"][3].cant);
+
                     for(var i=0; i<xLabel.length; i++){
-                        xPrueba.push(xLabel[i]["fields"].codigo);
+                         xValues.push(xLabel[i]["fields"].codigo);
+                         var data = '<option value='+
+                           xValues[i]+'>'+ xValues[i]+'</option>';
+                        $("#horarios").append(data);
                     }
-                    for(var i=0; i<yLabel.length; i++){
-                        yPrueba.push(yLabel[i]["fields"].anho);
-                        console.log(yLabel[i]["fields"].anho);
+
+                    var prueba=[];
+
+                    for (var i = 0; i < yLabel["horarios"].length; i++) {
+                        var lineal = [];
+                        for (var j = 0; j < yLabel["horarios"][i]["notas"].length; j++) {
+                            lineal.push(yLabel["horarios"][i]["notas"][j].cant);
+                        }
+                        prueba.push(lineal);
                     }
-                    console.log(xPrueba);
-                    console.log(yPrueba);
+
+                    console.log(prueba);
+                    matriz = prueba[0].map((_, colIndex) => prueba.map(row => row[colIndex]));
+                    console.log(matriz);
+
+                    for(var i=0;i<matriz.length; i++){
+                        const newDataset = {
+                            label: 'Nivel ' + (i+1),
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: generateRandomColor(),
+                            borderColor: generateRandomColor(),
+                            data: matriz[i]
+                        };
+                        grafiquito.data.datasets.push(newDataset);
+                    }
+
                     grafiquito.update();
                 },
                 error: function (response) {
@@ -60,26 +94,42 @@
             });
         }
 
+        function generateRandomColor() {
+            var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+            return randomColor;
+            //random color will be freshly served
+        }
+
+        function actualizar() {
+            grafiquito.data.labels = [$("#horarios").val()];
+
+            var posicion=-1;
+            for(var i=0; i<xValues.length; i++){
+                if($("#horarios").val() == xValues[i]) posicion=i;
+            }
+
+
+            if ($("#horarios").val() == 'All') {
+                grafiquito.data.labels = xValues;
+                for (var i = 0; i < matriz.length; i++) {
+                    grafiquito.data.datasets[i].data = matriz[i];
+                }
+            } else {
+                grafiquito.data.labels = [$("#horarios").val()];
+                for (var i = 0; i < matriz.length; i++) {
+                    var mini = [];
+                    mini.push(matriz[i][posicion]);
+                    grafiquito.data.datasets[i].data = mini;
+                    console.log(matriz[i][posicion]);
+                }
+            }
+            grafiquito.update();
+        }
+
 
         const data = {
-            labels: xPrueba,
+            labels: xValues,
             datasets: [
-                {
-                    label: 'Alumnos1',
-                    fill: false,
-                    lineTension: 0,
-                    backgroundColor: "rgba(0,0,255,1.0)",
-                    borderColor: "rgba(0,0,255,0.1)",
-                    data: yPrueba
-                },
-                {
-                    label: 'Alumnos2',
-                    fill: false,
-                    lineTension: 0,
-                    backgroundColor: "rgba(255,0,0,1.0)",
-                    borderColor: "rgba(255,0,0,1.0)",
-                    data: yPrueba
-                }
             ]
         };
 
@@ -90,19 +140,35 @@
                 responsive: true,
                 plugins: {
                     legend: {
-                        position: 'top',
+                        position: 'bottom',
                     },
                     title: {
                         display: true,
-                        text: 'Chart.js Line Chart'
+                        text: 'Cantidad de alumnos evaluados por Horario'
                     }
                 },
+                interaction: {
+                    intersect: false,
+                    mode: 'point',
+                },
                 scales: {
-                    yAxes: [{
+                    y: {
+                        min: 0,
+                        max: 5,
+                        title: {
+                            display: true,
+                            text: 'Cantidad de alumnos',
+                        },
                         ticks: {
-                            beginAtZero: true
+                            stepSize: 1
                         }
-                    }]
+                    },
+                     x: {
+                        title: {
+                            display: true,
+                            text: 'Horarios',
+                        }
+                     }
                 },
             },
         }
