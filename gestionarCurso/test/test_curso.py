@@ -29,14 +29,14 @@ class TestingClasses(TestCase):
         print("Comenzando pruebas de: test_agregar_curso")
         c = Client()
         id_especialidad = "1"
-        response = c.get('/cursos/agregar/' + id_especialidad + '/')
+        response = c.post('/cursos/agregar/' + id_especialidad + '/', {'estado': '1' })
         if response.status_code == 200:
             print('Correcta inicialización de agregar curso!')
         elif response.status_code == 404:
             self.assertFalse(False)
         c = Client()
 
-        response = c.post('/cursos/agregar/' + id_especialidad + '/', {'name': 'curso', 'responsable': 1})
+        response = c.post('/cursos/agregar/' + id_especialidad + '/', {'name': 'curso', 'responsable': 1,'estado': '1'})
         if response.status_code != 404:
             print('Se agregó un curso correctamente!')
         elif response.status_code == 404:

@@ -18,7 +18,7 @@ class TestingClasses(TestCase):
     def setUpTestData(cls):
         print("Inicio de prueba del módulo SEMESTRE")
         print("=====================================")
-        Semestre.objects.create(nombreCodigo='2020-1', anho='2020', etapa='2', inicio='18/08', fin='25/12')
+        Semestre.objects.create(nombreCodigo='2020-1', anho='2020', etapa='1', inicio='18/08', fin='25/12')
 
         pass
 
@@ -30,7 +30,7 @@ class TestingClasses(TestCase):
         print("Comenzando pruebas de: test_agregarSemestre")
         c = Client()
         response = c.post('/gestionarSemestre/agregar/',
-                          {'nombreCodigo': '2020-1', 'inicio': '18/08', 'fin': '24/12'})
+                          {'nombreCodigo': '2020-2', 'inicio': '18/08', 'fin': '24/12'})
         if response.status_code == 200:
             print('Correcto llamado de agregarSemestre!')
         elif response.status_code == 404:

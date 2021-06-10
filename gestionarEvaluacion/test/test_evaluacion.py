@@ -7,6 +7,8 @@ from gestionarEvaluacion.models import RespuestaEvaluacion
 from gestionarIndicadores.models import Indicador
 from gestionarRubrica.models import Rubrica
 from gestionarNiveles.models import Nivel
+from gestionarCurso.models import Curso
+from gestionarHorario.models import Horario
 from gestionarFacultad.models import Facultad
 from gestionarEspecialidad.models import Especialidad
 from gestionarResultados.models import ResultadoPUCP
@@ -17,15 +19,16 @@ class TestingClasses(TestCase):
         print("+++++++++++++++++++++++++++++++++++++++++++++++++")
         print("Inicio de prueba del módulo EVALUACION          ||")
         print("==================================================")
-        RespuestaEvaluacion.objects.create(nombreAlumno='Mario Calderon', codigoAlumno='20101585')
-        Nivel.objects.create(name='Inicial',valor=1,estado="1")
         ResultadoPUCP.objects.create(codigo='RE01', estado='1', descripcion='Resultado del estudiante de pruebas 1')
         Indicador.objects.create(codigo='ID101',descripcion='2.1 Diseña una solucion informatica bvuscando satisfacer necesidades.',
                                  estado=1,resultado_id = '1')
         Facultad.objects.create(nombre='Ciencias e Ingenieria', responsable='1', foto='imagen')
         Especialidad.objects.create(nombre='Ingenieria Informatica',responsable='1',foto='imagen',facultad_id= 1)
         Rubrica.objects.create(descripcion='Nivel 1 del indicador ID101',especialidad_id=1,indicador_id=1,nivel_id=1)
-
+        Curso.objects.create(nombre='Ingenieria de Software',responsable = '1', especialidad_id='1')
+        Horario.objects.create(codigo='H101',responsable='1',curso_id='1')
+        Nivel.objects.create(nombre='Inicial', valor=1, estado="1",especialidad_id='1')
+        RespuestaEvaluacion.objects.create(nombreAlumno='Mario Calderon', codigoAlumno='20101585',horario_id='1')
         pass
 
     def setUp(self):
@@ -45,7 +48,7 @@ class TestingClasses(TestCase):
     def test_agregarAlumno(self):
         print("Comenzando pruebas de: test_agregarAlumno")
         c = Client()
-        response = c.post('/gestionarEvaluacion/agregarAlumno/', {'nombreAlumno': 'Juan Casas', 'codigoAlumno': '20162581','horario': 'H102'})
+        response = c.post('/gestionarEvaluacion/agregarAlumno/', {'nombreAlumno': 'Juan Casas', 'codigoAlumno': '20162581','horario': '1'})
         if response.status_code == 200:
             print('Correcto llamado de agregarAlumno!')
         elif response.status_code == 404:
@@ -55,7 +58,7 @@ class TestingClasses(TestCase):
     def test_listarAlumno(self):
         print("Comenzando pruebas de: test_listarAlumno")
         c = Client()
-        response = c.post('/gestionarEvaluacion/listarAlumno/', {'filtrado': '', 'horarioSeleccionado': 'H102'})
+        response = c.post('/gestionarEvaluacion/listarAlumno/', {'filtrado': '', 'horarioSeleccionado': '1'})
         if response.status_code == 200:
             print('Correcto llamado de listarAlumno!')
         elif response.status_code == 404:

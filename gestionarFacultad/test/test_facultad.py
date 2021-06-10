@@ -46,7 +46,7 @@ class TestingClasses(TestCase):
             size=len(TEST_IMAGE),
             charset='utf-8',
         )
-        response = c.post('/facultades/crear/', {'name': 5, 'responsable': 'Juan', 'photo':image})
+        response = c.post('/facultades/crear/', {'name': 5, 'responsable': 'Juan', 'photo':image, 'estado': '1'})
         if response.status_code != 404:
             print('Se agregó una facultad correctamente!')
         elif response.status_code == 404:

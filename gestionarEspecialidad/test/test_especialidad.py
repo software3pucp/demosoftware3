@@ -27,7 +27,7 @@ class TestingClasses(TestCase):
         print("Comenzando pruebas de: test_agregar_especialidad")
         c = Client()
         id_facultad = "1"
-        response = c.get('/especialidades/agregar/' + id_facultad + '/')
+        response = c.post('/especialidades/agregar/' + id_facultad + '/', { 'estado': '1' })
         if response.status_code == 200:
             print('Correcta inicialización de agregar especialidad!')
         elif response.status_code == 404:
@@ -41,7 +41,7 @@ class TestingClasses(TestCase):
             charset='utf-8',
         )
         c = Client()
-        response = c.post('/especialidades/agregar/'+id_facultad+'/', {'name': 1, 'responsable': 1, 'photo': image})
+        response = c.post('/especialidades/agregar/'+id_facultad+'/', {'name': 1, 'responsable': 1, 'photo': image, 'estado':'1'})
         if response.status_code != 404:
             print('Se agregó una especialidad correctamente!')
         elif response.status_code == 404:
