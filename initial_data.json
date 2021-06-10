@@ -48,25 +48,157 @@
     }
   },
   {
-  "model": "authentication.user",
-  "pk": 1,
-  "fields": {
-    "password": "pbkdf2_sha256$216000$GVNjJSaPbZHL$RxlI8L9l+fKz67VR8vj/rWESDblC986h6kBZDYgzn2I=",
-    "last_login": null,
-    "is_superuser": false,
-    "username": "admin@apolo.pe",
-    "first_name": "Administrador",
-    "last_name": "",
-    "email": "admin@apolo.pe",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2021-06-09T04:35:29.555Z",
-    "code": "00000000",
-    "photo": "",
-    "groups": [
-      1
-    ],
-    "user_permissions": []
+    "model": "authentication.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$GVNjJSaPbZHL$RxlI8L9l+fKz67VR8vj/rWESDblC986h6kBZDYgzn2I=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "admin@apolo.pe",
+      "first_name": "Administrador",
+      "last_name": "",
+      "email": "admin@apolo.pe",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2021-06-09T04:35:29.555Z",
+      "code": "00000000",
+      "photo": "",
+      "groups": [
+        1
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$zRFtxokYLCkw$YVvPg8KUjEoqB5NtyqwHHZj/8LXmtFHRbXqgBHQR+u0=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Asistente@apolo.pe",
+      "first_name": "Asistente",
+      "last_name": "",
+      "email": "Asistente@apolo.pe",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2021-06-10T16:36:18.552Z",
+      "code": "00000000",
+      "photo": "",
+      "groups": [
+        2
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$kaEZWoS5KSg5$qfcnErc3WTfztf/SpCA5NvAweU2IfwzkKLFpfiq3gL8=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Auditor@apolo.pe",
+      "first_name": "Auditor",
+      "last_name": "",
+      "email": "Auditor@apolo.pe",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2021-06-10T16:37:43.170Z",
+      "code": "00000000",
+      "photo": "",
+      "groups": [
+        3
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$t7JhKanXdwnq$yewudS9o6Z3HiL+VdZAUlmp4x2Wvs2aZtpoAbKxf5mc=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Coordinador_especialidad@apolo.pe",
+      "first_name": "Coordinador de especialidad",
+      "last_name": "",
+      "email": "Coordinador_especialidad@apolo.pe",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2021-06-10T16:40:38.542Z",
+      "code": "00000000",
+      "photo": "",
+      "groups": [
+        5
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$I6YdBkCEstO0$+P5XG+oQdFRRAZgaWNRdA34a16+b4e6bIS83g5k+DE4=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Coordinador_facultad@apolo.pe",
+      "first_name": "Coordinador de facultad",
+      "last_name": "",
+      "email": "Coordinador_facultad@apolo.pe",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2021-06-10T16:43:21.207Z",
+      "code": "00000000",
+      "photo": "",
+      "groups": [
+        4
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 6,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$2dMu8LrcwElH$+llOKblabdPbP7/Bbr2vjMhfn+X/4JqJFDE5OAcoePk=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Docente@apolo.pe",
+      "first_name": "Docente",
+      "last_name": "",
+      "email": "Docente@apolo.pe",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2021-06-10T16:49:29.558Z",
+      "code": "00000000",
+      "photo": "",
+      "groups": [
+        6
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "authentication.user",
+    "pk": 7,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$kVlNaiO1sg3t$2HQWW2hBETrJJACoA5DYRgYBZgELPIR334l8IfeDBBA=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Usuario@apolo.pe",
+      "first_name": "Usuario",
+      "last_name": "",
+      "email": "Usuario@apolo.pe",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2021-06-10T16:50:08.208Z",
+      "code": "00000000",
+      "photo": "",
+      "groups": [
+        7
+      ],
+      "user_permissions": []
+    }
   }
-}
 ]
