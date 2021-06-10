@@ -19,7 +19,7 @@ class TestingClasses(TestCase):
     def test_listarNivel(self):
         print("Comenzando pruebas de: test_listarNivel")
         c = Client()
-        response = c.get('/gestionarNivel/listar/')
+        response = c.get('/gestionarNiveles/listar/')
         if response.status_code == 200:
             print('Correcto Listar nivel!')
         elif response.status_code == 404:
@@ -29,7 +29,7 @@ class TestingClasses(TestCase):
         print("Comenzando pruebas de: test_test_test_EditarNivel")
         c = Client()
         pk = "1"
-        response = c.post('/gestionarNivel/editar/' + pk + '/', follow=True)
+        response = c.post('/gestionarNiveles/editar/' + pk + '/', follow=True)
         if response.status_code == 200:
             print('Se edito una nivel correctamente!')
         else:
