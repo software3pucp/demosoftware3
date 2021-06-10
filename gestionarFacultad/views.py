@@ -59,6 +59,7 @@ def listarFacultadxEsp(request, id_facultad):
         'id_facultad': id_facultad,
         'media_path': media_path,
         'ListaEstados': Especialidad.ESTADOS[1:],
+        'estado': '1'
     }
     return render(request, 'gestionarEspecialidad/listarEspecialidad.html', context)
 
