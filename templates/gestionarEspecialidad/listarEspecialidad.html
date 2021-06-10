@@ -13,6 +13,8 @@
 
     {#AQUI COLOQUEN EL CÓDIGO#}
     <div class="container-fluid content-row mt-3">
+        <form action="{% url 'agregarEspecialidad' id_facultad=id_facultad%}" method="post">
+            {% csrf_token %}
         <div class="row" style="margin-right: 0.8rem">
             <div class="col-6">
                 <select disabled="true" class="form-control" id="facultadFormControl">
@@ -144,8 +146,7 @@
             {% endfor %}
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <div class="card-group service-work">
-                    <a class="recent-work card mr-4 mb-4" href="{% url 'agregarEspecialidad' id_facultad=id_facultad %}"
-                       style="height: 16rem">
+                    <button type="submit" class="recent-work card mr-4 mb-4" style="height: 16rem">
                         <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
                             <div class="mt-4" style="text-align: center;">
                                 <span class="fas fa-plus fa-9x" style="text-align: center"></span>
@@ -157,15 +158,29 @@
                                     Especialidad</h5>
                             </div>
                         </div>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
+        </form>
     </div>
 {% endblock %}
 
 {% block extrajs %}
     <script>
+
+        $(document).ready(function () {
+            if ("{{estado}}" == 1) {
+                    $('.especialidadesActivas').show();
+                    $('.especialidadesInactivos').hide();
+                } else {
+                    $('.especialidadesActivas').hide();
+                    $('.especialidadesInactivos').show();
+                }
+
+            $("#estado").val({{ estado }});
+        });
+
         $(function () {    // Makes sure the code contained doesn't run until
             //     all the DOM elements have loaded
             $('#estado').change(function () {
@@ -179,7 +194,5 @@
             });
         });
 
-        $('.especialidadesActivas').show();
-        $('.especialidadesInactivos').hide();
     </script>
 {% endblock %}
