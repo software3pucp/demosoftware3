@@ -47,12 +47,12 @@ def editarRE(request, pk):
     acreditadora = Acreditadora.objects.get(pk=request.POST["acreditadora"])
     facultades = Facultad.objects.filter(estado='1')
     if request.POST:
-        print(request.POST)
+        # print(request.POST)
         if request.POST['operacion'] == 'entrada':
             resultadoAcreditadora.acreditadora_id = request.POST["acreditadora"]
-            print('***************************************************************************************************')
-            print(request.POST)
-            print('***************************************************************************************************')
+            # print('***************************************************************************************************')
+            # print(request.POST)
+            # print('***************************************************************************************************')
 
         elif request.POST['operacion'] == 'editar':
             resultadoAcreditadora = ResultadoAcreditadora.objects.get(pk=pk)
