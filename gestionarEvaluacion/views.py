@@ -51,6 +51,7 @@ def evaluar(request,pk):
         'listaDocumentos': listaDocumentos,
         'listaNombres': listaNombres,
         'cantidad': cantidad,
+        'users': User.objects.all(),
         'listaAux': listaArchivos,
     }
     return render(request, 'gestionarEvaluacion/baseEvaluacion/base.html',context)
