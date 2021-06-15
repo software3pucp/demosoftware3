@@ -1,9 +1,14 @@
+from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
 
 # Create your views here.
+from authentication.views import Show
 from demosoftware3.settings import MEDIA_URL
-from gestionarPlanMejora.models import EstadoActividad, PropuestaMejora, ActividadMejora, EvidenciaActividadMejora
+from gestionarPlanMejora.models import EstadoActividad, PropuestaMejora, ActividadMejora, EvidenciaActividadMejora, \
+    ResponsableMejora
 from django.http import JsonResponse
+from authentication.models import User
+
 
 def crearActividad(request):  # quizas sea necesario pasar como parámetro el pk del plan de mejora
     estado = EstadoActividad.objects.get(pk=1)  # estado registrado
@@ -14,10 +19,19 @@ def crearActividad(request):  # quizas sea necesario pasar como parámetro el pk
     if request.POST:  # creación por metodo POST
         codigo = request.POST['codigo']
         descripcion = request.POST['descripcion']
-        ActividadMejora.objects.create(codigo=codigo, descripcion=descripcion,
-                                       propuestaMejora=propuestaMejora, estado=estado,
-                                       inicio=inicio, fin=fin)
+        actividad = ActividadMejora.objects.create(codigo=codigo, descripcion=descripcion,
+                                                   propuestaMejora=propuestaMejora, estado=estado,
+                                                   inicio=inicio, fin=fin)
+        responsables = request.POST.getlist('choices-multiple-remove-button')
+        print(responsables)
+        for val in responsables:
+            user = User.objects.get(id=val)
+            ResponsableMejora.objects.create(actividad=actividad, responsable=user)
+        return redirect(Show)
+
     context = {
+        'users': User.objects.all(),
+        'grupos': Group.objects.all()
 
     }
     return render(request, 'gestionarPlanMejora/crearActividad.html', context)

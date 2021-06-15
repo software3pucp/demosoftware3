@@ -3,6 +3,12 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
+    <style>
+        .choices__list--multiple .choices__item {
+        background-color: #2C7BE5;
+            border-color: #1A68D1;
+        }
+    </style>
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
@@ -51,8 +57,20 @@
                         </div>
                     </div>
                 </div>
+                <!-- Seleccionar Responsables -->
+
+                <div class="form-group" id="filter-user">
+                    <label id=>Selecciona los responsables</label>
+                    <select id="choices-multiple-remove-button" name="choices-multiple-remove-button"
+                            placeholder="Buscar responsable(s)" multiple>
+                        {% for user in users %}
+                            <option value={{ user.pk }}>{{ user.first_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
                 <div class="col-md-12 d-flex justify-content-end mt-3">
-                   {% comment %} <a class="btn btn-outline-primary m-1" type="button"
+                    {% comment %} <a class="btn btn-outline-primary m-1" type="button"
                        href="{% url 'resultados' %}">Cancelar</a>{% endcomment %}
                     <input type="submit" class="btn btn-primary m-1" value="Guardar">
                 </div>
@@ -63,5 +81,27 @@
 {% endblock %}
 
 {% block extrajs %}
+
+    <script src="{% static 'lib/select2/select2.min.js' %}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/connectycube@3.7.7/dist/connectycube.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+
+            var multipleCancelButton = new Choices('#choices-multiple-remove-button', {
+                removeItemButton: true,
+
+            });
+
+
+        });
+    </script>
+
 
 {% endblock %}
