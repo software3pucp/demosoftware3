@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'gestionarPlanMedicion',
     'gestionarIndicadores',
     'gestionarRubrica',
+    'gestionarPlanMejora',
     'gestionarEvidencias',
     'gestionarHistoricoEv',
     'allauth',

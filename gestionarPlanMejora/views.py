@@ -1,9 +1,12 @@
 from django.shortcuts import render
 
 # Create your views here.
+from gestionarPlanMejora.models import EstadoActividad
 
 
 def crearActividad(request):
+
+    estados = EstadoActividad.objects.filter()
 
     context = {
 
