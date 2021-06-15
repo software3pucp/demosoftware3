@@ -10,8 +10,8 @@ from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
 from gestionarIndicadores.models import Indicador
 from gestionarResultados.models import ResultadoPUCP
-
-
+from django.contrib.auth.decorators import login_required
+@login_required
 def crearResultado(request, id_especialidad):
     try:
         especialidad = Especialidad.objects.get(pk=id_especialidad)
@@ -29,7 +29,7 @@ def crearResultado(request, id_especialidad):
     }
     return render(request, 'gestionarResultados/crearResultado.html', context)
 
-
+@login_required
 def Resultados(request):
 
     facultades = Facultad.objects.filter(estado='1')
@@ -74,7 +74,7 @@ def listarResultados(request):
     return JsonResponse({"resultados": ser_instance,"tiene_niveles": ser_instance2}, status=200)
 
 
-
+@login_required
 def editarResultado(request,pk):
     if request.POST:
         resultado = ResultadoPUCP.objects.get(pk=pk)

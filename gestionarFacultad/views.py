@@ -2,13 +2,13 @@ from demosoftware3.settings import MEDIA_URL
 from gestionarFacultad.models import Facultad
 from django.shortcuts import render, redirect
 from authentication.models import User
-
+from django.contrib.auth.decorators import login_required
 from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
 from django.shortcuts import render, redirect
 from authentication.models import User
 
-
+@login_required
 # Create your views here.
 def listarFacultad(request):
     media_path = MEDIA_URL
@@ -21,7 +21,7 @@ def listarFacultad(request):
     }
     return render(request, 'gestionarFacultad/listarFacultad.html', context)
 
-
+@login_required
 def agregarFacultad(request):
     media_path = MEDIA_URL
     if request.POST:
@@ -49,7 +49,7 @@ def agregarFacultad(request):
     }
     return render(request, 'gestionarFacultad/agregarFacultad.html', context)
 
-
+@login_required
 def listarFacultadxEsp(request, id_facultad):
     media_path = MEDIA_URL
     context = {
@@ -63,7 +63,7 @@ def listarFacultadxEsp(request, id_facultad):
     }
     return render(request, 'gestionarEspecialidad/listarEspecialidad.html', context)
 
-
+@login_required
 def editarFacultad(request, id_facultad):
     ListaUsuarios = User.objects.filter()
     media_path = MEDIA_URL
@@ -94,7 +94,7 @@ def editarFacultad(request, id_facultad):
     }
     return render(request, 'gestionarFacultad/editarFacultad.html', context)
 
-
+@login_required
 def eliminarFacultad(request, id_facultad):
     media_path = MEDIA_URL
     facultad = Facultad.objects.get(pk=id_facultad)
@@ -109,7 +109,7 @@ def eliminarFacultad(request, id_facultad):
     print("Correcto eliminar Facultad!")
     return render(request, 'gestionarFacultad/listarFacultad.html', context)
 
-
+@login_required
 def eliminarFacultad2(request, id_facultad):
     media_path = MEDIA_URL
     facultad = Facultad.objects.get(pk=id_facultad)

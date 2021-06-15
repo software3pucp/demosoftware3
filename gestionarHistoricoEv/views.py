@@ -8,7 +8,9 @@ from gestionarHorario.models import Horario
 from gestionarCurso.models import Curso
 from gestionarEvidencias.models import EvidenciasxHorario
 from demosoftware3.settings import MEDIA_URL
+from django.contrib.auth.decorators import login_required
 from itertools import chain
+@login_required
 def listarHistorico(request,pk):
     media_path = MEDIA_URL
     cursoSeleccionado = Curso.objects.get(pk=pk)

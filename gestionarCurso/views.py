@@ -6,11 +6,11 @@ from gestionarFacultad.models import Facultad
 from gestionarCurso.models import Curso
 from django.shortcuts import render, redirect
 from authentication.models import User
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 from gestionarHorario.models import Horario
 
-
+@login_required
 def listarCurso(request):
     context = {
         'ListaEspecialidad': Especialidad.objects.all(),
@@ -20,7 +20,7 @@ def listarCurso(request):
     }
     return render(request, 'gestionarCurso/listarCurso.html', context)
 
-
+@login_required
 def listarCursoxHorario(request, id_curso):
     media_path = MEDIA_URL
     context = {
@@ -35,7 +35,7 @@ def listarCursoxHorario(request, id_curso):
     }
     return render(request, 'gestionarHorario/listarHorario.html', context)
 
-
+@login_required
 def agregarCurso(request, id_especialidad):
     media_path = MEDIA_URL
     if request.POST:
@@ -68,7 +68,7 @@ def agregarCurso(request, id_especialidad):
         }
     return render(request, 'gestionarCurso/agregarCurso.html', context)
 
-
+@login_required
 def editarCurso(request, id_curso):
     curso = Curso.objects.get(pk=id_curso)
     id_especialidad = curso.especialidad_id
@@ -101,14 +101,14 @@ def editarCurso(request, id_curso):
     }
     return render(request, 'gestionarCurso/editarCurso.html', context)
 
-
+@login_required
 def eliminarCurso(request, id_curso):
     curso = Curso.objects.get(pk=id_curso)
     espPK = curso.especialidad_id
     curso.delete()
     return redirect('listarEspecialidadxCurso', espPK)
 
-
+@login_required
 def eliminarCurso2(request, id_curso):
     curso = Curso.objects.get(pk=id_curso)
     estado = curso.estado

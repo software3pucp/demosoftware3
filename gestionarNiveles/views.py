@@ -1,11 +1,12 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.core import serializers
-
+from django.contrib.auth.decorators import login_required
 from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
 from gestionarNiveles.models import Nivel
 
+@login_required
 def editarNivel(request,pk):
      if request.POST:
          pk=request.POST['nivelpk']
@@ -20,7 +21,7 @@ def editarNivel(request,pk):
          'nivel': nivel,
      }
      return render(request, 'gestionarNiveles/editarNivel.html', context)
-
+@login_required
 def niveles(request):
 
     facultades = Facultad.objects.filter(estado='1')

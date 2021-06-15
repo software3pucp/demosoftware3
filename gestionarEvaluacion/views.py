@@ -16,7 +16,9 @@ from gestionarNiveles.models import Nivel
 from gestionarCurso.models import Curso
 from authentication.models import User
 from gestionarResultados.models import ResultadoPUCP
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def evaluar(request,pk):
     media_path = MEDIA_URL
     listaAlumno = reversed(RespuestaEvaluacion.objects.filter(estado=1))

@@ -6,8 +6,9 @@ from gestionarCurso.models import Curso
 from gestionarHorario.models import Horario
 from django.shortcuts import render, redirect
 from authentication.models import User
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 # Create your views here.
 def listarHorario(request):
     context = {
@@ -17,7 +18,7 @@ def listarHorario(request):
     }
     return render(request, 'gestionarHorario/listarHorario.html', context)
 
-
+@login_required
 def agregarHorario(request, id_curso):
     if request.POST:
         print(request.POST)
@@ -34,7 +35,7 @@ def agregarHorario(request, id_curso):
     }
     return render(request, 'gestionarHorario/agregarHorario.html', context)
 
-
+@login_required
 def editarHorario(request, id_horario):
     horario = Horario.objects.get(pk=id_horario)
     if request.POST:
@@ -52,14 +53,14 @@ def editarHorario(request, id_horario):
     }
     return render(request, 'gestionarHorario/editarHorario.html', context)
 
-
+@login_required
 def eliminarHorario(request, id_horario):
     horario = Horario.objects.get(pk=id_horario)
     cursoPK = horario.curso_id
     horario.delete()
     return redirect('listarCursoxHorario', cursoPK)
 
-
+@login_required
 def eliminarHorario2(request, id_horario):
     horario = Horario.objects.get(pk=id_horario)
     cursoPK = horario.curso_id

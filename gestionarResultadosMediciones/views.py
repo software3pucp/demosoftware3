@@ -3,13 +3,13 @@ import json
 from django.shortcuts import render
 from django.core import serializers
 from django.http import JsonResponse
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 from gestionarCurso.models import Curso
 from gestionarEvaluacion.models import RespuestaEvaluacion
 from gestionarHorario.models import Horario
 from gestionarNiveles.models import Nivel
-
+@login_required
 def resultadosMediciones(request):
 
     if request.POST:

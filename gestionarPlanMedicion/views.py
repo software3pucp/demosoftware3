@@ -9,8 +9,8 @@ from gestionarFacultad.models import Facultad
 from gestionarHorario.models import Horario
 from gestionarIndicadores.models import Indicador
 from gestionarPlanMedicion.models import PlanMedicion
-
-
+from django.contrib.auth.decorators import login_required
+@login_required
 def listarPlanMedicion(request):
 
     if request.POST:
@@ -48,7 +48,7 @@ def listarPlanMedicion(request):
         'estados' : estados,
     }
     return render(request,'gestionarPlanMedicion/listarPlanMedicion.html',context)
-
+@login_required
 def crearPlanMedicion(request,pk):
     insert = False
     #El flag 0: operacion no realizada

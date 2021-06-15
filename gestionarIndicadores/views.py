@@ -9,8 +9,9 @@ from gestionarIndicadores.models import Indicador
 from gestionarNiveles.models import Nivel
 from gestionarResultados.models import ResultadoPUCP
 from gestionarRubrica.models import Rubrica
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def editarIndicador(request, pk):
     indicador = Indicador.objects.get(pk=pk)
     especialidadpk = obtenerEspecialidadIndicador(indicador)
@@ -66,7 +67,7 @@ def obtenerEspecialidadIndicador(indicador):
     especialidad=Especialidad.objects.get(pk=especialidadpk)
     return especialidad.pk
 
-
+@login_required
 def eliminarIndicadorxResultado(request, id_resultado):
     if request.POST:
         print(request.POST)

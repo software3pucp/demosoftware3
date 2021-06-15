@@ -5,6 +5,8 @@ from django.core import serializers
 from datetime import datetime
 from gestionarSemestre.models import Semestre
 from gestionarCurso.models import Curso
+from django.contrib.auth.decorators import login_required
+@login_required
 def listarSemestre(request):
     semestreLista = reversed(Semestre.objects.filter())
 
@@ -37,7 +39,7 @@ def agregarSemestre(request):
                             etapa=etapa, inicio=fechaIni, fin=fechaFin)
     ser_instance = serializers.serialize('json', [semestre,])
     return JsonResponse({"nuevoSemestre": ser_instance}, status=200)
-
+@login_required
 def enviarCursoHorario(request,pk):
     semestre = Semestre.objects.get(pk=pk)
     cursoLista = Curso.objects.filter(estado=1)
@@ -45,4 +47,4 @@ def enviarCursoHorario(request,pk):
         "semestreSeleccionado": semestre,
         "cursoLista": cursoLista
     }
-    return  render(request, 'gestionarSemestre/semestre/semestreDetalle.html', context)
+    return render(request, 'gestionarSemestre/semestre/semestreDetalle.html', context)

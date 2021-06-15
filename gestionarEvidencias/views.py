@@ -2,14 +2,14 @@ from django.core import serializers
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.staticfiles import finders
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 from demosoftware3.settings import MEDIA_URL
 from gestionarCurso.models import Curso
 from gestionarEvidencias.models import EvidenciasxHorario
 from gestionarHorario.models import Horario
 
-
+@login_required
 def evidenciasxHorario(request, id_curso, id_horario):
     tiene_evidencias = False
     curso = Curso.objects.get(pk=id_curso)

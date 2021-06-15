@@ -7,11 +7,11 @@ from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
 from gestionarREAcreditadoras.models import Acreditadora, ResultadoAcreditadora
 from gestionarIndicadores.models import Indicador
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 from gestionarResultados.models import ResultadoPUCP
 
-
+@login_required
 def listarRE(request, pk):
     lista=[]
     acreditadora = Acreditadora.objects.get(pk=pk)
@@ -35,7 +35,7 @@ def listarRE(request, pk):
     }
     return render(request, 'gestionarREAcreditadoras/listarRE.html', context)
 
-
+@login_required
 def editarRE(request, pk):
     insert = False
     flag = 0

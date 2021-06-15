@@ -5,11 +5,11 @@ from gestionarFacultad.models import Facultad
 from gestionarCurso.models import Curso
 from django.shortcuts import render, redirect
 from authentication.models import User
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 from gestionarFacultad.views import listarFacultadxEsp, listarFacultad
 
-
+@login_required
 def listarEspecialidad(request):
     media_path = MEDIA_URL
     context = {
@@ -21,7 +21,7 @@ def listarEspecialidad(request):
     }
     return render(request, 'gestionarEspecialidad/listarEspecialidad.html', context)
 
-
+@login_required
 def listarEspecialidadxCurso(request, id_especialidad):
     print("==================================")
     print(id_especialidad)
@@ -39,7 +39,7 @@ def listarEspecialidadxCurso(request, id_especialidad):
     }
     return render(request, 'gestionarCurso/listarCurso.html', context)
 
-
+@login_required
 def agregarEspecialidad(request, id_facultad):
     media_path = MEDIA_URL
     if request.POST:
@@ -72,7 +72,7 @@ def agregarEspecialidad(request, id_facultad):
     }
     return render(request, 'gestionarEspecialidad/agregarEspecialidad.html', context)
 
-
+@login_required
 def editarEspecialidad(request, id_especialidad):
     media_path = MEDIA_URL
     especialidad = Especialidad.objects.get(pk=id_especialidad)
@@ -109,14 +109,14 @@ def editarEspecialidad(request, id_especialidad):
     }
     return render(request, 'gestionarEspecialidad/editarEspecialidad.html', context)
 
-
+@login_required
 def eliminarEspecialidad(request, id_especialidad):
     especialidad = Especialidad.objects.get(pk=id_especialidad)
     fakuPK = especialidad.facultad.pk
     especialidad.delete()
     return redirect('listarFacultadxEsp', fakuPK)
 
-
+@login_required
 def eliminarEspecialidad2(request, id_especialidad):
     especialidad = Especialidad.objects.get(pk=id_especialidad)
     estado = especialidad.estado
