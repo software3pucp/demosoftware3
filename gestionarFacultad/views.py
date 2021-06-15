@@ -19,6 +19,7 @@ def listarFacultad(request):
         'media_path': media_path,
         'estado': '1'
     }
+    #probandoxd
     return render(request, 'gestionarFacultad/listarFacultad.html', context)
 
 @login_required
