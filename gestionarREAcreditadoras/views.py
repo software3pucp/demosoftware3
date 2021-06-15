@@ -16,14 +16,15 @@ def listarRE(request, pk):
     lista=[]
     acreditadora = Acreditadora.objects.get(pk=pk)
     resultados = ResultadoAcreditadora.objects.filter(acreditadora=pk)
-    repucps=ResultadoPUCP.objects.all()
-    if repucps:
-        for repucp in repucps:
+    indicadores=Indicador.objects.all()
+    if indicadores:
+        for ind in indicadores:
+            repucp=ResultadoPUCP.objects.get(pk=ind.resultado_id)
             id_especialidad = repucp.especialidad_id
             especialidad = Especialidad.objects.get(pk=id_especialidad)
             id_facultad = especialidad.facultad_id
             facultad = Facultad.objects.get(pk=id_facultad)
-            reacres= ResultadoAcreditadora.objects.filter(acreditadora=pk, resultadoPUCP_id=repucp.pk)
+            reacres= ResultadoAcreditadora.objects.filter(acreditadora=pk, indicador_id=ind.pk)
             if reacres:
                 reg=[repucp,especialidad,facultad,reacres]
                 lista.append(reg)
@@ -76,7 +77,7 @@ def editarRE(request, pk):
                                                                              descripcion=request.POST["descripcion"],
                                                                              acreditadora_id=request.POST[
                                                                                  "acreditadora"],
-                                                                             resultadoPUCP_id=request.POST["select"])
+                                                                             indicador_id=request.POST["select"])
 
             pk = resultadoAcreditadora.pk
             insert = True
@@ -85,9 +86,12 @@ def editarRE(request, pk):
 
     if pk != '0':
         resultadoAcreditadora = ResultadoAcreditadora.objects.get(pk=pk)
-        if resultadoAcreditadora.resultadoPUCP_id is not None :
-            resultadoSeleccionado = resultadoAcreditadora.resultadoPUCP_id
-            especialidadSeleccionada = ResultadoPUCP.objects.get(pk=resultadoSeleccionado).especialidad_id
+        if resultadoAcreditadora.indicador_id:
+            id_indicador=resultadoAcreditadora.indicador_id
+            indi=Indicador.objects.get(pk=id_indicador)
+            resultadoPUCP=ResultadoPUCP.objects.get(pk=indi.resultado_id)
+            # resultadoSeleccionado = resultadoAcreditadora.resultadoPUCP_id
+            especialidadSeleccionada = resultadoPUCP.especialidad_id
             facultadSeleccionada = Especialidad.objects.get(pk=especialidadSeleccionada).facultad_id
 
         titulo = 'Editar'
@@ -121,7 +125,16 @@ def ajaxEditar(request):
             data = serializers.serialize("json", especialidades)
             return JsonResponse({"resp": data}, status=200)
         if request.POST['operacion'] == 'listREPUCP':
-            resultadosPUCP = ResultadoPUCP.objects.filter(especialidad_id=request.POST['especialidadPk'], estado='1');
-            data = serializers.serialize("json", resultadosPUCP)
+            ind_Aux=[];
+            indicadores=Indicador.objects.filter(estado='1');
+            for ind in indicadores:
+                # print(ind.descripcion)
+                result_aux=ResultadoPUCP.objects.get(pk=ind.resultado.pk)
+                if result_aux.especialidad_id == int(request.POST['especialidadPk']):
+                    resul_Acre_Aux=ResultadoAcreditadora.objects.filter(indicador_id=ind.pk)
+                    if not resul_Acre_Aux:
+                        ind_Aux.append(ind);
+
+            data = serializers.serialize("json", ind_Aux)
             return JsonResponse({"resp": data}, status=200)
     return
