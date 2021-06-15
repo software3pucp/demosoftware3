@@ -56,11 +56,20 @@ def editarActividad(request, pk):
     actividad = ActividadMejora.objects.get(pk=pk)
     estados = EstadoActividad.objects.filter()
     listaEvidencias = EvidenciaActividadMejora.objects.filter(actividad_id=pk, estado='1')
+    responsables = ResponsableMejora.objects.filter(actividad_id=pk)
+    print('--------------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+
+    lresponsables = []
+    for rs in responsables:
+        lresponsables.append(User.objects.get(pk=rs.responsable_id))
+    print(lresponsables)
     context = {
         'listaEvidencias': listaEvidencias,
         'actividad': actividad,
         'estados': estados,
         'media_path': media_path,
+        'responsables': lresponsables,
+        'users': User.objects.all(),
     }
     return render(request, 'gestionarPlanMejora/editarActividad.html', context)
 

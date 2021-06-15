@@ -58,24 +58,56 @@
                     <div class="row p-1">
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label for="descripcion">Descripción:</label>
+                                <label for="responsables">Responsables:</label>
                             </div>
                         </div>
                         <div class="col-md-10">
+                            <div class="form-group">
+                                <select id="choices-multiple-remove-button" name="choices-multiple-remove-button"
+                                        placeholder="Seleccionar rol" multiple>
+                                    {% for us in users %}
+                                        <option value={{ us.pk }}>{{ us.first_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
                             <div class="form-group ">
-                                    <textarea name="descripcion" id="descripcion" class="form-control"
-                                              aria-label="With textarea" rows="4">{{ actividad.descripcion }}</textarea>
+                                {% for rs in responsables %}
+                                    <span> {{ rs.first_name }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="codigo">Código:</label>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <input name="codigo" class="form-control" id="codigo" type="text"
+                                       value="{{ actividad.codigo }}">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12 d-flex justify-content-end mt-3">
-                    {% comment %}<a class="btn btn-outline-primary m-1" type="button"
+
+
+                <div class="row p-1">
+                    <div class="col-md-12 d-flex justify-content-end mt-3">
+                        {% comment %}<a class="btn btn-outline-primary m-1" type="button"
                        href="{% url 'resultados' %}">Cancelar</a>{% endcomment %}
-                    <input type="submit" class="btn btn-primary m-1" value="Guardar">
+                        <input type="submit" class="btn btn-primary m-1" value="Guardar">
+                    </div>
                 </div>
             </div>
+            <!--RESPONSABLES DE LA ACTIVIDAD-->
+
         </form>
+
+
         <div class="row-12">
             <div class="col-md-12">
                 <h4>Evidencias de la actividad</h4>
@@ -160,7 +192,25 @@
 {% endblock %}
 
 {% block extrajs %}
+    <script src="{% static 'lib/select2/select2.min.js' %}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/connectycube@3.7.7/dist/connectycube.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script>
+
+        $(document).ready(function () {
+
+
+            var multipleCancelButton = new Choices('#choices-multiple-remove-button', {
+                removeItemButton: true,
+            });
+
+
+
+        });
         var pkEliminar;
 
         $("#btnEliminarEvidenciaActividad").on('click', function () {
