@@ -200,5 +200,209 @@
       ],
       "user_permissions": []
     }
+  },
+  {
+    "model": "gestionarFacultad.facultad",
+    "pk": 10,
+    "fields": {
+      "nombre": "Ciencias e Ingenieria",
+      "responsable": "1",
+      "foto": "",
+      "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarFacultad.facultad",
+    "pk": 11,
+    "fields": {
+      "nombre": "Arquitectura y Urbanismo",
+      "responsable": "1",
+      "foto": "",
+      "estado": "1"
+    }
+  },
+    {
+    "model": "gestionarEspecialidad.especialidad",
+    "pk": 5,
+    "fields": {
+      "nombre": "Ingenieria Informatica",
+      "responsable": "1",
+      "facultad": 10,
+      "foto": "",
+      "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarEspecialidad.especialidad",
+    "pk": 6,
+    "fields": {
+      "nombre": "Ingenieria Industrial",
+      "responsable": "1",
+      "facultad": 10,
+      "foto": "",
+      "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarEspecialidad.especialidad",
+    "pk": 7,
+    "fields": {
+      "nombre": "Ingenieria Civil",
+      "responsable": "1",
+      "facultad": 10,
+      "foto": "",
+      "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarEspecialidad.especialidad",
+    "pk": 8,
+    "fields": {
+      "nombre": "Arquitectura",
+      "responsable": "1",
+      "facultad": 11,
+      "foto": "",
+      "estado": "1"
+    }
+  },
+    {
+    "model": "gestionarCurso.curso",
+    "pk": 9,
+    "fields": {
+      "nombre": "Desarrollo de Programas 1",
+      "responsable": "1",
+      "especialidad": 5,
+      "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarCurso.curso",
+    "pk": 10,
+    "fields": {
+      "nombre": "Desarrollo de Programas 2",
+      "responsable": "1",
+      "especialidad": 5,
+      "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarCurso.curso",
+    "pk": 11,
+    "fields": {
+      "nombre": "Tesis 1",
+      "responsable": "1",
+      "especialidad": 5,
+      "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarCurso.curso",
+    "pk": 12,
+    "fields": {
+      "nombre": "Tesis 2",
+      "responsable": "1",
+      "especialidad": 5,
+      "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarCurso.curso",
+    "pk": 13,
+    "fields": {
+      "nombre": "Control de Gestion Industrial",
+      "responsable": "1",
+      "especialidad": 6,
+      "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarCurso.curso",
+    "pk": 14,
+    "fields": {
+      "nombre": "Investigacion Operativa",
+      "responsable": "1",
+      "especialidad": 6,
+      "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarCurso.curso",
+    "pk": 15,
+    "fields": {
+      "nombre": "Ingenieria Economica",
+      "responsable": "1",
+      "especialidad": 6,
+      "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarCurso.curso",
+    "pk": 16,
+    "fields": {
+      "nombre": "Ingenieria de Transporte",
+      "responsable": "1",
+      "especialidad": 7,
+      "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarCurso.curso",
+    "pk": 17,
+    "fields": {
+      "nombre": "Ingenieria Sismorresistente",
+      "responsable": "1",
+      "especialidad": 7,
+      "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarCurso.curso",
+    "pk": 18,
+    "fields": {
+      "nombre": "Ingenieria Geotecnica",
+      "responsable": "1",
+      "especialidad": 7,
+      "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarCurso.curso",
+    "pk": 19,
+    "fields": {
+      "nombre": "Taller 9",
+      "responsable": "1",
+      "especialidad": 8,
+      "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarCurso.curso",
+    "pk": 20,
+    "fields": {
+      "nombre": "Taller 10",
+      "responsable": "1",
+      "especialidad": 8,
+      "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarCurso.curso",
+    "pk": 21,
+    "fields": {
+      "nombre": "Seminario PFC - Teoria",
+      "responsable": "1",
+      "especialidad": 8,
+      "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarCurso.curso",
+    "pk": 22,
+    "fields": {
+      "nombre": "Seminario PFC - Estructuras y Construccion",
+      "responsable": "1",
+      "especialidad": 8,
+      "estado": "1"
+    }
   }
 ]
