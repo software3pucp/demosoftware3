@@ -3,40 +3,28 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
-    <link href="{% static 'lib/flatpickr/flatpickr.min.css' %}" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <style>
-        #Titulo {
-            color: #0154ae
-        }
-
-        p {
-            line-height: 20%;
-            text-align: center;
-            font-family: "Montserrat";
-        }
-    </style>
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
 {% block body %}
-    <form action="{% url 'crearActividad'  %}" method="post">
-        {% csrf_token %}
-        <div class="container-fluid">
-            <div class="card p-5">
-                <div class="row d-flex justify-content-center ">
-                    <div class="col-10">
-                        <h4 style="font-family: Montserrat">Crear Actividad</h4>
+
+    <div class="card p-5">
+        <form action="{% url 'crearActividad' %}" method="post">
+            {% csrf_token %}
+            <div class="row-12">
+                <div class="col-12">
+                    <div class="row d-flex justify-content-center ">
+                        <div class="col-12">
+                            <h4>Registrar actividad de mejora</h4>
+                        </div>
+                        {% comment %}<div class="col-2 ">
+                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'resultados' %}">
+                                <div class="fas fa-reply mt-1 mr-2"></div>
+                                <h5>Volver</h5>
+                            </a>
+                        </div>{% endcomment %}
                     </div>
-                    {% comment %}<div class="col-2 text-right">
-                        <a class="d-flex flex-row justify-content-end mt-2 " href="{% url 'editarResultado' pk=id_resultado %}">
-                            <div class="fas fa-reply mt-1 mr-2"></div>
-                            <h5>Volver</h5>
-                        </a>
-                    </div>{% endcomment %}
-                </div>
-                <hr style="background-color: #0154ae;">
-                <div class="form-group m-2">
+                    <hr style="background-color: #0154ae;">
                     <div class="row p-1">
                         <div class="col-md-2">
                             <div class="form-group">
@@ -45,8 +33,7 @@
                         </div>
                         <div class="col-md-10">
                             <div class="form-group">
-                                <input name="codigo" class="form-control" id="codigo" type="text"
-                                       value="{{ indicador.codigo }}">
+                                <input name="codigo" class="form-control" id="codigo" type="text">
                             </div>
                         </div>
                     </div>
@@ -57,95 +44,24 @@
                             </div>
                         </div>
                         <div class="col-md-10">
-                            <div class="form-group">
-                                    <textarea id="descripcion" name="descripcion" class="form-control"
-                                              aria-label="With textarea" rows="4">{{ indicador.descripcion }}</textarea>
+                            <div class="form-group ">
+                                    <textarea name="descripcion" id="descripcion" class="form-control"
+                                              aria-label="With textarea" rows="4"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row d-flex justify-content-center ">
-                    <div class="col-12">
-                        <h4 style="font-family: Montserrat"> Rúbrica del Indicador</h4>
-                    </div>
-                </div>
-                <hr style="background-color: #0154ae;">
-                {% if not hay_niveles %}
-                    <div class="alert alert-info" role="alert">Aun no se han registrado niveles de desempeño!</div>
-                {% endif %}
-                <div class="dashboard-data-table">
-                    <table class="table table-sm table-dashboard fs--1 data-table border-bottom"
-                           data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
-                        <thead class="bg-200 text-900">
-                        <tr>
-                            <th class="sort pr-1 align-middle">N°</th>
-                            <th class="sort pr-1 align-middle">Nombre</th>
-                            <th class="sort pr-1 align-middle">Descripción</th>
-                        </tr>
-                        </thead>
-                        <tbody id="purchases">
-                        {% for item in nivelLista %}
-                            <tr class="btn-reveal-trigger">
-                                <th class="align-middle">{{ item.0.pk }} </th>
-                                <th class="align-middle">{{ item.0.nombre }}</th>
-                                <td class="align-middle">
-                                    <div class="input-group">
-                                                    <textarea name="desc_nivel{{ item.0.pk }}"
-                                                              id="desc_nivel{{ item.0.pk }}"
-                                                              class="form-control"
-                                                              rows="3">{{ item.1 }}</textarea>
-                                    </div>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="d-inline-flex  flex-row justify-content-end">
-                    <div class="d-flex p-2">
-                        <a class="btn btn-outline-primary" type="button"
-                           href="{% url 'editarResultado' pk=id_resultado %}">Cancelar
-                        </a>
-                    </div>
-                    <div class="d-flex p-2">
-                        <input type="submit" class="btn btn-primary" value="Guardar">
-                    </div>
+                <div class="col-md-12 d-flex justify-content-end mt-3">
+                   {% comment %} <a class="btn btn-outline-primary m-1" type="button"
+                       href="{% url 'resultados' %}">Cancelar</a>{% endcomment %}
+                    <input type="submit" class="btn btn-primary m-1" value="Guardar">
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 
 {% endblock %}
 
 {% block extrajs %}
-    <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
-    <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
-
-    <script>
-        function agregarDescripcion(nivel) {
-            console.log(nivel)
-            console.log({{ indicador.pk }})
-            console.log($("#desc_nivel" + nivel).val())
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'agregarDescipcionNivel' %}",
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    nivelpk: nivel,
-                    indicadorpk: {{ indicador.pk }},
-                    desc_nivel: $("#desc_nivel" + nivel).val(),
-                },
-
-                success: function (response) {
-                    $("#desc_nivel" + nivel).prop("disabled", true)
-                    $("#desc_nivel" + nivel).val($("#desc_nivel" + nivel).val())
-                },
-                error: function (response) {
-                    // alert the error if any error occured
-                    alert(response["responseJSON"]["error"]);
-                }
-            });
-        }
-    </script>
 
 {% endblock %}

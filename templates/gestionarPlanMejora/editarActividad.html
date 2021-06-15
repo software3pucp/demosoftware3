@@ -1,10 +1,202 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base/base.html' %}
+{% load static %}
 
-</body>
-</html>
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+
+    <div class="card p-5">
+        <form action="{% url 'editarActividad' pk=actividad.pk %}" method="post">
+            {% csrf_token %}
+            <div class="row-12">
+                <div class="col-12">
+                    <div class="row d-flex justify-content-center ">
+                        <div class="col-12">
+                            <h4>Editar actividad de mejora</h4>
+                        </div>
+                        {% comment %}<div class="col-2 ">
+                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url '' %}">
+                                <div class="fas fa-reply mt-1 mr-2"></div>
+                                <h5>Volver</h5>
+                            </a>
+                        </div>{% endcomment %}
+                    </div>
+                    <hr style="background-color: #0154ae;">
+
+                    <div class="row p-1">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="cboEstado">Estado:</label>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <select class="custom-select custom-select-sm mb-3" id="cboEstado" name="cboEstado">
+                                    {% for estado in estados %}
+                                        <option value={{ estado.pk }}>{{ estado.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="codigo">Código:</label>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <input name="codigo" class="form-control" id="codigo" type="text"
+                                       value="{{ actividad.codigo }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="descripcion">Descripción:</label>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="form-group ">
+                                    <textarea name="descripcion" id="descripcion" class="form-control"
+                                              aria-label="With textarea" rows="4">{{ actividad.descripcion }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 d-flex justify-content-end mt-3">
+                    {% comment %}<a class="btn btn-outline-primary m-1" type="button"
+                       href="{% url 'resultados' %}">Cancelar</a>{% endcomment %}
+                    <input type="submit" class="btn btn-primary m-1" value="Guardar">
+                </div>
+            </div>
+        </form>
+        <div class="row-12">
+            <div class="col-md-12">
+                <h4>Evidencias de la actividad</h4>
+            </div>
+            <hr style="background-color: #0154ae;">
+            <div class="col-12">
+                <a class="btn btn-falcon-primary mb-2"
+                   href="{% url 'subirEvidenciaActividad' id_actividad=actividad.pk %}">
+                    <span class="fa fa-plus"></span>
+                </a>
+                <div class="dashboard-data-table">
+                    <table class="table table-sm table-dashboard fs--1  border-bottom"
+                           data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
+                        <thead class="bg-200 text-900">
+                        <tr>
+                            <th class="sort pr-1 align-middle">N°</th>
+                            <th class="sort pr-1 align-middle">Concepto</th>
+                            <th class="sort pr-1 align-middle">Descripción</th>
+                            <th class="sort pr-1 align-middle">Nombre</th>
+                            <th class="sort pr-1 align-middle">Fecha registro</th>
+                            <th class="sort pr-1 align-middle text-center">Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody id="purchases">
+                        {% for evidencia in listaEvidencias %}
+                            <tr class="btn-reveal-trigger">
+                                <th class="align-middle"> {{ forloop.counter }}</th>
+                                <th class="align-middle">{{ evidencia.concepto }}</th>
+                                <td class="align-middle">{{ evidencia.descripcion }}</td>
+                                <td class="align-middle">{{ evidencia.archivo.name }}</td>
+                                <th class="align-middle">{{ evidencia.fecha_creacion }}</th>
+                                <td class="align-middle text-right fs-0">
+                                    <div class="row">
+                                        <div class="col">
+                                            <a class="badge badge-pill badge-primary"
+                                               href=" {{ media_path }}{{ evidencia.archivo.name }}" download>
+                                                <i class="fa fa-download"></i>Descargar</a>
+                                        </div>
+                                        <div class="col">
+                                            <a href="{% url 'editarEvidenciaActividad' pk=evidencia.pk %}"
+                                               class="badge badge rounded-capsule badge-soft-info">Editar</a>
+                                        </div>
+                                        <div class="col">
+                                            <button class="badge rounded-capsule badge-soft-danger outline-none"
+                                                    onclick="actividadesEliminarEvidencia('{{ evidencia.archivo.name }}', {{ evidencia.pk }})">
+                                                <span>Eliminar</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Eliminar Evidencia -->
+    <div class="modal fade" id="eliminarEvidenciaActividad" tabindex="-1" role="dialog"
+         aria-labelledby="eliminarEvidenciaActividad"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarEvidenciaActividadLabel"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                    <button id="btnEliminarEvidenciaActividad" class="btn btn-primary btn-sm" type="button">Confirmar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+        var pkEliminar;
+
+        $("#btnEliminarEvidenciaActividad").on('click', function () {
+            eliminarEvidenciaActividad(pkEliminar);
+            $("#eliminarEvidenciaActividad").modal('hide');
+        });
+
+        function actividadesEliminarEvidencia(nombreEvidencia, pk) {
+            console.log(nombreEvidencia)
+            console.log(pk)
+
+            data = '<h5 class="modal-title" id="eliminarResultadoLabel">Se eliminará la evidencia ' + nombreEvidencia + '</h5>';
+            $("#eliminarEvidenciaActividadLabel").html(data);
+            $("#eliminarEvidenciaActividad").modal('show');
+            pkEliminar = pk;
+        };
+
+
+        function eliminarEvidenciaActividad(evidenciapk) {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'eliminarEvidenciaxActividad' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    evidenciapk: evidenciapk,
+                },
+                success: function (response) {
+                    location.reload()
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+
+    </script>
+
+{% endblock %}
