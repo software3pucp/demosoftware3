@@ -1,10 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base/base.html' %}
+{% load static %}
 
-</body>
-</html>
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+    <style>
+
+    </style>
+
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+    <div class="container-fluid">
+        <div class="card p-5">
+            <form action=>
+
+                <h3 class="mb-0">Subir Evidencia</h3>
+                <hr>
+                <div class="form-group">
+                    <div class="container-fluid">
+                        <div class="row mt-2">
+                            <input name="estado" type="hidden" id="estado" value="">
+                            <label for="name">Nombre</label>
+                            <input name="name" class="form-control p-3" id="name" type="text"
+                                   placeholder="Ingrese el nombre del curso" required/>
+                        </div>
+                                                <div class="row mt-2">
+                            <input name="estado" type="hidden" id="estado" value="">
+                            <label for="name">Contexto</label>
+                            <input name="name" class="form-control p-3" id="name" type="text"
+                                   placeholder="Ingrese el nombre del curso" required/>
+                        </div>
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extrajs %}
+
+    <script>
+
+    </script>
+
+{% endblock %}
