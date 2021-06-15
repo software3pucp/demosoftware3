@@ -13,6 +13,7 @@ class PlanMedicion(models.Model):
         ('0', 'Eliminado'),
         ('1', 'Activo'),
     ]
+    codigo = models.CharField(max_length=10)
     nombre = models.CharField(max_length=100)
     semestre = models.ManyToManyField(Semestre)
     especialidad = models.ForeignKey(Especialidad, on_delete=models.RESTRICT)
@@ -38,6 +39,6 @@ class PlanMedicionCurso(models.Model):
     curso = models.ForeignKey(Curso, on_delete=models.RESTRICT)
     indicador = models.ManyToManyField(Indicador)
     horario = models.ManyToManyField(Horario)
-    planMedicion = models.ForeignKey(PlanMedicionHistorico, on_delete=models.RESTRICT)
+    planMedicion = models.ForeignKey(PlanMedicion, on_delete=models.RESTRICT)
     semestre = models.ForeignKey(Semestre, on_delete=models.RESTRICT)
     estado = models.CharField(max_length=2, choices=ESTADOS, default=None, null=True, blank=True)
