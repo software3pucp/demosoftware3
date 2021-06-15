@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.core import serializers
@@ -8,7 +8,7 @@ from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
 from gestionarHorario.models import Horario
 from gestionarIndicadores.models import Indicador
-from gestionarPlanMedicion.models import PlanMedicion
+from gestionarPlanMedicion.models import PlanMedicion, PlanMedicionHistorico
 from django.contrib.auth.decorators import login_required
 @login_required
 def listarPlanMedicion(request):
@@ -152,3 +152,58 @@ def crearAjax(request):
             plan.horario.remove(horario[0].pk)
             data = serializers.serialize("json", horario)
             return JsonResponse({"resp": data}, status=200)
+
+
+def historico(request):
+    facultades = Facultad.objects.filter(estado='1')
+    context = {
+        'facultades': facultades,
+    }
+
+    return render(request, 'gestionarPlanMedicion/listarMediciones.html', context)
+
+def crearHistorico(request, id_especialidad):
+    try:
+        especialidad = Especialidad.objects.get(pk=id_especialidad)
+    except:
+        print("Error al buscar la especialidad")
+
+    if request.POST:
+        codigo = request.POST['codigo']
+        nombre = request.POST['nombre']
+        nuevoHistorico = PlanMedicionHistorico.objects.create(codigo=codigo,nombre=nombre, especialidad=especialidad,estado='1')
+        return redirect('historico')
+
+    context = {
+        'especialidad': especialidad,
+    }
+    return render(request, 'gestionarPlanMedicion/crearPlanMedicionHistorico.html', context)
+
+def listarHistorico(request):
+    id_especialidad = request.POST['especialidad']
+    historicos = PlanMedicionHistorico.objects.filter(especialidad_id=id_especialidad, estado=1)
+    listaHistorico = []
+    #lista2 = []
+    for historico in historicos:
+        tiene_semestres = False
+        # indicadores = Indicador.objects.filter(resultado_id=result.pk, estado='1')
+        # if (len(indicadores) > 0):
+        #     tiene_indicadores = True
+        # else:
+        #     tiene_indicadores = False
+        registro = [historico, tiene_semestres]
+        listaHistorico.append(registro)
+        #lista2.append(tiene_indicadores)
+
+    ser_instance = serializers.serialize('json', historicos)
+    #ser_instance2 = json.dumps(lista2)
+    #ser_instance2 = serializers.serialize('json', listaResultados)
+    #,"tiene_niveles": ser_instance2
+    return JsonResponse({"historicos": ser_instance}, status=200)
+
+def eliminarMedicion(request):
+    historicoPk = request.POST['historicoPk']
+    historico = PlanMedicionHistorico.objects.get(pk=historicoPk)
+    historico.estado = '0'  # eliminación lógica
+    historico.save()
+    return JsonResponse({}, status=200)

@@ -1,0 +1,238 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+    <link href="{% static 'lib/flatpickr/flatpickr.min.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <style>
+        #Titulo {
+            color: #0154ae;
+            font-family: "Montserrat";
+        }
+
+    </style>
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="col-12">
+                    <div class="row d-flex justify-content-center ">
+                        <div class="col-12">
+                            <h4 id="Titulo" style="font-family: Montserrat">Historico Plan de Medicion </h4>
+                            <hr style="background-color: #0154ae;">
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <div class="d-flex flex-row align-items-center">
+                            <div class="mr-2">
+                                <label for="cboFacultad">Facultad:</label>
+                                <select class="custom-select custom-select-sm mb-3" id="cboFacultad" name="cboFacultad"
+                                        onchange="obtenerEspecialidades()">
+                                    {% for facultad in facultades %}
+                                        <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="cboEspecialidad">Especialidad:</label>
+                                <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
+                                        name="cboEspecialidad"
+                                        onchange="listarHistorico()">
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tituloEspecialidadMediciones"></div>
+
+                    <hr style="background-color: #0154ae;">
+
+
+                    <div style="margin: 1%;">
+                        <span class="btn btn-primary" onclick="redirectCrearHistorico()">Crear</span>
+                    </div>
+                    <div id="listadoMediciones"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Eliminar Resultado -->
+
+    <div class="modal fade" id="eliminarMedicion" tabindex="-1" role="dialog" aria-labelledby="eliminarMedicionLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarMedicionLabel"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                    <button id="btnEliminarMedicion" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+
+        var pkEliminar;
+
+        $(document).ready(function () {
+            obtenerEspecialidades();
+            listarHistorico();
+        });
+
+        function redirectCrearHistorico() {
+            var pk_especialidad = $("#cboEspecialidad").val();
+            document.location.href = "../../gestionarPlanMedicion/crearHistorico/" + pk_especialidad;
+        }
+
+        function redirectEditarHistorico(id_historico) {
+
+            document.location.href = "../../gestionarPlanMedicion/editarHistorico/" + id_historico;
+        }
+
+        $("#btnEliminarMedicion").on('click', function () {
+            eliminarMedicion(pkEliminar);
+            $("#eliminarMedicion").modal('hide');
+        });
+
+        function historicoEliminar(codigoMedicion, pk) {
+            console.log(codigoMedicion)
+            console.log(pk)
+
+            data = '<h5 class="modal-title" id="eliminarMedicionLabel">Se eliminará la medicion ' + codigoMedicion + '</h5>';
+            $("#eliminarMedicionLabel").html(data);
+            $("#eliminarMedicion").modal('show');
+            pkEliminar = pk;
+
+            console.log(pkEliminar);
+        };
+
+
+        function eliminarMedicion(historicoPk) {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'eliminarMedicion' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    historicoPk: historicoPk,
+                },
+                success: function (response) {
+                    listarHistorico();
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+
+        function obtenerEspecialidades() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'obtenerEspecialidades' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    facultad: $("#cboFacultad").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["resp"]);
+
+                    $(".especialidad").remove();
+                    for (var i = 0; i < instance.length; i++) {
+                        data = '<option class="especialidad" onclick="listarHistorico()" value=' +
+                            instance[i]["pk"] + '>' +
+                            instance[i]["fields"].nombre + '</option>';
+                        $("#cboEspecialidad").append(data);
+                    }
+
+                    listarHistorico();
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                },
+            });
+        }
+
+
+        function listarHistorico() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'listarHistorico'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    especialidad: $("#cboEspecialidad").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response['historicos']);
+                    var i = 0;
+                    var numero = instance.length;
+                    var data = '';
+                    var data2 = '';
+                    for (i = 0; i < numero; i++) {
+                        data += (
+                            '<div style="margin: 1%;">' +
+                            '   <div class="card text-white bg-primary">' +
+                            '        <div class="card-body">' +
+                            '                <div class="row no-gutters">' +
+                            '                    <div class="col-md-1">' +
+                            '                        <h2 class="card-text text-white">' + instance[i]["fields"].codigo + '</h2>' +
+                            '                    </div>' +
+                            '                    <div class="col-md-9 border-left border-right p-2">' +
+                            '                        <p>' + instance[i]["fields"].nombre + '</p>')
+
+                            data += (
+                                '                    </div>' +
+                                '                    <div class="col-md-2 ">' +
+                                '                        <div class="d-flex justify-content-center">' +
+                                '                        <button class="btn btn-falcon-primary mr-1 mb-1" onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">Editar</button>' +
+                                '                        </div>' +
+                                '                        <div class="d-flex justify-content-center">' +
+                                '                        <button class="btn btn-falcon-primary mr-1 mb-1" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">Eliminar</button>' +
+                                '                        </div>' +
+                                '                    </div>' +
+                                '                </div>' +
+                                '        </div>' +
+                                '    </div>' +
+                                '</div>')
+                        }
+
+                        data2 = ('<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>');
+                        $("#tituloEspecialidadMediciones").html(data2);
+                        $("#listadoMediciones").html(data);
+                    }
+                ,
+                    error: function (response) {
+                        // alert the error if any error occured
+                        alert(response["responseJSON"]["error"]);
+                    }
+                });
+        }
+
+                        {#        if (instance2[i] == false) {#}
+                        {#    data += (#}
+                        {#        '                            <hr style="background-color: #FFFFFF;">' +#}
+                        {#        '                            <p>Nota: El resultado no tiene indicadores asociados.' +#}
+                        {#        '                                Dar click en editar si desea asociar indicadores.</p>')#}
+                        {#}#}
+
+
+    </script>
+{% endblock %}
