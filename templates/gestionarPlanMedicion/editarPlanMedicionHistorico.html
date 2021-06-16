@@ -3,6 +3,16 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
+    <style>
+        button {
+            background-color: Transparent;
+            background-repeat: no-repeat;
+            border: none;
+            cursor: pointer;
+            overflow: hidden;
+            outline: none;
+        }
+    </style>
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
@@ -70,7 +80,8 @@
                             <option value={{ semestre.pk }}>{{ semestre.nombreCodigo }}</option>
                         {% endfor %}
                     </select>
-                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="agregarSemestre()">Agregar Semestre
+                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="agregarSemestre()">Agregar
+                        Semestre
                     </button>
                 </div>
             </div>
@@ -82,23 +93,32 @@
         <div id="semestresSeleccionados" class="row d-flex mt-3">
             {% for semestreSelec in semestresSeleccionados %}
                 <div id="semestre{{ semestreSelec.pk }}" class="col-md-3">
-                           <div class="card m-1">
-                               <div class="card-body" style="padding: 1rem">
-                                   <div class="row">
-                                       <div class="col-md-8 p-0 d-flex justify-content-center">
-                                       <h6 >
-                                            {{ semestreSelec.nombreCodigo }}
-                                       </h6>
-                                       </div>
-                                       <div class="col-md-4 p-0 d-flex justify-content-center" style="border-left: 1px solid">
-                                           <a class="btn p-0" onclick="quitarSemestre({{ semestreSelec.pk }})">
-                                               <span class="fas fa-minus mr-1"  data-fa-transform="shrink-3"></span>
-                                           </a>
-                                       </div>
-                                   </div>
-                               </div>
-                           </div>
+                    <div class="card m-1">
+                        <div class="card-body" style="padding: 1rem">
+                            <div class="row">
+                                <div class="col-md-8 p-0 d-flex justify-content-center">
+                                    <form action="{% url 'listarPlanMedicion' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="operacion" value="entrada">
+                                        <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
+                                        <input type="hidden" name="semestre" value="{{ semestreSelec.pk }}">
+                                        <input type="hidden" name="planMedicion" value="{{ historico.pk }}">
+
+                                        <button type="submit">
+                                            <h6>{{ semestreSelec.nombreCodigo }}</h6>
+                                        </button>
+
+                                    </form>
+                                </div>
+                                <div class="col-md-4 p-0 d-flex justify-content-center" style="border-left: 1px solid">
+                                    <a class="btn p-0" onclick="quitarSemestre({{ semestreSelec.pk }})">
+                                        <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
             {% endfor %}
         </div>
 
@@ -128,9 +148,16 @@
                         '       <div class="card-body" style="padding: 1rem">' +
                         '           <div class="row">' +
                         '               <div class="col-md-8 p-0 d-flex justify-content-center">' +
-                        '               <h4 >' +
-                        instance[0]["fields"].nombreCodigo +
-                        '               </h4>     ' +
+                        '                   <form action="/gestionarPlanMedicion/listar/" method="post">' +
+                        '                       {% csrf_token %}' +
+                        '                       <input type="hidden" name="operacion" value ="entrada">' +
+                        '                       <input type="hidden" name="especialidad" value ="{{ especialidad.pk }}">' +
+                        '                       <input type="hidden" name="semestre" value ="' + instance[0]["pk"] + '">' +
+                        '                       <input type="hidden" name="planMedicion" value ="{{ historico.pk }}">' +
+                        '                       <button type="submit">' +
+                        '                           <h6>' + instance[0]["fields"].nombreCodigo + '</h6>' +
+                        '                       </button>' +
+                        '                   </form>' +
                         '               </div>' +
                         '               <div class="col-md-4 p-0 d-flex justify-content-center" style="border-left: 1px solid">' +
                         '                   <a class="btn p-0" onclick="quitarSemestre(' + instance[0]["pk"] + ')">' +

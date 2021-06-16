@@ -240,7 +240,10 @@
                                 <form class="product recent-work card" action="{% url 'crearPlanMedicion' pk='0' %}"
                                       method="post" style="height: 250px; width: 250px;">
                                     {% csrf_token %}
-                                    <input id="hid" type="hidden" name="operacion" value="entrada">
+                                    <input type="hidden" name="operacion" value="entrada">
+                                    <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
+                                    <input type="hidden" name="semestre" value="{{ semestre.pk }}">
+                                    <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
                                     <button type="submit" class="btn btn-outline-light">
                                         <div class="nav-link icon-indicator" role="button">
                                             <div class="mt-4" style="text-align: center;">

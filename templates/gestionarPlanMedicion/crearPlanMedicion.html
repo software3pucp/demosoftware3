@@ -149,6 +149,8 @@
                         </a>
                         <input type="hidden" name="operacion" value="insertar">
                         <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
+                        <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
+                        <input type="hidden" name="semestre" value="{{ semestre.pk }}">
                         <input class="btn btn-primary mr-3 mb-1" type="submit" value="Agregar" name="Agregar">
                     {% else %}
                         <a class="btn btn-primary mr-3 mb-1" type="button" href="{% url 'listarPlanMedicion' %}">

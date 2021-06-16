@@ -1,3 +1,4 @@
+import requests
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
@@ -15,8 +16,18 @@ from gestionarSemestre.models import Semestre
 @login_required
 def listarPlanMedicion(request):
 
+    especialidad = Especialidad()
+    semestre = Semestre()
+    planMedicion = PlanMedicion()
     if request.POST:
-        if request.POST['operacion'] == 'listEspe':
+        if request.POST['operacion'] == 'entrada':
+            print('***************************************************************************************************')
+            print(request.POST)
+            print('***************************************************************************************************')
+            especialidad = Especialidad.objects.get(pk=request.POST['especialidad'])
+            semestre = Semestre.objects.get(pk=request.POST['semestre'])
+            planMedicion = PlanMedicion.objects.get(pk=request.POST['planMedicion'])
+        elif request.POST['operacion'] == 'listEspe':
             especialidades = Especialidad.objects.filter(facultad_id=request.POST['facultad'], estado='1')
             data = serializers.serialize("json", especialidades)
             return JsonResponse({"resp": data}, status=200)
@@ -43,6 +54,9 @@ def listarPlanMedicion(request):
     context = {
         'facultades' : facultades,
         'especialidades' : especialidades,
+        'planMedicion' : planMedicion,
+        'especialidad' : especialidad,
+        'semestre' : semestre,
         'estados' : estados,
     }
     return render(request,'gestionarPlanMedicion/listarPlanMedicion.html',context)
@@ -61,10 +75,16 @@ def crearPlanMedicion(request,pk):
     listaHorarios = []
     listaIndicadores = Indicador.objects.filter()
     especialidad = ''
+    semestre = ''
+    planMedicion = ''
     horariosSelec = []
     indicadoresSelec = []
     if request.POST:
-        if request.POST['operacion'] == 'editar':
+        if request.POST['operacion'] == 'entrada':
+            especialidad = Especialidad.objects.get(pk=request.POST['especialidad'])
+            semestre = Semestre.objects.get(pk=request.POST['semestre'])
+            planMedicion = PlanMedicion.objects.get(pk=request.POST['planMedicion'])
+        elif request.POST['operacion'] == 'editar':
             flag = 1
         elif request.POST['operacion'] == 'insertar':
             print('***************************************************************************************************')
@@ -72,14 +92,14 @@ def crearPlanMedicion(request,pk):
             print('***************************************************************************************************')
             planes = PlanMedicionCurso.objects.filter(curso_id=request.POST['curso'])
             if len(planes) == 0:
-                PlanMedicionCurso.objects.create(curso_id=request.POST['curso'],planMedicion_id=1,semestre_id=1,estado=request.POST['estado'])
+                PlanMedicionCurso.objects.create(curso_id=request.POST['curso'],planMedicion_id=request.POST['planMedicion'],semestre_id=request.POST['semestre'],estado=request.POST['estado'])
                 plan = PlanMedicionCurso.objects.latest('id')
                 pk = plan.pk
                 flag = 2
             else:
                 errorInsert = 1
         listaCursos = Curso.objects.filter(especialidad=request.POST['especialidad'])
-        especialidad = Especialidad.objects.get(pk=request.POST['especialidad'])
+
 
     if pk == '0':
         insert = True
@@ -91,13 +111,15 @@ def crearPlanMedicion(request,pk):
         horariosSelec = manyHor
 
     context = {
-        'especialidad': especialidad,
         'listaCursos': listaCursos,
         'listaHorarios': listaHorarios,
         'listaEstados': listaEstados,
         'listaIndicadores': listaIndicadores,
         'horariosSelec': horariosSelec,
         'indicadoresSelec': indicadoresSelec,
+        'planMedicion': planMedicion,
+        'especialidad': especialidad,
+        'semestre': semestre,
         'plan': plan,
         'insert': insert,
         'flag': flag,
