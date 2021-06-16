@@ -8,8 +8,9 @@ from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
 from gestionarHorario.models import Horario
 from gestionarIndicadores.models import Indicador
-from gestionarPlanMedicion.models import PlanMedicion, PlanMedicionHistorico, PlanMedicionCurso
+from gestionarPlanMedicion.models import PlanMedicion, PlanMedicionCurso
 from django.contrib.auth.decorators import login_required
+from gestionarSemestre.models import Semestre
 
 @login_required
 def listarPlanMedicion(request):
@@ -172,7 +173,7 @@ def crearHistorico(request, id_especialidad):
     if request.POST:
         codigo = request.POST['codigo']
         nombre = request.POST['nombre']
-        nuevoHistorico = PlanMedicionHistorico.objects.create(codigo=codigo,nombre=nombre, especialidad=especialidad,estado='1')
+        nuevoHistorico = PlanMedicion.objects.create(codigo=codigo,nombre=nombre, especialidad=especialidad,estado='1')
         return redirect('historico')
 
     context = {
@@ -182,7 +183,7 @@ def crearHistorico(request, id_especialidad):
 
 def listarHistorico(request):
     id_especialidad = request.POST['especialidad']
-    historicos = PlanMedicionHistorico.objects.filter(especialidad_id=id_especialidad, estado=1)
+    historicos = PlanMedicion.objects.filter(especialidad_id=id_especialidad, estado=1)
     listaHistorico = []
     #lista2 = []
     for historico in historicos:
@@ -204,7 +205,42 @@ def listarHistorico(request):
 
 def eliminarMedicion(request):
     historicoPk = request.POST['historicoPk']
-    historico = PlanMedicionHistorico.objects.get(pk=historicoPk)
+    historico = PlanMedicion.objects.get(pk=historicoPk)
     historico.estado = '0'  # eliminación lógica
     historico.save()
     return JsonResponse({}, status=200)
+
+def editarHistorico(request,pk):
+    listaSemestre = reversed(Semestre.objects.filter())
+    historico = PlanMedicion.objects.get(pk=pk)
+    manySemestre = historico.semestre.all()
+    semestresSeleccionados = reversed(manySemestre)
+    especialidad = Especialidad.objects.get(pk=historico.especialidad_id)
+    context = {
+        'listaSemestre': listaSemestre,
+        'historico': historico,
+        'especialidad': especialidad,
+        'semestresSeleccionados': semestresSeleccionados,
+    }
+    return render(request, 'gestionarPlanMedicion/editarPlanMedicionHistorico.html', context)
+
+def agregarSemestrePlan(request):
+    historico = PlanMedicion.objects.get(pk=request.POST['historicoPK'])
+    semestre = Semestre.objects.get(pk=request.POST['semestrePk'])
+    historico.semestre.add(semestre)
+    ser_instance = serializers.serialize('json', [semestre, ])
+    print(historico.semestre.all().count())
+    print("////////////////////////////////////Se agrego 1////////////////////////////////////////")
+    return JsonResponse({"semestreAgregado": ser_instance}, status=200)
+
+def eliminarSemestrePlan(request):
+    semestre = Semestre.objects.filter(pk=request.POST['semestrePk'])
+    historico = PlanMedicion.objects.get(pk=request.POST['historicoPK'])
+    semestres = historico.semestre.all()
+    if semestre[0] not in semestres:
+        return JsonResponse({'status': 'false', 'message': 'Semestre ya ingresado'}, status=500)
+    historico.semestre.remove(semestre[0].pk)
+    data = serializers.serialize("json", semestre)
+    print(historico.semestre.all().count())
+    print("////////////////////////////////////Se quito 1////////////////////////////////////////")
+    return JsonResponse({"resp": data}, status=200)

@@ -65,3 +65,47 @@
     </div>
 
 {% endblock %}
+
+{% block extrajs %}
+    <script>
+        function agregarHorario() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearPlanMedicionAjax' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: "agregarHorario",
+                    planPK: '{{ plan.pk }}',
+                    horarioPk: $("#horarios").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["resp"]);
+                    console.log(instance[0])
+                    data = '<div id="horario' + instance[0]["pk"] + '" class="col-md-3">' +
+                        '   <div class="card m-1">' +
+                        '       <div class="card-body" style="padding: 1rem">' +
+                        '           <div class="row">' +
+                        '               <div class="col-md-8 p-0 d-flex justify-content-center">' +
+                        '                   <a class="btn p-0 " href="#informacionHorario" data-toggle="modal" onclick="' + 'mostrarHorario(' + instance[0]["pk"] + ' ) ">' + instance[0]["fields"].codigo + '</a>' +
+                        '               </div>' +
+                        '               <div class="col-md-4 p-0 d-flex justify-content-center" style="border-left: 1px solid">' +
+                        '                   <a class="btn p-0" onclick="quitarHorario(' + instance[0]["pk"] + ')">' +
+                        '                       <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>' +
+                        '                   </a>' +
+                        '               </div>' +
+                        '           </div>' +
+                        '       </div>' +
+                        '   </div>' +
+                        '</div>';
+                    $("#horariosSelec").append(data);
+                },
+                error: function (response) {
+                    $(".modal-body #textId").text(response["responseJSON"]["message"]);
+                    $('#exampleModal').modal('show');
+
+                }
+            });
+        }
+
+    </script>
+{% endblock %}
