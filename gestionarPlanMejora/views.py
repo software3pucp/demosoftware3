@@ -19,19 +19,12 @@ def listarPlanMejora(request):
             data = serializers.serialize("json", especialidades)
             return JsonResponse({"resp": data}, status=200)
         elif request.POST['operacion'] == 'listCur':
-            planes = PlanMejora.objects.filter(curso__especialidad_id__exact=request.POST['especialidad'],estado = request.POST['estado'])
+            planes = PlanMejora.objects.filter(curso__especialidad_id__exact=request.POST['especialidad'])
             pks = planes.values_list('curso_id',flat=True)
             cursos = Curso.objects.filter(pk__in=pks)
             dataP = serializers.serialize("json", planes)
             dataC = serializers.serialize("json", cursos)
             return JsonResponse({"resp": dataP,"resp1": dataC}, status=200)
-        elif request.POST['operacion'] == 'estado':
-            planMedicion = PlanMejora.objects.get(pk=request.POST['planpk'])
-            if planMedicion.estado == '1':
-                planMedicion.estado = '2'
-            elif planMedicion.estado == '2':
-                planMedicion.estado = '1'
-            planMedicion.save()
         elif request.POST['operacion'] == 'eliminar':
             planMedicion = PlanMejora.objects.get(pk=request.POST['planPk'])
             planMedicion.delete()

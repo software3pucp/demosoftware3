@@ -1,0 +1,512 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+    {#AQUI COLOQUEN EL CÓDIGO#}
+    {% if insert %}
+    <form action="{% url 'crearPlanMejora' pk=plan.pk %}" method="post">
+    <form action="{% url 'crearPlanMejora' pk=plan.pk %}" method="post">
+        {% csrf_token %}
+    {% endif %}
+        <div class="card">
+            <div class="card-body">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-12">
+                        {% if insert %}
+                            <h3 class="mb-0"> {{ especialidad.nombre }} - Añadir curso a ser evaluado </h3>
+                        {% else %}
+                            <h3 class="mb-0"> {{ plan.curso.especialidad.nombre }} - Editar curso a ser evaluado </h3>
+                        {% endif %}
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-12">
+                        <div class="form-group mt-2">
+                            <label for="exampleFormControlSelect1">Curso</label>
+                            <select id="cursos" name="curso" class="form-control" id="exampleFormControlSelect1">
+                                {% if insert %}
+                                    {% for curso in listaCursos %}
+                                        <option value={{ curso.pk }}>{{ curso.nombre }}</option>
+                                    {% endfor %}
+                                {% else %}
+                                    <option value={{ plan.curso.pk }}>{{ plan.curso.nombre }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                {% if not insert %}
+                    <div class="col">
+                        <div class="row d-flex justify-content-between">
+                            <label for="exampleFormControlSelect2">Horarios</label>
+                            <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button" onclick="agregarHorario()">
+                                <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-md-12">
+                            <select id="horarios" name="horarios" class="form-control" id="exampleFormControlSelect2">
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div id="horariosSelec" class="row d-flex">
+                        {% for horario in horariosSelec %}
+                            <div id="horario{{ horario.pk }}" class="col-md-3">
+                                <div class="card m-1">
+                                    <div class="card-body" style="padding: 1rem">
+                                        <div class="row">
+                                            <div class="col-md-8 p-0 d-flex justify-content-center">
+                                                <a class="btn p-0 " href="#informacionHorario"
+                                                   data-toggle="modal" onclick='mostrarHorario("{{ horario.pk }}")'>{{ horario.codigo }}</a>
+                                            </div>
+                                            <div class="col-md-4 p-0 d-flex justify-content-center"
+                                                 style="border-left: 1px solid">
+                                                <a class="btn p-0" onclick='quitarHorario("{{ horario.pk }}")' href="#!">
+                                                    <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if insert %}
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-md-12">
+                            <div class="form-group mt-2">
+                                <label for="exampleFormControlSelect1">Estado</label>
+                                <select name="estado" class="form-control" id="exampleFormControlSelect3">
+                                    {% for estado in listaEstados %}
+                                        <option value={{ estado.0 }}>{{ estado.1 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if not insert %}
+                    <div class="col">
+                        <div class="row d-flex justify-content-between pt-4">
+                            <label for="exampleFormControlSelect4">Indicadores</label>
+                            <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button" onclick="agregarIndicador()">
+                                <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-md-12">
+                            <select name="horarios" class="form-control" id="indicador">
+                                {% for indicador in listaIndicadores %}
+                                    <option value={{ indicador.pk }}>{{ indicador.codigo }} - {{ indicador.descripcion }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div id="indicadoresSelec" class="row d-flex">
+                        {% for indicador in indicadoresSelec %}
+                            <div id="indicador{{ indicador.pk }}" class="col-md-3">
+                                <div class="card m-1">
+                                    <div class="card-body" style="padding: 1rem">
+                                        <div class="row">
+                                            <div class="col-md-8 p-0 d-flex justify-content-center">
+                                                <a class="btn p-0 " href="#informacionIndicador"
+                                                   data-toggle="modal" onclick='mostrarIndicador("{{ indicador.pk }}")'>{{ indicador.codigo }}</a>
+                                            </div>
+                                            <div class="col-md-4 p-0 d-flex justify-content-center"
+                                                 style="border-left: 1px solid">
+                                                <a class="btn p-0" onclick='quitarIndicador("{{ indicador.pk }}")'>
+                                                    <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="row d-flex justify-content-end pt-5">
+                    {% if insert %}
+                        <a class="btn btn-outline-primary mr-3 mb-1" type="button" href="{% url 'listarPlanMejora' %}">
+                            Cancelar
+                        </a>
+                        <input type="hidden" name="operacion" value="insertar">
+                        <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
+                        <input class="btn btn-primary mr-3 mb-1" type="submit" value="Agregar" name="Agregar">
+                    {% else %}
+                        <a class="btn btn-primary mr-3 mb-1" type="button" href="{% url 'listarPlanMejora' %}">
+                            Confirmar
+                        </a>
+                        <form action="{% url 'listarPlanMejora' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="operacion" value="eliminar">
+                            <input type="hidden" name="planPk" value="{{ plan.pk }}">
+                            <input class="btn btn-outline-primary mr-3 mb-1" type="submit" value="Eliminar" name="Eliminar">
+                        </form>
+                    {% endif %}
+                </div>
+                {% if errorInsert %}
+                    <div class="alert alert-danger" role="alert">Error al insertar plan de medición</div>
+                {% endif %}
+            </div>
+        </div>
+    {% if insert %}
+    </form>
+    {% endif %}
+
+    <!--Barras laterales-->
+
+    <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
+         id="informacionHorario" tabindex="-1" role="dialog"
+         aria-labelledby="settings-modal-label" aria-hidden="true"
+         data-options='{"autoShow":false,"autoShowDelay":10,"showOnce":false}'>
+
+        <div class="modal-dialog modal-dialog-vertical" role="document">
+            <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar"
+                 style="background-color: #017ECD;">
+
+                <div class="modal-body text-white">
+                    <div class="row d-flex justify-content-center">
+                        <h5>Información Horario</h5>
+                        <hr class="mb-5" style="background-color: #f9fafd; width: 70%">
+                    </div>
+
+                    <div class="row d-flex justify-content-start">
+                        <div id="horCodField" class="col-12 pl-5">
+
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row d-flex justify-content-start">
+                        <div class="col-12 pl-5">
+                            <h5>Descripción:</h5>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-start">
+                        <div id="horDescripField" class="col-12 pl-5">
+
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-start">
+                        <div class="col-12 pl-5">
+                            <h5>Curso Asociado:</h5>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-start">
+                        <div class="col-12 pl-5">
+                            <p>{{ plan.curso.nombre }}</p>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-start">
+                        <div class="col-12 pl-5">
+                            <h5>Responsables:</h5>
+                        </div>
+                    </div>
+                    {% for responsable in listaResponsables %}
+                        <div class="row d-flex justify-content-start">
+                            <div class="col-12 pl-5">
+                                <div class="card m-1">
+                                    <div class="card-body" style="padding: 1rem">
+                                        <div class="row">
+                                            <div class="col-md-8 p-0 d-flex justify-content-center">
+                                                <a class="btn p-0 " href="#!" data-toggle="modal">{{ responsable }}</a>
+                                            </div>
+                                            <div class="col-md-4 p-0 d-flex justify-content-center"
+                                                 style="border-left: 1px solid">
+                                                <a class="btn p-0" href="#!">
+                                                    <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
+         id="informacionIndicador" tabindex="-1" role="dialog"
+         aria-labelledby="settings-modal-label" aria-hidden="true"
+         data-options='{"autoShow":false,"autoShowDelay":10,"showOnce":false}'>
+
+        <div class="modal-dialog modal-dialog-vertical" role="document">
+            <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar"
+                 style="background-color: #017ECD;">
+
+                <div class="modal-body text-white">
+                    <div class="row d-flex justify-content-center">
+                        <h5>Información Indicador</h5>
+                        <hr style="background-color: #f9fafd; width: 70%">
+                    </div>
+
+                    <div class="row d-flex justify-content-start">
+                        <div id="indCodField" class="col-12 pl-5">
+                            <h5 id="indCod">Codigo: ID01</h5>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row d-flex justify-content-start">
+                        <div class="col-12 pl-5">
+                            <h5>Descripción:</h5>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-start">
+                        <div id="indDescripField" class="col-12 pl-5">
+                            <p id="indDescrip">Aplica conceptos lógicos para la resolución de problemas</p>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-start">
+                        <div class="col-12 pl-5">
+                            <h5>Curso Asociado:</h5>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-start">
+                        <div class="col-12 pl-5">
+                            <p>{{ plan.curso.nombre }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Error</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <p type="text" name="textId" id="textId" value=""/></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-sm" type="button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+        $(document).ready(function () {
+            console.log("ready!");
+            listarHorarios();
+        });
+
+        function  mostrarHorario(pk){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearPlanMedicionAjax' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: "mostrarHorario",
+                    horarioPk: pk,
+                },
+                success: function (response){
+                    $("#horCod").remove();
+                    $("#horDescrip").remove();
+                    data = '<h5 id="horCod" class="text-white">Codigo: '+response["resp"]+'</h5>';
+                    $("#horCodField").append(data);
+                    data = '<p id="horDescrip">'+response["resp"]+'</p>';
+                    $("#horDescripField").append(data);
+                },
+                error: function (response){
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+        function listarHorarios(){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearPlanMedicionAjax' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: "listHorarios",
+                    curso: $("#cursos").val(),
+                },
+                success: function (response){
+                    var instance = JSON.parse(response["resp"]);
+                    $(".horario").remove();
+                    for(var i=0; i<instance.length; i++){
+                        data = '<option class="horario" value="'+instance[i]["pk"]+'">'+instance[i]["fields"].codigo+'</option>';
+                        $("#horarios").append(data);
+                    }
+                },
+                error: function (response){
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+        function agregarHorario(){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearPlanMedicionAjax' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: "agregarHorario",
+                    planPK: '{{ plan.pk }}',
+                    horarioPk: $("#horarios").val(),
+                },
+                success: function (response){
+                    var instance = JSON.parse(response["resp"]);
+                    console.log(instance[0])
+                    data = '<div id="horario'+instance[0]["pk"]+'" class="col-md-3">'+
+                        '   <div class="card m-1">'+
+                        '       <div class="card-body" style="padding: 1rem">'+
+                        '           <div class="row">'+
+                        '               <div class="col-md-8 p-0 d-flex justify-content-center">'+
+                        '                   <a class="btn p-0 " href="#informacionHorario" data-toggle="modal" onclick="'+'mostrarHorario('+ instance[0]["pk"]+' ) ">'+instance[0]["fields"].codigo+'</a>'+
+                        '               </div>'+
+                        '               <div class="col-md-4 p-0 d-flex justify-content-center" style="border-left: 1px solid">'+
+                        '                   <a class="btn p-0" onclick="quitarHorario('+instance[0]["pk"]+')">'+
+                        '                       <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>'+
+                        '                   </a>'+
+                        '               </div>'+
+                        '           </div>'+
+                        '       </div>'+
+                        '   </div>'+
+                        '</div>';
+                    $("#horariosSelec").append(data);
+                },
+                error: function (response){
+                     $(".modal-body #textId").text( response["responseJSON"]["message"] );
+                     $('#exampleModal').modal('show');
+
+                }
+            });
+        }
+
+        function  quitarHorario(pk){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearPlanMedicionAjax' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: "quitarHorario",
+                    planPK: '{{ plan.pk }}',
+                    horarioPk: pk,
+                },
+                success: function (response){
+                    var instance = JSON.parse(response["resp"]);
+                    console.log(instance[0])
+                    $("#horario"+instance[0]['pk']).remove()
+                },
+                error: function (response){
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+        function mostrarIndicador(pk){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearPlanMedicionAjax' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: "mostrarIndicador",
+                    indicadorPk: pk,
+                },
+                success: function (response){
+                    var instance = JSON.parse(response["resp"]);
+                    $("#indCod").remove();
+                    $("#indDescrip").remove();
+                    data = '<h5 id="indCod" class="text-white">Codigo: '+instance[0]["fields"].codigo+'</h5>';
+                    $("#indCodField").append(data);
+                    data = '<p id="indDescrip">'+instance[0]["fields"].descripcion+'</p>';
+                    $("#indDescripField").append(data);
+                },
+                error: function (response){
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+        function agregarIndicador(){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearPlanMedicionAjax' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: "agregarIndicador",
+                    planPK: '{{ plan.pk }}',
+                    indicadorPk: $("#indicador").val(),
+                },
+                success: function (response){
+                    var instance = JSON.parse(response["resp"]);
+                    console.log(instance[0])
+                    data = '<div id="indicador'+instance[0]["pk"]+'" class="col-md-3">'+
+                        '   <div class="card m-1">'+
+                        '       <div class="card-body" style="padding: 1rem">'+
+                        '           <div class="row">'+
+                        '               <div class="col-md-8 p-0 d-flex justify-content-center">'+
+                        '                   <a class="btn p-0 " href="#informacionIndicador" data-toggle="modal" onclick="'+'mostrarIndicador('+ instance[0]["pk"]+' ) ">'+instance[0]["fields"].codigo+'</a>'+
+                        '               </div>'+
+                        '               <div class="col-md-4 p-0 d-flex justify-content-center" style="border-left: 1px solid">'+
+                        '                   <a class="btn p-0" onclick="quitarIndicador('+instance[0]["pk"]+')">'+
+                        '                       <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>'+
+                        '                   </a>'+
+                        '               </div>'+
+                        '           </div>'+
+                        '       </div>'+
+                        '   </div>'+
+                        '</div>';
+                    $("#indicadoresSelec").append(data);
+                },
+                error: function (response){
+                    $(".modal-body #textId").text( response["responseJSON"]["message"] );
+                    $('#exampleModal').modal('show');
+                }
+            });
+        }
+
+        function quitarIndicador(pk){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearPlanMedicionAjax' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: "quitarIndicador",
+                    planPK: '{{ plan.pk }}',
+                    indicadorPk: pk,
+                },
+                success: function (response){
+                    var instance = JSON.parse(response["resp"]);
+                    console.log(instance[0])
+                    $("#indicador"+instance[0]['pk']).remove()
+                },
+                error: function (response){
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+    </script>
+{% endblock %}
