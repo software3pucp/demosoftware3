@@ -275,6 +275,25 @@ def crearPlanMejora(request,pk):
     }
     return render(request,'gestionarPlanMejora/crearPlanMejora.html',context)
 
+def crearPropuesta(request,id_especialidad):
+    try:
+        especialidad = Especialidad.objects.get(pk=id_especialidad)
+        planMejora =PlanMejora.objects.filter(especialidad_id=especialidad.id)
+    except:
+        print("No se encontro especialidad")
+
+    if request.POST:
+        codigo = request.POST['codigo']
+        descripcion = request.POST['descripcion']
+        nuevaPropuesta = PropuestaMejora.objects.create(codigo= codigo, descripcion=descripcion, especialidad_id=especialidad.id,estado=1)
+        return redirect('listarPlanMejora')
+
+    context = {
+        'especialidad': especialidad,
+        'planMejora': planMejora
+    }
+    return render(request, 'gestionarPlanMejora/crearPropuesta.html', context)
+
 def crearAjax(request):
     if request.POST:
         if request.POST['operacion'] == 'listHorarios':
