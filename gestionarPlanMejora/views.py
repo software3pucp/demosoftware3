@@ -1,5 +1,6 @@
 from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
+from django.db.models import Q
 
 # Create your views here.
 from authentication.views import Show
@@ -57,11 +58,19 @@ def editarActividad(request, pk):
     estados = EstadoActividad.objects.filter()
     listaEvidencias = EvidenciaActividadMejora.objects.filter(actividad_id=pk, estado='1')
     responsables = ResponsableMejora.objects.filter(actividad_id=pk)
+
+
+
     print('--------------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
     lresponsables = []
+    nlresponsables = []
+    print("===============RESPONSABLES==============")
+    print(responsables)
+    print(nlresponsables)
     for rs in responsables:
         lresponsables.append(User.objects.get(pk=rs.responsable_id))
+
     print(lresponsables)
     context = {
         'listaEvidencias': listaEvidencias,
@@ -69,6 +78,7 @@ def editarActividad(request, pk):
         'estados': estados,
         'media_path': media_path,
         'responsables': lresponsables,
+        'nresponsables': nlresponsables,
         'users': User.objects.all(),
     }
     return render(request, 'gestionarPlanMejora/editarActividad.html', context)

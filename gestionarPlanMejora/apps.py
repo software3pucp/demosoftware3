@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class GestionarplanmejoraConfig(AppConfig):
+class Gestionarplanmejoraonfig(AppConfig):
     name = 'gestionarPlanMejora'

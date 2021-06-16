@@ -70,5 +70,5 @@ class EvidenciaActividadMejora(models.Model):
     descripcion = models.CharField(max_length=300, default='', null=True, blank=True)
     concepto = models.CharField(max_length=10, default='', null=True, blank=True)
     actividad = models.ForeignKey(ActividadMejora, on_delete=models.DO_NOTHING, null=False)
-    archivo = models.FileField(null=False, blank=False, upload_to='mejora/')
+    archivo = models.FileField(null=True, blank=False, upload_to='mejora/')
     fecha_creacion = models.DateTimeField(auto_now_add=True)
