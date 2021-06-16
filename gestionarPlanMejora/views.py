@@ -164,7 +164,7 @@ def editarPropuesta(request,pk):
     if request.POST:
         propuestaMejora = PropuestaMejora.objects.get(pk=pk)
         propuestaMejora.codigo = request.POST['codigo']
-        propuestaMejora.descriocion = request.POST['descripcion']
+        propuestaMejora.descripcion = request.POST['descripcion']
         propuestaMejora.save()
         return redirect('listarPlanMejora')
 

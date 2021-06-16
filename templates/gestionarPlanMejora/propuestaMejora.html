@@ -277,7 +277,7 @@
                                         {% csrf_token %}
                                         <div class="row">
                                             <div class="col">
-                                                <a href="{% url 'editarActividad' pk=actividad.pk %}"
+                                                <a href=""
                                                    class="badge badge rounded-capsule badge-soft-info">Editar</a>
                                             </div>
                                             <div class="col">
@@ -287,7 +287,7 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        <input type="hidden" id="indicador_pk" name="indicador_pk"
+                                        <input type="hidden" id="actividad_pk" name="actividad_pk"
                                                value="{{ actividad.pk }}">
                                     </form>
                                 </td>
