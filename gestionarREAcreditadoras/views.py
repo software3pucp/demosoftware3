@@ -10,23 +10,31 @@ from gestionarIndicadores.models import Indicador
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 from gestionarResultados.models import ResultadoPUCP
+from itertools import chain
 
 @login_required
 def listarRE(request, pk):
     lista=[]
     acreditadora = Acreditadora.objects.get(pk=pk)
-    resultados = ResultadoAcreditadora.objects.filter(acreditadora=pk)
-    indicadores=Indicador.objects.all()
-    if indicadores:
-        for ind in indicadores:
-            repucp=ResultadoPUCP.objects.get(pk=ind.resultado_id)
-            id_especialidad = repucp.especialidad_id
+    resultados = ResultadoAcreditadora.objects.filter(acreditadora=pk,estado=1)
+    resultadosPUCPs=ResultadoPUCP.objects.filter(estado=1)
+
+    if resultadosPUCPs:
+        for rPUCP in resultadosPUCPs:
+            indic=Indicador.objects.filter(resultado_id=rPUCP.pk,estado=1)
+            id_especialidad=rPUCP.especialidad_id
             especialidad = Especialidad.objects.get(pk=id_especialidad)
             id_facultad = especialidad.facultad_id
             facultad = Facultad.objects.get(pk=id_facultad)
-            reacres= ResultadoAcreditadora.objects.filter(acreditadora=pk, indicador_id=ind.pk)
+            reacres=[]
+            for i in indic:
+                reAux=ResultadoAcreditadora.objects.filter(indicador_id=i.pk,estado=1)
+                if reAux:
+                    reacres=list(chain(reacres,reAux))
+                    # print(reacres)
             if reacres:
-                reg=[repucp,especialidad,facultad,reacres]
+                reg=[rPUCP,especialidad,facultad,reacres]
+                print(reg)
                 lista.append(reg)
 
     context = {
@@ -133,12 +141,12 @@ def ajaxEditar(request):
                 result_aux=ResultadoPUCP.objects.get(pk=ind.resultado.pk)
                 if result_aux.especialidad_id == int(request.POST['especialidadPk']):
                     resul_Acre_Aux=ResultadoAcreditadora.objects.filter(indicador_id=ind.pk, estado=1)
-                    print(request.POST['resultadoAcredPK'])
+                    # print(request.POST['resultadoAcredPK'])
                     if not resul_Acre_Aux:
                         ind_Aux.append(ind);
                     else:
                         for reAcre in resul_Acre_Aux:
-                            print(reAcre.pk)
+                            # print(reAcre.pk)
                             if int(request.POST['resultadoAcredPK'])!=0 and int(request.POST['resultadoAcredPK'])==reAcre.pk:
                                 ind_Aux.append(ind);
                                 break;
