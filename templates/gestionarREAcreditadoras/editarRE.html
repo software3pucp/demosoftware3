@@ -184,6 +184,7 @@
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     operacion: 'listREPUCP',
+                    resultadoAcredPK: '{{ resultadoAcreditadora.pk }}',
                     especialidadPk: $("#especialidades").val(),
                 },
                 success: function (response) {
@@ -192,12 +193,13 @@
 
                     if (instance.length != 0) {
                         for (var i = 0; i < instance.length; i++) {
+                            console.log(instance[i]["fields"])
                             data = '<tr class="resultado">' +
                                 '   <td>' + instance[i]["fields"].codigo + '</td>' +
                                 '   <td>' + instance[i]["fields"].descripcion + '</td>' +
                                 '   <td>';
 
-                            if ("{{ resultadoSeleccionado }}" != 0 && "{{ resultadoSeleccionado }}" == instance[i]["pk"]) {
+                            if ({{ indicadorSeleccionado }} != 0 && {{ indicadorSeleccionado }} == instance[i]["pk"]) {
                                 data += '   <input class="form-check-input" id="' + instance[i]["pk"]
                                     + '" type="radio" name="select" value="' + instance[i]["pk"] + '" checked>' +
                                     '<label class="form-check-label" for="' + instance[i]["pk"] + '"></label>';
@@ -215,7 +217,7 @@
                         }
                     } else {
                         data = '<tr class="resultado">' +
-                            '<th colspan="3" style="text-align: center">No se encontraron Resultados del estudiante asociados a esta Especialidad</th>' +
+                            '<th colspan="3" style="text-align: center">No se encontraron indicadores asociados a esta Especialidad</th>' +
                             '</tr>';
                         $("#indicadores").append(data);
                     }

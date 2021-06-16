@@ -40,6 +40,7 @@ def listarRE(request, pk):
 def editarRE(request, pk):
     insert = False
     flag = 0
+    id_indicador = 0
     resultadoSeleccionado = 0
     especialidadSeleccionada = 0
     facultadSeleccionada = 0
@@ -60,7 +61,7 @@ def editarRE(request, pk):
             resultadoAcreditadora.codigo = request.POST["codigo"]
             resultadoAcreditadora.descripcion = request.POST["descripcion"]
             if ('select' in request.POST):
-                resultadoAcreditadora.resultadoPUCP_id = request.POST["select"]
+                resultadoAcreditadora.indicador_id = request.POST["select"]
             resultadoAcreditadora.acreditadora_id = request.POST["acreditadora"]
             resultadoAcreditadora.save()
             flag = 1
@@ -100,7 +101,7 @@ def editarRE(request, pk):
 
     context = {
         'insert': insert,
-        'resultadoSeleccionado': resultadoSeleccionado,
+        'indicadorSeleccionado':id_indicador,
         'resultadoAcreditadora': resultadoAcreditadora,
         'facultadSeleccionada': facultadSeleccionada,
         'especialidadSeleccionada': especialidadSeleccionada,
@@ -131,9 +132,16 @@ def ajaxEditar(request):
                 # print(ind.descripcion)
                 result_aux=ResultadoPUCP.objects.get(pk=ind.resultado.pk)
                 if result_aux.especialidad_id == int(request.POST['especialidadPk']):
-                    resul_Acre_Aux=ResultadoAcreditadora.objects.filter(indicador_id=ind.pk)
+                    resul_Acre_Aux=ResultadoAcreditadora.objects.filter(indicador_id=ind.pk, estado=1)
+                    print(request.POST['resultadoAcredPK'])
                     if not resul_Acre_Aux:
                         ind_Aux.append(ind);
+                    else:
+                        for reAcre in resul_Acre_Aux:
+                            print(reAcre.pk)
+                            if int(request.POST['resultadoAcredPK'])!=0 and int(request.POST['resultadoAcredPK'])==reAcre.pk:
+                                ind_Aux.append(ind);
+                                break;
 
             data = serializers.serialize("json", ind_Aux)
             return JsonResponse({"resp": data}, status=200)
