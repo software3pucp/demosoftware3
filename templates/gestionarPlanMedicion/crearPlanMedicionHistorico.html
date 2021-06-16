@@ -1,0 +1,67 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="col-12">
+                    <div class="row d-flex justify-content-center ">
+                        <div class="col-10">
+                            <h4 id="Titulo">Crear Plan Medicion Historico</h4>
+                        </div>
+                        <div class="col-2 ">
+                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'historico' %}">
+                                <div class="fas fa-reply mt-1 mr-2"></div>
+                                <h5>Volver</h5>
+                            </a>
+                        </div>
+                    </div>
+                    <hr style="background-color: #0154ae;">
+                    <form action="{% url 'crearHistorico' id_especialidad=especialidad.pk %}" method="post">
+                        {% csrf_token %}
+                        <div class="row p-1">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="codigo">Código:</label>
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="form-group">
+                                    <input name="codigo" class="form-control" id="codigo" type="text"
+                                           placeholder="Ingrese el código">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row p-1 ">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="nombre">Nombre:</label>
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="form-group">
+                                    <input name="nombre" class="form-control" id="nombre" type="text"
+                                           placeholder="Ingrese el nombre">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <a class="btn btn-outline-primary m-1" type="button" href="{% url 'historico' %}">Cancelar</a>
+                                <input type="submit" class="btn btn-primary m-1" value="Guardar">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

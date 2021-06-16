@@ -2,8 +2,20 @@ from django.db import models
 
 # Create your models here.
 from authentication.models import User
+import unicodedata
 from gestionarEspecialidad.models import Especialidad
 
+def remove_accents(input_str):
+    nfkd_form = unicodedata.normalize('NFKD', input_str)
+    return u"".join([c for c in nfkd_form if not unicodedata.combining(c)])
+
+# Create your models here.
+def substring_after(s, delim):
+    return s.rpartition(delim)[-1]
+
+def upload_location_archive(instance, filename):
+    extension = substring_after(filename, '.')
+    return 'mejora/%s.%s' % (remove_accents(instance), extension)
 
 class PlanMejora(models.Model):
     ESTADOS = [
@@ -58,5 +70,5 @@ class EvidenciaActividadMejora(models.Model):
     descripcion = models.CharField(max_length=300, default='', null=True, blank=True)
     concepto = models.CharField(max_length=10, default='', null=True, blank=True)
     actividad = models.ForeignKey(ActividadMejora, on_delete=models.DO_NOTHING, null=False)
-    archivo = models.FileField(null=True, blank=True, upload_to='mejora/')
+    archivo = models.FileField(null=False, blank=False, upload_to='mejora/')
     fecha_creacion = models.DateTimeField(auto_now_add=True)

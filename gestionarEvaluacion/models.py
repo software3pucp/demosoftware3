@@ -23,8 +23,8 @@ class RespuestaEvaluacion(models.Model):
 class MedicionDeIndicador(models.Model):
     codigo = models.CharField(max_length=10, default='', null=True, blank=True)
     resultado = models.CharField(max_length=4, default='', null=True, blank=True)
-    semestre = models.ForeignKey(Semestre, on_delete=models.RESTRICT)
-    curso = models.ForeignKey(Curso, on_delete=models.RESTRICT)
+    semestre = models.ForeignKey(Semestre, on_delete=models.RESTRICT,null=True, blank=True)
+    curso = models.ForeignKey(Curso, on_delete=models.RESTRICT,null=True, blank=True)
     alumno = models.ForeignKey(RespuestaEvaluacion, on_delete=models.RESTRICT,null=True,blank=True)
 
 

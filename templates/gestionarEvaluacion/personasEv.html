@@ -42,14 +42,15 @@
                                              alt=""/>
                                     {% else %}
                                         <img class="rounded-circle"
-                                             src="{% static 'img/team/avatar.png' %}"
+                                             src="{% static 'img/team/avatar.pypng' %}"
                                              alt=""/>
                                     {% endif %}
                                 </div>
                             </td>
-                            <th class="align-middle">
+                            <th class="text-left align-middle">
                                 <a href="{% url 'editUsers' pk=user.pk %}">{{ user.first_name }} {{ user.last_name }}</a>
                             </th>
+
                         </tr>
                     {% endfor %}
                     </tbody>

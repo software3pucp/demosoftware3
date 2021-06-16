@@ -13,11 +13,22 @@ class PlanMedicion(models.Model):
         ('0', 'Eliminado'),
         ('1', 'Activo'),
     ]
+    codigo = models.CharField(max_length=10)
     nombre = models.CharField(max_length=100)
     semestre = models.ManyToManyField(Semestre)
     especialidad = models.ForeignKey(Especialidad, on_delete=models.RESTRICT)
     estado = models.CharField(max_length=2, choices=ESTADOS, default=None, null=True, blank=True)
 
+class PlanMedicionHistorico(models.Model):
+    ESTADOS = [
+        ('0', 'Eliminado'),
+        ('1', 'Activo'),
+    ]
+    codigo = models.CharField(max_length=10, default='CODD01')
+    nombre = models.CharField(max_length=100)
+    semestre = models.ManyToManyField(Semestre)
+    especialidad = models.ForeignKey(Especialidad, on_delete=models.RESTRICT)
+    estado = models.CharField(max_length=2, choices=ESTADOS, default=None, null=True, blank=True)
 
 class PlanMedicionCurso(models.Model):
     ESTADOS = [
