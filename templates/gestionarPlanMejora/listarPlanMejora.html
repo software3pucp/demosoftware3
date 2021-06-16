@@ -3,292 +3,162 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
+    <link href="{% static 'lib/flatpickr/flatpickr.min.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <style>
-        hr {
-            height: .5px;
-            background-color: #2F5496;
-        }
-
-        .iconSize {
-            font-size: 23px;
-        }
-
-        .fa-pen:hover {
-            color: darkblue;
-        }
-
-        .fa-power-off:hover {
-            color: darkblue;
-        }
-
-        .iconColorNBorder {
-            color: rgba(1, 126, 205, 1);
-            z-index: 9999;
-        }
-
-        .equal {
-            margin-top: 20px;
-        }
-
-        .service-wrapper .service-footer {
-            max-width: 720px;
-        }
-
-        .service-work.card {
-            border-radius: 10px !important;
-            cursor: pointer;
-        }
-
-        .service-work .service-work-vertical {
-            background: rgb(0, 0, 0);
-            background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 33.33%, rgba(255, 255, 255, 1) 66.66%, rgba(255, 255, 255, 0) 99.99%);
-            background-size: 300% 300%;
-            background-position: 0% 100%;
-            transition: .5s;
-        }
-
-        .service-work .service-work-vertical:hover {
-            background-position: 0% 0%;
-            transition: .5s;
-        }
-
-        .service-work .service-work-vertical:hover * {
-            color: #000;
-            border-color: #000;
-            transition: .5s;
-        }
-
-        .service-work .service-work-vertical-ruk:hover * {
-            color: #000;
-            border-color: #000;
-            transition: .5s;
-        }
-
-        .recent-work.card {
-            border-radius: 10px !important;
-        }
-
-        .recent-work .recent-work-vertical {
-            background: rgb(255, 255, 255);
-            background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 33.333%, rgba(1, 126, 205, 1) 66.666%, rgba(255, 255, 255, 0) 99.999%);
-            background-size: 300% 300%;
-            background-position: 0% 100%;
-            transition: .5s;
-            cursor: pointer;
-        }
-
-        .recent-work .recent-work-vertical-ruk {
-            background: rgb(255, 255, 255);
-            background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 33.333%, rgba(30, 144, 255, 1) 66.666%, rgba(255, 255, 255, 0) 99.999%);
-            background-size: 300% 300%;
-            background-position: 0% 100%;
-            transition: .5s;
-            cursor: pointer;
-        }
-
-        .recent-work .recent-work-vertical:hover {
-            background-position: 0% 0%;
-            transition: .5s;
-        }
-
-        .recent-work .recent-work-vertical:hover div.recent-work-content {
-            top: 50%;
-            margin-top: -2.5em;
-            position: absolute;
-        }
-
-        .recent-work .recent-work-vertical:hover * {
-            color: white;
-            transition: .5s;
-        }
-
-        /*¨*/
-        .recent-work .recent-work-vertical-ruk:hover {
-            background-position: 0% 0%;
-            transition: .5s;
-        }
-
-        .recent-work .recent-work-vertical-ruk:hover div.recent-work-content {
-            top: 50%;
-            margin-top: -2.5em;
-            position: absolute;
-        }
-
-        .recent-work .recent-work-vertical-ruk:hover * {
-            color: white;
-            transition: .5s;
-        }
-
-
-        .team-member:hover .team-member-img {
-            padding: 10px !important;
-        }
-
-        /* Footer */
-        footer a.text-light:hover {
-            color: #bfbfbf !important;
-            transition-duration: 0.15s;
-        }
-
-
-        .product {
-
-            width: 250px;
-            height: 250px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, .2);
-            border-radius: 5px;
-            background: white;
-            overflow: hidden
-        }
-
-        .product .imgbox {
-            height: 100%;
-            box-sizing: border-box
-        }
-
-        .product .imgbox img {
-            display: block;
-            width: 100%;
-            height: 90%;
-        }
-
-        .specifies {
-            position: absolute;
-            width: 100%;
-            bottom: -75px;
-            background: white;
-            padding: 10px;
-            transition: .5s
-        }
-
-        .product:hover .specifies {
-            bottom: 0
-        }
-
-        .service-work-content h5 {
-            color: rgba(1, 126, 205, 1) !important;
-        }
-
-        .specifies h5 {
-            margin: 0;
-            padding: 0;
-            color: rgba(1, 126, 205, 1);
-        }
-
-        .zoom {
-            background-color: rgba(255, 255, 255, 0);
-            transition: transform .3s; /* Animation */
-            width: 200px;
-            height: 200px;
-        }
-
-        .zoom:hover {
-            transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+        #Titulo {
+            color: #0154ae;
+            font-family: "Montserrat";
         }
 
     </style>
-
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
 {% block body %}
-    {#AQUI COLOQUEN EL CÓDIGO#}
+
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-center">
-                <div class="col-md-12">
-                    <h3 class="mb-0"> Plan de Mejora </h3>
-                    <hr>
-                </div>
-            </div>
-
-            <div class="d-flex justify-content-between m-3">
-                <div class="form-group">
-                    <label for="FormControlSelect1">Facultad:</label>
-                    <select id="facultades" name="facultades" class="form-control" id="FormControlSelect1"
-                            onchange="listarEspecialidades()">
-                        {% for facultad in facultades %}
-                            <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="especialidades">Especialidades:</label>
-                    <select id="especialidades" name="especialidades" class="form-control" id="FormControlSelect1"
-                            onchange="listarCursos()">
-                    </select>
-                </div>
-
-            </div>
-
-            <h4 class="mb-0"> Propuesta de Mejora </h4>
-            <hr>
-
-            <div class="d-flex justify-content-center mt-3 mb-5">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div id="selectEspe" class="col-md-12">
+                <div class="col-12">
+                    <div class="row d-flex justify-content-center ">
+                        <div class="col-12">
+                            <h4 id="Titulo" style="font-family: Montserrat">Plan de Mejora</h4>
+                            <hr style="background-color: #0154ae;">
                         </div>
                     </div>
-                    <div id="cursos" class="row">
-                        <div id="nuevo" class="col-md-4 equal">
-                            <div class="d-flex justify-content-center">
-                                <form class="product recent-work card" action="{% url 'crearPlanMejora' pk='0' %}"
-                                      method="post" style="height: 250px; width: 250px;">
-                                    {% csrf_token %}
-                                    <input id="hid" type="hidden" name="operacion" value="entrada">
-                                    <button type="submit" class="btn btn-outline-light">
-                                        <div class="nav-link icon-indicator" role="button">
-                                            <div class="mt-4" style="text-align: center;">
-                                                <span class="fas fa-plus fa-9x" style="text-align: center"></span>
-                                            </div>
-                                        </div>
-                                        <div class="recent-work-vertical-ruk card-img-overlay">
-                                            <div class="service-work-content">
-                                                <h5 class="card-title" style="text-align: center; margin-top: 11.4rem">
-                                                    Agregar Propuesta</h5>
-                                            </div>
-                                        </div>
-                                    </button>
-                                </form>
+
+                    <div class="col-12 mb-3">
+                        <div class="d-flex flex-row align-items-center">
+                            <div class="mr-2">
+                                <label for="cboFacultad">Facultad:</label>
+                                <select class="custom-select custom-select-sm mb-3" id="cboFacultad" name="cboFacultad"
+                                        onchange="obtenerEspecialidades()">
+                                    {% for facultad in facultades %}
+                                        <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="cboEspecialidad">Especialidad:</label>
+                                <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
+                                        name="cboEspecialidad"
+                                        onchange="listarResultados()">
+
+                                </select>
                             </div>
                         </div>
                     </div>
+
+                    <h3>Propuesta de Mejora</h3>
+
+                    <hr style="background-color: #0154ae;">
+                    <div style="margin: 1%;">
+                        <span class="btn btn-primary" onclick="redirectCrearResultado()">Crear</span>
+                    </div>
+                    <div id="listadoResultados"></div>
+
                 </div>
             </div>
-
         </div>
     </div>
+
+    <!-- Modal Eliminar Resultado -->
+
+    <div class="modal fade" id="eliminarResultado" tabindex="-1" role="dialog" aria-labelledby="eliminarResultadoLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarResultadoLabel"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                    <button id="btnEliminarResultado" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
 
-{#Aquí coloco el JS particular de la web#}
 {% block extrajs %}
     <script>
 
+        var pkEliminar;
+
         $(document).ready(function () {
-            console.log("ready!");
-            listarEspecialidades();
+            obtenerEspecialidades();
+            listarResultados();
         });
 
-        function listarEspecialidades() {
+        function redirectCrearResultado() {
+            var pk_especialidad = $("#cboEspecialidad").val();
+            document.location.href = "../../gestionarResultados/crear/" + pk_especialidad;
+        }
+
+        function redirectEditarResultado(id_resultado) {
+
+            document.location.href = "../../gestionarResultados/editar/" + id_resultado;
+        }
+
+        $("#btnEliminarResultado").on('click', function () {
+            eliminarResultado(pkEliminar);
+            $("#eliminarResultado").modal('hide');
+        });
+
+        function resultadosEliminar(codigoResultado, pk) {
+            console.log(codigoResultado)
+            console.log(pk)
+
+            data = '<h5 class="modal-title" id="eliminarResultadoLabel">Se eliminará el resultado ' + codigoResultado + '</h5>';
+            $("#eliminarResultadoLabel").html(data);
+            $("#eliminarResultado").modal('show');
+            pkEliminar = pk;
+        };
+
+
+        function eliminarResultado(resultadopk) {
             $.ajax({
                 type: 'POST',
-                url: "{% url 'listarPlanMejora' %}",
+                url: "{% url 'eliminarResultado' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    operacion: 'listEspe',
-                    facultad: $("#facultades").val(),
+                    resultadopk: resultadopk,
+                },
+                success: function (response) {
+                    listarResultados();
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+        function obtenerEspecialidades() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'obtenerEspecialidades' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    facultad: $("#cboFacultad").val(),
                 },
                 success: function (response) {
                     var instance = JSON.parse(response["resp"]);
+
                     $(".especialidad").remove();
                     for (var i = 0; i < instance.length; i++) {
-                        data = '<option class="especialidad" onclick="listarCursos()" value=' +
+                        data = '<option class="especialidad" onclick="listarResultados()" value=' +
                             instance[i]["pk"] + '>' +
                             instance[i]["fields"].nombre + '</option>';
-                        $("#especialidades").append(data);
+                        $("#cboEspecialidad").append(data);
                     }
-                    listarCursos();
+
+                    listarResultados();
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);
@@ -296,64 +166,58 @@
             });
         }
 
-        function listarCursos() {
+        function listarResultados() {
             $.ajax({
                 type: 'POST',
-                url: "{% url 'listarPlanMejora'%}",
+                url: "{% url 'listarResultados'%}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    operacion: 'listCur',
-                    especialidad: $("#especialidades").val(),
-                    estado: $("#estado").val(),
+                    especialidad: $("#cboEspecialidad").val(),
                 },
                 success: function (response) {
-                    var instance = JSON.parse(response["resp"]);
-                    var instance1 = JSON.parse(response["resp1"]);
-                    $("#esp").remove();
-                    data = '<input id="esp" type="hidden" name="especialidad" value="' + $("#especialidades").val() + '">';
-                    $("#hid").after(data);
-                    $("#selectEspeTit").remove();
+                    var instance = JSON.parse(response['resultados']);
+                    var instance2 = JSON.parse(response['tiene_niveles']);
+                    console.log(instance);
+                    var i = 0;
+                    var numero = instance.length;
+                    var data = '';
+                    var data2 ='';
+                    for (i = 0; i < numero; i++) {
+                        data += (
+                            '<div style="margin: 1%;">' +
+                            '   <div class="card text-white bg-primary">' +
+                            '        <div class="card-body">' +
+                            '                <div class="row no-gutters">' +
+                            '                    <div class="col-md-1">' +
+                            '                        <h2 class="card-text text-white">' + instance[i]["fields"].codigo + '</h2>' +
+                            '                    </div>' +
+                            '                    <div class="col-md-9 border-left border-right p-2">' +
+                            '                        <p>' + instance[i]["fields"].descripcion + '</p>')
+                        if (instance2[i]==false){
+                            data +=(
+                        '                            <hr style="background-color: #FFFFFF;">'+
+                        '                            <p>Nota: El resultado no tiene indicadores asociados.'+
+                        '                                Dar click en editar si desea asociar indicadores.</p>')
+                        }
 
-                    data = '<div id="selectEspeTit">' +
-                        '   <h4>' + $("#facultades option:selected").text() + ' - ' + $("#especialidades option:selected").text() + '</h4>' +
-                        '   <hr>' +
-                        '</div>';
-                    $("#selectEspe").append(data);
-                    $(".curso").remove();
-                    for (var i = 0; i < instance.length; i++) {
-                        data = '<div class="curso col-md-4 equal">' +
-                            '   <div class="d-flex justify-content-center">' +
-                            '       <div class="product card">' +
-                            '           <div class="card-img-top imgbox" style="height: 15rem">' +
-                            '               <a href="#">' +
-                            '                    <img class="" src="{% static 'img/illustrations/3.png' %}">' +
-                            '                </a>' +
-                            '            </div>' +
-                            '           <div class="specifies">' +
-                            '               <h5 class="card-title ml-2" style="text-align: left">' + instance1[instance.length - i - 1]["fields"].nombre + '</h5>' +
-                            '               <hr>' +
-                            '               <div class="row d-flex justify-content-end">' +
-                            '                   <form class="p-2" action="/gestionarPlanMedicion/crear/' + instance[instance.length - i - 1]["pk"] + '" method="post">' +
-                            '                       {% csrf_token %}' +
-                            '                       <input type="hidden" name="operacion" value="entrada">' +
-                            '                       <input type="hidden" name="especialidad" value="' + $("#especialidades").val() + '">' +
-                            '                       <button class="btn btn-falcon-primary nav-link icon-indicator fas fa-pen iconSize iconColoNBorder" style="text-align: center;"></button>' +
-                            '                   </form>' +
-                            '                   <form class="p-2 pr-3" action="{% url 'listarPlanMedicion' %}" method="post">' +
-                            '                       {% csrf_token %}' +
-                            '                       <input type="hidden" name="operacion" value="estado">' +
-                            '                       <input type="hidden" name="planpk" value= "' + instance[instance.length - i - 1]["pk"] + '"' +
-                            '                       <input type="hidden" name="especialidad" value="' + $("#especialidades").val() + '">' +
-                            '                       <button class="btn btn-falcon-primary nav-link icon-indicator fas fa-power-off iconSize iconColorNBorder" style="text-align: center;"></button>' +
-                            '                   </form>' +
-                            '               </div>' +
-                            '           </div>' +
-                            '       </div>' +
-                            '   </div>' +
-                            '</div>';
-                        $("#cursos").prepend(data);
+                        data += (
+                            '                    </div>' +
+                            '                    <div class="col-md-2 ">' +
+                            '                        <div class="d-flex justify-content-center">' +
+                            '                        <button class="btn btn-falcon-primary mr-1 mb-1" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')">Editar</button>' +
+                            '                        </div>' +
+                            '                        <div class="d-flex justify-content-center">' +
+                            '                        <button class="btn btn-falcon-primary mr-1 mb-1" onclick="resultadosEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">Eliminar</button>' +
+                            '                        </div>' +
+                            '                    </div>' +
+                            '                </div>' +
+                            '        </div>' +
+                            '    </div>' +
+                            '</div>')
                     }
-                    console.log('terminado');
+                    data2 = '<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>';
+                    $("#tituloEspecialidadResultados").html(data2);
+                    $("#listadoResultados").html(data);
                 },
                 error: function (response) {
                     // alert the error if any error occured
