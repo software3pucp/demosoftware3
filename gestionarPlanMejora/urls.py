@@ -7,4 +7,5 @@ urlpatterns = [
     path('listar/', views.listarPlanMejora, name="listarPlanMejora"),
     path('crear/<pk>', views.crearPlanMejora, name="crearPlanMejora"),
     path('crearPlanMedicionAjax', views.crearAjax, name='crearPlanMejoraAjax'),
+    path('editar/<pk>', views.editarPropuesta, name="editarPropuesta"),
 ]

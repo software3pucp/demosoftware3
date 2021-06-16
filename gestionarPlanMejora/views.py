@@ -160,6 +160,21 @@ def editarEvidencia(request, pk):
     }
     return render(request, 'gestionarPlanMejora/editarEvidencia.html', context)
 
+def editarPropuesta(request,pk):
+    if request.POST:
+        propuestaMejora = PropuestaMejora.objects.get(pk=pk)
+        propuestaMejora.codigo = request.POST['codigo']
+        propuestaMejora.descriocion = request.POST['descripcion']
+        propuestaMejora.save()
+        return redirect('listarPlanMejora')
+
+    propuestaMejora = PropuestaMejora.objects.get(pk=pk)
+    listaActividades = ActividadMejora.objects.filter(propuestaMejora_id=pk, estado=1)
+    context = {
+        'listaActividades': listaActividades,
+        'propuestaMejora': propuestaMejora,
+    }
+    return render(request,'gestionarPlanMejora/propuestaMejora.html',context)
 
 def eliminarEvidenciaxActividad(request):
     evidenciapk = request.POST['evidenciapk']

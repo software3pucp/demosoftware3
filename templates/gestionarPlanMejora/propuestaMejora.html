@@ -1,0 +1,302 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+    <style>
+        hr {
+            height: .5px;
+            background-color: #2F5496;
+        }
+
+        .iconSize {
+            font-size: 23px;
+        }
+
+        .fa-pen:hover {
+            color: darkblue;
+        }
+
+        .fa-power-off:hover {
+            color: darkblue;
+        }
+
+        .iconColorNBorder {
+            color: rgba(1, 126, 205, 1);
+            z-index: 9999;
+        }
+
+        .equal {
+            margin-top: 20px;
+        }
+
+        .service-wrapper .service-footer {
+            max-width: 720px;
+        }
+
+        .service-work.card {
+            border-radius: 10px !important;
+            cursor: pointer;
+        }
+
+        .service-work .service-work-vertical {
+            background: rgb(0, 0, 0);
+            background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 33.33%, rgba(255, 255, 255, 1) 66.66%, rgba(255, 255, 255, 0) 99.99%);
+            background-size: 300% 300%;
+            background-position: 0% 100%;
+            transition: .5s;
+        }
+
+        .service-work .service-work-vertical:hover {
+            background-position: 0% 0%;
+            transition: .5s;
+        }
+
+        .service-work .service-work-vertical:hover * {
+            color: #000;
+            border-color: #000;
+            transition: .5s;
+        }
+
+        .service-work .service-work-vertical-ruk:hover * {
+            color: #000;
+            border-color: #000;
+            transition: .5s;
+        }
+
+        .recent-work.card {
+            border-radius: 10px !important;
+        }
+
+        .recent-work .recent-work-vertical {
+            background: rgb(255, 255, 255);
+            background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 33.333%, rgba(1, 126, 205, 1) 66.666%, rgba(255, 255, 255, 0) 99.999%);
+            background-size: 300% 300%;
+            background-position: 0% 100%;
+            transition: .5s;
+            cursor: pointer;
+        }
+
+        .recent-work .recent-work-vertical-ruk {
+            background: rgb(255, 255, 255);
+            background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 33.333%, rgba(30, 144, 255, 1) 66.666%, rgba(255, 255, 255, 0) 99.999%);
+            background-size: 300% 300%;
+            background-position: 0% 100%;
+            transition: .5s;
+            cursor: pointer;
+        }
+
+        .recent-work .recent-work-vertical:hover {
+            background-position: 0% 0%;
+            transition: .5s;
+        }
+
+        .recent-work .recent-work-vertical:hover div.recent-work-content {
+            top: 50%;
+            margin-top: -2.5em;
+            position: absolute;
+        }
+
+        .recent-work .recent-work-vertical:hover * {
+            color: white;
+            transition: .5s;
+        }
+
+        /*¨*/
+        .recent-work .recent-work-vertical-ruk:hover {
+            background-position: 0% 0%;
+            transition: .5s;
+        }
+
+        .recent-work .recent-work-vertical-ruk:hover div.recent-work-content {
+            top: 50%;
+            margin-top: -2.5em;
+            position: absolute;
+        }
+
+        .recent-work .recent-work-vertical-ruk:hover * {
+            color: white;
+            transition: .5s;
+        }
+
+
+        .team-member:hover .team-member-img {
+            padding: 10px !important;
+        }
+
+        /* Footer */
+        footer a.text-light:hover {
+            color: #bfbfbf !important;
+            transition-duration: 0.15s;
+        }
+
+
+        .product {
+
+            width: 250px;
+            height: 250px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .2);
+            border-radius: 5px;
+            background: white;
+            overflow: hidden
+        }
+
+        .product .imgbox {
+            height: 100%;
+            box-sizing: border-box
+        }
+
+        .product .imgbox img {
+            display: block;
+            width: 100%;
+            height: 90%;
+        }
+
+        .specifies {
+            position: absolute;
+            width: 100%;
+            bottom: -75px;
+            background: white;
+            padding: 10px;
+            transition: .5s
+        }
+
+        .product:hover .specifies {
+            bottom: 0
+        }
+
+        .service-work-content h5 {
+            color: rgba(1, 126, 205, 1) !important;
+        }
+
+        .specifies h5 {
+            margin: 0;
+            padding: 0;
+            color: rgba(1, 126, 205, 1);
+        }
+
+        .zoom {
+            background-color: rgba(255, 255, 255, 0);
+            transition: transform .3s; /* Animation */
+            width: 200px;
+            height: 200px;
+        }
+
+        .zoom:hover {
+            transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+        }
+
+    </style>
+
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+    {#AQUI COLOQUEN EL CÓDIGO#}
+    <div class="card p-5">
+            <div class="row-12">
+                <div class="col-12">
+                    <div class="row d-flex justify-content-center ">
+                        <div class="col-10">
+                            <h4>Propuesta de Mejora</h4>
+                        </div>
+                        <div class="col-2 ">
+                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'listarPlanMejora' %}">
+                                <div class="fas fa-reply mt-1 mr-2"></div>
+                                <h5>Volver</h5>
+                            </a>
+                        </div>
+                    </div>
+                    <hr style="background-color: #0154ae;">
+                    <div class="row p-1">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="codigo">Código:</label>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <input name="codigo" class="form-control" id="codigo" type="text"
+                                       value="{{ propuestaMejora.codigo }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="descripcion">Descripción:</label>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="form-group ">
+                                    <textarea name="descripcion" id="descripcion" class="form-control"
+                                              aria-label="With textarea" rows="4">{{ propuestaMejora.descripcion }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 d-flex justify-content-end mt-3">
+                    <a class="btn btn-outline-primary m-1" type="button"
+                       href="">Cancelar</a>
+                    <input type="submit" class="btn btn-primary m-1" value="Guardar">
+                </div>
+            </div>
+        </form>
+        <div class="row-12">
+            <div class="col-md-12">
+                <h4>Actividades</h4>
+            </div>
+            <hr style="background-color: #0154ae;">
+            <div class="col-12">
+                <div class="btn btn-falcon-primary mb-2" href="#agregarIndicadorNuevo" data-toggle="modal"
+                     role="button">
+                    <span class="fa fa-plus"></span>
+                </div>
+                <div class="dashboard-data-table">
+                    <table class="table table-sm table-dashboard fs--1 data-table border-bottom"
+                           data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
+                        <thead class="bg-200 text-900">
+                        <tr>
+                            <th class="sort pr-1 align-middle">N°</th>
+                            <th class="sort pr-1 align-middle">Codigo</th>
+                            <th class="sort pr-1 align-middle">Descripción</th>
+                            <th class="sort pr-1 align-middle text-center">Acción</th>
+                        </tr>
+                        </thead>
+                       {% comment %} <tbody id="purchases">
+                        {% for actividades in listaActividades %}
+                            <tr class="btn-reveal-trigger">
+                                <th class="align-middle"> {{ forloop.counter }}</th>
+                                <th class="align-middle">{{ actividades.codigo }}</th>
+                                <td class="align-middle">{{ actividades.descripcion }}</td>
+                                <td class="align-middle text-right fs-0">
+                                    <form action=""
+                                          method="post">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            <div class="col">
+                                                <a href="{% url 'editarIndicador' pk=indicador.pk %}"
+                                                   class="badge badge rounded-capsule badge-soft-info">Editar</a>
+                                            </div>
+                                            <div class="col">
+                                                <button type="submit"
+                                                        class="badge rounded-capsule badge-soft-danger outline-none">
+                                                    <span>Eliminar</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="indicador_pk" name="indicador_pk"
+                                               value="{{ indicador.pk }}">
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>{% endcomment %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{#Aquí coloco el JS particular de la web#}
