@@ -194,6 +194,8 @@
 {% block body %}
     {#AQUI COLOQUEN EL CÓDIGO#}
     <div class="card p-5">
+        <form action="{% url 'editarPropuesta' pk=propuestaMejora.pk %}" method="post">
+            {% csrf_token %}
             <div class="row-12">
                 <div class="col-12">
                     <div class="row d-flex justify-content-center ">
@@ -237,7 +239,7 @@
                 </div>
                 <div class="col-md-12 d-flex justify-content-end mt-3">
                     <a class="btn btn-outline-primary m-1" type="button"
-                       href="">Cancelar</a>
+                       href="{% url 'listarPlanMejora' %}">Cancelar</a>
                     <input type="submit" class="btn btn-primary m-1" value="Guardar">
                 </div>
             </div>
@@ -248,7 +250,7 @@
             </div>
             <hr style="background-color: #0154ae;">
             <div class="col-12">
-                <div class="btn btn-falcon-primary mb-2" href="#agregarIndicadorNuevo" data-toggle="modal"
+                <div class="btn btn-falcon-primary mb-2" href="#agregarActividadNueva" data-toggle="modal"
                      role="button">
                     <span class="fa fa-plus"></span>
                 </div>
@@ -263,19 +265,19 @@
                             <th class="sort pr-1 align-middle text-center">Acción</th>
                         </tr>
                         </thead>
-                       {% comment %} <tbody id="purchases">
-                        {% for actividades in listaActividades %}
+                        <tbody id="purchases">
+                        {% for actividad in listaActividades %}
                             <tr class="btn-reveal-trigger">
                                 <th class="align-middle"> {{ forloop.counter }}</th>
-                                <th class="align-middle">{{ actividades.codigo }}</th>
-                                <td class="align-middle">{{ actividades.descripcion }}</td>
+                                <th class="align-middle">{{ actividad.codigo }}</th>
+                                <td class="align-middle">{{ actividad.descripcion }}</td>
                                 <td class="align-middle text-right fs-0">
                                     <form action=""
                                           method="post">
                                         {% csrf_token %}
                                         <div class="row">
                                             <div class="col">
-                                                <a href="{% url 'editarIndicador' pk=indicador.pk %}"
+                                                <a href="{% url 'editarActividad' pk=actividad.pk %}"
                                                    class="badge badge rounded-capsule badge-soft-info">Editar</a>
                                             </div>
                                             <div class="col">
@@ -286,17 +288,93 @@
                                             </div>
                                         </div>
                                         <input type="hidden" id="indicador_pk" name="indicador_pk"
-                                               value="{{ indicador.pk }}">
+                                               value="{{ actividad.pk }}">
                                     </form>
                                 </td>
                             </tr>
                         {% endfor %}
-                        </tbody>{% endcomment %}
+                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-{% endblock %}
 
-{#Aquí coloco el JS particular de la web#}
+    <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
+         id="agregarActividadNueva" tabindex="-1" role="dialog"
+         aria-labelledby="settings-modal-label" aria-hidden="true"
+         data-options='{"autoShow":false,"autoShowDelay":10,"showOnce":false}'>
+
+        <div class="modal-dialog modal-lg modal-dialog-vertical" style="opacity: 0.90" role="document">
+            <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar" style="background-color: #017ECD;">
+                <div class="modal-body">
+                    <div class="row d-flex justify-content-center">
+                        <h5 class="text-white">Agregar Activdad</h5>
+                        <hr style="background-color: #f9fafd; width: 70%">
+                    </div>
+                    <form name="formAgregar" id="formAgregar">
+                        <div class="d-flex justify-content-center">
+                            <div class="col-12">
+                                <label name="codigoI" for="codigoI"
+                                       class="text-white">Codigo:</label>
+                                <input type="text" class="form-control" id="codigoI" name="codigoI">
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <div class="col-12">
+                                <label name="descripcionI" for="descripcionI"
+                                       class="text-white mr-2">Descripción:</label>
+                                <textarea type="text" class="form-control" id="descripcionI"
+                                          name="descripcionI"></textarea>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <div class="col-6">
+                                <div class="d-flex justify-content-center mt-3">
+                                    <button class="btn btn-secondary" type="button"
+                                            data-dismiss="modal" aria-label="Close">Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex justify-content-center mt-3">
+                                    <button
+                                            type="button" class="btn btn-primary" onclick="agregar()">Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block extrajs %}
+    <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
+    <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
+
+    <script>
+        {% comment %}function agregar() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearActividad' propuestaMejora_id=propuestaMejora.pk %}",
+                url: "{% url 'crearActividad'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    codigoI: $("#codigoI").val(),
+                    descripcionI: $("#descripcionI").val(),
+                },
+                success: function (response) {
+                    location.reload()
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }{% endcomment %}
+    </script>
+
+{% endblock %}
