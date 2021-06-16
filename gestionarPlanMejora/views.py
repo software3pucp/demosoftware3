@@ -278,14 +278,14 @@ def crearPlanMejora(request,pk):
 def crearPropuesta(request,id_especialidad):
     try:
         especialidad = Especialidad.objects.get(pk=id_especialidad)
-        planMejora =PlanMejora.objects.filter(especialidad_id=especialidad.id)
+        planMejora =PlanMejora.objects.get(especialidad_id=especialidad.id)
     except:
         print("No se encontro especialidad")
 
     if request.POST:
         codigo = request.POST['codigo']
         descripcion = request.POST['descripcion']
-        nuevaPropuesta = PropuestaMejora.objects.create(codigo= codigo, descripcion=descripcion, especialidad_id=especialidad.id,estado=1)
+        nuevaPropuesta = PropuestaMejora.objects.create(codigo= codigo, descripcion=descripcion, especialidad=especialidad,estado=1,planMejora=planMejora)
         return redirect('listarPlanMejora')
 
     context = {
