@@ -197,6 +197,9 @@ def historico(request):
             PlanMejora.objects.create(especialidad_id=plan.especialidad_id,planMedicion_id=plan.pk,estado=1)
             mejora = PlanMejora.objects.latest('id')
             return redirect('planMejora',pk=mejora.pk)
+        if request.POST['operacion'] == 'ver plan':
+            mejora = PlanMejora.objects.get(planMedicion_id=request.POST['planMedicion'],estado=1)
+            return redirect('planMejora',pk=mejora.pk)
 
     facultades = Facultad.objects.filter(estado='1')
     context = {

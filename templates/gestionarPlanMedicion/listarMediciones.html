@@ -216,7 +216,10 @@
                         }else{
                             data += (
                             '                        <div class="d-flex justify-content-center">' +
-                                '                        <form action="/gestionarPlanMejora/planMejora/'+instance[i]["pk"]+'">' +
+                                '                        <form action="{% url 'historico' %}" method="post">' +
+                                '                           {% csrf_token %}' +
+                                '                           <input type="hidden" name="operacion" value="ver plan">' +
+                                '                           <input type="hidden" name="planMedicion" value="' + instance[i]["pk"] + '">' +
                                 '                           <button class="btn btn-falcon-primary mr-1 mb-1">Ver Plan Mejora</button>' +
                                 '                        </form>' +
                                 '                        </div>')
