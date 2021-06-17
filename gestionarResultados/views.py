@@ -9,33 +9,47 @@ from django.db.models import Q
 from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
 from gestionarIndicadores.models import Indicador
-from gestionarResultados.models import ResultadoPUCP
+from gestionarResultados.models import ResultadoPUCP, PlanResultados
 from django.contrib.auth.decorators import login_required
-@login_required
-def crearResultado(request, id_especialidad):
-    try:
-        especialidad = Especialidad.objects.get(pk=id_especialidad)
-    except:
-        print("Error al buscar la especialidad")
 
+from gestionarSemestre.models import Semestre
+
+
+@login_required
+def crearResultado(request, id_especialidad,id_plan):
+    especialidad = Especialidad.objects.get(pk=id_especialidad)
     if request.POST:
         codigo = request.POST['codigo']
         descripcion = request.POST['descripcion']
         newResultado = ResultadoPUCP.objects.create(codigo= codigo, descripcion=descripcion, especialidad=especialidad)
-        return redirect('resultados')
+        return redirect('resultados',id_plan)
 
     context = {
         'especialidad': especialidad,
+        'plan': id_plan,
     }
     return render(request, 'gestionarResultados/crearResultado.html', context)
 
 @login_required
-def Resultados(request):
-
+def Resultados(request, pk_plan):
+    plan = PlanResultados.objects.get(pk=pk_plan)
+    especialidadSeleccionada = Especialidad.objects.get(pk=plan.especialidad_id)
+    facultadSeleccionada = Facultad.objects.get(pk=especialidadSeleccionada.facultad_id)
     facultades = Facultad.objects.filter(estado='1')
     context = {
         'facultades': facultades,
+        'facultadSeleccionada': facultadSeleccionada,
+        'especialidadSeleccionada': especialidadSeleccionada,
+        'plan': plan
     }
+
+    print(context)
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
     return render(request, 'gestionarResultados/resultados.html', context)
 
 def eliminarResultado(request):
@@ -75,18 +89,83 @@ def listarResultados(request):
 
 
 @login_required
-def editarResultado(request,pk):
+def editarResultado(request,pk,id_plan):
     if request.POST:
         resultado = ResultadoPUCP.objects.get(pk=pk)
         resultado.codigo = request.POST['codigo']
         resultado.descripcion = request.POST['descripcion']
         resultado.save()
-        return redirect('resultados')
+        return redirect('resultados', id_plan)
 
     resultado = ResultadoPUCP.objects.get(pk=pk)
     listaIndicares = Indicador.objects.filter(resultado_id=pk, estado=1)
     context = {
         'listaIndicadores': listaIndicares,
         'resultado':resultado,
+        'plan': id_plan
     }
     return render(request, 'gestionarResultados/editarResultado.html', context)
+
+@login_required
+def planDeResultado(request):
+    facultades = Facultad.objects.filter(estado='1')
+    context = {
+        'facultades': facultades,
+    }
+    return render(request, 'gestionarResultados/planDeResultado.html', context)
+
+def crearPlanResultado(request,id_especialidad):
+    try:
+        especialidad = Especialidad.objects.get(pk=id_especialidad)
+    except:
+        print("Error al buscar la especialidad")
+
+    if request.POST:
+        codigo = request.POST['codigo']
+        nombre = request.POST['nombre']
+        nuevoPlanResultado = PlanResultados.objects.create(codigo=codigo, descripcion=nombre , especialidad=especialidad,estado='2')
+        return redirect('planDeResultado')
+
+    context = {
+        'especialidad': especialidad,
+    }
+    return render(request, 'gestionarResultados/crearPlanDeResultado.html', context)
+
+def listarPlanResultado(request):
+    id_especialidad = request.POST['especialidad']
+    planes = PlanResultados.objects.filter(especialidad_id=id_especialidad)
+    listaHistorico = []
+    # lista2 = []
+    for plan in planes:
+        tiene_resultados = False
+        # indicadores = Indicador.objects.filter(resultado_id=result.pk, estado='1')
+        # if (len(indicadores) > 0):
+        #     tiene_indicadores = True
+        # else:
+        #     tiene_indicadores = False
+        registro = [plan, tiene_resultados]
+        listaHistorico.append(registro)
+        # lista2.append(tiene_indicadores)
+
+    ser_instance = serializers.serialize('json', planes)
+    # ser_instance2 = json.dumps(lista2)
+    # ser_instance2 = serializers.serialize('json', listaResultados)
+    # ,"tiene_niveles": ser_instance2
+    return JsonResponse({"planes": ser_instance}, status=200)
+
+def activarPlan(request):
+    plan = PlanResultados.objects.get(pk=request.POST["planResultadoPk"])
+    planes = PlanResultados.objects.filter(especialidad_id=request.POST["especialidad"])
+    planes.update(estado='2')
+    plan.estado = '1'
+    plan.save()
+    return JsonResponse({}, status=200)
+
+def desactivarPlan(request):
+    plan = PlanResultados.objects.get(pk=request.POST["planResultadoPk"])
+    plan.estado = '2'
+    plan.save()
+    return JsonResponse({}, status=200)
+
+
+

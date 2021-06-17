@@ -25,6 +25,6 @@ class PlanResultados(models.Model):
     codigo = models.CharField(max_length=10, default='', null=True, blank=True)
     descripcion = models.CharField(max_length=300, default='', null=True, blank=True)
     especialidad = models.ForeignKey(Especialidad, on_delete=models.RESTRICT)
-    semestre = models.ForeignKey(Semestre, on_delete=models.RESTRICT)
     estado = models.CharField(max_length=2, choices=ESTADOS, default='1', null=True, blank=True)
     resultados = models.ManyToManyField(ResultadoPUCP)
+
