@@ -19,6 +19,8 @@ def listarPlanMedicion(request):
     especialidad = Especialidad()
     semestre = Semestre()
     planMedicion = PlanMedicion()
+    planes = ''
+    estado = ''
     if request.POST:
         if request.POST['operacion'] == 'entrada':
             print('***************************************************************************************************')
@@ -27,37 +29,39 @@ def listarPlanMedicion(request):
             especialidad = Especialidad.objects.get(pk=request.POST['especialidad'])
             semestre = Semestre.objects.get(pk=request.POST['semestre'])
             planMedicion = PlanMedicion.objects.get(pk=request.POST['planMedicion'])
-        elif request.POST['operacion'] == 'listEspe':
-            especialidades = Especialidad.objects.filter(facultad_id=request.POST['facultad'], estado='1')
-            data = serializers.serialize("json", especialidades)
-            return JsonResponse({"resp": data}, status=200)
-        elif request.POST['operacion'] == 'listCur':
-            planes = PlanMedicionCurso.objects.filter(curso__especialidad_id__exact=request.POST['especialidad'],estado = request.POST['estado'])
-            pks = planes.values_list('curso_id',flat=True)
-            cursos = Curso.objects.filter(pk__in=pks)
-            dataP = serializers.serialize("json", planes)
-            dataC = serializers.serialize("json", cursos)
-            return JsonResponse({"resp": dataP,"resp1": dataC}, status=200)
         elif request.POST['operacion'] == 'estado':
-            planMedicionCurso = PlanMedicionCurso.objects.get(pk=request.POST['planpk'])
+            print('***************************************************************************************************')
+            print(request.POST)
+            print('***************************************************************************************************')
+            planMedicionCurso = PlanMedicionCurso.objects.get(pk=request.POST['planCurso'])
             if planMedicionCurso.estado == '1':
                 planMedicionCurso.estado = '2'
             elif planMedicionCurso.estado == '2':
                 planMedicionCurso.estado = '1'
             planMedicionCurso.save()
 
+        elif request.POST['operacion'] == 'eliminar':
+            print('***************************************************************************************************')
+            print(request.POST)
+            print('***************************************************************************************************')
+            planMedicionCurso = PlanMedicionCurso.objects.get(pk=request.POST['planCurso'])
+            planMedicionCurso.estado = '0'
+            planMedicionCurso.save()
 
-    facultades = Facultad.objects.filter()
-    especialidades = Especialidad.objects.filter() # TODO::: Verificar si se usa "Especialidades" en el template gestionarPlanMedicion/listarPlanMedicion
-    print(especialidades)
+        especialidad = Especialidad.objects.get(pk=request.POST['especialidad'])
+        semestre = Semestre.objects.get(pk=request.POST['semestre'])
+        planMedicion = PlanMedicion.objects.get(pk=request.POST['planMedicion'])
+        planes = PlanMedicionCurso.objects.filter(planMedicion_id=planMedicion.pk, semestre_id=semestre.pk, estado=request.POST['estado'])
+        estado = request.POST['estado']
+
     estados = PlanMedicionCurso.ESTADOS[1:]
     context = {
-        'facultades' : facultades,
-        'especialidades' : especialidades,
+        'planes' : planes,
         'planMedicion' : planMedicion,
         'especialidad' : especialidad,
         'semestre' : semestre,
         'estados' : estados,
+        'estadoSelec': estado,
     }
     return render(request,'gestionarPlanMedicion/listarPlanMedicion.html',context)
 
@@ -81,9 +85,9 @@ def crearPlanMedicion(request,pk):
     indicadoresSelec = []
     if request.POST:
         if request.POST['operacion'] == 'entrada':
-            especialidad = Especialidad.objects.get(pk=request.POST['especialidad'])
-            semestre = Semestre.objects.get(pk=request.POST['semestre'])
-            planMedicion = PlanMedicion.objects.get(pk=request.POST['planMedicion'])
+            print('***************************************************************************************************')
+            print(request.POST)
+            print('***************************************************************************************************')
         elif request.POST['operacion'] == 'editar':
             flag = 1
         elif request.POST['operacion'] == 'insertar':
@@ -98,6 +102,9 @@ def crearPlanMedicion(request,pk):
                 flag = 2
             else:
                 errorInsert = 1
+        especialidad = Especialidad.objects.get(pk=request.POST['especialidad'])
+        semestre = Semestre.objects.get(pk=request.POST['semestre'])
+        planMedicion = PlanMedicion.objects.get(pk=request.POST['planMedicion'])
         listaCursos = Curso.objects.filter(especialidad=request.POST['especialidad'])
 
 
@@ -205,7 +212,7 @@ def crearHistorico(request, id_especialidad):
 
 def listarHistorico(request):
     id_especialidad = request.POST['especialidad']
-    historicos = PlanMedicion.objects.filter(especialidad_id=id_especialidad, estado=1)
+    historicos = PlanMedicion.objects.filter(especialidad_id=id_especialidad, estado='1')
     listaHistorico = []
     #lista2 = []
     for historico in historicos:

@@ -111,6 +111,7 @@
                                         <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
                                         <input type="hidden" name="semestre" value="{{ semestreSelec.pk }}">
                                         <input type="hidden" name="planMedicion" value="{{ historico.pk }}">
+                                        <input type="hidden" name="estado" value="1">
 
                                         <button type="submit">
                                             <h6>{{ semestreSelec.nombreCodigo }}</h6>
@@ -166,6 +167,7 @@
                         '                       <input type="hidden" name="especialidad" value ="{{ especialidad.pk }}">' +
                         '                       <input type="hidden" name="semestre" value ="' + instance[0]["pk"] + '">' +
                         '                       <input type="hidden" name="planMedicion" value ="{{ historico.pk }}">' +
+                        '                       <input type="hidden" name="estado" value="1">' +
                         '                       <button type="submit">' +
                         '                           <h6>' + instance[0]["fields"].nombreCodigo + '</h6>' +
                         '                       </button>' +

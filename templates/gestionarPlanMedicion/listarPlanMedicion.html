@@ -165,7 +165,7 @@
             bottom: 0
         }
 
-        .service-work-content h5{
+        .service-work-content h5 {
             color: rgba(1, 126, 205, 1) !important;
         }
 
@@ -203,27 +203,25 @@
             </div>
 
             <div class="d-flex justify-content-between m-3">
-                <div class="form-group">
-                    <label for="FormControlSelect1">Facultad:</label>
-                    <select id="facultades" name="facultades" class="form-control" id="FormControlSelect1" onchange="listarEspecialidades()">
-                        {% for facultad in facultades %}
-                            <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="especialidades">Especialidades:</label>
-                    <select id="especialidades" name="especialidades" class="form-control" id="FormControlSelect1" onchange="listarCursos()">
-                    </select>
-                </div>
 
                 <div class="form-group">
-                    <label for="estado">Estado:</label>
-                    <select id="estado" name="estado" class="form-control" id="ControlSelect2" onchange="listarCursos()">
-                        {% for estado in estados %}
-                            <option value={{ estado.0 }}>{{ estado.1 }}</option>
-                        {% endfor %}
-                    </select>
+                    <form id="festado" class="p-2 pr-3" action="{% url 'listarPlanMedicion' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="operacion" value="entrada">
+                        <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
+                        <input type="hidden" name="semestre" value="{{ semestre.pk }}">
+                        <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
+                        <label for="estado">Estado:</label>
+                        <select id="estado" name="estado" class="form-control">
+                            {% for estado in estados %}
+                                {% if estado.0 == estadoSelec %}
+                                    <option value={{ estado.0 }} selected="selected">{{ estado.1 }}</option>
+                                {% else %}
+                                    <option value={{ estado.0 }}>{{ estado.1 }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </form>
                 </div>
 
             </div>
@@ -235,6 +233,47 @@
                         </div>
                     </div>
                     <div id="cursos" class="row">
+                        {% for plan in planes %}
+                            <div class="curso col-md-4 equal">
+                                <div class="d-flex justify-content-center">
+                                    <div class="product card">
+                                        <div class="card-img-top imgbox" style="height: 15rem">
+                                            <a href="#">
+                                                <img class="" src="{% static 'img/illustrations/3.png' %}">
+                                            </a>
+                                        </div>
+                                        <div class="specifies">
+                                            <h5 class="card-title ml-2" style="text-align: left">{{ plan.curso.nombre }}</h5>
+                                            <hr>
+                                            <div class="row d-flex justify-content-end">
+                                                <form id="editar" class="p-2" action="{% url 'crearPlanMedicion' pk=plan.pk %}" method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="operacion" value="entrada">
+                                                    <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
+                                                    <input type="hidden" name="semestre" value="{{ semestre.pk }}">
+                                                    <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
+                                                    <button type="submit" class="btn btn-falcon-primary nav-link icon-indicator" style="text-align: center;">
+                                                        <span class="fas fa-pen iconSize iconColoNBorder"></span>
+                                                    </button>
+                                                </form>
+                                                <form id="desactivar" class="p-2 pr-3" action="{% url 'listarPlanMedicion' %}" method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="operacion" value="estado">
+                                                    <input type="hidden" name="planCurso" value="{{ plan.pk }}">
+                                                    <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
+                                                    <input type="hidden" name="semestre" value="{{ semestre.pk }}">
+                                                    <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
+                                                    <input type="hidden" name="estado" value="1">
+                                                    <button type="submit" class="btn btn-falcon-primary nav-link icon-indicator" style="text-align: center;">
+                                                        <span class="fas fa-power-off iconSize iconColorNBorder"></span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
                         <div id="nuevo" class="col-md-4 equal">
                             <div class="d-flex justify-content-center">
                                 <form class="product recent-work card" action="{% url 'crearPlanMedicion' pk='0' %}"
@@ -271,103 +310,12 @@
 {#Aquí coloco el JS particular de la web#}
 {% block extrajs %}
     <script>
-
         $(document).ready(function () {
             console.log("ready!");
-            listarEspecialidades();
+            $('#estado').on('change',function (){
+                document.forms['festado'].submit();
+            })
         });
-
-        function listarEspecialidades(){
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'listarPlanMedicion' %}",
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    operacion: 'listEspe',
-                    facultad: $("#facultades").val(),
-                },
-                success: function (response){
-                    var instance = JSON.parse(response["resp"]);
-                    $(".especialidad").remove();
-                    for(var i=0; i<instance.length; i++){
-                        data = '<option class="especialidad" onclick="listarCursos()" value='+
-                            instance[i]["pk"]+'>'+
-                            instance[i]["fields"].nombre+'</option>';
-                        $("#especialidades").append(data);
-                    }
-                    listarCursos();
-                },
-                error: function (response){
-                    alert(response["responseJSON"]["error"]);
-                },
-            });
-        }
-
-        function listarCursos() {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'listarPlanMedicion'%}",
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    operacion: 'listCur',
-                    especialidad: $("#especialidades").val(),
-                    estado: $("#estado").val(),
-                },
-                success: function (response) {
-                    var instance = JSON.parse(response["resp"]);
-                    var instance1 = JSON.parse(response["resp1"]);
-                    $("#esp").remove();
-                    data='<input id="esp" type="hidden" name="especialidad" value="'+$("#especialidades").val()+'">';
-                    $("#hid").after(data);
-                    $("#selectEspeTit").remove();
-
-                    data = '<div id="selectEspeTit">' +
-                        '   <h4>' + $("#facultades option:selected").text() + ' - ' + $("#especialidades option:selected").text()+'</h4>' +
-                        '   <hr>' +
-                        '</div>';
-                    $("#selectEspe").append(data);
-                    $(".curso").remove();
-                    for(var i=0; i<instance.length; i++){
-                        data = '<div class="curso col-md-4 equal">' +
-                            '   <div class="d-flex justify-content-center">'+
-                            '       <div class="product card">' +
-                            '           <div class="card-img-top imgbox" style="height: 15rem">'+
-                            '               <a href="#">'+
-                            '                    <img class="" src="{% static 'img/illustrations/3.png' %}">'+
-                            '                </a>'+
-                            '            </div>'+
-                            '           <div class="specifies">' +
-                            '               <h5 class="card-title ml-2" style="text-align: left">' + instance1[instance.length-i-1]["fields"].nombre + '</h5>' +
-                            '               <hr>' +
-                            '               <div class="row d-flex justify-content-end">' +
-                            '                   <form class="p-2" action="/gestionarPlanMedicion/crear/'+ instance[instance.length-i-1]["pk"] + '" method="post">'+
-                            '                       {% csrf_token %}'+
-                            '                       <input type="hidden" name="operacion" value="entrada">'+
-                            '                       <input type="hidden" name="especialidad" value="'+$("#especialidades").val()+'">'+
-                            '                       <button class="btn btn-falcon-primary nav-link icon-indicator fas fa-pen iconSize iconColoNBorder" style="text-align: center;"></button>' +
-                            '                   </form>'+
-                            '                   <form class="p-2 pr-3" action="{% url 'listarPlanMedicion' %}" method="post">'+
-                            '                       {% csrf_token %}'+
-                            '                       <input type="hidden" name="operacion" value="estado">'+
-                            '                       <input type="hidden" name="planpk" value= "'+instance[instance.length-i-1]["pk"] +'"'+
-                            '                       <input type="hidden" name="especialidad" value="'+$("#especialidades").val()+'">'+
-                            '                       <button class="btn btn-falcon-primary nav-link icon-indicator fas fa-power-off iconSize iconColorNBorder" style="text-align: center;"></button>' +
-                            '                   </form>'+
-                            '               </div>'+
-                            '           </div>'+
-                            '       </div>'+
-                            '   </div>'+
-                            '</div>' ;
-                        $("#cursos").prepend(data);
-                    }
-                    console.log('terminado');
-                },
-                error: function (response) {
-                    // alert the error if any error occured
-                    alert(response["responseJSON"]["error"]);
-                }
-            });
-        }
 
     </script>
 {% endblock %}
