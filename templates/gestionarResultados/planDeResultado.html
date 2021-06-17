@@ -104,7 +104,7 @@
 
         function redirectEditarHistorico(id_historico) {
 
-            document.location.href = "../../gestionarPlanMedicion/editarHistorico/" + id_historico;
+            document.location.href = "../../gestionarResultados/editarPlanDeResultado/" + id_historico;
         }
 
         function redirectVerPlan(id_plan) {
@@ -120,7 +120,7 @@
             console.log(codigoMedicion)
             console.log(pk)
 
-            data = '<h5 class="modal-title" id="eliminarMedicionLabel">Se eliminará la medicion ' + codigoMedicion + '</h5>';
+            data = '<h5 class="modal-title" id="eliminarMedicionLabel">Se eliminará el plan de resultados ' + codigoMedicion + '</h5>';
             $("#eliminarMedicionLabel").html(data);
             $("#eliminarMedicion").modal('show');
             pkEliminar = pk;
@@ -132,10 +132,10 @@
         function eliminarMedicion(historicoPk) {
             $.ajax({
                 type: 'POST',
-                url: "{% url 'eliminarMedicion' %}",
+                url: "{% url 'eliminarPlanResultado' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    historicoPk: historicoPk,
+                    planResultadoPk: historicoPk,
                 },
                 success: function (response) {
                     listarPlanes();

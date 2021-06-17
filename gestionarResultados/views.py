@@ -133,10 +133,9 @@ def crearPlanResultado(request,id_especialidad):
 
 def listarPlanResultado(request):
 
-    if request.POST:
-        id_especialidad = request.POST['especialidad']
+    id_especialidad = request.POST['especialidad']
 
-    planes = PlanResultados.objects.filter(especialidad_id=id_especialidad)
+    planes = PlanResultados.objects.filter(especialidad_id=id_especialidad).exclude(estado=0)
     listaHistorico = []
     # lista2 = []
     for plan in planes:
@@ -158,7 +157,8 @@ def listarPlanResultado(request):
 
 def activarPlan(request):
     plan = PlanResultados.objects.get(pk=request.POST["planResultadoPk"])
-    planes = PlanResultados.objects.filter(especialidad_id=request.POST["especialidad"])
+    #planes = PlanResultados.objects.filter(especialidad_id=request.POST["especialidad"])
+    planes = PlanResultados.objects.filter(especialidad_id=request.POST["especialidad"]).exclude(estado=0)
     planes.update(estado='2')
     plan.estado = '1'
     plan.save()
@@ -170,5 +170,23 @@ def desactivarPlan(request):
     plan.save()
     return JsonResponse({}, status=200)
 
+def editarPlanDeResultado(request,pk):
+    if request.POST:
+        plan = PlanResultados.objects.get(pk=pk)
+        plan.codigo = request.POST['codigo']
+        plan.descripcion = request.POST['descripcion']
+        plan.save()
+        return redirect('planDeResultado')
+    context = {
+        'plan': pk
+    }
+    return render(request, 'gestionarResultados/editarPlanDeResultado.html', context)
 
+def eliminarPlanResultado(request):
+    planPk = request.POST['planResultadoPk']
+    plan = PlanResultados.objects.get(pk=planPk)
+    plan.estado = '0'  # eliminación lógica
+    plan.save()
+    #plan.delete()
+    return JsonResponse({}, status=200)
 
