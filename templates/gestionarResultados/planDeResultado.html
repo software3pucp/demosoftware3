@@ -95,7 +95,6 @@
 
         $(document).ready(function () {
             obtenerEspecialidades();
-            listarPlanes();
         });
 
         function redirectCrearPlanResultado() {
@@ -267,11 +266,12 @@
                     data2 = ('<h5> Planes de Resultado de ' + $("#cboEspecialidad option:selected").text() + '</h5>');
                     $("#tituloEspecialidadMediciones").html(data2);
                     $("#listadoMediciones").html(data);
+
                 }
                 ,
                 error: function (response) {
                     // alert the error if any error occured
-                    alert(response["responseJSON"]["error"]);
+                    console.log(response)
                 }
             });
         }

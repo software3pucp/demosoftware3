@@ -93,12 +93,14 @@
 
         $(document).ready(function () {
             filtrarEspecialidades();
-            listarPropuestas(5);
         });
 
+
         function redirectCrearPropuesta() {
+
             var pk_especialidad = $("#cboEspecialidad").val();
-            document.location.href = "../../gestionarPlanMejora/crear/" + pk_especialidad;
+
+            document.location.href = "../../gestionarPlanMejora/crear/" + {{ planmejora.pk }};
         }
 
         function redirectEditarPropuesta(id_propuesta) {
@@ -158,7 +160,7 @@
                         $("#cboEspecialidad").append(data);
                     }
 
-                    listarPropuestas(3);
+                    listarPropuestas();
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);
@@ -182,7 +184,7 @@
                     var i = 0;
                     var numero = instance.length;
                     var data = '';
-                    var data2 ='';
+                    var data2 = '';
                     for (i = 0; i < numero; i++) {
                         data += (
                             '<div style="margin: 1%;">' +
@@ -194,11 +196,11 @@
                             '                    </div>' +
                             '                    <div class="col-md-9 border-left border-right p-2">' +
                             '                        <p>' + instance[i]["fields"].descripcion + '</p>')
-                        if (instance2[i]==false){
-                            data +=(
-                        '                            <hr style="background-color: #FFFFFF;">'+
-                        '                            <p>Nota: La propuesta de mejora no tiene actividaes asociadas.'+
-                        '                                Dar click en editar si desea asociar actividades.</p>')
+                        if (instance2[i] == false) {
+                            data += (
+                                '                            <hr style="background-color: #FFFFFF;">' +
+                                '                            <p>Nota: La propuesta de mejora no tiene actividaes asociadas.' +
+                                '                                Dar click en editar si desea asociar actividades.</p>')
                         }
 
                         data += (

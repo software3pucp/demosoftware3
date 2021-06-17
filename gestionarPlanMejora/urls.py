@@ -6,10 +6,10 @@ urlpatterns = [
     # path( url hijo, backend, nombre de la variable)
 
     #Plan de mejora
-    path('planMejora/', views.planMejora, name="planMejora"),
+    path('planMejora/<pk>', views.planMejora, name="planMejora"),
 
     #propuestas
-    path('crear/<id_especialidad>', views.crearPropuesta, name="crearPropuesta"),
+    path('crear/<id_planmejora>', views.crearPropuesta, name="crearPropuesta"),
     path('listarPropuestas/', views.listarPropuestas, name='listarPropuestas'),
     path('editar/<pk>', views.editarPropuesta, name="editarPropuesta"),
     path('eliminarPropuesta/', views.eliminarPropuesta, name="eliminarPropuesta"),

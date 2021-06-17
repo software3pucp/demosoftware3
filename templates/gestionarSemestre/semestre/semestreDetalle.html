@@ -75,7 +75,7 @@
                 <label for="cboEspecialidad">Especialidad:</label>
                 <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
                         name="cboEspecialidad"
-                        onchange="listarHistorico()">
+                        onchange="listarCursos()">
 
                 </select>
             </div>
@@ -92,16 +92,10 @@
                 </div>
             </div>
 
-            {% for curso in cursoLista %}
-                <div class="card-body fs--1 p-0">
-                    <a class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300"
-                       href="/gestionarEvaluacion/evaluar/{{ curso.pk }}">
-                        <div class="notification-body">
-                            <p class="mb-1">{{ curso.nombre }}</p>
-                        </div>
-                    </a>
-                </div>
-            {% endfor %}
+
+           <div id="listaCursos">
+
+           </div>
         </div>
     </div>
 
@@ -135,12 +129,40 @@
                         $("#cboEspecialidad").append(data);
                     }
 
-                    listarHistorico();
+                    listarCursos();
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);
                 },
             });
         }
+
+        function listarCursos() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'enviarCursoHorario' pk=semestreSeleccionado.pk %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    especialidad: $("#cboEspecialidad").val(),
+                },
+                success: function (response) {
+                   var instance = JSON.parse(response["cursoLista"]);
+                   for(var i=0;i<instance.length;i++){
+                       data = '<div class="card-body fs--1 p-0">'+
+                              '<a class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300"' +
+                              ' href="/gestionarEvaluacion/evaluar/'+instance[i]['pk'] +'">'+
+                              '<div class="notification-body">'+ '<p class="mb-1">'+instance[i]["fields"].nombre+'</p>'+
+                              '</div> </a> </div>'
+                       $('#listaCursos').append(data)
+
+                   }
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                },
+            });
+        }
+
+
     </script>
 {% endblock %}

@@ -12,6 +12,7 @@ class PlanMedicion(models.Model):
     ESTADOS = [
         ('0', 'Eliminado'),
         ('1', 'Activo'),
+        ('2', 'Terminado'),
     ]
     codigo = models.CharField(max_length=10)
     nombre = models.CharField(max_length=100)

@@ -24,7 +24,7 @@ from django.contrib.auth.decorators import login_required
 
 
 def crearActividad(request, id_propuesta):  # quizas sea necesario pasar como parámetro el pk del plan de mejora
-    estado= EstadoActividad()
+    estado = EstadoActividad()
     try:
         estado = EstadoActividad.objects.get(pk=1)  # estado registrado
     except:
@@ -86,11 +86,17 @@ def editarActividad(request, pk):
         idEstado = request.POST['cboEstado']
         nuevoEstado = EstadoActividad.objects.get(pk=idEstado)
         actividad.estado = nuevoEstado
-        actividad.save()
-        # return redirect('') # regresa a la pagina anterior
+        if request.POST.getlist('choices-multiple-remove-button-2'):
+            actividad.groups.clear()
+            responsables = request.POST.getlist('choices-multiple-remove-button-2')
+            for val in responsables:
+                user = User.objects.get(id=val)
+                ResponsableMejora.objects.create(actividad=actividad, responsable=user)
+            actividad.save()
+        return redirect('')  # regresa a la pagina anterior
 
     actividad = ActividadMejora.objects.get(pk=pk)
-    propuestapk=actividad.propuestaMejora_id
+    propuestapk = actividad.propuestaMejora_id
     propuesta = PropuestaMejora.objects.get(pk=propuestapk)
 
     estados = EstadoActividad.objects.filter()
@@ -114,7 +120,7 @@ def editarActividad(request, pk):
         'responsables': lresponsables,
         'nresponsables': nlresponsables,
         'users': User.objects.all(),
-        'propuesta':propuesta,
+        'propuesta': propuesta,
     }
     return render(request, 'gestionarPlanMejora/editarActividad.html', context)
 
@@ -164,19 +170,20 @@ def editarEvidencia(request, pk):
 
 
 def editarPropuesta(request, pk):
-
     print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<')
     print(pk)
-
+    propuestaMejora = PropuestaMejora.objects.get(pk=pk)
+    listaActividades = ActividadMejora.objects.filter(propuestaMejora_id=pk, activo=1)
     if request.POST:
         propuestaMejora = PropuestaMejora.objects.get(pk=pk)
         propuestaMejora.codigo = request.POST['codigo']
         propuestaMejora.descripcion = request.POST['descripcion']
         propuestaMejora.save()
-        return redirect('planMejora')
+        id_planmejora = propuestaMejora.planMejora_id
+        planMejora = PlanMejora.objects.get(pk=id_planmejora)
+        id_medicion = planMejora.planMedicion.pk
 
-    propuestaMejora = PropuestaMejora.objects.get(pk=pk)
-    listaActividades = ActividadMejora.objects.filter(propuestaMejora_id=pk, activo=1)
+        return redirect('planMejora', pk=id_medicion)
 
     print('-------------------------------------------------------------------------------------------')
     print(listaActividades)
@@ -195,12 +202,17 @@ def eliminarEvidenciaxActividad(request):
     return JsonResponse({}, status=200)
 
 
-def planMejora(request):
+def planMejora(request, pk):
+    if pk != "0":
+        planMejora = PlanMejora.objects.get(pk=pk)
+        print(planMejora)
     facultades = Facultad.objects.filter(estado='1')
     context = {
         'facultades': facultades,
+        'planmejora': planMejora,
     }
     return render(request, 'gestionarPlanMejora/planMejora.html', context)
+
 
 def eliminarPropuesta(request):
     propuestapk = request.POST['propuestapk']
@@ -209,14 +221,15 @@ def eliminarPropuesta(request):
     propuesta.save()
     return JsonResponse({}, status=200)
 
+
 def filtrarEspecialidades(request):
     id_facultad = request.POST['facultad']
     especialidades = Especialidad.objects.filter(facultad_id=id_facultad, estado='1')
     data = serializers.serialize("json", especialidades)
     return JsonResponse({"resp": data}, status=200)
 
-def listarPropuestas(request):
 
+def listarPropuestas(request):
     idEspecialidad = request.POST['especialidad']
     print('------------------------------------------')
     print(idEspecialidad)
@@ -224,7 +237,7 @@ def listarPropuestas(request):
 
     propuestas = PropuestaMejora.objects.filter(especialidad_id=idEspecialidad, estado='1')
     listaPropuestas = []
-    lista2 = [] # lista para saber si tiene o no actividades de mejorar asociadas
+    lista2 = []  # lista para saber si tiene o no actividades de mejorar asociadas
     for propuesta in propuestas:
         tiene_actividades = False
         actividades = ActividadMejora.objects.filter(propuestaMejora_id=propuesta.pk, estado='1')
@@ -238,11 +251,7 @@ def listarPropuestas(request):
     ser_instance = serializers.serialize('json', propuestas)
     ser_instance2 = json.dumps(lista2)
 
-    return JsonResponse({"propuestas": ser_instance,"tiene_actividades": ser_instance2}, status=200)
-
-
-
-
+    return JsonResponse({"propuestas": ser_instance, "tiene_actividades": ser_instance2}, status=200)
 
 
 @login_required
@@ -301,19 +310,16 @@ def crearPlanMejora(request, pk):
     return render(request, 'gestionarPlanMejora/crearPlanMejora.html', context)
 
 
-def crearPropuesta(request, id_especialidad):
-    try:
-        especialidad = Especialidad.objects.get(pk=id_especialidad)
-        planMejora = PlanMejora.objects.get(especialidad_id=especialidad.id)
-    except:
-        print("No se encontro especialidad")
+def crearPropuesta(request, id_planmejora):
+    planMejora = PlanMejora.objects.get(pk=id_planmejora)
+    especialidad = Especialidad.objects.get(pk=planMejora.especialidad.pk)
 
     if request.POST:
         codigo = request.POST['codigo']
         descripcion = request.POST['descripcion']
-        nuevaPropuesta = PropuestaMejora.objects.create(codigo=codigo, descripcion=descripcion,
-                                                        especialidad=especialidad, estado=1, planMejora=planMejora)
-        return redirect('planMejora')
+        PropuestaMejora.objects.create(codigo=codigo, descripcion=descripcion,
+                                       especialidad=especialidad, estado=1, planMejora=planMejora)
+        return redirect('planMejora', pk=planMejora.planMedicion_id)
 
     context = {
         'especialidad': especialidad,

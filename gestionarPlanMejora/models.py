@@ -4,6 +4,8 @@ from django.db import models
 from authentication.models import User
 import unicodedata
 from gestionarEspecialidad.models import Especialidad
+from gestionarPlanMedicion.models import PlanMedicion
+
 
 def remove_accents(input_str):
     nfkd_form = unicodedata.normalize('NFKD', input_str)
@@ -24,6 +26,7 @@ class PlanMejora(models.Model):
         ('2', 'Inactivo'),
     ]
     especialidad = models.ForeignKey(Especialidad, on_delete=models.DO_NOTHING, null=True)
+    planMedicion = models.ForeignKey(PlanMedicion, on_delete=models.RESTRICT, null=True)
     estado = models.CharField(max_length=2, choices=ESTADOS, default='1', null=True, blank=True)
 
 
