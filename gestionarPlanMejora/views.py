@@ -169,7 +169,7 @@ def editarPropuesta(request,pk):
         return redirect('listarPlanMejora')
 
     propuestaMejora = PropuestaMejora.objects.get(pk=pk)
-    listaActividades = ActividadMejora.objects.filter(propuestaMejora_id=pk, estado=1)
+    listaActividades = ActividadMejora.objects.filter(propuestaMejora_id=pk, activo=1)
     context = {
         'listaActividades': listaActividades,
         'propuestaMejora': propuestaMejora,
@@ -293,6 +293,16 @@ def crearPropuesta(request,id_especialidad):
         'planMejora': planMejora
     }
     return render(request, 'gestionarPlanMejora/crearPropuesta.html', context)
+
+def eliminarActividadxPropuesta(request):
+    actividadpk = request.POST['epk']
+    print("**********")
+    print(actividadpk)
+    print("**********")
+    actividad = ActividadMejora.objects.get(pk=actividadpk)
+    actividad.activo = '0' #eliminación lógica
+    actividad.save()
+    return JsonResponse({}, status=200)
 
 def crearAjax(request):
     if request.POST:

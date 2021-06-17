@@ -255,7 +255,7 @@
                     <span class="fa fa-plus"></span>
                 </div>
                 <div class="dashboard-data-table">
-                    <table class="table table-sm table-dashboard fs--1 data-table border-bottom"
+                    <table class="table table-sm table-dashboard fs--1  border-bottom"
                            data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
                         <thead class="bg-200 text-900">
                         <tr>
@@ -265,24 +265,25 @@
                             <th class="sort pr-1 align-middle text-center">Acción</th>
                         </tr>
                         </thead>
-                        <tbody id="purchases">
+                        <tbody id="listaActs">
                         {% for actividad in listaActividades %}
                             <tr class="btn-reveal-trigger">
                                 <th class="align-middle"> {{ forloop.counter }}</th>
                                 <th class="align-middle">{{ actividad.codigo }}</th>
                                 <td class="align-middle">{{ actividad.descripcion }}</td>
                                 <td class="align-middle text-right fs-0">
-                                    <form action=""
+                                  {% comment %}  <form action="{% url 'eliminarActividadxPropuesta' id_propuesta=propuestaMejora.pk %}"
                                           method="post">
-                                        {% csrf_token %}
+                                        {% csrf_token %}{% endcomment %}
                                         <div class="row">
                                             <div class="col">
-                                                <a href=""
+                                                <a href="{% url 'crearActividad' %}"
                                                    class="badge badge rounded-capsule badge-soft-info">Editar</a>
                                             </div>
                                             <div class="col">
-                                                <button type="submit"
-                                                        class="badge rounded-capsule badge-soft-danger outline-none">
+                                                <button class="badge rounded-capsule badge-soft-danger outline-none"
+                                                     onclick="eliminarActividadP('{{ actividad.codigo }}', {{ actividad.pk }})"
+                                                    >
                                                     <span>Eliminar</span>
                                                 </button>
                                             </div>
@@ -300,6 +301,24 @@
         </div>
     </div>
 
+    <div class="modal fade" id="eliminarActividad" tabindex="-1" role="dialog"
+         aria-labelledby="eliminarActividad"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarActividadLabel"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                    <button id="btnEliminarActividad" class="btn btn-primary btn-sm" type="button">Confirmar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
          id="agregarActividadNueva" tabindex="-1" role="dialog"
          aria-labelledby="settings-modal-label" aria-hidden="true"
@@ -356,6 +375,41 @@
     <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
 
     <script>
+        let pkEliminar;
+
+        function eliminarActividadP(codigoActividad, pk) {
+            console.log(codigoActividad)
+            console.log(pk)
+
+            data = '<h5 class="modal-title" id="eliminarResultadoLabel">Se eliminará la actividad ' + codigoActividad + '</h5>';
+            $("#eliminarActividadLabel").html(data);
+            $("#eliminarActividad").modal('show');
+            pkEliminar = pk;
+        };
+
+        $("#btnEliminarActividad").on('click', function () {
+            eliminarActividad(pkEliminar);
+            $("#eliminarActividad").modal('hide');
+        });
+
+        function eliminarActividad(epk) {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'eliminarActividadxPropuesta' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    epk: epk,
+                },
+                success: function (response) {
+                    location.reload()
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+
         {% comment %}function agregar() {
             $.ajax({
                 type: 'POST',

@@ -8,4 +8,5 @@ urlpatterns = [
     path('crearPlanMedicionAjax', views.crearAjax, name='crearPlanMejoraAjax'),
     path('crearPropuesta/<id_especialidad>', views.crearPropuesta, name="crearPropuesta"),
     path('editar/<pk>', views.editarPropuesta, name="editarPropuesta"),
+    path('eliminar/', views.eliminarActividadxPropuesta, name="eliminarActividadxPropuesta"),
 ]

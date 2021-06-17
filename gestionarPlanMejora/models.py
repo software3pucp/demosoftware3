@@ -50,6 +50,7 @@ class ActividadMejora(models.Model):
     descripcion = models.CharField(max_length=300, default='', null=True, blank=True)
     propuestaMejora = models.ForeignKey(PropuestaMejora, on_delete=models.DO_NOTHING)
     estado = models.ForeignKey(EstadoActividad, on_delete=models.DO_NOTHING)
+    activo = models.IntegerField(default=1,null=False) #0 eliminacion logica
     inicio = models.IntegerField(null=False)
     fin = models.IntegerField(null=False)
 
