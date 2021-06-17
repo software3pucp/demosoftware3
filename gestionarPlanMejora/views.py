@@ -21,9 +21,9 @@ from gestionarPlanMejora.models import PlanMejora
 from django.contrib.auth.decorators import login_required
 
 
-def crearActividad(request):  # quizas sea necesario pasar como parámetro el pk del plan de mejora
+def crearActividad(request,pk):  # quizas sea necesario pasar como parámetro el pk del plan de mejora
     estado = EstadoActividad.objects.get(pk=1)  # estado registrado
-    propuestaMejora = PropuestaMejora.objects.get(pk=1)
+    propuestaMejora = PropuestaMejora.objects.get(pk=pk)
     inicio = 2021  # año de inicio de la actividad
     fin = 2021  # año de fin de la actividad
 
@@ -83,7 +83,7 @@ def editarActividad(request, pk):
         actividad.save()
         # return redirect('') # regresa a la pagina anterior
 
-    evidendia = EvidenciaActividadMejora.objects.get(pk=1)
+    evidendia = EvidenciaActividadMejora.objects.get(pk=pk)
     print('--------------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
     print(media_path + evidendia.archivo.name)
 
