@@ -60,11 +60,19 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 d-flex justify-content-end mt-3">
+            <div class="col-md-12 d-flex justify-content-end mt-3 mb-4">
+                <div id="alertaContenedor" class="mx-auto">
+                    <div id="alerta" class="alert alert-success  m-1" role="alert">
+                        Informacion actualizada correctamente
+                    </div>
+                </div>
                 <a class="btn btn-outline-primary m-1" type="button"
                    href="{% url 'historico' %}">Cancelar</a>
-                <input type="submit" class="btn btn-primary m-1" value="Guardar">
+                <button class="btn btn-primary m-1" onclick="editarNombre()">Guardar
+                </button>
             </div>
+
+
         </div>
 
         <div class="row-12">
@@ -131,6 +139,10 @@
 {% block extrajs %}
     <script>
 
+        $(document).ready(function () {
+            $("#alerta").slideUp(0)
+        });
+
         function agregarSemestre() {
             $.ajax({
                 type: 'POST',
@@ -169,6 +181,27 @@
                         '   </div>' +
                         '</div>';
                     $("#semestresSeleccionados").append(data);
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+        function editarNombre() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'editarNombre' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    historicoPK: '{{ historico.pk }}',
+                    nombre: $("#nombre").val(),
+                    codigo: $("#codigo").val(),
+
+                },
+                success: function (response) {
+                    console.log("Se edito correctamente");
+                    $("#alerta").fadeIn( 200 ).delay( 900 ).slideUp( 200 );
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);

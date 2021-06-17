@@ -14,5 +14,6 @@ urlpatterns = [
     path('editarHistorico/<pk>', views.editarHistorico, name='editarHistorico'),
     path('agregarSemestrePlan/', views.agregarSemestrePlan, name='agregarSemestrePlan'),
     path('eliminarSemestrePlan/', views.eliminarSemestrePlan, name='eliminarSemestrePlan'),
+    path('editarNombre/', views.editarNombre, name='editarNombre'),
 
 ]

@@ -266,3 +266,10 @@ def eliminarSemestrePlan(request):
     print(historico.semestre.all().count())
     print("////////////////////////////////////Se quito 1////////////////////////////////////////")
     return JsonResponse({"resp": data}, status=200)
+
+def editarNombre(request):
+    historico = PlanMedicion.objects.get(pk=request.POST['historicoPK'])
+    historico.nombre = request.POST['nombre']
+    historico.codigo = request.POST['codigo']
+    historico.save()
+    return JsonResponse({}, status=200)
