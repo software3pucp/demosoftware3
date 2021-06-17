@@ -13,6 +13,8 @@ urlpatterns = [
     path('planDeResultado/', views.planDeResultado, name="planDeResultado"),
     path('crearPlanResultado/<id_especialidad>', views.crearPlanResultado, name="crearPlanResultado"),
     path('listarPlanResultado/', views.listarPlanResultado, name="listarPlanResultado"),
+    path('editarPlanDeResultado/<pk>', views.editarPlanDeResultado, name="editarPlanDeResultado"),
+    path('eliminarPlanResultado/', views.eliminarPlanResultado, name="eliminarPlanResultado"),
     path('activarPlan/', views.activarPlan, name="activarPlan"),
     path('desactivarPlan/', views.desactivarPlan, name="desactivarPlan"),
 ]

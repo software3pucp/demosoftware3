@@ -15,10 +15,10 @@
                 <div class="col-12">
                     <div class="row d-flex justify-content-center ">
                         <div class="col-10">
-                            <h4>Resultado del Estudiante</h4>
+                            <h4>Editar Plan de Resultado</h4>
                         </div>
                         <div class="col-2 ">
-                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'resultados' plan %}">
+                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'listarPlanResultado' %}">
                                 <div class="fas fa-reply mt-1 mr-2"></div>
                                 <h5>Volver</h5>
                             </a>
@@ -34,7 +34,7 @@
                         <div class="col-md-10">
                             <div class="form-group">
                                 <input name="codigo" class="form-control" id="codigo" type="text"
-                                       value="{{ resultado.codigo }}">
+                                       value="{{ plan.codigo }}">
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                         <div class="col-md-10">
                             <div class="form-group ">
                                     <textarea name="descripcion" id="descripcion" class="form-control"
-                                              aria-label="With textarea" rows="4">{{ resultado.descripcion }}</textarea>
+                                              aria-label="With textarea" rows="4">{{ plan.descripcion }}</textarea>
                             </div>
                         </div>
                     </div>
