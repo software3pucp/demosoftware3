@@ -195,7 +195,10 @@ def eliminarEvidenciaxActividad(request):
     return JsonResponse({}, status=200)
 
 
-def planMejora(request):
+def planMejora(request, pk):
+    if pk != "0":
+        planMejora = PlanMejora.objects.get(pk=pk)
+        print(planMejora)
     facultades = Facultad.objects.filter(estado='1')
     context = {
         'facultades': facultades,

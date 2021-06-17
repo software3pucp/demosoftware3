@@ -11,6 +11,8 @@ from gestionarHorario.models import Horario
 from gestionarIndicadores.models import Indicador
 from gestionarPlanMedicion.models import PlanMedicion, PlanMedicionCurso
 from django.contrib.auth.decorators import login_required
+
+from gestionarPlanMejora.models import PlanMejora
 from gestionarSemestre.models import Semestre
 
 @login_required
@@ -186,9 +188,19 @@ def crearAjax(request):
 
 
 def historico(request):
+
+    if request.POST:
+        if request.POST['operacion'] == 'terminar':
+            plan = PlanMedicion.objects.get(pk=request.POST['planMedicion'])
+            plan.estado='2'
+            plan.save()
+            PlanMejora.objects.create(especialidad_id=plan.especialidad_id,planMedicion_id=plan.pk,estado=1)
+            mejora = PlanMejora.objects.latest('id')
+            return redirect('planMejora',pk=mejora.pk)
+
     facultades = Facultad.objects.filter(estado='1')
     context = {
-        'facultades': facultades,
+        'facultades' : facultades,
     }
 
     return render(request, 'gestionarPlanMedicion/listarMediciones.html', context)
@@ -212,7 +224,7 @@ def crearHistorico(request, id_especialidad):
 
 def listarHistorico(request):
     id_especialidad = request.POST['especialidad']
-    historicos = PlanMedicion.objects.filter(especialidad_id=id_especialidad, estado='1')
+    historicos = PlanMedicion.objects.filter(especialidad_id=id_especialidad, estado__gte='1')
     listaHistorico = []
     #lista2 = []
     for historico in historicos:
