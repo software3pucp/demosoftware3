@@ -132,7 +132,10 @@ def crearPlanResultado(request,id_especialidad):
     return render(request, 'gestionarResultados/crearPlanDeResultado.html', context)
 
 def listarPlanResultado(request):
-    id_especialidad = request.POST['especialidad']
+
+    if request.POST:
+        id_especialidad = request.POST['especialidad']
+
     planes = PlanResultados.objects.filter(especialidad_id=id_especialidad)
     listaHistorico = []
     # lista2 = []
