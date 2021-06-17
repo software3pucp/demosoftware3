@@ -3,6 +3,8 @@ from django.http import JsonResponse
 from django.core import serializers
 # Create your views here.
 from datetime import datetime
+
+from gestionarFacultad.models import Facultad
 from gestionarSemestre.models import Semestre
 from gestionarCurso.models import Curso
 from django.contrib.auth.decorators import login_required
@@ -39,12 +41,16 @@ def agregarSemestre(request):
                             etapa=etapa, inicio=fechaIni, fin=fechaFin)
     ser_instance = serializers.serialize('json', [semestre,])
     return JsonResponse({"nuevoSemestre": ser_instance}, status=200)
+
 @login_required
 def enviarCursoHorario(request,pk):
+    print("ESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
     semestre = Semestre.objects.get(pk=pk)
     cursoLista = Curso.objects.filter(estado=1)
+    facultades = Facultad.objects.filter()
     context = {
         "semestreSeleccionado": semestre,
-        "cursoLista": cursoLista
+        "cursoLista": cursoLista,
+        "facultades": facultades,
     }
     return render(request, 'gestionarSemestre/semestre/semestreDetalle.html', context)

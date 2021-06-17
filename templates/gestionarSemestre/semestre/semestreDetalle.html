@@ -17,7 +17,6 @@
         }
 
         label {
-            color: #f9fafd;
             font-family: "Montserrat";
         }
 
@@ -60,9 +59,30 @@
 
     <hr style="background-color: #0154ae;">
 
+    <div class="col-12 mb-3">
+        <div class="d-flex flex-row align-items-center">
+            <div class="mr-2">
+                <label for="cboFacultad">Facultad:</label>
+                <select class="custom-select custom-select-sm mb-3" id="cboFacultad" name="cboFacultad"
+                        onchange="obtenerEspecialidades()">
+                    {% for facultad in facultades %}
+                        <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="cboEspecialidad">Especialidad:</label>
+                <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
+                        name="cboEspecialidad"
+                        onchange="listarHistorico()">
+
+                </select>
+            </div>
+        </div>
+    </div>
+
     <div class="row d-flex justify-content-center">
-
-
         <div class="card overflow-hidden mb-3 col-11 p-0">
             <div class="card-header bg-light">
                 <div class="row justify-content-between align-items-center">
@@ -72,27 +92,55 @@
                 </div>
             </div>
 
-        {% for curso in cursoLista %}
-            <div class="card-body fs--1 p-0">
-                <a class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300"  href="/gestionarEvaluacion/evaluar/{{ curso.pk}}">
-                    <div class="notification-body">
-                        <p class="mb-1">{{ curso.nombre}}</p>
-                    </div>
-                </a>
-            </div>
-        {% endfor %}
-</div>
+            {% for curso in cursoLista %}
+                <div class="card-body fs--1 p-0">
+                    <a class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300"
+                       href="/gestionarEvaluacion/evaluar/{{ curso.pk }}">
+                        <div class="notification-body">
+                            <p class="mb-1">{{ curso.nombre }}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-
-
-
-
-
 
 {% endblock %}
 
 {#Aquí coloco el JS particular de la web#}
 {% block extrajs %}
 
+    <script>
+        $(document).ready(function () {
+            console.log("ready!");
+            obtenerEspecialidades();
+        });
 
+        function obtenerEspecialidades() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'obtenerEspecialidades' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    facultad: $("#cboFacultad").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["resp"]);
+
+                    $(".especialidad").remove();
+                    for (var i = 0; i < instance.length; i++) {
+                        data = '<option class="especialidad" onclick="listarHistorico()" value=' +
+                            instance[i]["pk"] + '>' +
+                            instance[i]["fields"].nombre + '</option>';
+                        $("#cboEspecialidad").append(data);
+                    }
+
+                    listarHistorico();
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                },
+            });
+        }
+    </script>
 {% endblock %}
