@@ -5,6 +5,7 @@ from django.core import serializers
 from datetime import datetime
 
 from gestionarFacultad.models import Facultad
+from gestionarPlanMedicion.models import PlanMedicionCurso, PlanMedicion
 from gestionarSemestre.models import Semestre
 from gestionarCurso.models import Curso
 from django.contrib.auth.decorators import login_required
@@ -44,13 +45,26 @@ def agregarSemestre(request):
 
 @login_required
 def enviarCursoHorario(request,pk):
-    print("ESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
+    print("Listado de Cursos")
+    if request.POST:
+        planMedicion = PlanMedicion.objects.filter(especialidad_id=request.POST['especialidad']).filter(semestre=pk)
+        listaCursos = []
+        try:
+            planMedicionCursos = PlanMedicionCurso.objects.filter(semestre=pk,planMedicion=planMedicion[0].pk)
+            for planMedicionCurso in planMedicionCursos:
+                curso = Curso.objects.get(pk=planMedicionCurso.curso_id)
+                if curso is not None:
+                    listaCursos.append(curso)
+        except:
+            print("No existe plan de medicion asociado!!!")
+
+        ser_instance = serializers.serialize('json', listaCursos)
+        print(ser_instance)
+        return JsonResponse({"cursoLista": ser_instance}, status=200)
     semestre = Semestre.objects.get(pk=pk)
-    cursoLista = Curso.objects.filter(estado=1)
     facultades = Facultad.objects.filter()
     context = {
         "semestreSeleccionado": semestre,
-        "cursoLista": cursoLista,
         "facultades": facultades,
     }
     return render(request, 'gestionarSemestre/semestre/semestreDetalle.html', context)
