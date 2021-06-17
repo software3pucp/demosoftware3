@@ -23,7 +23,7 @@
                 <div class="col-12">
                     <div class="row d-flex justify-content-center ">
                         <div class="col-12">
-                            <h4 id="Titulo" style="font-family: Montserrat">Plan de Mejora</h4>
+                            <h4 id="Titulo" style="font-family: Montserrat">Plan de Mejora </h4>
                             <hr style="background-color: #0154ae;">
                         </div>
                     </div>
@@ -33,7 +33,7 @@
                             <div class="mr-2">
                                 <label for="cboFacultad">Facultad:</label>
                                 <select class="custom-select custom-select-sm mb-3" id="cboFacultad" name="cboFacultad"
-                                        onchange="obtenerEspecialidades()">
+                                        onchange="filtrarEspecialidades()">
                                     {% for facultad in facultades %}
                                         <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
                                     {% endfor %}
@@ -44,40 +44,40 @@
                                 <label for="cboEspecialidad">Especialidad:</label>
                                 <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
                                         name="cboEspecialidad"
-                                        onchange="listarResultados()">
+                                        onchange="listarPropuestas()">
 
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                    <h3>Propuesta de Mejora</h3>
+                    <div id="tituloEspecialidadPropuesta"></div>
 
                     <hr style="background-color: #0154ae;">
                     <div style="margin: 1%;">
-                        <span class="btn btn-primary" onclick="redirectCrearResultado()">Crear</span>
+                        <span class="btn btn-primary" onclick="redirectCrearPropuesta()">Crear</span>
                     </div>
-                    <div id="listadoResultados"></div>
+                    <div id="listadoPropuestas"></div>
 
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Eliminar Resultado -->
+    <!-- Modal Eliminar Propuesta -->
 
-    <div class="modal fade" id="eliminarResultado" tabindex="-1" role="dialog" aria-labelledby="eliminarResultadoLabel"
+    <div class="modal fade" id="eliminarPropuesta" tabindex="-1" role="dialog" aria-labelledby="eliminarPropuestaLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="eliminarResultadoLabel"></h5>
+                    <h5 class="modal-title" id="eliminarPropuestaLabel"></h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
                             class="font-weight-light" aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
-                    <button id="btnEliminarResultado" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                    <button id="btnEliminarPropuesta" class="btn btn-primary btn-sm" type="button">Confirmar</button>
                 </div>
             </div>
         </div>
@@ -92,46 +92,46 @@
         var pkEliminar;
 
         $(document).ready(function () {
-            obtenerEspecialidades();
-            listarResultados();
+            filtrarEspecialidades();
+            listarPropuestas(5);
         });
 
-        function redirectCrearResultado() {
+        function redirectCrearPropuesta() {
             var pk_especialidad = $("#cboEspecialidad").val();
-            document.location.href = "../../gestionarPlanMejora/crearPropuesta/" + pk_especialidad;
+            document.location.href = "../../gestionarPlanMejora/crear/" + pk_especialidad;
         }
 
-        function redirectEditarResultado(id_resultado) {
+        function redirectEditarPropuesta(id_propuesta) {
 
-            document.location.href = "../../gestionarResultados/editar/" + id_resultado;
+            document.location.href = "../../gestionarPlanMejora/editar/" + id_propuesta;
         }
 
-        $("#btnEliminarResultado").on('click', function () {
-            eliminarResultado(pkEliminar);
-            $("#eliminarResultado").modal('hide');
+        $("#btnEliminarPropuesta").on('click', function () {
+            eliminarPropuesta(pkEliminar);
+            $("#eliminarPropuesta").modal('hide');
         });
 
-        function resultadosEliminar(codigoResultado, pk) {
-            console.log(codigoResultado)
+        function propuestasEliminar(codigoPropuesta, pk) {
+            console.log(codigoPropuesta)
             console.log(pk)
 
-            data = '<h5 class="modal-title" id="eliminarResultadoLabel">Se eliminará el resultado ' + codigoResultado + '</h5>';
-            $("#eliminarResultadoLabel").html(data);
-            $("#eliminarResultado").modal('show');
+            data = '<h5 class="modal-title" id="eliminarResultadoLabel">Se eliminará el resultado ' + codigoPropuesta + '</h5>';
+            $("#eliminarPropuestaLabel").html(data);
+            $("#eliminarPropuesta").modal('show');
             pkEliminar = pk;
         };
 
 
-        function eliminarResultado(resultadopk) {
+        function eliminarPropuesta(propuestapk) {
             $.ajax({
                 type: 'POST',
-                url: "{% url 'eliminarResultado' %}",
+                url: "{% url 'eliminarPropuesta' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    resultadopk: resultadopk,
+                    propuestapk: propuestapk,
                 },
                 success: function (response) {
-                    listarResultados();
+                    listarPropuestas();
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);
@@ -139,10 +139,10 @@
             });
         }
 
-        function obtenerEspecialidades() {
+        function filtrarEspecialidades() {
             $.ajax({
                 type: 'POST',
-                url: "{% url 'obtenerEspecialidades' %}",
+                url: "{% url 'filtrarEspecialidades' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     facultad: $("#cboFacultad").val(),
@@ -152,13 +152,13 @@
 
                     $(".especialidad").remove();
                     for (var i = 0; i < instance.length; i++) {
-                        data = '<option class="especialidad" onclick="listarResultados()" value=' +
+                        data = '<option class="especialidad" onclick="listarPropuestas(2)" value=' +
                             instance[i]["pk"] + '>' +
                             instance[i]["fields"].nombre + '</option>';
                         $("#cboEspecialidad").append(data);
                     }
 
-                    listarResultados();
+                    listarPropuestas(3);
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);
@@ -166,17 +166,18 @@
             });
         }
 
-        function listarResultados() {
+        function listarPropuestas(numero) {
+
             $.ajax({
                 type: 'POST',
-                url: "{% url 'listarResultados'%}",
+                url: "{% url 'listarPropuestas' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     especialidad: $("#cboEspecialidad").val(),
                 },
                 success: function (response) {
-                    var instance = JSON.parse(response['resultados']);
-                    var instance2 = JSON.parse(response['tiene_niveles']);
+                    var instance = JSON.parse(response['propuestas']);
+                    var instance2 = JSON.parse(response['tiene_actividades']);
                     console.log(instance);
                     var i = 0;
                     var numero = instance.length;
@@ -196,18 +197,18 @@
                         if (instance2[i]==false){
                             data +=(
                         '                            <hr style="background-color: #FFFFFF;">'+
-                        '                            <p>Nota: El resultado no tiene indicadores asociados.'+
-                        '                                Dar click en editar si desea asociar indicadores.</p>')
+                        '                            <p>Nota: La propuesta de mejora no tiene actividaes asociadas.'+
+                        '                                Dar click en editar si desea asociar actividades.</p>')
                         }
 
                         data += (
                             '                    </div>' +
                             '                    <div class="col-md-2 ">' +
                             '                        <div class="d-flex justify-content-center">' +
-                            '                        <button class="btn btn-falcon-primary mr-1 mb-1" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')">Editar</button>' +
+                            '                        <button class="btn btn-falcon-primary mr-1 mb-1" onclick="redirectEditarPropuesta(' + instance[i]["pk"] + ')">Editar</button>' +
                             '                        </div>' +
                             '                        <div class="d-flex justify-content-center">' +
-                            '                        <button class="btn btn-falcon-primary mr-1 mb-1" onclick="resultadosEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">Eliminar</button>' +
+                            '                        <button class="btn btn-falcon-primary mr-1 mb-1" onclick="propuestasEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">Eliminar</button>' +
                             '                        </div>' +
                             '                    </div>' +
                             '                </div>' +
@@ -216,11 +217,13 @@
                             '</div>')
                     }
                     data2 = '<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>';
-                    $("#tituloEspecialidadResultados").html(data2);
-                    $("#listadoResultados").html(data);
+                    $("#tituloEspecialidadPropuesta").html(data2);
+                    $("#listadoPropuestas").html(data);
                 },
                 error: function (response) {
                     // alert the error if any error occured
+                    console.log('ocurrio un error')
+                    console.log(numero)
                     alert(response["responseJSON"]["error"]);
                 }
             });

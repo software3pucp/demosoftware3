@@ -203,7 +203,7 @@
                             <h4>Propuesta de Mejora</h4>
                         </div>
                         <div class="col-2 ">
-                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'listarPlanMejora' %}">
+                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'planMejora' %}">
                                 <div class="fas fa-reply mt-1 mr-2"></div>
                                 <h5>Volver</h5>
                             </a>
@@ -239,7 +239,7 @@
                 </div>
                 <div class="col-md-12 d-flex justify-content-end mt-3">
                     <a class="btn btn-outline-primary m-1" type="button"
-                       href="{% url 'listarPlanMejora' %}">Cancelar</a>
+                       href="{% url 'planMejora' %}">Cancelar</a>
                     <input type="submit" class="btn btn-primary m-1" value="Guardar">
                 </div>
             </div>
@@ -301,8 +301,9 @@
         </div>
     </div>
 
+    <!--Modal eliminar Actividad -->
     <div class="modal fade" id="eliminarActividad" tabindex="-1" role="dialog"
-         aria-labelledby="eliminarActividad"
+         aria-labelledby="eliminarActividadLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -319,55 +320,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
-         id="agregarActividadNueva" tabindex="-1" role="dialog"
-         aria-labelledby="settings-modal-label" aria-hidden="true"
-         data-options='{"autoShow":false,"autoShowDelay":10,"showOnce":false}'>
 
-        <div class="modal-dialog modal-lg modal-dialog-vertical" style="opacity: 0.90" role="document">
-            <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar" style="background-color: #017ECD;">
-                <div class="modal-body">
-                    <div class="row d-flex justify-content-center">
-                        <h5 class="text-white">Agregar Activdad</h5>
-                        <hr style="background-color: #f9fafd; width: 70%">
-                    </div>
-                    <form name="formAgregar" id="formAgregar">
-                        <div class="d-flex justify-content-center">
-                            <div class="col-12">
-                                <label name="codigoI" for="codigoI"
-                                       class="text-white">Codigo:</label>
-                                <input type="text" class="form-control" id="codigoI" name="codigoI">
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <div class="col-12">
-                                <label name="descripcionI" for="descripcionI"
-                                       class="text-white mr-2">Descripción:</label>
-                                <textarea type="text" class="form-control" id="descripcionI"
-                                          name="descripcionI"></textarea>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <div class="col-6">
-                                <div class="d-flex justify-content-center mt-3">
-                                    <button class="btn btn-secondary" type="button"
-                                            data-dismiss="modal" aria-label="Close">Cancelar
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="d-flex justify-content-center mt-3">
-                                    <button
-                                            type="button" class="btn btn-primary" onclick="agregar()">Agregar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
 {% endblock %}
 {% block extrajs %}
@@ -381,7 +334,7 @@
             console.log(codigoActividad)
             console.log(pk)
 
-            data = '<h5 class="modal-title" id="eliminarResultadoLabel">Se eliminará la actividad ' + codigoActividad + '</h5>';
+            data = '<h5 class="modal-title" id="eliminarActividadLabel">Se eliminará la actividad ' + codigoActividad + '</h5>';
             $("#eliminarActividadLabel").html(data);
             $("#eliminarActividad").modal('show');
             pkEliminar = pk;
@@ -393,6 +346,7 @@
         });
 
         function eliminarActividad(epk) {
+            console.log('dentro de eliminar')
             $.ajax({
                 type: 'POST',
                 url: "{% url 'eliminarActividadxPropuesta' %}",
@@ -409,26 +363,6 @@
             });
         }
 
-
-        {% comment %}function agregar() {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'crearActividad' propuestaMejora_id=propuestaMejora.pk %}",
-                url: "{% url 'crearActividad'%}",
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    codigoI: $("#codigoI").val(),
-                    descripcionI: $("#descripcionI").val(),
-                },
-                success: function (response) {
-                    location.reload()
-                },
-                error: function (response) {
-                    // alert the error if any error occured
-                    alert(response["responseJSON"]["error"]);
-                }
-            });
-        }{% endcomment %}
     </script>
 
 {% endblock %}

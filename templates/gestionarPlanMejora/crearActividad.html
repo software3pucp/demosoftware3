@@ -15,20 +15,20 @@
 {% block body %}
 
     <div class="card p-5">
-        <form action="{% url 'crearActividad' %}" method="post">
+        <form action="{% url 'crearActividad' id_propuesta=propuesta.pk %}" method="post">
             {% csrf_token %}
             <div class="row-12">
                 <div class="col-12">
                     <div class="row d-flex justify-content-center ">
-                        <div class="col-12">
+                        <div class="col-10">
                             <h4>Registrar actividad de mejora</h4>
                         </div>
-                        {% comment %}<div class="col-2 ">
-                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'resultados' %}">
+                        <div class="col-2 ">
+                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'editarPropuesta' pk=propuesta.pk %}">
                                 <div class="fas fa-reply mt-1 mr-2"></div>
                                 <h5>Volver</h5>
                             </a>
-                        </div>{% endcomment %}
+                        </div>
                     </div>
                     <hr style="background-color: #0154ae;">
                     <div class="row p-1">
@@ -70,8 +70,8 @@
                 </div>
 
                 <div class="col-md-12 d-flex justify-content-end mt-3">
-                    {% comment %} <a class="btn btn-outline-primary m-1" type="button"
-                       href="{% url 'resultados' %}">Cancelar</a>{% endcomment %}
+                     <a class="btn btn-outline-primary m-1" type="button"
+                       href="{% url 'editarPropuesta' pk=propuesta.pk %}">Cancelar</a>
                     <input type="submit" class="btn btn-primary m-1" value="Guardar">
                 </div>
             </div>

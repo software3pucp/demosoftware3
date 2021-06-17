@@ -1,11 +1,11 @@
 {% extends 'base/base.html' %}
 {% load static %}
-    <style>
-        choices__list--multiple .choices__item {
+<style>
+    choices__list--multiple .choices__item {
         background-color: #2C7BE5 !important;
-            border-color: #1A68D1 !important;
-        }
-    </style>
+        border-color: #1A68D1 !important;
+    }
+</style>
 {% block extrastyle %}
 {% endblock %}
 
@@ -18,15 +18,16 @@
             <div class="row-12">
                 <div class="col-12">
                     <div class="row d-flex justify-content-center ">
-                        <div class="col-12">
+                        <div class="col-10">
                             <h4>Editar actividad de mejora</h4>
                         </div>
-                        {% comment %}<div class="col-2 ">
-                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url '' %}">
+                        <div class="col-2 ">
+                            <a class="d-flex flex-row justify-content-end mt-2"
+                               href="{% url 'editarPropuesta' pk=propuesta.pk %}">
                                 <div class="fas fa-reply mt-1 mr-2"></div>
                                 <h5>Volver</h5>
                             </a>
-                        </div>{% endcomment %}
+                        </div>
                     </div>
                     <hr style="background-color: #0154ae;">
 
@@ -79,7 +80,7 @@
                             <div class="form-group ">
                                 <select id="choices-multiple-remove-button"
                                         name="choices-multiple-remove-button"
-                                        placeholder="Roles" multiple >
+                                        placeholder="Roles" multiple>
                                     {% for us in users %}
                                         <option value={{ us.pk }}>{{ us.first_name }}</option>
                                     {% endfor %}
@@ -88,7 +89,7 @@
                         </div>
 
                     </div>
-                    <div class="row p-1">
+                   {% comment %} <div class="row p-1">
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label for="codigo">Código:</label>
@@ -100,14 +101,14 @@
                                        value="{{ actividad.codigo }}">
                             </div>
                         </div>
-                    </div>
+                    </div>{% endcomment %}
                 </div>
 
 
                 <div class="row p-1">
                     <div class="col-md-12 d-flex justify-content-end mt-3">
-                        {% comment %}<a class="btn btn-outline-primary m-1" type="button"
-                       href="{% url 'resultados' %}">Cancelar</a>{% endcomment %}
+                        <a class="btn btn-outline-primary m-1" type="button"
+                           href="{% url 'editarPropuesta' pk=propuesta.pk %}">Cancelar</a>
                         <input type="submit" class="btn btn-primary m-1" value="Guardar">
                     </div>
                 </div>
@@ -179,7 +180,7 @@
 
     <!-- Modal Eliminar Evidencia -->
     <div class="modal fade" id="eliminarEvidenciaActividad" tabindex="-1" role="dialog"
-         aria-labelledby="eliminarEvidenciaActividad"
+         aria-labelledby="eliminarEvidenciaActividadLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -233,7 +234,7 @@
             console.log(nombreEvidencia)
             console.log(pk)
 
-            data = '<h5 class="modal-title" id="eliminarResultadoLabel">Se eliminará la evidencia ' + nombreEvidencia + '</h5>';
+            data = '<h5 class="modal-title" id="eliminarEvidenciaActividadLabel">Se eliminará la evidencia ' + nombreEvidencia + '</h5>';
             $("#eliminarEvidenciaActividadLabel").html(data);
             $("#eliminarEvidenciaActividad").modal('show');
             pkEliminar = pk;

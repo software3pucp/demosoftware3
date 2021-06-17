@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
 from django.db.models import Q
@@ -21,9 +23,14 @@ from gestionarPlanMejora.models import PlanMejora
 from django.contrib.auth.decorators import login_required
 
 
-def crearActividad(request,pk):  # quizas sea necesario pasar como parámetro el pk del plan de mejora
-    estado = EstadoActividad.objects.get(pk=1)  # estado registrado
-    propuestaMejora = PropuestaMejora.objects.get(pk=pk)
+def crearActividad(request, id_propuesta):  # quizas sea necesario pasar como parámetro el pk del plan de mejora
+    estado= EstadoActividad()
+    try:
+        estado = EstadoActividad.objects.get(pk=1)  # estado registrado
+    except:
+        print("no se encontro un estado")
+
+    propuestaMejora = PropuestaMejora.objects.get(pk=id_propuesta)
     inicio = 2021  # año de inicio de la actividad
     fin = 2021  # año de fin de la actividad
 
@@ -38,7 +45,7 @@ def crearActividad(request,pk):  # quizas sea necesario pasar como parámetro el
         for val in responsables:
             user = User.objects.get(id=val)
             ResponsableMejora.objects.create(actividad=actividad, responsable=user)
-        return redirect(Show)
+        return redirect('editarPropuesta', pk=propuestaMejora.pk)
 
     if request.POST:
         if request.POST['operacion'] == 'listEspe':
@@ -47,26 +54,25 @@ def crearActividad(request,pk):  # quizas sea necesario pasar como parámetro el
             return JsonResponse({"resp": data}, status=200)
         elif request.POST['operacion'] == 'listCur':
             planes = PlanMejora.objects.filter(curso__especialidad_id__exact=request.POST['especialidad'])
-            pks = planes.values_list('curso_id',flat=True)
+            pks = planes.values_list('curso_id', flat=True)
             cursos = Curso.objects.filter(pk__in=pks)
             dataP = serializers.serialize("json", planes)
             dataC = serializers.serialize("json", cursos)
-            return JsonResponse({"resp": dataP,"resp1": dataC}, status=200)
+            return JsonResponse({"resp": dataP, "resp1": dataC}, status=200)
         elif request.POST['operacion'] == 'eliminar':
             planMedicion = PlanMejora.objects.get(pk=request.POST['planPk'])
             planMedicion.delete()
             # print(planMedicion)
 
-
     facultades = Facultad.objects.filter()
-    especialidades = Especialidad.objects.filter() # TODO::: Verificar si se usa "Especialidades" en el template gestionarPlanMedicion/listarPlanMedicion
+    especialidades = Especialidad.objects.filter()  # TODO::: Verificar si se usa "Especialidades" en el template gestionarPlanMedicion/listarPlanMedicion
     print(especialidades)
     estados = PlanMejora.ESTADOS[1:]
 
     context = {
         'users': User.objects.all(),
-        'grupos': Group.objects.all()
-
+        'grupos': Group.objects.all(),
+        'propuesta': propuestaMejora,
     }
     return render(request, 'gestionarPlanMejora/crearActividad.html', context)
 
@@ -83,18 +89,13 @@ def editarActividad(request, pk):
         actividad.save()
         # return redirect('') # regresa a la pagina anterior
 
-    evidendia = EvidenciaActividadMejora.objects.get(pk=pk)
-    print('--------------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-    print(media_path + evidendia.archivo.name)
-
     actividad = ActividadMejora.objects.get(pk=pk)
+    propuestapk=actividad.propuestaMejora_id
+    propuesta = PropuestaMejora.objects.get(pk=propuestapk)
+
     estados = EstadoActividad.objects.filter()
     listaEvidencias = EvidenciaActividadMejora.objects.filter(actividad_id=pk, estado='1')
     responsables = ResponsableMejora.objects.filter(actividad_id=pk)
-
-
-
-    print('--------------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
     lresponsables = []
     nlresponsables = []
@@ -113,6 +114,7 @@ def editarActividad(request, pk):
         'responsables': lresponsables,
         'nresponsables': nlresponsables,
         'users': User.objects.all(),
+        'propuesta':propuesta,
     }
     return render(request, 'gestionarPlanMejora/editarActividad.html', context)
 
@@ -160,21 +162,30 @@ def editarEvidencia(request, pk):
     }
     return render(request, 'gestionarPlanMejora/editarEvidencia.html', context)
 
-def editarPropuesta(request,pk):
+
+def editarPropuesta(request, pk):
+
+    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<')
+    print(pk)
+
     if request.POST:
         propuestaMejora = PropuestaMejora.objects.get(pk=pk)
         propuestaMejora.codigo = request.POST['codigo']
         propuestaMejora.descripcion = request.POST['descripcion']
         propuestaMejora.save()
-        return redirect('listarPlanMejora')
+        return redirect('planMejora')
 
     propuestaMejora = PropuestaMejora.objects.get(pk=pk)
     listaActividades = ActividadMejora.objects.filter(propuestaMejora_id=pk, activo=1)
+
+    print('-------------------------------------------------------------------------------------------')
+    print(listaActividades)
     context = {
         'listaActividades': listaActividades,
         'propuestaMejora': propuestaMejora,
     }
-    return render(request,'gestionarPlanMejora/propuestaMejora.html',context)
+    return render(request, 'gestionarPlanMejora/propuestaMejora.html', context)
+
 
 def eliminarEvidenciaxActividad(request):
     evidenciapk = request.POST['evidenciapk']
@@ -183,48 +194,62 @@ def eliminarEvidenciaxActividad(request):
     evidencia.save()
     return JsonResponse({}, status=200)
 
-def listarPlanMejora(request):
 
-    if request.POST:
-        if request.POST['operacion'] == 'listEspe':
-            especialidades = Especialidad.objects.filter(facultad_id=request.POST['facultad'], estado='1')
-            data = serializers.serialize("json", especialidades)
-            return JsonResponse({"resp": data}, status=200)
-        elif request.POST['operacion'] == 'listCur':
-            planes = PlanMejora.objects.filter(curso__especialidad_id__exact=request.POST['especialidad'],estado = request.POST['estado'])
-            pks = planes.values_list('curso_id',flat=True)
-            cursos = Curso.objects.filter(pk__in=pks)
-            dataP = serializers.serialize("json", planes)
-            dataC = serializers.serialize("json", cursos)
-            return JsonResponse({"resp": dataP,"resp1": dataC}, status=200)
-        elif request.POST['operacion'] == 'estado':
-            planMedicion = PlanMejora.objects.get(pk=request.POST['planpk'])
-            if planMedicion.estado == '1':
-                planMedicion.estado = '2'
-            elif planMedicion.estado == '2':
-                planMedicion.estado = '1'
-            planMedicion.save()
-        elif request.POST['operacion'] == 'eliminar':
-            planMedicion = PlanMejora.objects.get(pk=request.POST['planPk'])
-            planMedicion.delete()
-            # print(planMedicion)
-
-
-    facultades = Facultad.objects.filter()
-    especialidades = Especialidad.objects.filter() # TODO::: Verificar si se usa "Especialidades" en el template gestionarPlanMedicion/listarPlanMedicion
-    print(especialidades)
-    estados = PlanMejora.ESTADOS[1:]
+def planMejora(request):
+    facultades = Facultad.objects.filter(estado='1')
     context = {
-        'facultades' : facultades,
-        'especialidades' : especialidades,
-        'estados' : estados,
+        'facultades': facultades,
     }
-    return render(request,'gestionarPlanMejora/listarPlanMejora.html',context)
+    return render(request, 'gestionarPlanMejora/planMejora.html', context)
+
+def eliminarPropuesta(request):
+    propuestapk = request.POST['propuestapk']
+    propuesta = PropuestaMejora.objects.get(pk=propuestapk)
+    propuesta.estado = '0'  # eliminación lógica
+    propuesta.save()
+    return JsonResponse({}, status=200)
+
+def filtrarEspecialidades(request):
+    id_facultad = request.POST['facultad']
+    especialidades = Especialidad.objects.filter(facultad_id=id_facultad, estado='1')
+    data = serializers.serialize("json", especialidades)
+    return JsonResponse({"resp": data}, status=200)
+
+def listarPropuestas(request):
+
+    idEspecialidad = request.POST['especialidad']
+    print('------------------------------------------')
+    print(idEspecialidad)
+    print('-------------------------------------------')
+
+    propuestas = PropuestaMejora.objects.filter(especialidad_id=idEspecialidad, estado='1')
+    listaPropuestas = []
+    lista2 = [] # lista para saber si tiene o no actividades de mejorar asociadas
+    for propuesta in propuestas:
+        tiene_actividades = False
+        actividades = ActividadMejora.objects.filter(propuestaMejora_id=propuesta.pk, estado='1')
+        if (len(actividades) > 0):
+            tiene_actividades = True
+        else:
+            tiene_actividades = False
+
+        lista2.append(tiene_actividades)
+
+    ser_instance = serializers.serialize('json', propuestas)
+    ser_instance2 = json.dumps(lista2)
+
+    return JsonResponse({"propuestas": ser_instance,"tiene_actividades": ser_instance2}, status=200)
+
+
+
+
+
+
 @login_required
-def crearPlanMejora(request,pk):
+def crearPlanMejora(request, pk):
     insert = False
-    #El flag 0: operacion no realizada
-    #flag > 0: operacion correspondiente realizada
+    # El flag 0: operacion no realizada
+    # flag > 0: operacion correspondiente realizada
     flag = 0
     errorInsert = 0
     plan = PlanMejora()
@@ -242,7 +267,7 @@ def crearPlanMejora(request,pk):
         elif request.POST['operacion'] == 'insertar':
             planes = PlanMejora.objects.filter(curso_id=request.POST['curso'])
             if len(planes) == 0:
-                PlanMejora.objects.create(curso_id=request.POST['curso'],estado=request.POST['estado'])
+                PlanMejora.objects.create(curso_id=request.POST['curso'], estado=request.POST['estado'])
                 plan = PlanMejora.objects.latest('id')
                 pk = plan.pk
                 flag = 2
@@ -273,20 +298,22 @@ def crearPlanMejora(request,pk):
         'flag': flag,
         'errorInsert': errorInsert,
     }
-    return render(request,'gestionarPlanMejora/crearPlanMejora.html',context)
+    return render(request, 'gestionarPlanMejora/crearPlanMejora.html', context)
 
-def crearPropuesta(request,id_especialidad):
+
+def crearPropuesta(request, id_especialidad):
     try:
         especialidad = Especialidad.objects.get(pk=id_especialidad)
-        planMejora =PlanMejora.objects.get(especialidad_id=especialidad.id)
+        planMejora = PlanMejora.objects.get(especialidad_id=especialidad.id)
     except:
         print("No se encontro especialidad")
 
     if request.POST:
         codigo = request.POST['codigo']
         descripcion = request.POST['descripcion']
-        nuevaPropuesta = PropuestaMejora.objects.create(codigo= codigo, descripcion=descripcion, especialidad=especialidad,estado=1,planMejora=planMejora)
-        return redirect('listarPlanMejora')
+        nuevaPropuesta = PropuestaMejora.objects.create(codigo=codigo, descripcion=descripcion,
+                                                        especialidad=especialidad, estado=1, planMejora=planMejora)
+        return redirect('planMejora')
 
     context = {
         'especialidad': especialidad,
@@ -294,15 +321,17 @@ def crearPropuesta(request,id_especialidad):
     }
     return render(request, 'gestionarPlanMejora/crearPropuesta.html', context)
 
+
 def eliminarActividadxPropuesta(request):
     actividadpk = request.POST['epk']
     print("**********")
     print(actividadpk)
     print("**********")
     actividad = ActividadMejora.objects.get(pk=actividadpk)
-    actividad.activo = '0' #eliminación lógica
+    actividad.activo = '0'  # eliminación lógica
     actividad.save()
     return JsonResponse({}, status=200)
+
 
 def crearAjax(request):
     if request.POST:
@@ -322,7 +351,7 @@ def crearAjax(request):
             plan = PlanMejora.objects.get(pk=request.POST["planPK"])
             indicadores = plan.indicador.all()
             if indicador[0] in indicadores:
-                return JsonResponse({'status':'false','message':'Indicador ya ingresado'}, status=500)
+                return JsonResponse({'status': 'false', 'message': 'Indicador ya ingresado'}, status=500)
             plan.indicador.add(indicador[0].pk)
             data = serializers.serialize("json", indicador)
             return JsonResponse({"resp": data}, status=200)
@@ -340,7 +369,7 @@ def crearAjax(request):
             plan = PlanMejora.objects.get(pk=request.POST["planPK"])
             horarios = plan.horario.all()
             if horario[0] in horarios:
-                return JsonResponse({'status':'false','message':'Horario ya ingresado'}, status=500)
+                return JsonResponse({'status': 'false', 'message': 'Horario ya ingresado'}, status=500)
             plan.horario.add(horario[0].pk)
             data = serializers.serialize("json", horario)
             return JsonResponse({"resp": data}, status=200)
