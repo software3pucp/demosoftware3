@@ -169,7 +169,6 @@
 
         $(document).ready(function () {
             filtrarEspecialidades();
-            listarNiveles();
         });
 
         function redirectEditarNivel(id_nivel) {
@@ -212,13 +211,14 @@
                 url: "{% url 'filtrarEspecialidades' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    facultadpk: $("#cboFacultad").val(),
+                    facultad: $("#cboFacultad").val(),
                 },
                 success: function (response) {
                     var instance = JSON.parse(response["resp"]);
+
                     $(".especialidad").remove();
                     for (var i = 0; i < instance.length; i++) {
-                        data = '<option class="especialidad" onclick="listarNiveles()" value=' +
+                        data = '<option class="especialidad" value=' +
                             instance[i]["pk"] + '>' +
                             instance[i]["fields"].nombre + '</option>';
                         $("#cboEspecialidad").append(data);
@@ -253,7 +253,7 @@
                     for (i = 0; i < numero; i++,j++) {
                         data += (
                         '        <tr class="btn-reveal-trigger">'+
-                        '            <th class="align-middle"> + '+ j +' + </th>'+
+                        '            <th class="align-middle">  '+ j +'  </th>'+
                         '            <th class="align-middle">'+ instance[i]["fields"].nombre +'</th>'+
                         '            <td class="align-middle">'+ instance[i]["fields"].valor  +'</td>'+
                         '            <td class="align-middle text-right fs-0">'+

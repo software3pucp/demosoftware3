@@ -26,7 +26,11 @@ def evaluar(request,pk):
     listaHorario= Horario.objects.filter(curso_id=pk) #listaDeHorario asociado a un curso
     especialidadPk = cursoSeleccionado.especialidad_id
     resultado = list(ResultadoPUCP.objects.filter(especialidad_id=especialidadPk))
-    listaIndicador = Indicador.objects.filter(resultado_id=resultado[0].id ,estado=1)
+
+    if resultado:
+        listaIndicador = Indicador.objects.filter(resultado_id=resultado[0].id ,estado=1)
+    else:
+        listaIndicador = []
     listaHorarios = list(Horario.objects.filter(curso_id=pk, estado=1))
     # listaDocumentos = EvidenciasxHorario.objects.filter(estado=1)
     listaDocumentos = EvidenciasxHorario.objects.none()

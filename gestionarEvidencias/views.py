@@ -9,7 +9,7 @@ from gestionarCurso.models import Curso
 from gestionarEvidencias.models import EvidenciasxHorario
 from gestionarHorario.models import Horario
 
-@login_required
+@login_required(login_url='login')
 def evidenciasxHorario(request, id_curso, id_horario):
     tiene_evidencias = False
     curso = Curso.objects.get(pk=id_curso)

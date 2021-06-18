@@ -7,7 +7,7 @@ import unicodedata
 from django.core import serializers
 from gestionarAcreditadoras.models import Acreditadora
 from django.contrib.auth.decorators import login_required
-@login_required
+@login_required(login_url='login')
 def listarAcreditadoras(request):
 
     if request.POST:
@@ -31,7 +31,7 @@ def listarAcreditadoras(request):
         'media_path': media_path
     }
     return render(request,'gestionarAcreditadoras/listarAcreditadoras.html',context)
-@login_required
+@login_required(login_url='login')
 def crearAcreditadoras(request,pk):
     media_path = MEDIA_URL
     acreditadora = Acreditadora()
@@ -66,7 +66,7 @@ def crearAcreditadoras(request,pk):
         'media_path': media_path,
     }
     return render(request,'gestionarAcreditadoras/crearAcreditadoras.html',context)
-@login_required
+@login_required(login_url='login')
 def eliminarAcreditadora(request,pk):
     acreditadora = Acreditadora.objects.get(pk=pk)
     if acreditadora.estado == Acreditadora.ESTADOS[2][0]:

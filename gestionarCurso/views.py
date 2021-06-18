@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 from gestionarHorario.models import Horario
 
-@login_required
+@login_required(login_url='login')
 def listarCurso(request):
     context = {
         'ListaEspecialidad': Especialidad.objects.all(),

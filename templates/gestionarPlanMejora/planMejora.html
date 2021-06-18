@@ -28,8 +28,8 @@
                         </div>
                     </div>
 
-                    <div class="col-12 mb-3">
-                        <div class="d-flex flex-row align-items-center">
+                    <div class="col-12 mb-3" hidden>
+                        <div class="d-flex flex-row align-items-center" >
                             <div class="mr-2">
                                 <label for="cboFacultad">Facultad:</label>
                                 <select class="custom-select custom-select-sm mb-3" id="cboFacultad" name="cboFacultad"
@@ -154,7 +154,7 @@
 
                     $(".especialidad").remove();
                     for (var i = 0; i < instance.length; i++) {
-                        data = '<option class="especialidad" onclick="listarPropuestas(2)" value=' +
+                        data = '<option class="especialidad" onclick="listarPropuestas()" value=' +
                             instance[i]["pk"] + '>' +
                             instance[i]["fields"].nombre + '</option>';
                         $("#cboEspecialidad").append(data);

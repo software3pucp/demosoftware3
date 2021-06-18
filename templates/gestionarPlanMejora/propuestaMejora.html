@@ -204,7 +204,7 @@
                             <p>{{ planMejora.planMedicion.pk }}</p>
                         </div>
                         <div class="col-2 ">
-                             <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'planMejora' pk=planMejora.planMedicion.pk %}">
+                             <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'planMejora' pk=planMejora.pk %}">
                                 <div class="fas fa-reply mt-1 mr-2"></div>
                                 <h5>Volver</h5>
                             </a>
@@ -241,7 +241,7 @@
                 </div>
                 <div class="col-md-12 d-flex justify-content-end mt-3">
                     <a class="btn btn-outline-primary m-1" type="button"
-                       href="{% url 'planMejora' pk=planMejora.planMedicion.pk %}">Cancelar</a>
+                       href="{% url 'planMejora' pk=planMejora.pk %}">Cancelar</a>
                     <input type="submit" class="btn btn-primary m-1" value="Guardar">
                 </div>
             </div>

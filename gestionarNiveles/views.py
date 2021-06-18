@@ -33,6 +33,7 @@ def niveles(request):
 
 
 def obtenerEspecialidades(request):
+    print(request.POST)
     id_facultad = request.POST['facultadpk']
     especialidades = Especialidad.objects.filter(facultad_id=id_facultad, estado='1')
     data = serializers.serialize("json", especialidades)
