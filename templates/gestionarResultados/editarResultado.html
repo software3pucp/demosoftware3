@@ -9,16 +9,16 @@
 {% block body %}
 
     <div class="card p-5">
-        <form action="{% url 'editarResultado' pk=resultado.pk id_plan=plan %}" method="post">
+        <form action="{% url 'editarResultado' pk=resultado.pk %}" method="post">
             {% csrf_token %}
             <div class="row-12">
                 <div class="col-12">
                     <div class="row d-flex justify-content-center ">
                         <div class="col-10">
-                            <h4>Editar Plan de Resultado</h4>
+                            <h4>Resultado del Estudiante</h4>
                         </div>
                         <div class="col-2 ">
-                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'listarPlanResultado' %}">
+                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'resultados' %}">
                                 <div class="fas fa-reply mt-1 mr-2"></div>
                                 <h5>Volver</h5>
                             </a>
@@ -34,7 +34,7 @@
                         <div class="col-md-10">
                             <div class="form-group">
                                 <input name="codigo" class="form-control" id="codigo" type="text"
-                                       value="{{ plan.codigo }}">
+                                       value="{{ resultado.codigo }}">
                             </div>
                         </div>
                     </div>
@@ -47,14 +47,14 @@
                         <div class="col-md-10">
                             <div class="form-group ">
                                     <textarea name="descripcion" id="descripcion" class="form-control"
-                                              aria-label="With textarea" rows="4">{{ plan.descripcion }}</textarea>
+                                              aria-label="With textarea" rows="4">{{ resultado.descripcion }}</textarea>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-12 d-flex justify-content-end mt-3">
                     <a class="btn btn-outline-primary m-1" type="button"
-                       href="{% url 'resultados' plan%}">Cancelar</a>
+                       href="{% url 'resultados' %}">Cancelar</a>
                     <input type="submit" class="btn btn-primary m-1" value="Guardar">
                 </div>
             </div>

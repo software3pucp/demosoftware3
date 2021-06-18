@@ -92,20 +92,18 @@
         var pkEliminar;
 
         $(document).ready(function () {
-            $("#cboFacultad option[value={{ facultadSeleccionada.pk }}]").attr("selected", true);
             obtenerEspecialidades();
-            $("#cboEspecialidad option[value={{ especialidadSeleccionada.pk }}]").attr("selected", true);
             listarResultados();
         });
 
         function redirectCrearResultado() {
             var pk_especialidad = $("#cboEspecialidad").val();
-            document.location.href = "../../gestionarResultados/crear/" + pk_especialidad+"/"+ {{ plan.pk }} ;
+            document.location.href = "../../gestionarResultados/crear/" + pk_especialidad;
         }
 
         function redirectEditarResultado(id_resultado) {
 
-            document.location.href = "../../gestionarResultados/editar/" + id_resultado+"/"+ {{ plan.pk }};
+            document.location.href = "../../gestionarResultados/editar/" + id_resultado;
         }
 
         $("#btnEliminarResultado").on('click', function () {

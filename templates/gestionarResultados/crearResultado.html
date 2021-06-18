@@ -17,14 +17,14 @@
                             <h4 id="Titulo">Crear Resultado del Estudiante</h4>
                         </div>
                         <div class="col-2 ">
-                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'resultados' plan %}">
+                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'resultados' %}">
                                 <div class="fas fa-reply mt-1 mr-2"></div>
                                 <h5>Volver</h5>
                             </a>
                         </div>
                     </div>
                     <hr style="background-color: #0154ae;">
-                    <form action="{% url 'crearResultado' id_especialidad=especialidad.pk id_plan=plan %}" method="post">
+                    <form action="{% url 'crearResultado' id_especialidad=especialidad.pk %}" method="post">
                         {% csrf_token %}
                         <div class="row p-1">
                             <div class="col-md-2">
@@ -55,7 +55,7 @@
                         </div>
                         <div class="row mt-4">
                             <div class="col-md-12 d-flex justify-content-end">
-                                <a class="btn btn-outline-primary m-1" type="button" href="{% url 'resultados' plan %}">Cancelar</a>
+                                <a class="btn btn-outline-primary m-1" type="button" href="{% url 'resultados' %}">Cancelar</a>
                                 <input type="submit" class="btn btn-primary m-1" value="Guardar">
                             </div>
                         </div>

@@ -16,40 +16,25 @@ from gestionarSemestre.models import Semestre
 
 
 @login_required
-def crearResultado(request, id_especialidad,id_plan):
+def crearResultado(request, id_especialidad):
     especialidad = Especialidad.objects.get(pk=id_especialidad)
     if request.POST:
         codigo = request.POST['codigo']
         descripcion = request.POST['descripcion']
         newResultado = ResultadoPUCP.objects.create(codigo= codigo, descripcion=descripcion, especialidad=especialidad)
-        return redirect('resultados',id_plan)
+        return redirect('resultados')
 
     context = {
         'especialidad': especialidad,
-        'plan': id_plan,
     }
     return render(request, 'gestionarResultados/crearResultado.html', context)
 
 @login_required
-def Resultados(request, pk_plan):
-    plan = PlanResultados.objects.get(pk=pk_plan)
-    especialidadSeleccionada = Especialidad.objects.get(pk=plan.especialidad_id)
-    facultadSeleccionada = Facultad.objects.get(pk=especialidadSeleccionada.facultad_id)
+def Resultados(request):
     facultades = Facultad.objects.filter(estado='1')
     context = {
         'facultades': facultades,
-        'facultadSeleccionada': facultadSeleccionada,
-        'especialidadSeleccionada': especialidadSeleccionada,
-        'plan': plan
     }
-
-    print(context)
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
     return render(request, 'gestionarResultados/resultados.html', context)
 
 def eliminarResultado(request):
@@ -89,20 +74,19 @@ def listarResultados(request):
 
 
 @login_required
-def editarResultado(request,pk,id_plan):
+def editarResultado(request,pk):
     if request.POST:
         resultado = ResultadoPUCP.objects.get(pk=pk)
         resultado.codigo = request.POST['codigo']
         resultado.descripcion = request.POST['descripcion']
         resultado.save()
-        return redirect('resultados', id_plan)
+        return redirect('resultados')
 
     resultado = ResultadoPUCP.objects.get(pk=pk)
     listaIndicares = Indicador.objects.filter(resultado_id=pk, estado=1)
     context = {
         'listaIndicadores': listaIndicares,
         'resultado':resultado,
-        'plan': id_plan
     }
     return render(request, 'gestionarResultados/editarResultado.html', context)
 
