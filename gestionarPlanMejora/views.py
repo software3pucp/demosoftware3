@@ -170,8 +170,7 @@ def editarEvidencia(request, pk):
 
 
 def editarPropuesta(request, pk):
-    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<')
-    print(pk)
+
     propuestaMejora = PropuestaMejora.objects.get(pk=pk)
     listaActividades = ActividadMejora.objects.filter(propuestaMejora_id=pk, activo=1)
     if request.POST:
@@ -205,7 +204,8 @@ def eliminarEvidenciaxActividad(request):
 def planMejora(request, pk):
     if pk != "0":
         planMejora = PlanMejora.objects.get(pk=pk)
-        print(planMejora)
+        print("SE ESTA RECIBIENDO")
+        print(planMejora.pk)
     facultades = Facultad.objects.filter(estado='1')
     context = {
         'facultades': facultades,
@@ -223,9 +223,13 @@ def eliminarPropuesta(request):
 
 
 def filtrarEspecialidades(request):
+    print(request.POST)
     id_facultad = request.POST['facultad']
     especialidades = Especialidad.objects.filter(facultad_id=id_facultad, estado='1')
     data = serializers.serialize("json", especialidades)
+
+    print(request.POST)
+
     return JsonResponse({"resp": data}, status=200)
 
 
