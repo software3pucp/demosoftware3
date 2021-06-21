@@ -34,7 +34,11 @@
                             <div class="product card mr-4 mb-4" style="height: 16rem">
                                 <div class="card-img-top imgbox" style="height: 15rem">
                                     <a href="{% url 'listarFacultadxEsp' id_facultad=facultad.pk %}">
-                                        <img class="" src="{{ media_path }}{{ facultad.foto.name }}/">
+                                        {% if facultad.foto.name %}
+                                            <img class="" src="{{ media_path }}{{ facultad.foto.name }}/">
+                                        {% else %}
+                                            <img class="" src="{% static 'img/illustrations/3.png' %}">
+                                        {% endif %}
                                     </a>
                                 </div>
                                 <div class="specifies card-body p-1">
@@ -136,7 +140,8 @@
 
                 <div class="col-sm-12 col-md-6 col-lg-4">
                     <div class="card-group service-work">
-                        <button type="submit" class="recent-work card mr-4 mb-4 align-items-center" style="height: 16rem">
+                        <button type="submit" class="recent-work card mr-4 mb-4 align-items-center"
+                                style="height: 16rem">
                             <div class="nav-link icon-indicator" role="button">
                                 <div class="mt-4" style="text-align: center;">
                                     <span class="fas fa-plus fa-9x" style="text-align: center"></span>
@@ -161,12 +166,12 @@
 
         $(document).ready(function () {
             if ("{{estado}}" == 1) {
-                    $('.facultadesActivas').show();
-                    $('.facultadesInactivos').hide();
-                } else {
-                    $('.facultadesActivas').hide();
-                    $('.facultadesInactivos').show();
-                }
+                $('.facultadesActivas').show();
+                $('.facultadesInactivos').hide();
+            } else {
+                $('.facultadesActivas').hide();
+                $('.facultadesInactivos').show();
+            }
 
             $("#estado").val({{ estado }});
         });
@@ -183,7 +188,6 @@
                 }
             });
         });
-
 
 
     </script>
