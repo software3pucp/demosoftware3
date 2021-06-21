@@ -17,7 +17,7 @@ from gestionarCurso.models import Curso
 from authentication.models import User
 from gestionarResultados.models import ResultadoPUCP
 from django.contrib.auth.decorators import login_required
-
+# import xlrd libreria para importar Alumnos
 @login_required
 def evaluar(request,pk):
     media_path = MEDIA_URL
@@ -122,6 +122,19 @@ def listarAlumno(request):
     return JsonResponse({"listaAlumno": ser_instance, "niveles": ser_instance2},  status=200)
 
 def importarAlumno(request):
+    # Funciona si guardas de nuevo el archivo descargado mediante campus porque dice que en este el formato y la
+    # extension no coinciden, si se vuelve a guardar el archivo como xls si se puede guardar
+    # wb = xlrd.open_workbook(filename=None, file_contents=request.FILES['archivo'].read())
+    # table = wb.sheets()[0]
+    # row = table.nrows
+    # for i in range(7, row):
+    #     col = table.row_values(i)
+    #     if (col[0] == ''):
+    #         break
+    #     else:
+    #         RespuestaEvaluacion.objects.create(nombreAlumno=col[1], codigoAlumno=int(col[0]),
+    #                                                horario_id=request.POST["horariopk"])
+    # return JsonResponse({}, status=200)
     excel = request.FILES['archivo']
     rows = excel.read().decode().split('\n')
     for row in rows:
