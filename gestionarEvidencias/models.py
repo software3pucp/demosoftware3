@@ -24,6 +24,8 @@ class EvidenciasxHorario(models.Model):
         ('2', 'Inactivo'),
     ]
     estado = models.CharField(max_length=2, choices=ESTADOS, default='1', null=True, blank=True)
+    descripcion = models.CharField(max_length=300, default='', null=True, blank=True)
+    concepto = models.CharField(max_length=20, default='', null=True, blank=True)
     horario = models.ForeignKey(Horario, on_delete=models.DO_NOTHING, null=False)
     archivo = models.FileField(null=True, blank=True, upload_to='archive/')
     fecha_creacion = models.DateTimeField(auto_now_add=True)

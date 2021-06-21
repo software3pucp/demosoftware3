@@ -11,6 +11,7 @@ from gestionarResultados.models import ResultadoPUCP
 from gestionarRubrica.models import Rubrica
 from django.contrib.auth.decorators import login_required
 
+
 @login_required
 def editarIndicador(request, pk):
     indicador = Indicador.objects.get(pk=pk)
@@ -18,40 +19,40 @@ def editarIndicador(request, pk):
     id_resultado = indicador.resultado_id
     nivelLista = Nivel.objects.filter(estado='1', especialidad_id=especialidadpk).order_by('valor')
     rubrica = Rubrica.objects.filter(indicador_id=pk)
-    nivelLista2 =[]
+    nivelLista2 = []
     hay_niveles = False
-    if (len(nivelLista)>0):
+    if (len(nivelLista) > 0):
         hay_niveles = True
 
-    for nivel in nivelLista: # Creamos una lista de registros- registo (nivel, descripcion)
-        registro=[nivel,''] # incialmente la descripción esta vacía
+    for nivel in nivelLista:  # Creamos una lista de registros- registo (nivel, descripcion)
+        registro = [nivel, '']  # incialmente la descripción esta vacía
         nivelLista2.append(registro)
 
     for nivel in nivelLista:
-        for rub in rubrica: # se verifica en la rúbrica si ya existen descripciones para un determinado nivel
+        for rub in rubrica:  # se verifica en la rúbrica si ya existen descripciones para un determinado nivel
             if nivel.pk == rub.nivel_id:
                 desc_nivel = rub.descripcion
-                nivelLista2[nivel.valor-1][1] = desc_nivel
+                nivelLista2[nivel.valor - 1][1] = desc_nivel
 
     if request.POST:
         indicador = Indicador.objects.get(pk=pk)
         indicador.codigo = request.POST['codigo']
         indicador.descripcion = request.POST['descripcion']
         indicador.save()
-        for nivel in nivelLista: # se agrega las descripciones por cada nivel
-            desc = request.POST['desc_nivel'+ str(nivel.pk)]
+        for nivel in nivelLista:  # se agrega las descripciones por cada nivel
+            desc = request.POST['desc_nivel' + str(nivel.pk)]
             agregarDescipcionNivel(indicador.pk, nivel.pk, desc)
         context = {
             'indicador': indicador,
             'id_resultado': id_resultado,
             'nivelLista': nivelLista2,
-            'rubrica':rubrica,
+            'rubrica': rubrica,
             'hay_niveles': hay_niveles,
         }
         return redirect('editarResultado', pk=id_resultado)
 
     context = {
-        'rubrica':rubrica,
+        'rubrica': rubrica,
         'indicador': indicador,
         'id_resultado': id_resultado,
         'nivelLista': nivelLista2,
@@ -61,18 +62,19 @@ def editarIndicador(request, pk):
 
 
 def obtenerEspecialidadIndicador(indicador):
-    id_resultado=indicador.resultado_id;
-    resultado=ResultadoPUCP.objects.get(pk=id_resultado)
-    especialidadpk=resultado.especialidad_id
-    especialidad=Especialidad.objects.get(pk=especialidadpk)
+    id_resultado = indicador.resultado_id;
+    resultado = ResultadoPUCP.objects.get(pk=id_resultado)
+    especialidadpk = resultado.especialidad_id
+    especialidad = Especialidad.objects.get(pk=especialidadpk)
     return especialidad.pk
+
 
 @login_required
 def eliminarIndicadorxResultado(request, id_resultado):
     if request.POST:
         print(request.POST)
         indicador = Indicador.objects.get(pk=request.POST['indicador_pk'])
-        indicador.estado = 0 #eliminación lógica
+        indicador.estado = 0  # eliminación lógica
         indicador.save()
         return redirect('editarResultado', pk=id_resultado)
 
@@ -85,13 +87,16 @@ def agregarIndicador(request, id_resultado):
     ser_instance = serializers.serialize('json', [indicador, ])
     return JsonResponse({"nuevoIndicador": ser_instance}, status=200)
 
+
 def agregarDescipcionNivel(indicardorpk, nivelpk, desc):
     try:
         desc_nivel = Rubrica.objects.get(indicador_id=indicardorpk, nivel_id=nivelpk)
         desc_nivel.descripcion = desc
         desc_nivel.save()
     except:
-        esp = Especialidad.objects.get(pk=1)  # por ahora solo para una especialidad (Infomatica)
+        indicador = Indicador.objects.get(pk=indicardorpk)
+        resultado = ResultadoPUCP.objects.get(pk=indicador.resultado_id)
+        esp = Especialidad.objects.get(pk=resultado.especialidad_id)
         niv = Nivel.objects.get(pk=nivelpk)
         ind = Indicador.objects.get(pk=indicardorpk)
         Rubrica.objects.create(especialidad=esp, nivel=niv, indicador=ind, descripcion=desc)

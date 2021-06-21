@@ -77,6 +77,8 @@
                             <thead class="bg-200 text-900">
                             <tr>
                                 <th class="sort pr-1 align-middle">N°</th>
+                                <th class="sort pr-1 align-middle">Concepto</th>
+                                <th class="sort pr-1 align-middle">Descripción</th>
                                 <th class="sort pr-1 align-middle">Nombre</th>
                                 <th class="sort pr-1 align-middle text-center">Acciónes</th>
                             </tr>
@@ -100,10 +102,35 @@
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
                             class="font-weight-light" aria-hidden="true">&times;</span></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body ">
                     <form id="formSubirEvidencia" name="formSubirEvidencia" method="post" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="nombre_archivo">Seleccione un archivo: </label>
+                            <div class="row p-1">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="text-black" for="concepto">Concepto:</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <input name="concepto" class="form-control" id="concepto" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row p-1">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="text-black" for="descripcion">Descripción:</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-group ">
+                                    <textarea name="descripcion" id="descripcion" class="form-control"
+                                              aria-label="With textarea" rows="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="text-black" for="nombre_archivo">Seleccione un archivo: </label>
                             <div class="input-group">
                                 <input name="nombre_archivo" id="nombre_archivo" type="text" class="form-control"
                                        readonly>
@@ -138,13 +165,9 @@
                     <form id="formEditarEvidencia" name="formEditarEvidencia" method="post"
                           enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="nombre_archivo_mod">Seleccione un archivo: </label>
-                            <div class="input-group">
-                                <input name="nombre_archivo_mod" id="nombre_archivo_mod" type="text" class="form-control"
-                                       readonly>
-                                <div id="editArchivo">
-                                </div>
-                            </div>
+                            <div id="editDatosEvidencia"></div>
+                            <label class="text-black" for="nombre_archivo_mod">Seleccione nuevo archivo: </label>
+                            <div id="editArchivo"></div>
                         </div>
                     </form>
                 </div>
@@ -183,7 +206,7 @@
 
     <script>
 
-        var pkEditar ;
+        var pkEditar;
         var pkEliminar;
 
         $(document).ready(function () {
@@ -230,12 +253,9 @@
                 subirEvidencia();
             }
 
-          $('#subirEvidencia').modal('hide');
-          $('#nombre_archivo').val("");
-          $('#archivo').val("");
-
-
-
+            $('#subirEvidencia').modal('hide');
+            $('#nombre_archivo').val("");
+            $('#archivo').val("");
 
         });
 
@@ -249,6 +269,8 @@
                 fd.append('horariopk', {{ horario.pk }});
                 fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
                 fd.append('nombre_archivo', $("#nombre_archivo").val());
+                fd.append('concepto', $("#concepto").val());
+                fd.append('descripcion', $("#descripcion").val());
 
                 $.ajax({
                     type: 'POST',
@@ -268,27 +290,64 @@
         }
 
         $("#btnEditarEvidencia").on('click', function () {
-                if ($("#formEditarEvidencia").valid()) {
-                    console.log('Despues de boton');
-                    editarEvidencia(pkEditar);
-                    console.log(pkEditar);
-                    $("#editarEvidencia").modal('hide');
-                }
+            if ($("#formEditarEvidencia").valid()) {
+                console.log('Despues de boton');
+                editarEvidencia(pkEditar);
+                console.log(pkEditar);
+                $("#editarEvidencia").modal('hide');
+
+                $('#nombre_archivo_mod').val("");
+                $('#archivoMod').val("");
+            }
         });
 
-        function evidenciasEditar(archivo, pk){
-            var nomb =archivo.toString();
-            data='';
-            data +=(
-                '<span class="input-group-btn pb-3">'+
-                '<span class="btn btn-primary btn-file ml-3 " type="button">Seleccionar'+
-                '<input name="archivoMod" id="archivoMod" type="file" value="'+nomb+ '"/>'+
-                '</span>')
-            $("#editArchivo").html(data);
-            console.log('Antes de boton');
-            console.log(pk)
-            $("#editarEvidencia").modal('show');
+        function evidenciasEditar(concepto, descripcion, archivo, pk) {
+            var nombre_archivo = archivo.toString();
 
+            data1 = '';
+            data1 += (
+                '           <div class="row p-1">'+
+                '                <div class="col-md-3">'+
+                '                    <div class="form-group">'+
+                '                        <label class="text-black" for="conceptoMod">Concepto:</label>'+
+                '                    </div>'+
+                '                </div>'+
+                '                <div class="col-md-9">'+
+                '                    <div class="form-group">'+
+                '                        <input name="conceptoMod" class="form-control" id="conceptoMod" value="' + concepto + '" type="text">'+
+                '                    </div>'+
+                '                </div>'+
+                '            </div>'+
+                '            <div class="row p-1">'+
+                '                <div class="col-md-3">'+
+                '                    <div class="form-group">'+
+                '                        <label class="text-black" for="descripcionMod">Descripción:</label>'+
+                '                    </div>'+
+                '                </div>'+
+                '                <div class="col-md-9">'+
+                '                    <div class="form-group ">'+
+                '                    <textarea name="descripcionMod" id="descripcionMod" class="form-control"'+
+                '                              aria-label="With textarea" rows="4">'+ descripcion +' </textarea>'+
+                '                    </div>'+
+                '                </div>'+
+                '            </div>'
+            )
+            $("#editDatosEvidencia").html(data1);
+            data2 = '';
+            data2 += (
+                '           <div class="input-group">'+
+                '                <input name="nombre_archivo_mod" id="nombre_archivo_mod"  type="text" class="form-control"'+
+                '                       readonly>'+
+                '                <span class="input-group-btn pb-3">'+
+                '                        <span class="btn btn-primary btn-file ml-3 " type="button">Seleccionar'+
+                '                        <input name="archivoMod" id="archivoMod"  type="file" required/>'+
+                '                        </span>'+
+                '                </span>'+
+                '            </div>'
+                )
+
+            $("#editArchivo").html(data2);
+            $("#editarEvidencia").modal('show');
             pkEditar = pk;
         }
 
@@ -302,7 +361,9 @@
                 fd.append('archivoMod', files[0]);
                 fd.append('evidenciapk', evidenciapk);
                 fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-                fd.append('nombre_archivo_mod', $("#nombre_archivo").val());
+                fd.append('nombre_archivo', $("#nombre_archivo_mod").val());
+                fd.append('conceptoMod', $("#conceptoMod").val());
+                fd.append('descripcionMod', $("#descripcionMod").val());
 
                 $.ajax({
                     type: 'POST',
@@ -371,27 +432,32 @@
                 },
                 success: function (response) {
                     var instance = JSON.parse(response["listaEvidencias"]);
+                    console.log(instance)
                     var x = 0;
                     var numero = instance.length;
                     data = ''
 
-                    if (numero>0){
-                      for (i=0; i<numero; i++){
-                        console.log({{ media_path }} + instance[i]["fields"].archivo);
+                    if (numero > 0) {
+                        for (i = 0; i < numero; i++) {
+                          {% comment %}  console.log({{ media_path }} +instance[i]["fields"].archivo);{% endcomment %}
                             data += (
                                 '<tr class="btn-reveal-trigger">' +
                                 '<th class="align-middle">' + instance[i]["pk"] +
+                                '</th>' +
+                                '<th class="align-middle">' + instance[i]["fields"].concepto +
+                                '</th>' +
+                                '<th class="align-middle">' + instance[i]["fields"].descripcion +
                                 '</th>' +
                                 '<th class="align-middle">' + instance[i]["fields"].archivo +
                                 '</th>' +
                                 '<td class="align-middle text-right fs-0">' +
                                 '<div class="row">' +
                                 '<div class="col">' +
-                                '<a class="badge badge-pill badge-primary" href="'+ {{ media_path }} + instance[i]["fields"].archivo+'" download>' +
-                                '<i class="fa fa-download"></i>  Descargar</a>'+
+                                '<a class="badge badge-pill badge-primary" href="' + {{ media_path }} +instance[i]["fields"].archivo + '" download>' +
+                                '<i class="fa fa-download"></i>  Descargar</a>' +
                                 '</div>' +
                                 '<div class="col">' +
-                                '<button class="badge badge-pill badge-secondary" onclick="evidenciasEditar(\'' + instance[i]["fields"].archivo + '\',' + instance[i]["pk"] + ')">Editar</button>' +
+                                '<button class="badge badge-pill badge-secondary" onclick="evidenciasEditar(\'' + instance[i]["fields"].concepto + '\',\'' + instance[i]["fields"].descripcion + '\',\'' + instance[i]["fields"].archivo + '\',' + instance[i]["pk"] + ')">Editar</button>' +
                                 '</div>' +
                                 '<div class="col">' +
                                 '<button class="badge badge-pill badge-danger" onclick="evidenciasEliminar(\'' + instance[i]["fields"].archivo + '\',' + instance[i]["pk"] + ')">Eliminar</button>' +
@@ -401,7 +467,7 @@
                                 '</tr>');
                         }
 
-                    }else{
+                    } else {
                         data += '<th colspan="4">' +
                             '<p class="m-2 text-center"> No se encontraron evidencias del horario</p>' +
                             '</th>';
