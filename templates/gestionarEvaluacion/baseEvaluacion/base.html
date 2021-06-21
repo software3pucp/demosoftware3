@@ -41,184 +41,172 @@
     {#AQUI COLOQUEN EL CÓDIGO#}
     {# Rubrica #}
     <div class="fancy-tab">
-  <div class="nav-bar nav-bar-center">
-    <div class="nav-bar-item px-3 px-sm-4">Curso</div>
-    <div class="nav-bar-item px-3 px-sm-4 active">Evaluacion</div>
-    <div class="nav-bar-item px-3 px-sm-4">Persona</div>
-  </div>
-  <div class="tab-contents">
-    <div id="tabHistorico" class="tab-content">
-      <p id="historico" class="lead">
-            {% include 'gestionarHistoricoEv/listarHistorico.html' %}
-      </p>
+        <div class="nav-bar nav-bar-center">
+            <div class="nav-bar-item px-3 px-sm-4">Curso</div>
+            <div class="nav-bar-item px-3 px-sm-4 active">Evaluacion</div>
+            <div class="nav-bar-item px-3 px-sm-4">Persona</div>
+        </div>
+        <div class="tab-contents">
+            <div id="tabHistorico" class="tab-content">
+                <p id="historico" class="lead">
+                    {% include 'gestionarHistoricoEv/listarHistorico.html' %}
+                </p>
+            </div>
+            <div class="tab-content active">
+                <p class="lead">
+                <div class="card p-3">
+                    <div class="col-12 d-flex justify-content-start">
+                        <h4 id="Titulo" style="font-family: Montserrat">Evaluación - {{ cursoSeleccionado.nombre }}</h4>
+                    </div>
+                    <hr class="mb-3" style="background-color: #0154ae;">
+
+                    <form action="{% url 'exportarMedicion' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="col-12 mb-3">
+                            <div class="d-flex flex-row align-items-center">
+                                <div class="mr-2">
+                                    <label for="cboHorario">Horario:</label>
+                                    {% if listaHorario %}
+                                        <select class="custom-select custom-select-sm mb-3" id="cboHorario"
+                                                name="cboHorario"
+                                                onchange="listarAlumno()">
+                                            {% for horarioItem in listaHorario %}
+                                                <option value={{ horarioItem.pk }}>{{ horarioItem.codigo }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        No hay Horarios asignados al curso
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <label for="cboIndicador">Indicador:</label>
+                                    {% if listaIndicador %}
+                                        <select class="custom-select custom-select-sm mb-3" id="cboIndicador"
+                                                name="cboIndicador"
+                                                onchange="muestraRubrica()">
+                                            {% for indicador in listaIndicador %}
+                                                <option value={{ indicador.pk }}>{{ indicador.codigo }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        No hay indicadores asociados
+                                    {% endif %}
+                                </div>
+
+                                <div class="ml-auto">
+                                    <button name="fichaMedicion" id="fichaMedicion" class="btn btn-outline-primary"
+                                            type="submit">
+                                        <i class="fa fa-download"></i> Ficha de Medicion
+                                    </button>
+                                    <button name="evidenciasHorario" id="evidenciasHorario" class="btn btn-primary"
+                                            onclick="redirectEvidencia()">Evidencias
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                    <div class="col-12">
+                        <div id="contenidoRubrica"></div>
+                    </div>
+
+                    <div class="col-12">
+                        {# Botones Agregar e Importar Estudiantes #}
+                        <div class="row mb-3">
+                            <div class="col-12 d-flex justify-content-start mx-1">
+                                <div id="estado"></div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="input-group col-12 mb-3 mx-1">
+                                <input class="form-control" id="textBuscar" type="search" placeholder="Buscar">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary shadow-none" type="button" onclick="listarAlumno()">
+                                        Buscar
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex justify-content-end">
+                                <div id="dashboard-actions">
+                                    <!-- Button trigger modal-->
+                                    <a href="" data-toggle="modal" data-target="#agregarAlumno"
+                                       class="btn btn-falcon-default btn-sm" type="button">
+                                        <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
+                                             aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus"
+                                             role="img"
+                                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
+                                             style="transform-origin: 0.4375em 0.625em;">
+                                            <g transform="translate(224 256)">
+                                                <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
+                                                    <path fill="currentColor"
+                                                          d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                                                          transform="translate(-224 -256)"></path>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                        <span class="d-none d-sm-inline-block ml-1">Agregar Estudiante</span>
+                                    </a>
+
+                                    <a href="" data-toggle="modal" data-target="#importarAlumnos"
+                                       class="btn btn-falcon-default btn-sm" type="button">
+                                        <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
+                                             aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus"
+                                             role="img"
+                                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
+                                             style="transform-origin: 0.4375em 0.625em;">
+                                            <g transform="translate(224 256)">
+                                                <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
+                                                    <path fill="currentColor"
+                                                          d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                                                          transform="translate(-224 -256)"></path>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                        <span class="d-none d-sm-inline-block ml-1">Importar Estudiante</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    {# Listado De Alumnos #}
+                    <div class="col-12">
+                        <div class="card mb-3">
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">Codigo</th>
+                                            <th scope="col">Estudiante</th>
+                                            <th scope="col">Puntuacion</th>
+                                            <th scope="col">Estado de Evidencia</th>
+                                            <th scope="col">Acciones</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody id="tablaAlumno">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </p>
+            </div>
+            <div class="tab-content">
+                <p class="lead">
+                    {% include 'gestionarEvaluacion/personasEv.html' %}
+                </p>
+            </div>
+        </div>
     </div>
-      <div class="tab-content active">
-          <p class="lead">
-          <div class="card p-3">
-              <div class="col-12 d-flex justify-content-start">
-                  <h4 id="Titulo" style="font-family: Montserrat">Evaluación - {{ cursoSeleccionado.nombre }}</h4>
-              </div>
-              <hr class="mb-3" style="background-color: #0154ae;">
-
-              <form action="{% url 'exportarMedicion' %}" method="post" enctype="multipart/form-data">
-                  {% csrf_token %}
-                  <div class="col-12 mb-3">
-                      <div class="d-flex flex-row align-items-center">
-                          <div class="mr-2">
-                              <label for="cboHorario">Horario:</label>
-
-
-                          {% if listaHorario %}
-
-                              <select class="custom-select custom-select-sm mb-3" id="cboHorario" name="cboHorario"
-                                      onchange="listarAlumno()">
-                                  {% for horarioItem in listaHorario %}
-                                      <option value={{ horarioItem.pk }}>{{ horarioItem.codigo }}</option>
-                                  {% endfor %}
-                              </select>
-
-                          {% else %}
-                              No hay Horarios asignados al curso
-                          {% endif %}
-
-
-
-
-
-
-                          </div>
-
-                          <div>
-                              <label for="cboIndicador">Indicador:</label>
-
-                              {% if listaIndicador %}
-
-                                 <select class="custom-select custom-select-sm mb-3" id="cboIndicador" name="cboIndicador"
-                                      onchange="muestraRubrica()">
-                                  {% for indicador in listaIndicador %}
-                                      <option value={{ indicador.pk }}>{{ indicador.codigo }}</option>
-                                  {% endfor %}
-                                 </select>
-
-                              {% else %}
-
-                                No hay indicadores asociados
-
-                              {% endif %}
-
-                          </div>
-
-                          <div class="ml-auto">
-                              <button class="btn btn-outline-primary" type="submit" name="submit">
-                                  <i class="fa fa-download"></i> Ficha de Medicion
-                              </button>
-                              <span class="btn btn-primary" onclick="redirectEvidencia()">Evidencias</span>
-                          </div>
-
-
-                      </div>
-                  </div>
-              </form>
-
-
-
-              <div class="col-12">
-                  <div id="contenidoRubrica"></div>
-              </div>
-
-              <div class="col-12">
-                  {# Botones Agregar e Importar Estudiantes #}
-                  <div class="row mb-3">
-                      <div class="col-12 d-flex justify-content-start mx-1">
-                          <div id="estado"></div>
-                      </div>
-                  </div>
-
-                  <div class="row mb-3">
-                      <div class="input-group col-12 mb-3 mx-1">
-                          <input class="form-control" id="textBuscar" type="search" placeholder="Buscar">
-                          <div class="input-group-append">
-                              <button class="btn btn-primary shadow-none" type="button" onclick="listarAlumno()">Buscar
-                              </button>
-                          </div>
-                      </div>
-                      <div class="col-12 d-flex justify-content-end">
-                          <div id="dashboard-actions">
-                              <!-- Button trigger modal-->
-                              <a href="" data-toggle="modal" data-target="#agregarAlumno"
-                                 class="btn btn-falcon-default btn-sm" type="button">
-                                  <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
-                                       aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
-                                       xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
-                                       style="transform-origin: 0.4375em 0.625em;">
-                                      <g transform="translate(224 256)">
-                                          <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
-                                              <path fill="currentColor"
-                                                    d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
-                                                    transform="translate(-224 -256)"></path>
-                                          </g>
-                                      </g>
-                                  </svg>
-                                  <span class="d-none d-sm-inline-block ml-1">Agregar Estudiante</span>
-                              </a>
-
-                              <a href="" data-toggle="modal" data-target="#importarAlumnos"
-                                 class="btn btn-falcon-default btn-sm" type="button">
-                                  <svg class="svg-inline--fa fa-plus fa-w-14" data-fa-transform="shrink-3 down-2"
-                                       aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img"
-                                       xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
-                                       style="transform-origin: 0.4375em 0.625em;">
-                                      <g transform="translate(224 256)">
-                                          <g transform="translate(0, 64)  scale(0.8125, 0.8125)  rotate(0 0 0)">
-                                              <path fill="currentColor"
-                                                    d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
-                                                    transform="translate(-224 -256)"></path>
-                                          </g>
-                                      </g>
-                                  </svg>
-                                  <span class="d-none d-sm-inline-block ml-1">Importar Estudiante</span>
-                              </a>
-                          </div>
-                      </div>
-                  </div>
-
-
-              </div>
-
-              {# Listado De Alumnos #}
-              <div class="col-12">
-                  <div class="card mb-3">
-                      <div class="card-body p-0">
-                          <div class="table-responsive">
-                              <table class="table table-hover">
-                                  <thead class="thead-dark">
-                                  <tr>
-                                      <th scope="col">Codigo</th>
-                                      <th scope="col">Estudiante</th>
-                                      <th scope="col">Puntuacion</th>
-                                      <th scope="col">Estado de Evidencia</th>
-                                      <th scope="col">Acciones</th>
-                                  </tr>
-                                  </thead>
-
-                                  <tbody id="tablaAlumno">
-
-                                  </tbody>
-                              </table>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          </p>
-      </div>
-    <div class="tab-content">
-      <p class="lead">
-         {% include 'gestionarEvaluacion/personasEv.html' %}
-      </p>
-    </div>
-  </div>
-</div>
 
 
     <!-- Modal Importar Alumnos -->
@@ -287,6 +275,9 @@
                     <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
                     <button id="btnAgregarAlumno" class="btn btn-primary btn-sm" type="button"
                             onclick="validarAlumno()">Agregar
+                    </button>
+                    <button id="btnAgregarAlumnoYCerrar" class="btn btn-primary btn-sm" type="button"
+                            onclick="validarAlumno()">Agregar y cerrar
                     </button>
                 </div>
             </div>
@@ -629,7 +620,16 @@
                 agregarAlumno();
                 $("#nombreAlumno").val('');
                 $("#codigoAlumno").val('');
-                {#$("#cboHorario").val('');#}
+
+            }
+        });
+
+        $("#btnAgregarAlumnoYCerrar").on('click', function () {
+            if ($("#formAgregarAlumno").valid()) {
+                agregarAlumno();
+                $("#nombreAlumno").val('');
+                $("#codigoAlumno").val('');
+                $("#agregarAlumno").modal('hide');
             }
         });
 
@@ -806,6 +806,9 @@
                         '</div>';
 
                     if (instanceRubricas.length > 0) {
+                        $('#fichaMedicion').prop('disabled', false);
+                        $('#evidenciasHorario').prop('disabled', false);
+
                         dataNiveles = '<div class="col-12">' +
                             '<div class="card bg-light">' +
                             '<div class="card-body p-0">' +
@@ -835,12 +838,15 @@
                         dataIndicador += dataDescripcion;
 
                     } else {
+                        $('#fichaMedicion').prop('disabled', true);
+                        $('#evidenciasHorario').prop('disabled', true);
+
                         dataNiveles = '<div class="col-12">' +
                             '<div class="card bg-light">' +
                             '<div class="card-body">' +
-                            '<div class="card-title"> Aún no se han asignado niveles a este indicador' +
+                            '<div class="card-title"> Aún no se ha registrado la rúbrica de este indicador' +
                             '</div>' +
-                            '<p class="card-text"> Por favor agregar los correspondientes en la pestaña "Resultados"' +
+                            '<p class="card-text"> Por favor registrar la rúbrica en la pestaña "Resultados"' +
                             '</p>' +
                             '</div>' +
                             '</div>' +
