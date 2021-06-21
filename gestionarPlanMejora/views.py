@@ -82,18 +82,20 @@ def editarActividad(request, pk):
     if request.POST:
         actividad = ActividadMejora.objects.get(pk=pk)
         actividad.codigo = request.POST['codigo']
-        actividad.descripcion = request.POST['descripcion']
+        # actividad.descripcion = request.POST['descripcion']
         idEstado = request.POST['cboEstado']
         nuevoEstado = EstadoActividad.objects.get(pk=idEstado)
         actividad.estado = nuevoEstado
         if request.POST.getlist('choices-multiple-remove-button-2'):
-            actividad.groups.clear()
+            hola = ResponsableMejora.objects.filter(actividad=actividad).delete()
+            print("----------------------------------")
             responsables = request.POST.getlist('choices-multiple-remove-button-2')
+            print(responsables)
             for val in responsables:
                 user = User.objects.get(id=val)
                 ResponsableMejora.objects.create(actividad=actividad, responsable=user)
             actividad.save()
-        return redirect('')  # regresa a la pagina anterior
+        return redirect('editarPropuesta', pk)  # regresa a la pagina anterior
 
     actividad = ActividadMejora.objects.get(pk=pk)
     propuestapk = actividad.propuestaMejora_id
@@ -170,7 +172,6 @@ def editarEvidencia(request, pk):
 
 
 def editarPropuesta(request, pk):
-
     propuestaMejora = PropuestaMejora.objects.get(pk=pk)
     listaActividades = ActividadMejora.objects.filter(propuestaMejora_id=pk, activo=1)
     if request.POST:
