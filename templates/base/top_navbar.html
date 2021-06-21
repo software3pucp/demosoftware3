@@ -11,27 +11,29 @@
         <li class="nav-item dropdown dropdown-on-hover"><a class="nav-link pr-0" id="navbarDropdownUser" href="#"
                                                            role="button" data-toggle="dropdown" aria-haspopup="true"
                                                            aria-expanded="false">
-            <div class="avatar avatar-xl">
-                <img class="rounded-circle" src="{{ media_path }}{{ request.user.photo }}" alt=""/>
+            <div class="avatar avatar-xl mt-1">
+                {% if user.photo.name %}
+                    <img class="rounded-circle" src="{{ media_path }}{{ request.user.photo }}" alt=""/>
+                {% else %}
+                    <img class="rounded-circle"
+                         src="{% static 'img/team/avatar.png' %}"
+                         alt=""/>
+                {% endif %}
             </div>
         </a>
             <div class="dropdown-menu dropdown-menu-right py-0" aria-labelledby="navbarDropdownUser">
                 <div class="bg-white rounded-soft py-2">
-                    <a class="dropdown-item font-weight-bold text-warning" href="#!"><span
-                            class="fas fa-crown mr-1"></span><span>Go Pro</span></a>
+                    {#                    <a class="dropdown-item" href="#!">Set status</a>#}
+                    <a class="dropdown-item" href="pages/profile.html">Perfil</a>
+                    {#                    <a class="dropdown-item" href="#!">Feedback</a>#}
 
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#!">Set status</a>
-                    <a class="dropdown-item" href="pages/profile.html">Profile &amp; account</a>
-                    <a class="dropdown-item" href="#!">Feedback</a>
-
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="pages/settings.html">Settings</a>
-                    <a class="dropdown-item" href="authentication/basic/logout.html">Logout</a>
+                    <a class="dropdown-item" href="pages/settings.html">Ajustes</a>
+                    <a class="dropdown-item" href="authentication/basic/logout.html">Cerrar Sesión</a>
                 </div>
             </div>
         </li>
     </ul>
 </nav>
-<hr style="margin-top: 0.3rem; margin-bottom: 30px">
+<hr style="margin-top: 0rem; margin-bottom: 30px">
 
