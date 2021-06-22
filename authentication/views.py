@@ -121,6 +121,8 @@ def select_rol(request):
     if request.POST:
         # -- elegir roles
         pk = request.POST['rol-actual']
+        print("======================================")
+        print(pk)
         aux = Group.objects.filter(pk=pk)
         user.rol_actual = aux[0].name
         user.save()

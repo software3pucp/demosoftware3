@@ -7,6 +7,11 @@
         background-color: #ff00fe;
         text-align: right;
     }
+
+    .btn-secondary {
+        color: #ff00fe;
+    !important;
+    }
 </style>
 {% block extrastyle %}
 {% endblock %}
@@ -35,7 +40,8 @@
                                         <div class="z-index-1 position-relative"><a
                                                 class="text-white mb-4 text-sans-serif font-weight-extra-bold fs-4 d-inline-block"
                                                 href="{% url 'home' %}">APOLO</a>
-                                            <p class="text-white opacity-75">Selecciona el rol con el que desea ingresar,
+                                            <p class="text-white opacity-75">Selecciona el rol con el que desea
+                                                ingresar,
                                                 dependiendo del rol se habilitarán diferentes permisos dentro de la
                                                 plataforma</p>
                                         </div>
@@ -49,22 +55,27 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div class="col-md-7 d-flex flex-center">
-                                    <div class="p-4 p-md-5 flex-grow-1">
+                                <div class="col-md-7 d-flex align-items-center">
+                                    <div class="p-4 p-md-5 flex-grow-1 align-items-center">
                                         <h3 class="mb-3">Deseo ingresar como: </h3>
+
+
                                         <form method="POST" action="{% url 'selectrol' %}">
+
+
                                             {% csrf_token %}
+                                            <div class="align-items-center text-left">
 
-                                            <div class="form-group">
-                                                <select class="form-control" id="rol-actual" name="rol-actual">
-                                                    {% for x,y in roles %}
-                                                    <option value={{ x }} selected>{{ y }}</option>
+                                                {% for x,y in roles %}
+
+                                                    <div class="custom-control custom-radio">
+                                                        <input class="custom-control-input" id="{{ x }}"
+                                                               type="radio" name="rol-actual" value="{{ x }}">
+                                                        <label class="custom-control-label" for="{{ x }}">{{y}}</label>
+                                                    </div>
+
                                                 {% endfor %}
-
-                                                </select>
                                             </div>
-
-
                                             <div class="form-group">
                                                 <button class="btn btn-primary btn-block mt-3" type="submit"
                                                         name="submit">
