@@ -52,13 +52,14 @@
                                 <div class="col-md-7 d-flex flex-center">
                                     <div class="p-4 p-md-5 flex-grow-1">
                                         <h3 class="mb-3">Deseo ingresar como: </h3>
-                                        <form method="POST" action="{% url 'login' %}">
+                                        <form method="POST" action="{% url 'selectrol' %}">
                                             {% csrf_token %}
 
                                             <div class="form-group">
-                                                <select class="form-control" id="exampleFormControlSelect1">
-                                                    <option>Administrador</option>
-                                                    <option>Docente</option>
+                                                <select class="form-control" id="rol-actual" name="rol-actual">
+                                                    {% for x,y in roles %}
+                                                    <option value={{ x }} selected>{{ y }}</option>
+                                                {% endfor %}
 
                                                 </select>
                                             </div>
