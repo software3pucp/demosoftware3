@@ -13,6 +13,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import Group
 
+
 def Show(request):
     media_path = MEDIA_URL
     context = {
@@ -33,12 +34,12 @@ def Register(request):
                                         username=request.POST['card-correo'], code=request.POST['card-codigo'],
                                         email=request.POST['card-correo'], password=request.POST['card-password'],
                                         photo=photo, is_active=True)
-        roles=request.POST.getlist('choices-multiple-remove-button')
+        roles = request.POST.getlist('choices-multiple-remove-button')
         for val in roles:
             group = Group.objects.get(id=val)
             group.user_set.add(user)
         return redirect(Show)
-    return render(request, 'authentication/User_Add.html',context)
+    return render(request, 'authentication/User_Add.html', context)
 
 
 def Edit(request, pk):
@@ -85,18 +86,24 @@ def Delete(request, pk):
 
 
 def sing_in(request):
-
     if request.POST:
         username = request.POST['card-email']
         password = request.POST['card-password']
-        user = authenticate(request,username=username,password=password)
+        user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request,user)
+            login(request, user)
             return redirect(select_rol)
         else:
-            return render(request,'authentication/login.html')
+            print('Dentro de usuario no registrado')
+            error_message = "Ha surgido un error en el inicio de sesión en usuario y/o contraseña. "+ \
+                            "Si no cuenta con un usuario, comuníquese con el administrador"
+            context = {
+                'error_message': error_message,
+            }
+            return render(request, 'authentication/login.html', context)
 
-    return render(request,'authentication/login.html')
+    return render(request, 'authentication/login.html')
+
 
 def sing_out(request):
     user = User.objects.get(pk=request.user.pk)
@@ -105,29 +112,34 @@ def sing_out(request):
     logout(request)
     return redirect(sing_in)
 
+
 def select_rol(request):
     user = User.objects.get(pk=request.user.pk)
     context = {
         'roles': list(user.groups.values_list())
     }
     if request.POST:
-        #-- elegir roles
+        # -- elegir roles
         pk = request.POST['rol-actual']
         aux = Group.objects.filter(pk=pk)
         user.rol_actual = aux[0].name
         user.save()
         return redirect(listarFacultad)
-    return render(request, 'authentication/Select_rol.html',context)
+    return render(request, 'authentication/Select_rol.html', context)
+
 
 def validation(request):
     return redirect(listarFacultad)
+
 
 def social_sign_in(request):
     print("Entra a social_sign_in:")
     print(request.POST)
     email = request.POST['email']
+
     try:
         user = User.objects.get(username=email)
+
     except User.DoesNotExist:
         print("Usuario no existe")
         url = reverse('login')
