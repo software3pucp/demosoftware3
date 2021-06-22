@@ -115,6 +115,27 @@
         </div>
     {% endif %}
 
+
+    <div class="modal fade" id="errorModal1" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title" id="errorModalLabel">¡Ocurrió un error!</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Cerrar" onclick="redirectLogin()"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div id="error_message" class="modal-body bg-soft-danger">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal" onclick="redirectLogin()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 {% endblock %}
 
 
@@ -153,7 +174,10 @@
                 success: function (response) {
                     console.log("Exito Ajax de login en social ");
                     console.log(response)
-                    window.location.replace(document.location.origin + response.url);
+                    if (response["noRegistrado"]) {
+                        mostrarError(response["error_message"]);
+                    }
+                    {% comment %}window.location.replace(document.location.origin + response.url);{% endcomment %}
                 },
                 error: function (response) {
                     // alert the error if any error occured
@@ -162,20 +186,21 @@
             });
 
         }
-    </script>
 
-    {% if error %}
-        <script>
-            $(document).ready(function () {
-                console.log('hola');
-                $('#message').text('{{ error }}');
-                $('#signinError').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                })
-                $('#signinError').modal('show');
-            });
-        </script>
-    {% endif %}
+        function mostrarError(error_message) {
+            console.log(error_message);
+            data = '';
+            data += (
+                '<p>' + error_message + '</p>'
+            )
+            $("#error_message").html(data);
+            $("#errorModal1").modal({backdrop: 'static', keyboard: false, show: true});
+        }
+
+        function redirectLogin(){
+            document.location.href = "../../users/login/";
+        }
+
+    </script>
 
 {% endblock %}

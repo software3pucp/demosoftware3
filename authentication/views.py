@@ -144,10 +144,14 @@ def social_sign_in(request):
 
     except User.DoesNotExist:
         print("Usuario no existe")
+        noRegistrado =True
+        error_message = "Ha surgido un error en el inicio de sesión en usuario y/o contraseña. " + \
+                        "Si no cuenta con un usuario, comuníquese con el administrador"
         url = reverse('login')
-        return JsonResponse({"url": url}, safe=False)
+        return JsonResponse({"url": url, "noRegistrado":noRegistrado, "error_message":error_message}, safe=False)
     else:
         print(user.password)
         login(request, user)
+        noRegistrado = False
         url = reverse('listarFacultad')
-        return JsonResponse({"url": url}, safe=False)
+        return JsonResponse({"url": url, "noRegistrado":noRegistrado}, safe=False)
