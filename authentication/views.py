@@ -120,13 +120,13 @@ def select_rol(request):
     }
     if request.POST:
         # -- elegir roles
-        pk = request.POST['rol-actual']
+        pk = request.POST['rol_actual']
         print("======================================")
         print(pk)
         aux = Group.objects.filter(pk=pk)
         user.rol_actual = aux[0].name
         user.save()
-        return redirect(listarFacultad)
+        return JsonResponse({}, status=200)
     return render(request, 'authentication/Select_Rol.html', context)
 
 

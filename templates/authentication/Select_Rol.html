@@ -1,6 +1,7 @@
 {#Heredar toda la estructura de base#}
 {% extends 'authentication/base/login_base.html' %}
 {% load static %}
+{% block extrastyle %}
 <style>
     .btn btn-primary btn-esp {
         color: #ff00fe;
@@ -12,8 +13,102 @@
         color: #ff00fe;
     !important;
     }
+
+    body {
+        letter-spacing: 0.7px;
+        background-color: #eee
+    }
+
+    .container {
+        margin-top: 100px;
+        margin-bottom: 100px
+    }
+
+    p {
+        font-size: 14px
+    }
+
+    .btn-primary {
+        background-color: #42A5F5 !important;
+        border-color: #42A5F5 !important
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+        color: #42A5F5
+    }
+
+    .pic {
+        margin-top: 30px;
+        margin-bottom: 20px
+    }
+
+    .card-block {
+        width: 200px;
+        border: 1px solid lightgrey;
+        border-radius: 5px !important;
+        background-color: #FAFAFA;
+        margin-bottom: 30px
+    }
+
+    .card-body.show {
+        display: block
+    }
+
+    .card {
+        padding-bottom: 20px;
+        box-shadow: 2px 2px 6px 0px rgb(200, 167, 216)
+    }
+
+    .radio {
+        display: inline-block;
+        border-radius: 0;
+        box-sizing: border-box;
+        cursor: pointer;
+        color: #000;
+        font-weight: 500;
+        -webkit-filter: grayscale(100%);
+        -moz-filter: grayscale(100%);
+        -o-filter: grayscale(100%);
+        -ms-filter: grayscale(100%);
+        filter: grayscale(100%)
+    }
+
+    .radio:hover {
+        box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1)
+    }
+
+    .radio.selected {
+        box-shadow: 0px 8px 16px 0px #EEEEEE;
+        -webkit-filter: grayscale(0%);
+        -moz-filter: grayscale(0%);
+        -o-filter: grayscale(0%);
+        -ms-filter: grayscale(0%);
+        filter: grayscale(0%)
+    }
+
+    .selected {
+        background-color: #E0F2F1
+    }
+
+    .a {
+        justify-content: center !important
+    }
+
+    .btn {
+        border-radius: 0px
+    }
+
+    .btn,
+    .btn:focus,
+    .btn:active {
+        outline: none !important;
+        box-shadow: none !important
+    }
+
+
 </style>
-{% block extrastyle %}
+
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
@@ -60,30 +155,43 @@
                                         <h3 class="mb-3">Deseo ingresar como: </h3>
 
 
-                                        <form method="POST" action="{% url 'selectrol' %}">
+                                        <div class="container">
+                                            <div class="row justify-content-center">
+                                                <div class="col-md-9">
+                                                    <div class="card text-center justify-content-center shaodw-lg card-1 border-0 bg-white px-sm-2">
+                                                        <div class="card-body show ">
+
+                                                            {% for x,y in roles %}
+                                                            <div class="radio-group row justify-content-between px-3 text-center a">
+                                                                <div class="col-auto mr-sm-2 mx-1 card-block py-0 text-center radio " data-value="{{ x }}">
+                                                                    <div class="flex-row">
+                                                                        <div class="col">
+                                                                            <div class="pic"><img
+                                                                                    class="irc_mut img-fluid"
+                                                                                    src="https://i.imgur.com/6r0XCez.png"
+                                                                                    width="100" height="100"></div>
+                                                                            <p>{{ y }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                             {% endfor %}
 
 
-                                            {% csrf_token %}
-                                            <div class="align-items-center text-left">
-
-                                                {% for x,y in roles %}
-
-                                                    <div class="custom-control custom-radio">
-                                                        <input class="custom-control-input" id="{{ x }}"
-                                                               type="radio" name="rol-actual" value="{{ x }}">
-                                                        <label class="custom-control-label" for="{{ x }}">{{y}}</label>
+                                                            <div class="row justify-content-between">
+                                                                <div class="col-auto">
+                                                                    <button type="button" class="btn btn-primary" onclick="ingresar_rol()">
+                                                                        Ingresar<span class="ml-2"><i
+                                                                            class="fa fa-angle-right"
+                                                                            aria-hidden="true"></i></span></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-
-                                                {% endfor %}
+                                                </div>
                                             </div>
-                                            <div class="form-group">
-                                                <button class="btn btn-primary btn-block mt-3" type="submit"
-                                                        name="submit">
-                                                    Ingresar
-                                                </button>
-                                            </div>
-
-                                        </form>
+                                        </div>
 
 
                                     </div>
@@ -102,4 +210,39 @@
 {#Bloque de extra JS -> JS#}
 
 {% block extrajs %}
+    <script>
+        $(document).ready(function () {
+            $('.radio-group .radio').click(function () {
+                $('.selected .fa').removeClass('fa-check');
+                $('.radio').removeClass('selected');
+                $(this).addClass('selected');
+            });
+        });
+
+        function ingresar_rol() {
+            var valor = $('.selected').attr('data-value');
+
+            console.log(valor)
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'selectrol' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    rol_actual: valor,
+                },
+                success: function (response) {
+                    console.log(valor)
+                    //funciona
+                    //definir a que pagina ira cada usuario
+                    document.location.href = "../../facultades/listar/";
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+
+        }
+
+    </script>
 {% endblock %}
