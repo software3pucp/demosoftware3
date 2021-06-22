@@ -9,6 +9,7 @@ from django.conf import settings
 from demosoftware3.settings import MEDIA_URL
 from gestionarEvaluacion.models import RespuestaEvaluacion
 from gestionarHorario.models import Horario
+from gestionarEspecialidad.models import Especialidad
 from gestionarIndicadores.models import Indicador
 from gestionarRubrica.models import Rubrica
 from gestionarEvidencias.models import EvidenciasxHorario
@@ -67,7 +68,8 @@ def agregarAlumno(request):
     niveles = Nivel.objects.filter(estado="1")
     nuevoAlumno = RespuestaEvaluacion.objects.create(nombreAlumno=request.POST["nombreAlumno"],
                                                      codigoAlumno=request.POST["codigoAlumno"],
-                                                     horario_id=request.POST["horario"])
+                                                     horario_id=request.POST["horario"],
+                                                     indicador_id=request.POST["indicador"])
     ser_instance = serializers.serialize('json', [nuevoAlumno,])
     ser_instance2 = serializers.serialize('json', list(niveles), fields=('id', 'nombre', 'valor', 'estado'))
     return JsonResponse({"nuevoAlumno": ser_instance,"niveles": ser_instance2 }, status=200)
@@ -108,14 +110,15 @@ def muestraRubrica(request):
 
 def listarAlumno(request):
     filtrado = request.POST["filtrado"]
-    niveles = Nivel.objects.filter(estado="1")
+    especialidad = Especialidad.objects.get(pk=request.POST["especialidadSeleccionada"])
+    niveles = Nivel.objects.filter(estado="1",especialidad_id=especialidad.pk)
     if (filtrado!=""):
         if (filtrado.isnumeric()):
-            listaAlumno = reversed(RespuestaEvaluacion.objects.filter(codigoAlumno=filtrado, horario_id = request.POST["horarioSeleccionado"], estado=1))
+            listaAlumno = reversed(RespuestaEvaluacion.objects.filter(codigoAlumno=filtrado, horario_id = request.POST["horarioSeleccionado"],indicador_id=request.POST["indicadorSeleccionado"], estado=1))
         else:
-            listaAlumno = reversed(RespuestaEvaluacion.objects.filter(nombreAlumno__contains=filtrado, horario_id=request.POST["horarioSeleccionado"], estado=1))
+            listaAlumno = reversed(RespuestaEvaluacion.objects.filter(nombreAlumno__contains=filtrado, horario_id=request.POST["horarioSeleccionado"],indicador_id=request.POST["indicadorSeleccionado"], estado=1))
     else:
-        listaAlumno = reversed(RespuestaEvaluacion.objects.filter(horario_id=request.POST["horarioSeleccionado"], estado=1))
+        listaAlumno = reversed(RespuestaEvaluacion.objects.filter(horario_id=request.POST["horarioSeleccionado"],indicador_id=request.POST["indicadorSeleccionado"], estado=1))
 
     ser_instance = serializers.serialize('json', list(listaAlumno),fields=('id', 'nombreAlumno', 'codigoAlumno', 'horario','calificado', 'valorNota','evidencia'))
     ser_instance2 = serializers.serialize('json', list(niveles), fields=('id', 'nombre', 'valor', 'estado'))
@@ -141,7 +144,7 @@ def importarAlumno(request):
         codigo = row[:8]
         nombre = row[9:-1]
         if(codigo!=""):
-            RespuestaEvaluacion.objects.create(nombreAlumno=nombre,codigoAlumno=codigo,horario_id=request.POST["horariopk"])
+            RespuestaEvaluacion.objects.create(nombreAlumno=nombre,codigoAlumno=codigo,horario_id=request.POST["horariopk"], indicador_id=request.POST["indicador"])
     return JsonResponse({}, status=200)
 
 def subirEvidencia(request):

@@ -398,7 +398,6 @@
 
         $(document).ready(function () {
             muestraRubrica();
-            listarAlumno();
             $(document).on('change', '.btn-file :file', function () {
                 var input = $(this),
                     label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
@@ -449,6 +448,7 @@
                 fd.append('horariopk', $("#cboHorario").val());
                 fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
                 fd.append('nombre_archivo', $("#nombre_archivo").val());
+                fd.append('indicador', $("#cboIndicador").val());
 
                 $.ajax({
                     type: 'POST',
@@ -665,7 +665,8 @@
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     nombreAlumno: $("#nombreAlumno").val(),
                     codigoAlumno: $("#codigoAlumno").val(),
-                    horario: $("#cboHorario").val()
+                    horario: $("#cboHorario").val(),
+                    indicador: $("#cboIndicador").val()
                 },
                 success: function (response) {
                     listarAlumno();
@@ -685,7 +686,9 @@
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     horarioSeleccionado: $("#cboHorario").val(),
-                    filtrado: $("#textBuscar").val()
+                    especialidadSeleccionada : {{ cursoSeleccionado.especialidad_id }},
+                    filtrado: $("#textBuscar").val(),
+                    indicadorSeleccionado: $("#cboIndicador").val()
                 },
                 success: function (response) {
                     estado = ''
@@ -761,7 +764,7 @@
                         }
                     } else {
                         data += '<th colspan="4">' +
-                            '<p class="m-2 text-center"> No se encontraron alumnos asignados al horario</p>' +
+                            '<p class="m-2 text-center"> No se encontraron alumnos asignados al horario y al indicador seleccionados</p>' +
                             '</th>';
                     }
                     $("#tablaAlumno").html(data);
@@ -856,6 +859,7 @@
                     }
 
                     $("#contenidoRubrica").html(dataIndicador);
+                    listarAlumno();
                 },
                 error: function (response) {
                     // alert the error if any error occured

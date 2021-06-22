@@ -14,6 +14,7 @@ class RespuestaEvaluacion(models.Model):
     descripcionP = models.CharField(max_length=200,null=False,blank=True)
     valorNota = models.IntegerField(null=True)
     rubrica = models.ForeignKey(Rubrica,on_delete=models.RESTRICT, null=True, blank=True)
+    indicador = models.ForeignKey(Indicador,on_delete=models.RESTRICT, null=True, blank=True)
     estado = models.CharField(max_length=2,default=1)
     calificado = models.CharField(max_length=2,null=True, default=0)
     evidencia = models.CharField(max_length=2, null=True, default=0)
