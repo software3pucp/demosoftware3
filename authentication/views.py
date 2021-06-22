@@ -125,7 +125,7 @@ def select_rol(request):
         user.rol_actual = aux[0].name
         user.save()
         return redirect(listarFacultad)
-    return render(request, 'authentication/Select_rol.html', context)
+    return render(request, 'authentication/Select_Rol.html', context)
 
 
 def validation(request):
