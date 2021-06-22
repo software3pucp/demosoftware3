@@ -1,4 +1,9 @@
 {% extends 'base/base.html' %}
+    <style>
+       .fa-plus {
+        color: #FFFFFF !important;
+        }
+    </style>
 {% load static %}
 
 {% block body %}
@@ -12,12 +17,11 @@
                 </div>
                 <div class="col-8 col-sm-auto ml-auto text-right pl-0">
                     <div id="dashboard-actions">
-                        <a href="{% url 'user' %}" class="btn btn-falcon-default btn-sm" type="button"><span
-                                class="fas fa-plus"
-                                data-fa-transform="shrink-3 down-2"></span><span
-                                class="d-none d-sm-inline-block ml-1">Agregar</span></a>
+                        <a href="{% url 'user' %}" class="btn btn-primary mr-1 mb-1" type="button">
+                            <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span><span>Agregar</span></a>
                     </div>
                 </div>
+
             </div>
         </div>
         <div class="card-body p-0">

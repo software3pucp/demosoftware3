@@ -58,7 +58,7 @@ def Edit(request, pk):
         user.first_name = newname
         user.code = newcode
         user.email = newemail
-        user.password = newpassword
+        user.set_password(newpassword)
         user.save()
         if request.POST.getlist('choices-multiple-remove-button'):
             user.groups.clear()
