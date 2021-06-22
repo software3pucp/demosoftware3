@@ -1,4 +1,5 @@
-[{
+[
+  {
     "model": "auth.group",
     "pk": 1,
     "fields": {
@@ -12,7 +13,7 @@
       "name": "Asistente de acreditación"
     }
   },
-   {
+  {
     "model": "auth.group",
     "pk": 3,
     "fields": {
@@ -221,7 +222,7 @@
       "estado": "1"
     }
   },
-    {
+  {
     "model": "gestionarEspecialidad.especialidad",
     "pk": 5,
     "fields": {
@@ -265,7 +266,7 @@
       "estado": "1"
     }
   },
-    {
+  {
     "model": "gestionarCurso.curso",
     "pk": 9,
     "fields": {
@@ -403,6 +404,30 @@
       "responsable": "1",
       "especialidad": 8,
       "estado": "1"
+    }
+  },
+  {
+    "model": "gestionarPlanMejora.estadoactividad",
+    "pk": 1,
+    "fields": {
+      "nombre": "Registrado",
+      "estado": 1
+    }
+  },
+  {
+    "model": "gestionarPlanMejora.estadoactividad",
+    "pk": 2,
+    "fields": {
+      "nombre": "Iniciado",
+      "estado": 2
+    }
+  },
+  {
+    "model": "gestionarPlanMejora.estadoactividad",
+    "pk": 3,
+    "fields": {
+      "nombre": "Exitoso",
+      "estado": 3
     }
   }
 ]
