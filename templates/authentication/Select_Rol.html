@@ -20,8 +20,7 @@
     }
 
     .container {
-        margin-top: 100px;
-        margin-bottom: 100px
+
     }
 
     p {
@@ -45,6 +44,7 @@
 
     .card-block {
         width: 200px;
+        min-height: 210px;
         border: 1px solid lightgrey;
         border-radius: 5px !important;
         background-color: #FAFAFA;
@@ -56,7 +56,6 @@
     }
 
     .card {
-        padding-bottom: 20px;
         box-shadow: 2px 2px 6px 0px rgb(200, 167, 216)
     }
 
@@ -117,7 +116,7 @@
     <main class="main" id="top">
         <div class="container-fluid">
             <div class="row min-vh-100 flex-center no-gutters">
-                <div class="col-lg-8 col-xxl-5 py-3">
+                <div class="">
                     <img class="bg-auth-circle-shape" src="../../static/img/illustrations/bg-shape.png" alt=""
                          width="250">
                     <img class="bg-auth-circle-shape-2" src="../../static/img/illustrations/shape-1.png"
@@ -155,15 +154,12 @@
                                         <h3 class="mb-3">Deseo ingresar como: </h3>
 
 
-                                        <div class="container">
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-9">
-                                                    <div class="card text-center justify-content-center shaodw-lg card-1 border-0 bg-white px-sm-2">
-                                                        <div class="card-body show ">
+                                        <div class="container row">
+
 
                                                             {% for x,y in roles %}
-                                                            <div class="radio-group row justify-content-between px-3 text-center a">
-                                                                <div class="col-auto mr-sm-2 mx-1 card-block py-0 text-center radio " data-value="{{ x }}">
+                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 radio-group justify-content-between text-center">
+                                                                <div class="card-block text-center radio " data-value="{{ x }}">
                                                                     <div class="flex-row">
                                                                         <div class="col">
                                                                             <div class="pic"><img
@@ -179,7 +175,10 @@
                                                              {% endfor %}
 
 
-                                                            <div class="row justify-content-between">
+
+
+                                        </div>
+                                        <div class="row justify-content-between">
                                                                 <div class="col-auto">
                                                                     <button type="button" class="btn btn-primary" onclick="ingresar_rol()">
                                                                         Ingresar<span class="ml-2"><i
@@ -187,12 +186,6 @@
                                                                             aria-hidden="true"></i></span></button>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
 
                                     </div>
                                 </div>
