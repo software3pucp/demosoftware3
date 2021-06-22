@@ -92,6 +92,13 @@ def sing_in(request):
         user = authenticate(request,username=username,password=password)
         if user is not None:
             login(request,user)
+            #elegir roles
+            aux = user.groups.filter(pk=1)
+            #print(aux[0].pk)
+            user.rol_actual = aux[0].name
+            user.save()
+            print(request.user.rol_actual)
+            #print(list(request.user.groups.values_list()))
             return redirect(listarFacultad)
         else:
             return render(request,'authentication/login.html')
@@ -99,7 +106,13 @@ def sing_in(request):
     return render(request,'authentication/login.html')
 
 def sing_out(request):
+    print("Saliendo")
+    user = User.objects.get(pk=request.user.pk)
+    print(request.user.rol_actual)
+    user.rol_actual = None
+    user.save()
     logout(request)
+    print("---------------------")
     return redirect(sing_in)
 
 def select_rol(request):

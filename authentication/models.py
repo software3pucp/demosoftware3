@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 import unicodedata
-
+from django.contrib.auth.models import User
 
 # Create your models here.
 def remove_accents(input_str):
@@ -22,3 +22,5 @@ def upload_location(instance, filename):
 class User(AbstractUser):
     code = models.CharField(max_length=8, default='11111111')
     photo = models.ImageField(null=True, blank=True, upload_to=upload_location)
+    rol_actual = models.CharField(max_length=50, default=None, null=True, blank=True)
+
