@@ -120,7 +120,7 @@ def listarAlumno(request):
     niveles = Nivel.objects.filter(estado="1",especialidad_id=especialidad.pk)
     if (filtrado!=""):
         if (filtrado.isnumeric()):
-            listaAlumno = reversed(RespuestaEvaluacion.objects.filter(codigoAlumno=filtrado, horario_id = request.POST["horarioSeleccionado"],indicador_id=request.POST["indicadorSeleccionado"], estado=1))
+            listaAlumno = reversed(RespuestaEvaluacion.objects.filter(codigoAlumno__contains=filtrado, horario_id = request.POST["horarioSeleccionado"],indicador_id=request.POST["indicadorSeleccionado"], estado=1))
         else:
             listaAlumno = reversed(RespuestaEvaluacion.objects.filter(nombreAlumno__contains=filtrado, horario_id=request.POST["horarioSeleccionado"],indicador_id=request.POST["indicadorSeleccionado"], estado=1))
     else:
