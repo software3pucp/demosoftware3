@@ -19,7 +19,8 @@ class RespuestaEvaluacion(models.Model):
     calificado = models.CharField(max_length=2,null=True, default=0)
     evidencia = models.CharField(max_length=2, null=True, default=0)
     archivo = models.FileField(null=True, blank=True, upload_to='archive/')
-
+    class Meta:
+        ordering = ['codigoAlumno']
 
 class MedicionDeIndicador(models.Model):
     codigo = models.CharField(max_length=10, default='', null=True, blank=True)
@@ -27,5 +28,8 @@ class MedicionDeIndicador(models.Model):
     semestre = models.ForeignKey(Semestre, on_delete=models.RESTRICT,null=True, blank=True)
     curso = models.ForeignKey(Curso, on_delete=models.RESTRICT,null=True, blank=True)
     alumno = models.ForeignKey(RespuestaEvaluacion, on_delete=models.RESTRICT,null=True,blank=True)
+
+    class Meta:
+        ordering = ['codigo']
 
 

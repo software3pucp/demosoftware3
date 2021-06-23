@@ -17,6 +17,7 @@ from gestionarNiveles.models import Nivel
 from gestionarCurso.models import Curso
 from authentication.models import User
 from gestionarResultados.models import ResultadoPUCP
+from gestionarPlanMedicion.models import PlanMedicionCurso
 from django.contrib.auth.decorators import login_required
 # import xlrd libreria para importar Alumnos
 @login_required
@@ -24,15 +25,20 @@ def evaluar(request,pk):
     media_path = MEDIA_URL
     listaAlumno = reversed(RespuestaEvaluacion.objects.filter(estado=1))
     cursoSeleccionado = Curso.objects.get(pk=pk)
-    listaHorario= Horario.objects.filter(curso_id=pk) #listaDeHorario asociado a un curso
+    plan = PlanMedicionCurso.objects.get(curso=cursoSeleccionado)
+    horarios = plan.horario.all()
+   # listaHorario= Horario.objects.filter(curso_id=pk) #listaDeHorario asociado a un curso
     especialidadPk = cursoSeleccionado.especialidad_id
     resultado = list(ResultadoPUCP.objects.filter(especialidad_id=especialidadPk))
 
     if resultado:
-        listaIndicador = Indicador.objects.filter(resultado_id=resultado[0].id ,estado=1)
+        indicadores = plan.indicador.all()
+        listaIndicador = list(indicadores)
+        #listaIndicador = Indicador.objects.filter(resultado_id=resultado[0].id ,estado=1)
     else:
         listaIndicador = []
-    listaHorarios = list(Horario.objects.filter(curso_id=pk, estado=1))
+    listaHorarios = list(horarios)
+    #listaHorarios = list(Horario.objects.filter(curso_id=pk, estado=1))
     # listaDocumentos = EvidenciasxHorario.objects.filter(estado=1)
     listaDocumentos = EvidenciasxHorario.objects.none()
     listaNombres = []
@@ -54,7 +60,7 @@ def evaluar(request,pk):
         'listaAlumno': listaAlumno,
         'listaIndicador': listaIndicador,
         'cursoSeleccionado': cursoSeleccionado,
-        'listaHorario': listaHorario,
+        'listaHorario': listaHorarios,
         'listaDocumentos': listaDocumentos,
         'listaNombres': listaNombres,
         'cantidad': cantidad,
