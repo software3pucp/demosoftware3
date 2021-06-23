@@ -6,28 +6,16 @@ from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
 from gestionarNiveles.models import Nivel
 
-@login_required
-def editarNivel(request,pk):
-     if request.POST:
-         pk=request.POST['nivelpk']
-         nivel = Nivel.objects.get(pk=pk)
-         nivel.nombre = request.POST['nombre']
-         nivel.valor = request.POST['valor']
-         nivel.save()
-         return redirect('niveles')
 
-     nivel = Nivel.objects.get(pk=pk)
-     context = {
-         'nivel': nivel,
-     }
-     return render(request, 'gestionarNiveles/editarNivel.html', context)
+
+
+
 @login_required
 def niveles(request):
-
     facultades = Facultad.objects.filter(estado='1')
 
     context = {
-        'facultades':facultades,
+        'facultades': facultades,
     }
     return render(request, 'gestionarNiveles/niveles.html', context)
 
@@ -39,11 +27,22 @@ def obtenerEspecialidades(request):
     data = serializers.serialize("json", especialidades)
     return JsonResponse({"resp": data}, status=200)
 
+
 def listarNiveles(request):
     id_especialidad = request.POST['especialidadpk']
     niveles = Nivel.objects.filter(especialidad_id=id_especialidad, estado='1').order_by('valor')
     ser_instance = serializers.serialize('json', niveles)
     return JsonResponse({"niveles": ser_instance}, status=200)
+
+@login_required
+def editarNivel(request):
+    pk = request.POST['nivelpk']
+    nivel = Nivel.objects.get(pk=pk)
+    nivel.nombre = request.POST['nombreNivelMod']
+    nivel.valor = request.POST['valorNivelMod']
+    nivel.save()
+    return JsonResponse({}, status=200)
+
 
 def eliminarNivel(request):
     id_nivel = request.POST['nivelpk']
@@ -52,9 +51,9 @@ def eliminarNivel(request):
     nivel.save()
     return JsonResponse({}, status=200)
 
-def crearNivel(request):
 
-    id_especialidad= request.POST['especialidadpk']
+def crearNivel(request):
+    id_especialidad = request.POST['especialidadpk']
 
     print(id_especialidad)
     try:

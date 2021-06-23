@@ -9,4 +9,5 @@ urlpatterns = [
     path('editar/<pk>', views.editarNivel, name="editarNivel"),
     path('filtrarEspecialidades/', views.obtenerEspecialidades, name="filtrarEspecialidades"),
     path('eliminarNivel/', views.eliminarNivel, name="eliminarNivel"),
+    path('editarNivel/',views.editarNivel,name='editarNivel'),
 ]
