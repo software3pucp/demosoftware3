@@ -4,6 +4,8 @@ from gestionarEspecialidad.models import Especialidad
 from gestionarCurso.models import Curso
 import unicodedata
 
+from gestionarPlanMedicion.models import PlanMedicionCurso
+
 
 def remove_accents(input_str):
     nfkd_form = unicodedata.normalize('NFKD', input_str)
@@ -24,7 +26,7 @@ def upload_location_archive(instance, filename):
 class Horario(models.Model):
     codigo = models.CharField(max_length=30)
     responsable = models.CharField(max_length=50)
-    curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=True)
+    curso = models.ForeignKey(PlanMedicionCurso, on_delete=models.CASCADE, null=True)
     ESTADOS = [
         ('0', 'Eliminado'),
         ('1', 'Activo'),

@@ -13,6 +13,7 @@ from gestionarPlanMedicion.models import PlanMedicion, PlanMedicionCurso
 from django.contrib.auth.decorators import login_required
 
 from gestionarPlanMejora.models import PlanMejora
+from gestionarResultados.models import PlanResultados
 from gestionarSemestre.models import Semestre
 
 @login_required
@@ -79,7 +80,7 @@ def crearPlanMedicion(request,pk):
     listaCursos = []
     listaEstados = PlanMedicionCurso.ESTADOS[1:]
     listaHorarios = []
-    listaIndicadores = Indicador.objects.filter(estado=1)
+    listaIndicadores = Indicador.objects.filter(resultado__especialidad_id=request.POST['especialidad'], estado=1)
     especialidad = ''
     semestre = ''
     planMedicion = ''
@@ -96,7 +97,7 @@ def crearPlanMedicion(request,pk):
             print('***************************************************************************************************')
             print(request.POST)
             print('***************************************************************************************************')
-            planes = PlanMedicionCurso.objects.filter(curso_id=request.POST['curso'])
+            planes = PlanMedicionCurso.objects.filter(curso_id=request.POST['curso'],planMedicion_id=request.POST['planMedicion'],semestre_id=request.POST['semestre'])
             if len(planes) == 0:
                 PlanMedicionCurso.objects.create(curso_id=request.POST['curso'],planMedicion_id=request.POST['planMedicion'],semestre_id=request.POST['semestre'],estado=request.POST['estado'])
                 plan = PlanMedicionCurso.objects.latest('id')
@@ -217,7 +218,8 @@ def crearHistorico(request, id_especialidad):
     if request.POST:
         codigo = request.POST['codigo']
         nombre = request.POST['nombre']
-        nuevoHistorico = PlanMedicion.objects.create(codigo=codigo,nombre=nombre, especialidad=especialidad,estado='1')
+        planResultado = PlanResultados.objects.get(especialidad_id=especialidad.pk,estado=1)
+        nuevoHistorico = PlanMedicion.objects.create(codigo=codigo,nombre=nombre, especialidad_id=especialidad.pk, estado='1')
         return redirect('historico')
 
     context = {
