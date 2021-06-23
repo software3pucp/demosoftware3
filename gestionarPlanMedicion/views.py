@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import login_required
 from gestionarPlanMejora.models import PlanMejora
 from gestionarResultados.models import PlanResultados
 from gestionarSemestre.models import Semestre
+from authentication.models import User
 
 @login_required
 def listarPlanMedicion(request):
@@ -134,6 +135,7 @@ def crearPlanMedicion(request,pk):
         'insert': insert,
         'flag': flag,
         'errorInsert': errorInsert,
+        'ListaUsuarios': User.objects.all(),
     }
     return render(request,'gestionarPlanMedicion/crearPlanMedicion.html',context)
 

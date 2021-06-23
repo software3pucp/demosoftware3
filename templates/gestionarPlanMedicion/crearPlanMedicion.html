@@ -55,18 +55,11 @@
                 <div class="col">
                     <div class="row d-flex justify-content-between">
                         <label for="exampleFormControlSelect2">Horarios</label>
-                        <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button" onclick="agregarHorario()">
+                        <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button" href="#informacionHorario" data-toggle="modal">
                             <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
                         </button>
                     </div>
 
-                </div>
-
-                <div class="row d-flex justify-content-center">
-                    <div class="col-md-12">
-                        <select id="horarios" name="horarios" class="form-control" id="exampleFormControlSelect2">
-                        </select>
-                    </div>
                 </div>
                 <br>
                 <div id="horariosSelec" class="row d-flex">
@@ -207,62 +200,45 @@
 
                 <div class="modal-body text-white">
                     <div class="row d-flex justify-content-center">
-                        <h5>Información Horario</h5>
-                        <hr class="mb-5" style="background-color: #f9fafd; width: 70%">
+                        <h5 class="text-white">Crear Horario</h5>
+                        <hr class="mb-4" style="background-color: #f9fafd; width: 70%">
                     </div>
 
                     <div class="row d-flex justify-content-start">
-                        <div id="horCodField" class="col-12 pl-5">
-
+                        <div class="col-12 pl-5">
+                            <label for="name">Nombre</label>
+                            <input name="name" class="form-control p-3" id="name" type="text"
+                                   placeholder="Ingrese el nombre del curso" required/>
                         </div>
                     </div>
                     <br>
                     <div class="row d-flex justify-content-start">
                         <div class="col-12 pl-5">
-                            <h5>Descripción:</h5>
+                            <label for="exampleFormControlSelect1">Seleccione responsable(s)</label>
+                            <select name="responsable" class="form-control" id="exampleFormControlSelect1">
+                                {% for responsable in ListaUsuarios %}
+                                    <option value={{ responsable.pk }}>{{ responsable.first_name }} {{ responsable.last_name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
-                    <div class="row d-flex justify-content-start">
-                        <div id="horDescripField" class="col-12 pl-5">
-
-                        </div>
-                    </div>
-                    <div class="row d-flex justify-content-start">
-                        <div class="col-12 pl-5">
-                            <h5>Curso Asociado:</h5>
-                        </div>
-                    </div>
-                    <div class="row d-flex justify-content-start">
-                        <div class="col-12 pl-5">
-                            <p>{{ plan.curso.nombre }}</p>
-                        </div>
-                    </div>
-                    <div class="row d-flex justify-content-start">
-                        <div class="col-12 pl-5">
-                            <h5>Responsables:</h5>
-                        </div>
-                    </div>
-                    {% for responsable in listaResponsables %}
-                        <div class="row d-flex justify-content-start">
-                            <div class="col-12 pl-5">
-                                <div class="card m-1">
-                                    <div class="card-body" style="padding: 1rem">
-                                        <div class="row">
-                                            <div class="col-md-8 p-0 d-flex justify-content-center">
-                                                <a class="btn p-0 " href="#!" data-toggle="modal">{{ responsable }}</a>
-                                            </div>
-                                            <div class="col-md-4 p-0 d-flex justify-content-center"
-                                                 style="border-left: 1px solid">
-                                                <a class="btn p-0" href="#!">
-                                                    <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <br>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-6">
+                            <div class="d-flex justify-content-center mt-3">
+                                <button class="btn btn-secondary" type="button"
+                                        data-dismiss="modal" aria-label="Close">Cancelar
+                                </button>
                             </div>
                         </div>
-                    {% endfor %}
+                        <div class="col-6">
+                            <div class="d-flex justify-content-center mt-3">
+                                <button
+                                        type="button" class="btn btn-primary" onclick="agregarHorario()">Agregar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
