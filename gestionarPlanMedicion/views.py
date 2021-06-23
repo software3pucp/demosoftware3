@@ -116,7 +116,7 @@ def crearPlanMedicion(request,pk):
     else:
         plan = PlanMedicionCurso.objects.get(pk=pk)
         manyInd = plan.indicador.all()
-        manyHor = plan.horario.all()
+        manyHor = []
         indicadoresSelec = manyInd
         horariosSelec = manyHor
 
