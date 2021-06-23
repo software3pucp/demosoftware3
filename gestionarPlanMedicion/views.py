@@ -218,8 +218,8 @@ def crearHistorico(request, id_especialidad):
     if request.POST:
         codigo = request.POST['codigo']
         nombre = request.POST['nombre']
-        planResultado = PlanResultados.objects.get(especialidad_id=especialidad.pk,estado=1)
-        nuevoHistorico = PlanMedicion.objects.create(codigo=codigo,nombre=nombre, especialidad_id=especialidad.pk, estado='1')
+        planResultado = PlanResultados.objects.get(especialidad_id=id_especialidad,estado=1)
+        nuevoHistorico = PlanMedicion.objects.create(codigo=codigo,nombre=nombre, especialidad_id=id_especialidad, planResultados_id=planResultado.pk, estado='1')
         return redirect('historico')
 
     context = {
