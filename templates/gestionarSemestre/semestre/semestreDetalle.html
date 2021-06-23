@@ -147,15 +147,18 @@
                 },
                 success: function (response) {
                    var instance = JSON.parse(response["cursoLista"]);
-                   for(var i=0;i<instance.length;i++){
-                       data = '<div class="card-body fs--1 p-0">'+
+                   var data = '';
+                   var i = 0;
+                   var tam = instance.length;
+                   data += '<div class="card-body fs--1 p-0">'
+                   for(i=0;i<tam;i++){
+                       data +=
                               '<a class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300"' +
                               ' href="/gestionarEvaluacion/evaluar/'+instance[i]['pk'] +'">'+
                               '<div class="notification-body">'+ '<p class="mb-1">'+instance[i]["fields"].nombre+'</p>'+
                               '</div> </a> </div>'
-                       $('#listaCursos').append(data)
-
                    }
+                   $('#listaCursos').html(data);
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);

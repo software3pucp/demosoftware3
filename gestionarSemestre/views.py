@@ -48,21 +48,32 @@ def enviarCursoHorario(request,pk):
     print("Listado de Cursos")
     if request.POST:
         planMedicion = PlanMedicion.objects.filter(especialidad_id=request.POST['especialidad']).filter(semestre=pk)
-        listaCursos = []
+        e = list(planMedicion)
+        for i in range(len(e)):
+            print(e[i].nombre)
+        print(planMedicion)
         try:
-            planMedicionCursos = PlanMedicionCurso.objects.filter(semestre=pk,planMedicion=planMedicion[0].pk)
+            listaCursos = []
+            planMedicionCursos = PlanMedicionCurso.objects.filter(estado=1,semestre=pk,planMedicion=planMedicion[0].pk)
             for planMedicionCurso in planMedicionCursos:
-                curso = Curso.objects.get(pk=planMedicionCurso.curso_id)
-                if curso is not None:
-                    listaCursos.append(curso)
+                curso = Curso.objects.get(pk=planMedicionCurso.curso_id,especialidad_id=request.POST['especialidad'])
+                print(curso.nombre)
+                listaCursos.append(curso)
+                #if curso is not None:
+                #    listaCursos.append(curso)
         except:
             print("No existe plan de medicion asociado!!!")
-
+        print("#########")
+        print("Cantidad de cursos:")
+        print(len(listaCursos))
+        for i in range(len(listaCursos)):
+            print(listaCursos[i].nombre)
+        print("#########")
         ser_instance = serializers.serialize('json', listaCursos)
         print(ser_instance)
         return JsonResponse({"cursoLista": ser_instance}, status=200)
     semestre = Semestre.objects.get(pk=pk)
-    facultades = Facultad.objects.filter()
+    facultades = Facultad.objects.filter(estado=1)
     context = {
         "semestreSeleccionado": semestre,
         "facultades": facultades,
