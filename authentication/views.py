@@ -43,6 +43,8 @@ def Register(request):
 
 
 def Edit(request, pk):
+    flag1= False
+    flag2= False
     media_path = MEDIA_URL
     user = User.objects.get(pk=pk)
     print(request.POST)
@@ -57,14 +59,24 @@ def Edit(request, pk):
 
         user.first_name = newname
         user.code = newcode
-        user.email = newemail
+        if user.email != newemail:
+            flag1 = True
+            user.email = newemail
+            user.username = newemail
+
         if newpassword != '':
+            flag2 = True
             user.set_password(newpassword)
-            username =request.user.username
+
+        if user.pk == request.user.pk and flag1:
+            current_user = user.username
+
+        if user.pk == request.user.pk and flag2:
+            current_contra = newpassword
 
         user.save()
-        if newpassword != '':
-            user = authenticate(request, username=username, password=newpassword)
+        if user.pk == request.user.pk and (flag1 or flag2):
+            user = authenticate(request, username=current_user, password=current_contra)
             login(request, user)
 
         if request.POST.getlist('choices-multiple-remove-button'):
