@@ -175,6 +175,73 @@
                 </li>
                 {% endif %}
 
+                {% if request.user.rol_actual == 'Coordinador de facultad' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'listarSemestre' %}">
+                        <div class="d-flex align-items-center">
+                        <span class="nav-link-icon">
+                            <span class="fas fa-home"></span>
+                        </span>
+                            <span class="nav-link-text">
+                            Semestres
+                        </span>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'planDeResultado' %}">
+                        <div class="d-flex align-items-center">
+                        <span class="nav-link-icon">
+                            <span class="fas fa-poll"></span>
+                        </span>
+                            <span class="nav-link-text">
+                            Resultados
+                        </span>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <div class="d-flex align-items-center">
+                        <span class="nav-link-icon">
+                            <span class="fas fa-home"></span>
+                        </span>
+                            <span class="nav-link-text">
+                            Especialidades
+                        </span>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <div class="d-flex align-items-center">
+                        <span class="nav-link-icon">
+                            <span class="fas fa-file-alt"></span>
+                        </span>
+                            <span class="nav-link-text">
+                            Reportes
+                        </span>
+                        </div>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if request.user.rol_actual == 'Asistente de acreditación' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <div class="d-flex align-items-center">
+                        <span class="nav-link-icon">
+                            <span class="fas fa-cube"></span>
+                        </span>
+                            <span class="nav-link-text">
+                            Objetivos
+                        </span>
+                        </div>
+                    </a>
+                </li>
+
+                {% endif %}
+
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'selectrol' %}">
                         <div class="d-flex align-items-center">
