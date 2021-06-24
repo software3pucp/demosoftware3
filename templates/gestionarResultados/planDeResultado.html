@@ -103,12 +103,11 @@
         }
 
         function redirectEditarHistorico(id_historico) {
-
             document.location.href = "../../gestionarResultados/editarPlanDeResultado/" + id_historico;
         }
 
         function redirectVerPlan(id_plan) {
-            document.location.href = "../../gestionarResultados/resultados/";
+            document.location.href = "../../gestionarResultados/resultados/"+ id_plan;
         }
 
         $("#btnEliminarMedicion").on('click', function () {
@@ -230,11 +229,13 @@
                             '   <div class="card text-white bg-primary">' +
                             '        <div class="card-body">' +
                             '                <div class="row no-gutters">' +
-                            '                    <div class="col-md-1 btn" onclick="redirectVerPlan(' + instance[i]["pk"] + ')"> ' +
+                            '                    <div class="col-md-1 btn"> ' +
                             '                        <h2 class="card-text text-white">' + instance[i]["fields"].codigo + '</h2>' +
                             '                    </div>' +
-                            '                    <div class="col-md-9 border-left border-right p-2 btn text-white" onclick="redirectVerPlan(' + instance[i]["pk"] + ')">' +
-                            '                        <p>' + instance[i]["fields"].descripcion + '</p>')
+                            '                    <div class="col-md-9 border-left border-right p-2 btn text-white" >' +
+                            '                        <p>' + instance[i]["fields"].descripcion + '</p>'+
+                            '                        <button class="btn btn-falcon-primary mr-1 mb-1" onclick="redirectVerPlan(' + instance[i]["pk"] + ')">Ver Plan</button>'
+                        )
                         data += (
                             '                    </div>' +
                             '                    <div class="col-md-2 ">' );
