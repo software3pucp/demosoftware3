@@ -179,7 +179,7 @@ def crearAjax(request):
             for horario in horarios:
                 if horario.codigo == request.POST["codigo"]:
                     return JsonResponse({'status':'false','message':'Horario ya ingresado'}, status=500)
-            Horario.objects.create(codigo=request.POST["codigo"],curso_id=request.POST["planPK"],responsable=request.POST["responsablePk"],estado=1)
+            Horario.objects.create(codigo=request.POST["codigo"],curso_id=request.POST["planPK"],responsable_id=request.POST["responsablePk"],estado=1)
             hor = Horario.objects.latest('id')
             horario = Horario.objects.filter(pk=hor.pk)
             data = serializers.serialize("json", horario)

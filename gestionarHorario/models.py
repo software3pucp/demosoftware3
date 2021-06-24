@@ -2,6 +2,7 @@ from django.db import models
 from gestionarFacultad.models import Facultad
 from gestionarEspecialidad.models import Especialidad
 from gestionarCurso.models import Curso
+from authentication.models import User
 import unicodedata
 
 from gestionarPlanMedicion.models import PlanMedicionCurso
@@ -25,8 +26,8 @@ def upload_location_archive(instance, filename):
 
 class Horario(models.Model):
     codigo = models.CharField(max_length=30)
-    responsable = models.CharField(max_length=50)
-    curso = models.ForeignKey(PlanMedicionCurso, on_delete=models.CASCADE, null=True)
+    responsable = models.ForeignKey(User, on_delete=models.RESTRICT)
+    curso = models.ForeignKey(PlanMedicionCurso, on_delete=models.RESTRICT)
     ESTADOS = [
         ('0', 'Eliminado'),
         ('1', 'Activo'),
