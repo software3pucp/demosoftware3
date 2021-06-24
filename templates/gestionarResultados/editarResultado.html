@@ -18,7 +18,7 @@
                             <h4>Resultado del Estudiante</h4>
                         </div>
                         <div class="col-2 ">
-                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'resultados' %}">
+                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'resultados' id_plan=plan.pk %}">
                                 <div class="fas fa-reply mt-1 mr-2"></div>
                                 <h5>Volver</h5>
                             </a>
@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-md-12 d-flex justify-content-end mt-3">
                     <a class="btn btn-outline-primary m-1" type="button"
-                       href="{% url 'resultados' %}">Cancelar</a>
+                       href="{% url 'resultados' id_plan=plan.pk %}">Cancelar</a>
                     <input type="submit" class="btn btn-primary m-1" value="Guardar">
                 </div>
             </div>

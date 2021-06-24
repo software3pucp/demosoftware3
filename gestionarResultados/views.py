@@ -2,7 +2,6 @@ import json
 from django.core import serializers
 from django.http import JsonResponse
 
-
 from django.shortcuts import render, redirect
 from django.db.models import Q
 # Create your views here.
@@ -16,26 +15,31 @@ from gestionarSemestre.models import Semestre
 
 
 @login_required
-def crearResultado(request, id_especialidad):
-    especialidad = Especialidad.objects.get(pk=id_especialidad)
+def crearResultado(request, id_plan):
+    plan = PlanResultados.objects.get(pk=id_plan)
+    especialidad = plan.especialidad
     if request.POST:
         codigo = request.POST['codigo']
         descripcion = request.POST['descripcion']
-        newResultado = ResultadoPUCP.objects.create(codigo= codigo, descripcion=descripcion, especialidad=especialidad)
-        return redirect('resultados')
+        ResultadoPUCP.objects.create(codigo=codigo, descripcion=descripcion, planResultado=plan)
+        return redirect('resultados', id_plan=id_plan)
 
     context = {
-        'especialidad': especialidad,
+        'plan': plan,
     }
     return render(request, 'gestionarResultados/crearResultado.html', context)
 
+
 @login_required
-def Resultados(request):
-    facultades = Facultad.objects.filter(estado='1')
+def Resultados(request, id_plan):
+    plan = PlanResultados.objects.get(pk=id_plan)
+    especialidad = plan.especialidad
     context = {
-        'facultades': facultades,
+        'plan': plan,
+        'especialidad': especialidad,
     }
     return render(request, 'gestionarResultados/resultados.html', context)
+
 
 def eliminarResultado(request):
     resultadoPk = request.POST['resultadopk']
@@ -51,9 +55,10 @@ def obtenerEspecialidades(request):
     data = serializers.serialize("json", especialidades)
     return JsonResponse({"resp": data}, status=200)
 
+
 def listarResultados(request):
-    id_especialidad = request.POST['especialidad']
-    resultados = ResultadoPUCP.objects.filter(especialidad_id=id_especialidad, estado=1)
+    planpk = request.POST['planpk']
+    resultados = ResultadoPUCP.objects.filter(planResultado_id=planpk, estado=1)
     listaResultados = []
     lista2 = []
     for result in resultados:
@@ -69,12 +74,12 @@ def listarResultados(request):
 
     ser_instance = serializers.serialize('json', resultados)
     ser_instance2 = json.dumps(lista2)
-    #ser_instance2 = serializers.serialize('json', listaResultados)
-    return JsonResponse({"resultados": ser_instance,"tiene_niveles": ser_instance2}, status=200)
+    # ser_instance2 = serializers.serialize('json', listaResultados)
+    return JsonResponse({"resultados": ser_instance, "tiene_niveles": ser_instance2}, status=200)
 
 
 @login_required
-def editarResultado(request,pk):
+def editarResultado(request, pk):
     if request.POST:
         resultado = ResultadoPUCP.objects.get(pk=pk)
         resultado.codigo = request.POST['codigo']
@@ -83,12 +88,15 @@ def editarResultado(request,pk):
         return redirect('resultados')
 
     resultado = ResultadoPUCP.objects.get(pk=pk)
+    plan =resultado.planResultado
     listaIndicares = Indicador.objects.filter(resultado_id=pk, estado=1)
     context = {
         'listaIndicadores': listaIndicares,
-        'resultado':resultado,
+        'resultado': resultado,
+        'plan':plan,
     }
     return render(request, 'gestionarResultados/editarResultado.html', context)
+
 
 @login_required
 def planDeResultado(request):
@@ -98,7 +106,8 @@ def planDeResultado(request):
     }
     return render(request, 'gestionarResultados/planDeResultado.html', context)
 
-def crearPlanResultado(request,id_especialidad):
+
+def crearPlanResultado(request, id_especialidad):
     try:
         especialidad = Especialidad.objects.get(pk=id_especialidad)
     except:
@@ -107,7 +116,8 @@ def crearPlanResultado(request,id_especialidad):
     if request.POST:
         codigo = request.POST['codigo']
         nombre = request.POST['nombre']
-        nuevoPlanResultado = PlanResultados.objects.create(codigo=codigo, descripcion=nombre , especialidad=especialidad,estado='2')
+        nuevoPlanResultado = PlanResultados.objects.create(codigo=codigo, descripcion=nombre, especialidad=especialidad,
+                                                           estado='2')
         return redirect('planDeResultado')
 
     context = {
@@ -115,8 +125,8 @@ def crearPlanResultado(request,id_especialidad):
     }
     return render(request, 'gestionarResultados/crearPlanDeResultado.html', context)
 
-def listarPlanResultado(request):
 
+def listarPlanResultado(request):
     id_especialidad = request.POST['especialidad']
 
     planes = PlanResultados.objects.filter(especialidad_id=id_especialidad).exclude(estado=0)
@@ -139,14 +149,16 @@ def listarPlanResultado(request):
     # ,"tiene_niveles": ser_instance2
     return JsonResponse({"planes": ser_instance}, status=200)
 
+
 def activarPlan(request):
     plan = PlanResultados.objects.get(pk=request.POST["planResultadoPk"])
-    #planes = PlanResultados.objects.filter(especialidad_id=request.POST["especialidad"])
+    # planes = PlanResultados.objects.filter(especialidad_id=request.POST["especialidad"])
     planes = PlanResultados.objects.filter(especialidad_id=request.POST["especialidad"]).exclude(estado=0)
     planes.update(estado='2')
     plan.estado = '1'
     plan.save()
     return JsonResponse({}, status=200)
+
 
 def desactivarPlan(request):
     plan = PlanResultados.objects.get(pk=request.POST["planResultadoPk"])
@@ -154,7 +166,8 @@ def desactivarPlan(request):
     plan.save()
     return JsonResponse({}, status=200)
 
-def editarPlanDeResultado(request,pk):
+
+def editarPlanDeResultado(request, pk):
     if request.POST:
         plan = PlanResultados.objects.get(pk=pk)
         plan.codigo = request.POST['codigo']
@@ -166,11 +179,11 @@ def editarPlanDeResultado(request,pk):
     }
     return render(request, 'gestionarResultados/editarPlanDeResultado.html', context)
 
+
 def eliminarPlanResultado(request):
     planPk = request.POST['planResultadoPk']
     plan = PlanResultados.objects.get(pk=planPk)
     plan.estado = '0'  # eliminación lógica
     plan.save()
-    #plan.delete()
+    # plan.delete()
     return JsonResponse({}, status=200)
-
