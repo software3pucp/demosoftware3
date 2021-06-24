@@ -206,8 +206,8 @@
 
                     <div class="row d-flex justify-content-start">
                         <div class="col-12 pl-5">
-                            <label for="name">Nombre</label>
-                            <input name="name" class="form-control p-3" id="name" type="text"
+                            <label for="name">Codigo</label>
+                            <input id="codigoSelec" name="name" class="form-control p-3" id="name" type="text"
                                    placeholder="Ingrese el nombre del curso" required/>
                         </div>
                     </div>
@@ -215,7 +215,7 @@
                     <div class="row d-flex justify-content-start">
                         <div class="col-12 pl-5">
                             <label for="exampleFormControlSelect1">Seleccione responsable(s)</label>
-                            <select name="responsable" class="form-control" id="exampleFormControlSelect1">
+                            <select id="responsableSelec" name="responsable" class="form-control" id="exampleFormControlSelect1">
                                 {% for responsable in ListaUsuarios %}
                                     <option value={{ responsable.pk }}>{{ responsable.first_name }} {{ responsable.last_name }}</option>
                                 {% endfor %}
@@ -371,7 +371,8 @@
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     operacion: "agregarHorario",
                     planPK: '{{ plan.pk }}',
-                    horarioPk: $("#horarios").val(),
+                    codigo: $("#codigoSelec").val(),
+                    responsablePk: $("#responsableSelec").val(),
                 },
                 success: function (response) {
                     var instance = JSON.parse(response["resp"]);
@@ -393,6 +394,7 @@
                         '   </div>' +
                         '</div>';
                     $("#horariosSelec").append(data);
+                    $('#informacionHorario').modal('hide')
                 },
                 error: function (response) {
                     $(".modal-body #textId").text(response["responseJSON"]["message"]);
