@@ -64,8 +64,7 @@ def editarIndicador(request, pk):
 def obtenerEspecialidadIndicador(indicador):
     id_resultado = indicador.resultado_id;
     resultado = ResultadoPUCP.objects.get(pk=id_resultado)
-    especialidadpk = resultado.especialidad_id
-    especialidad = Especialidad.objects.get(pk=especialidadpk)
+    especialidad = resultado.planResultado.especialidad
     return especialidad.pk
 
 
@@ -96,7 +95,7 @@ def agregarDescipcionNivel(indicardorpk, nivelpk, desc):
     except:
         indicador = Indicador.objects.get(pk=indicardorpk)
         resultado = ResultadoPUCP.objects.get(pk=indicador.resultado_id)
-        esp = Especialidad.objects.get(pk=resultado.especialidad_id)
+        esp = resultado.planResultado.especialidad
         niv = Nivel.objects.get(pk=nivelpk)
         ind = Indicador.objects.get(pk=indicardorpk)
         Rubrica.objects.create(especialidad=esp, nivel=niv, indicador=ind, descripcion=desc)
