@@ -8,7 +8,7 @@
 {#Bloque de extra body -> HTML#}
 {% block body %}
     {#AQUI COLOQUEN EL CÓDIGO#}
-    {% if insert %}
+{#    {% if insert %}#}
         <form id="cancelar" action="{% url 'listarPlanMedicion' %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="operacion" value="entrada">
@@ -20,16 +20,29 @@
         </form>
         <form action="{% url 'crearPlanMedicion' pk=plan.pk %}" method="post">
         {% csrf_token %}
-    {% endif %}
+{#    {% endif %}#}
     <div class="card">
         <div class="card-body">
             <div class="row d-flex justify-content-center">
-                <div class="col-md-12">
+                <div class="col-md-9">
                     {% if insert %}
                         <h3 class="mb-0"> {{ especialidad.nombre }} - Añadir curso a ser evaluado </h3>
                     {% else %}
                         <h3 class="mb-0"> {{ plan.curso.especialidad.nombre }} - Editar curso a ser evaluado </h3>
                     {% endif %}
+                </div>
+                <div class="col-md-3 text-right">
+                    <button class="btn" type="submit" form="cancelar">
+                        <a class="d-flex flex-row justify-content-end mt-2 mr-3">
+                            <div class="fas fa-reply mt-1 mr-2"></div>
+                            <h5>Volver</h5>
+                        </a>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-12">
                     <hr>
                 </div>
             </div>
@@ -55,7 +68,7 @@
                 <div class="col">
                     <div class="row d-flex justify-content-between">
                         <label for="exampleFormControlSelect2">Horarios</label>
-                        <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button" href="#informacionHorario" data-toggle="modal">
+                        <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button" href="#informacionHorario" data-toggle="modal"onclick="limpiarModal()">
                             <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
                         </button>
                     </div>
@@ -69,7 +82,7 @@
                                 <div class="card-body" style="padding: 1rem">
                                     <div class="row">
                                         <div class="col-md-8 p-0 d-flex justify-content-center">
-                                            <a class="btn p-0 " href="#informacionHorario"
+                                            <a id="textoHorarioCard{{horario.pk}}" class="btn p-0 " href="#informacionHorario"
                                                data-toggle="modal"
                                                onclick='mostrarHorario("{{ horario.pk }}")'>{{ horario.codigo }}</a>
                                         </div>
@@ -200,15 +213,15 @@
 
                 <div class="modal-body text-white">
                     <div class="row d-flex justify-content-center">
-                        <h5 class="text-white">Crear Horario</h5>
+                        <h5 id="textoModal" class="text-white">Crear Horario</h5>
                         <hr class="mb-4" style="background-color: #f9fafd; width: 70%">
                     </div>
 
                     <div class="row d-flex justify-content-start">
                         <div class="col-12 pl-5">
-                            <label for="name">Codigo</label>
+                            <label for="name">Código</label>
                             <input id="codigoSelec" name="name" class="form-control p-3" id="name" type="text"
-                                   placeholder="Ingrese el nombre del curso" required/>
+                                   placeholder="Ingrese el código del curso" required/>
                         </div>
                     </div>
                     <br>
@@ -233,8 +246,8 @@
                         </div>
                         <div class="col-6">
                             <div class="d-flex justify-content-center mt-3">
-                                <button
-                                        type="button" class="btn btn-primary" onclick="agregarHorario()">Agregar
+                                <button id="botonModal"
+                                        type="button" class="btn btn-primary" >Agregar
                                 </button>
                             </div>
                         </div>
@@ -317,6 +330,40 @@
             listarHorarios();
         });
 
+        function limpiarModal(){
+            $('#textoModal').text("Crear Horario");
+            $('#botonModal').text("Agregar");
+            $('#botonModal').attr('onclick', 'agregarHorario()');
+            $('#codigoSelec').val('');
+            $("#responsableSelec").val($("#responsableSelec option:first").val());
+        }
+
+        function editarHorario(pk) {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearPlanMedicionAjax' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: "editarHorario",
+                    planPK: '{{ plan.pk }}',
+                    horarioPk: pk,
+                    codigo: $("#codigoSelec").val(),
+                    responsablePk: $("#responsableSelec").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["resp"]);
+                    console.log(instance[0])
+                    $("#textoHorarioCard" + instance[0]['pk']).text(instance[0]["fields"].codigo);
+
+                    $('#informacionHorario').modal('hide');
+
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
         function mostrarHorario(pk) {
             $.ajax({
                 type: 'POST',
@@ -327,12 +374,22 @@
                     horarioPk: pk,
                 },
                 success: function (response) {
-                    $("#horCod").remove();
-                    $("#horDescrip").remove();
-                    data = '<h5 id="horCod" class="text-white">Codigo: ' + response["resp"] + '</h5>';
-                    $("#horCodField").append(data);
-                    data = '<p id="horDescrip">' + response["resp"] + '</p>';
-                    $("#horDescripField").append(data);
+                    var instance = JSON.parse(response["resp"]);
+                    console.log(instance);
+                    data = instance[0]["fields"].codigo;
+                    console.log(data);
+                    $('#codigoSelec').val(data);
+                    $('#responsableSelec').val(instance[0]["fields"].responsable);
+                    $('#textoModal').text("Editar Horario");
+                    $('#botonModal').text("Editar");
+                    $('#botonModal').click(editarHorario(pk));
+                    $('#botonModal').attr('onclick', 'editarHorario("'+pk+'")');
+                    {#$("#horCod").remove();#}
+                    {#$("#horDescrip").remove();#}
+                    {#data = '<h5 id="horCod" class="text-white">Codigo: ' + response["resp"] + '</h5>';#}
+                    {#$("#horCodField").append(data);#}
+                    {#data = '<p id="horDescrip">' + response["resp"] + '</p>';#}
+                    {#$("#horDescripField").append(data);#}
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);
@@ -382,7 +439,7 @@
                         '       <div class="card-body" style="padding: 1rem">' +
                         '           <div class="row">' +
                         '               <div class="col-md-8 p-0 d-flex justify-content-center">' +
-                        '                   <a class="btn p-0 " href="#informacionHorario" data-toggle="modal" onclick="' + 'mostrarHorario(' + instance[0]["pk"] + ' ) ">' + instance[0]["fields"].codigo + '</a>' +
+                        '                   <a id="textoHorarioCard' + instance[0]["pk"] + '" class="btn p-0 " href="#informacionHorario" data-toggle="modal" onclick="' + 'mostrarHorario(' + instance[0]["pk"] + ' ) ">' + instance[0]["fields"].codigo + '</a>' +
                         '               </div>' +
                         '               <div class="col-md-4 p-0 d-flex justify-content-center" style="border-left: 1px solid">' +
                         '                   <a class="btn p-0" onclick="quitarHorario(' + instance[0]["pk"] + ')">' +
@@ -394,7 +451,9 @@
                         '   </div>' +
                         '</div>';
                     $("#horariosSelec").append(data);
-                    $('#informacionHorario').modal('hide')
+                    $('#informacionHorario').modal('hide');
+                    $('#codigoSelec').val('');
+                    $("#responsableSelec").val($("#responsableSelec option:first").val());
                 },
                 error: function (response) {
                     $(".modal-body #textId").text(response["responseJSON"]["message"]);

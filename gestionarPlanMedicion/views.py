@@ -146,7 +146,9 @@ def crearAjax(request):
             data = serializers.serialize("json", listaHorarios)
             return JsonResponse({"resp": data}, status=200)
         elif request.POST['operacion'] == 'mostrarHorario':
-            data = request.POST['horarioPk']
+            horario = Horario.objects.filter(pk=request.POST['horarioPk'])
+            data = serializers.serialize("json", horario)
+            # data = request.POST['horarioPk']
             return JsonResponse({"resp": data}, status=200)
         elif request.POST['operacion'] == 'mostrarIndicador':
             indicador = Indicador.objects.filter(pk=request.POST["indicadorPk"])
@@ -182,6 +184,18 @@ def crearAjax(request):
             Horario.objects.create(codigo=request.POST["codigo"],curso_id=request.POST["planPK"],responsable_id=request.POST["responsablePk"],estado=1)
             hor = Horario.objects.latest('id')
             horario = Horario.objects.filter(pk=hor.pk)
+            data = serializers.serialize("json", horario)
+            return JsonResponse({"resp": data}, status=200)
+        elif request.POST['operacion'] == 'editarHorario':
+            horario = Horario.objects.filter(pk=request.POST["horarioPk"])
+            horarios = Horario.objects.filter(curso_id=request.POST["planPK"], estado=1)
+            if horario[0] not in horarios:
+                return JsonResponse({'status': 'false', 'message': 'Horario no encontrado'}, status=500)
+            hor = Horario.objects.get(pk=request.POST["horarioPk"])
+            hor.codigo = request.POST["codigo"]
+            hor.responsable_id = request.POST["responsablePk"]
+            hor.save()
+            horario = Horario.objects.filter(pk=request.POST["horarioPk"])
             data = serializers.serialize("json", horario)
             return JsonResponse({"resp": data}, status=200)
         elif request.POST['operacion'] == 'quitarHorario':
