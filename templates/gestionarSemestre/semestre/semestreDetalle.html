@@ -154,7 +154,7 @@
                    for(i=0;i<tam;i++){
                        data +=
                               '<a class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300"' +
-                              ' href="/gestionarEvaluacion/evaluar/'+instance[i]['pk'] +'">'+
+                              ' href="/gestionarEvaluacion/evaluar/'+instance[i]['pk'] +'?sem='+'{{ semestreSeleccionado.pk }}'+'">'+
                               '<div class="notification-body">'+ '<p class="mb-1">'+instance[i]["fields"].nombre+'</p>'+
                               '</div> </a> </div>'
                    }

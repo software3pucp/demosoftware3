@@ -14,6 +14,7 @@ from gestionarIndicadores.models import Indicador
 from gestionarRubrica.models import Rubrica
 from gestionarEvidencias.models import EvidenciasxHorario
 from gestionarNiveles.models import Nivel
+from gestionarResultados.models import PlanResultados
 from gestionarCurso.models import Curso
 from authentication.models import User
 from gestionarResultados.models import ResultadoPUCP
@@ -25,11 +26,13 @@ def evaluar(request,pk):
     media_path = MEDIA_URL
     listaAlumno = reversed(RespuestaEvaluacion.objects.filter(estado=1))
     cursoSeleccionado = Curso.objects.get(pk=pk)
-    plan = PlanMedicionCurso.objects.get(curso=cursoSeleccionado)
-    horarios = plan.horario.all()
+    plan = PlanMedicionCurso.objects.get(curso_id=cursoSeleccionado.pk, semestre_id=request.GET['sem'])
+    #horarios = plan.horario.all()
+    horarios = Horario.objects.filter(curso_id=plan.pk)
    # listaHorario= Horario.objects.filter(curso_id=pk) #listaDeHorario asociado a un curso
     especialidadPk = cursoSeleccionado.especialidad_id
-    resultado = list(ResultadoPUCP.objects.filter(especialidad_id=especialidadPk))
+    planResultadoPk = PlanResultados.objects.get(especialidad_id=especialidadPk,estado='1')
+    resultado = list(ResultadoPUCP.objects.filter(planResultado_id=planResultadoPk))
 
     if resultado:
         indicadores = plan.indicador.all()
