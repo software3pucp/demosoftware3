@@ -81,7 +81,7 @@ def crearPlanMedicion(request,pk):
     listaCursos = []
     listaEstados = PlanMedicionCurso.ESTADOS[1:]
     listaHorarios = []
-    listaIndicadores = Indicador.objects.filter(resultado__planResultado__especialidad_id=request.POST['especialidad'], estado=1)
+    listaIndicadores = Indicador.objects.filter(resultado__planResultado__especialidad_id=request.POST['especialidad'],resultado__planResultado__estado=1, estado=1)
     especialidad = ''
     semestre = ''
     planMedicion = ''
@@ -229,7 +229,10 @@ def crearHistorico(request, id_especialidad):
     if request.POST:
         codigo = request.POST['codigo']
         nombre = request.POST['nombre']
-        planResultado = PlanResultados.objects.get(especialidad_id=id_especialidad,estado=1)
+        try:
+            planResultado = PlanResultados.objects.get(especialidad_id=id_especialidad, estado=1)
+        except:
+            return redirect('crearHistorico', id_especialidad)
         nuevoHistorico = PlanMedicion.objects.create(codigo=codigo,nombre=nombre, especialidad_id=id_especialidad, planResultados_id=planResultado.pk, estado='1')
         return redirect('historico')
 
