@@ -80,15 +80,15 @@ def listarResultados(request):
 
 @login_required
 def editarResultado(request, pk):
+    resultado = ResultadoPUCP.objects.get(pk=pk)
+    plan = resultado.planResultado
     if request.POST:
         resultado = ResultadoPUCP.objects.get(pk=pk)
         resultado.codigo = request.POST['codigo']
         resultado.descripcion = request.POST['descripcion']
         resultado.save()
-        return redirect('resultados')
+        return redirect('resultados', id_plan=plan.pk)
 
-    resultado = ResultadoPUCP.objects.get(pk=pk)
-    plan =resultado.planResultado
     listaIndicares = Indicador.objects.filter(resultado_id=pk, estado=1)
     context = {
         'listaIndicadores': listaIndicares,
@@ -168,6 +168,7 @@ def desactivarPlan(request):
 
 
 def editarPlanDeResultado(request, pk):
+    plan = PlanResultados.objects.get(pk=pk)
     if request.POST:
         plan = PlanResultados.objects.get(pk=pk)
         plan.codigo = request.POST['codigo']
@@ -175,7 +176,7 @@ def editarPlanDeResultado(request, pk):
         plan.save()
         return redirect('planDeResultado')
     context = {
-        'plan': pk
+        'plan': plan,
     }
     return render(request, 'gestionarResultados/editarPlanDeResultado.html', context)
 

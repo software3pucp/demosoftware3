@@ -24,7 +24,7 @@
                         </div>
                     </div>
                     <hr style="background-color: #0154ae;">
-                    <form action="{% url 'editarPlanDeResultado' pk=plan %}" method="post">
+                    <form action="{% url 'editarPlanDeResultado' pk=plan.pk %}" method="post">
                         {% csrf_token %}
                         <div class="row p-1">
                             <div class="col-md-2">
@@ -35,7 +35,7 @@
                             <div class="col-md-10">
                                 <div class="form-group">
                                     <input name="codigo" class="form-control" id="codigo" type="text"
-                                           placeholder="Ingrese el código">
+                                           value="{{ plan.codigo }}" >
                                 </div>
                             </div>
                         </div>
@@ -48,8 +48,7 @@
                             <div class="col-md-10">
                                 <div class="input-group">
                                     <textarea name="descripcion" id="descripcion" class="form-control"
-                                              placeholder="Ingrese una descripcion"
-                                              aria-label="With textarea" rows="3"></textarea>
+                                              aria-label="With textarea" rows="3">{{ plan.descripcion }}</textarea>
                                 </div>
                             </div>
                         </div>
