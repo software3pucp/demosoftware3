@@ -81,10 +81,10 @@ def crearPlanMedicion(request,pk):
     listaCursos = []
     listaEstados = PlanMedicionCurso.ESTADOS[1:]
     listaHorarios = []
-    listaIndicadores = Indicador.objects.filter(resultado__planResultado__especialidad_id=request.POST['especialidad'],resultado__planResultado__estado=1, estado=1)
+    listaIndicadores = []
     especialidad = ''
     semestre = ''
-    planMedicion = ''
+    planMedicion = PlanMedicion.objects.get(pk=request.POST['planMedicion'])
     horariosSelec = []
     indicadoresSelec = []
     if request.POST:
@@ -108,14 +108,13 @@ def crearPlanMedicion(request,pk):
                 errorInsert = 1
         especialidad = Especialidad.objects.get(pk=request.POST['especialidad'])
         semestre = Semestre.objects.get(pk=request.POST['semestre'])
-        planMedicion = PlanMedicion.objects.get(pk=request.POST['planMedicion'])
         listaCursos = Curso.objects.filter(especialidad=request.POST['especialidad'])
 
 
     if pk == '0':
         insert = True
     else:
-        plan = PlanMedicionCurso.objects.get(pk=pk)
+        listaIndicadores = Indicador.objects.filter(resultado__planResultado__especialidad_id=request.POST['especialidad'],resultado__planResultado_id=planMedicion.planResultados_id, estado=1)
         manyInd = plan.indicador.all()
         manyHor = Horario.objects.filter(curso_id=pk,estado=1)
         indicadoresSelec = manyInd
