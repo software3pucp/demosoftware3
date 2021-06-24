@@ -199,7 +199,7 @@
                         if (instance2[i] == false) {
                             data += (
                                 '                            <hr style="background-color: #FFFFFF;">' +
-                                '                            <p>Nota: La propuesta de mejora no tiene actividaes asociadas.' +
+                                '                            <p>Nota: La propuesta de mejora no tiene actividades asociadas.' +
                                 '                                Dar click en editar si desea asociar actividades.</p>')
                         }
 
@@ -218,7 +218,7 @@
                             '    </div>' +
                             '</div>')
                     }
-                    data2 = '<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>';
+                    data2 = '<h5>'+' Propuestas de Mejora -' + $("#cboEspecialidad option:selected").text() + '</h5>';
                     $("#tituloEspecialidadPropuesta").html(data2);
                     $("#listadoPropuestas").html(data);
                 },
