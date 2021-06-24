@@ -8,12 +8,16 @@ from demosoftware3.settings import MEDIA_URL
 from gestionarCurso.models import Curso
 from gestionarEvidencias.models import EvidenciasxHorario
 from gestionarHorario.models import Horario
+from gestionarPlanMedicion.models import PlanMedicionCurso
 
 
 @login_required(login_url='login')
 def evidenciasxHorario(request, id_curso, id_horario):
+
     tiene_evidencias = False
-    curso = Curso.objects.get(pk=id_curso)
+    # curso = Curso.objects.get(pk=id_curso)
+    plan_medicion_curso = PlanMedicionCurso.objects.get(curso_id=id_curso)
+    curso = plan_medicion_curso.curso
     horario = Horario.objects.get(pk=id_horario)
     listaEvidencias = EvidenciasxHorario.objects.filter(horario_id=id_horario, estado=1)
     if (len(listaEvidencias) > 0):

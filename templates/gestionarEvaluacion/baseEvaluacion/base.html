@@ -98,9 +98,9 @@
                                             type="submit">
                                         <i class="fa fa-download"></i> Ficha de Medicion
                                     </button>
-                                    <button name="evidenciasHorario" id="evidenciasHorario" class="btn btn-primary"
+                                    <span name="evidenciasHorario" id="evidenciasHorario" class="btn btn-primary"
                                             onclick="redirectEvidencia()">Evidencias
-                                    </button>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -391,6 +391,8 @@
         function redirectEvidencia() {
             var pk_horario = $("#cboHorario").val();
             var pk_curso = "{{ cursoSeleccionado.pk }}";
+
+            console.log("../../gestionarEvidencia/evidenciasxHorario/" + pk_curso + '/' + pk_horario)
 
             document.location.href = "../../gestionarEvidencia/evidenciasxHorario/" + pk_curso + '/' + pk_horario;
         }

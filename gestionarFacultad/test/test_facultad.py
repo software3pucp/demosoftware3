@@ -5,9 +5,6 @@ import base64               # for decoding base64 image
 from django.test import TestCase, override_settings
 
 class TestingClasses(TestCase):
-
-
-
     @classmethod
     def setUpTestData(cls):
         print("Inicio de prueba del módulo FACULTAD")
