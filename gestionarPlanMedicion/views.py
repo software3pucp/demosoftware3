@@ -245,7 +245,11 @@ def crearHistorico(request, id_especialidad):
         try:
             planResultado = PlanResultados.objects.get(especialidad_id=id_especialidad, estado=1)
         except:
-            return redirect('crearHistorico', id_especialidad)
+            context = {
+                'especialidad': especialidad,
+                'error_message': 'No se tiene un Plan de Resultados activo para esta especialidad.',
+            }
+            return render(request, 'gestionarPlanMedicion/crearPlanMedicionHistorico.html', context)
         nuevoHistorico = PlanMedicion.objects.create(codigo=codigo,nombre=nombre, especialidad_id=id_especialidad, planResultados_id=planResultado.pk, estado='1')
         return redirect('historico')
 

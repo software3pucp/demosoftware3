@@ -64,5 +64,36 @@
         </div>
     </div>
 
+    {% if error_message %}
+        <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger">
+                        <h5 class="modal-title" id="errorModalLabel">¡Ocurrió un error!</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Cerrar"><span
+                                class="font-weight-light" aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body bg-soft-danger">
+                        <p>{{ error_message }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
 {% endblock %}
 
+{% block extrajs %}
+    {% if error_message %}
+        <script>
+            $(document).ready(function () {
+                $("#errorModal").modal({backdrop: 'static', keyboard: false, show: true});
+                console.log()
+            });
+        </script>
+    {% endif %}
+{% endblock %}
