@@ -81,7 +81,7 @@ def crearPlanMedicion(request,pk):
     listaCursos = []
     listaEstados = PlanMedicionCurso.ESTADOS[1:]
     listaHorarios = []
-    listaIndicadores = Indicador.objects.filter(resultado__especialidad_id=request.POST['especialidad'], estado=1)
+    listaIndicadores = Indicador.objects.filter(resultado__planResultado__especialidad_id=request.POST['especialidad'], estado=1)
     especialidad = ''
     semestre = ''
     planMedicion = ''
