@@ -20,7 +20,7 @@ def Show(request):
         'users': User.objects.all(),
         'media_path': media_path
     }
-    return render(request, 'authentication/User_list.html', context)
+    return render(request, 'authentication/User_List.html', context)
 
 
 def Register(request):
