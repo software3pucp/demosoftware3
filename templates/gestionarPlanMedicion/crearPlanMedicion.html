@@ -8,19 +8,19 @@
 {#Bloque de extra body -> HTML#}
 {% block body %}
     {#AQUI COLOQUEN EL CÓDIGO#}
-{#    {% if insert %}#}
-        <form id="cancelar" action="{% url 'listarPlanMedicion' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="operacion" value="entrada">
-            <input type="hidden" name="planCurso" value="{{ plan.pk }}">
-            <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
-            <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
-            <input type="hidden" name="semestre" value="{{ semestre.pk }}">
-            <input type="hidden" name="estado" value="1">
-        </form>
+    <form id="cancelar" action="{% url 'listarPlanMedicion' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="operacion" value="entrada">
+        <input type="hidden" name="planCurso" value="{{ plan.pk }}">
+        <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
+        <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
+        <input type="hidden" name="semestre" value="{{ semestre.pk }}">
+        <input type="hidden" name="estado" value="1">
+    </form>
+    {% if insert %}
         <form action="{% url 'crearPlanMedicion' pk=plan.pk %}" method="post">
         {% csrf_token %}
-{#    {% endif %}#}
+    {% endif %}
     <div class="card">
         <div class="card-body">
             <div class="row d-flex justify-content-center">
@@ -327,7 +327,6 @@
     <script>
         $(document).ready(function () {
             console.log("ready!");
-            listarHorarios();
         });
 
         function limpiarModal(){
@@ -390,29 +389,6 @@
                     {#$("#horCodField").append(data);#}
                     {#data = '<p id="horDescrip">' + response["resp"] + '</p>';#}
                     {#$("#horDescripField").append(data);#}
-                },
-                error: function (response) {
-                    alert(response["responseJSON"]["error"]);
-                }
-            });
-        }
-
-        function listarHorarios() {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'crearPlanMedicionAjax' %}",
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    operacion: "listHorarios",
-                    curso: $("#cursos").val(),
-                },
-                success: function (response) {
-                    var instance = JSON.parse(response["resp"]);
-                    $(".horario").remove();
-                    for (var i = 0; i < instance.length; i++) {
-                        data = '<option class="horario" value="' + instance[i]["pk"] + '">' + instance[i]["fields"].codigo + '</option>';
-                        $("#horarios").append(data);
-                    }
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);

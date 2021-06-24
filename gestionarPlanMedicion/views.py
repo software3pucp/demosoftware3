@@ -98,7 +98,7 @@ def crearPlanMedicion(request,pk):
             print('***************************************************************************************************')
             print(request.POST)
             print('***************************************************************************************************')
-            planes = PlanMedicionCurso.objects.filter(curso_id=request.POST['curso'],planMedicion_id=request.POST['planMedicion'],semestre_id=request.POST['semestre'])
+            planes = PlanMedicionCurso.objects.filter(curso_id=request.POST['curso'],planMedicion_id=request.POST['planMedicion'],semestre_id=request.POST['semestre']).exclude(estado=0)
             if len(planes) == 0:
                 PlanMedicionCurso.objects.create(curso_id=request.POST['curso'],planMedicion_id=request.POST['planMedicion'],semestre_id=request.POST['semestre'],estado=request.POST['estado'])
                 plan = PlanMedicionCurso.objects.latest('id')
