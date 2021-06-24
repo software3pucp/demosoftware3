@@ -166,7 +166,7 @@ def crearAjax(request):
             plan = PlanMedicionCurso.objects.get(pk=request.POST["planPK"])
             indicadores = plan.indicador.all()
             if indicador[0] not in indicadores:
-                return JsonResponse({'status': 'false', 'message': 'Indicador ya ingresado'}, status=500)
+                return JsonResponse({'status': 'false', 'message': 'Indicador no encontrado'}, status=500)
             plan.indicador.remove(indicador[0].pk)
             data = serializers.serialize("json", indicador)
             return JsonResponse({"resp": data}, status=200)
@@ -185,12 +185,16 @@ def crearAjax(request):
             data = serializers.serialize("json", horario)
             return JsonResponse({"resp": data}, status=200)
         elif request.POST['operacion'] == 'quitarHorario':
+            print('***************************************************************************************************')
+            print(request.POST)
+            print('***************************************************************************************************')
             horario = Horario.objects.filter(pk=request.POST["horarioPk"])
-            plan = PlanMedicionCurso.objects.get(pk=request.POST["planPK"])
-            horarios = plan.horario.all()
+            horarios = Horario.objects.filter(curso_id=request.POST["planPK"],estado=1)
             if horario[0] not in horarios:
-                return JsonResponse({'status': 'false', 'message': 'Indicador ya ingresado'}, status=500)
-            plan.horario.remove(horario[0].pk)
+                return JsonResponse({'status': 'false', 'message': 'Horario no encontrado'}, status=500)
+            hor = Horario.objects.get(pk=request.POST["horarioPk"])
+            hor.estado = 0
+            hor.save()
             data = serializers.serialize("json", horario)
             return JsonResponse({"resp": data}, status=200)
 
