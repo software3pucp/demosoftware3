@@ -13,4 +13,6 @@ urlpatterns = [
     path('importarAlumno',views.importarAlumno,name='importarAlumno'), #TODO::: FIX colocar "/" y refactorizar
     path('subirEvidencia/',views.subirEvidencia,name='subirEvidencia'),
     path('exportarMedicion/',views.exportarMedicion,name='exportarMedicion'),
+    path('historial/',views.historial,name='historial'),
+    path('listarCursoMedicion/',views.listarCursoMedicion,name='listarCursoMedicion'),
 ]

@@ -1,0 +1,104 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+
+    <link href="{% static 'lib/flatpickr/flatpickr.min.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+
+    {#AQUI COLOQUEN EL CÓDIGO#}
+    <div class="card p-3">
+        <div class="row d-flex justify-content-center ">
+
+            <div class="col-10 px-5">
+                <h3 id="Titulo" style="font-family: Montserrat">Historial de Mediciones</h3>
+            </div>
+            <div class="col-2">
+                <a href="{% url 'listarSemestre' %}" style="font-family: Roboto"><h5 id="Retroceder">
+                    <img class="img-fluid" style="height: 20px"
+                         src="https://image.flaticon.com/icons/png/512/60/60577.png">
+                    <u>Volver</u>
+                </h5></a>
+            </div>
+        </div>
+
+
+        <hr style="background-color: #0154ae;">
+
+        <div class="col-12 mb-3">
+            <div class="d-flex flex-row align-items-center">
+                <div class="mr-2">
+                    <label for="cboSemestre">Semestre:</label>
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="mr-1">
+                            <select class="custom-select custom-select-sm mb-3" id="cboSemestre" name="cboSemestre" onchange="listarCursos()">
+                                {% for semestre in listaSemestre %}
+                                    <option value={{ semestre.pk }}>{{ semestre.nombreCodigo }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="list-group">
+            <a class="list-group-item list-group-item-action active" disabled>Cursos del Ciclo Seleccionado</a>
+            <div id="listaCursos">
+                <a class="list-group-item list-group-item-action" href="#">Dapibus ac facilisis in</a>
+                <a class="list-group-item list-group-item-action" href="#">Morbi leo risus</a>
+                <a class="list-group-item list-group-item-action" href="#">Porta ac consectetur ac</a>
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}
+
+{#Aquí coloco el JS particular de la web#}
+{% block extrajs %}
+
+    <script>
+        $(document).ready(function () {
+            console.log("ready!");
+            listarCursos();
+        });
+
+        function listarCursos() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'listarCursoMedicion' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    //especialidad: $("#cboEspecialidad").val(),
+                    semestre: $("#cboSemestre").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["cursoLista"]);
+                    var data = '';
+                    var i = 0;
+                    var tam = instance.length;
+                    data = '';
+                    for (i = 0; i < tam; i++) {
+                        data +=
+                            '<a class="list-group-item list-group-item-action" href="/gestionarEvaluacion/evaluar/' + instance[i]['pk'] + '?sem=' + $("#cboSemestre").val() + '">'+
+                            instance[i]["fields"].nombre+
+                            '</a>'
+                        ;
+                    }
+                    $('#listaCursos').html(data);
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                },
+            });
+        }
+
+    </script>
+{% endblock %}

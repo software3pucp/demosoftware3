@@ -427,6 +427,8 @@
             $("#archivo").change(function () {
                 readURL(this);
             });
+
+            console.log("cargado");
         });
 
 
@@ -449,6 +451,7 @@
                 fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
                 fd.append('nombre_archivo', $("#nombre_archivo").val());
                 fd.append('indicador', $("#cboIndicador").val());
+                fd.append('plan', '{{ planMedicionCurso.pk }}');
 
                 $.ajax({
                     type: 'POST',
@@ -666,7 +669,8 @@
                     nombreAlumno: $("#nombreAlumno").val(),
                     codigoAlumno: $("#codigoAlumno").val(),
                     horario: $("#cboHorario").val(),
-                    indicador: $("#cboIndicador").val()
+                    indicador: $("#cboIndicador").val(),
+                    plan: {{ planMedicionCurso.pk }}
                 },
                 success: function (response) {
                     listarAlumno();
@@ -686,7 +690,7 @@
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     horarioSeleccionado: $("#cboHorario").val(),
-                    especialidadSeleccionada : {{ cursoSeleccionado.especialidad_id }},
+                    especialidadSeleccionada: {{ cursoSeleccionado.especialidad_id }},
                     filtrado: $("#textBuscar").val(),
                     indicadorSeleccionado: $("#cboIndicador").val()
                 },
@@ -770,6 +774,14 @@
                     $("#tablaAlumno").html(data);
                     $("#textBuscar").val('');
                     $("#estado").html(estado);
+
+                    if ({{ planMedicion.estado }}=='2')
+                    {
+                        $("input[type=radio]").attr('disabled', true);
+                        $("#dashboard-actions").attr('hidden', true);
+                        $('.badge').attr('disabled',true);
+                    }
+
                 },
                 error: function (response) {
                     // alert the error if any error occured

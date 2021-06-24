@@ -4,6 +4,7 @@ from gestionarSemestre.models import Semestre
 from gestionarIndicadores.models import Indicador
 from gestionarHorario.models import Horario
 from gestionarRubrica.models import Rubrica
+from gestionarPlanMedicion.models import PlanMedicionCurso
 
 # Create your models here.
 
@@ -17,6 +18,7 @@ class RespuestaEvaluacion(models.Model):
     indicador = models.ForeignKey(Indicador,on_delete=models.RESTRICT, null=True, blank=True)
     estado = models.CharField(max_length=2,default=1)
     calificado = models.CharField(max_length=2,null=True, default=0)
+    planMedicion = models.ForeignKey(PlanMedicionCurso,on_delete=models.RESTRICT, null=True, blank=True)
     evidencia = models.CharField(max_length=2, null=True, default=0)
     archivo = models.FileField(null=True, blank=True, upload_to='archive/')
     class Meta:

@@ -12,13 +12,14 @@ from gestionarHorario.models import Horario
 from gestionarEspecialidad.models import Especialidad
 from gestionarIndicadores.models import Indicador
 from gestionarRubrica.models import Rubrica
+from gestionarSemestre.models import Semestre
 from gestionarEvidencias.models import EvidenciasxHorario
 from gestionarNiveles.models import Nivel
 from gestionarResultados.models import PlanResultados
 from gestionarCurso.models import Curso
 from authentication.models import User
 from gestionarResultados.models import ResultadoPUCP
-from gestionarPlanMedicion.models import PlanMedicionCurso
+from gestionarPlanMedicion.models import PlanMedicionCurso, PlanMedicion
 from django.contrib.auth.decorators import login_required
 # import xlrd libreria para importar Alumnos
 @login_required
@@ -26,7 +27,9 @@ def evaluar(request,pk):
     media_path = MEDIA_URL
     listaAlumno = reversed(RespuestaEvaluacion.objects.filter(estado=1))
     cursoSeleccionado = Curso.objects.get(pk=pk)
-    plan = PlanMedicionCurso.objects.get(curso_id=cursoSeleccionado.pk, semestre_id=request.GET['sem'])
+    #REVISAR ESTA PARTE PORQUE FALTA EL ID DE PLAN DE MEDICION
+    plan = PlanMedicionCurso.objects.get(estado='1',curso_id=cursoSeleccionado.pk, semestre_id=request.GET['sem'])
+    planMedicion = PlanMedicion.objects.get(pk = plan.planMedicion_id)
     #horarios = plan.horario.all()
     horarios = Horario.objects.filter(curso_id=plan.pk)
    # listaHorario= Horario.objects.filter(curso_id=pk) #listaDeHorario asociado a un curso
@@ -57,10 +60,11 @@ def evaluar(request,pk):
     cantidad = len(listaNombres)
     listaConjunta = zip(listaNombres, listaDocumentos)
     listaArchivos = set(listaConjunta)
-
     context = {
         'media_path': media_path,
         'listaAlumno': listaAlumno,
+        'planMedicionCurso': plan,
+        'planMedicion': planMedicion,
         'listaIndicador': listaIndicador,
         'cursoSeleccionado': cursoSeleccionado,
         'listaHorario': listaHorarios,
@@ -78,7 +82,8 @@ def agregarAlumno(request):
     nuevoAlumno = RespuestaEvaluacion.objects.create(nombreAlumno=request.POST["nombreAlumno"],
                                                      codigoAlumno=request.POST["codigoAlumno"],
                                                      horario_id=request.POST["horario"],
-                                                     indicador_id=request.POST["indicador"])
+                                                     indicador_id=request.POST["indicador"],
+                                                     planMedicion_id=request.POST["plan"])
     ser_instance = serializers.serialize('json', [nuevoAlumno,])
     ser_instance2 = serializers.serialize('json', list(niveles), fields=('id', 'nombre', 'valor', 'estado'))
     return JsonResponse({"nuevoAlumno": ser_instance,"niveles": ser_instance2 }, status=200)
@@ -153,7 +158,11 @@ def importarAlumno(request):
         codigo = row[:8]
         nombre = row[9:-1]
         if(codigo!=""):
-            RespuestaEvaluacion.objects.create(nombreAlumno=nombre,codigoAlumno=codigo,horario_id=request.POST["horariopk"], indicador_id=request.POST["indicador"])
+            RespuestaEvaluacion.objects.create(nombreAlumno=nombre,
+                                               codigoAlumno=codigo,
+                                               horario_id=request.POST["horariopk"],
+                                               indicador_id=request.POST["indicador"],
+                                               planMedicion_id=request.POST["plan"])
     return JsonResponse({}, status=200)
 
 def subirEvidencia(request):
@@ -216,3 +225,38 @@ def exportarMedicion(request):
     response["Content-Disposition"] = contenido
     wb.save(response)
     return response
+
+def historial(request):
+    context = {
+        'listaSemestre': Semestre.objects.all()
+    }
+    return render(request, 'gestionarEvaluacion/historialEvaluacion.html',context)
+
+def listarCursoMedicion(request):
+    ##Estado 2 de Terminado
+    ##Cambiar especialidad_id por el que deberia o si se pondra comboBox mejor :D
+    planMedicion = PlanMedicion.objects.filter(estado='2',especialidad_id=5).filter(semestre=request.POST['semestre'])
+    e = list(planMedicion)
+    for i in range(len(e)):
+        print(e[i].nombre)
+    print(planMedicion)
+    try:
+        listaCursos = []
+        planMedicionCursos = PlanMedicionCurso.objects.filter(semestre=request.POST['semestre'], planMedicion=planMedicion[0].pk)
+        for planMedicionCurso in planMedicionCursos:
+            curso = Curso.objects.get(pk=planMedicionCurso.curso_id, especialidad_id=5)
+            print(curso.nombre)
+            listaCursos.append(curso)
+            # if curso is not None:
+            #    listaCursos.append(curso)
+    except:
+        print("No existe plan de medicion asociado!!!")
+    print("#########")
+    print("Cantidad de cursos:")
+    print(len(listaCursos))
+    for i in range(len(listaCursos)):
+        print(listaCursos[i].nombre)
+    print("#########")
+    ser_instance = serializers.serialize('json', listaCursos)
+    print(ser_instance)
+    return JsonResponse({"cursoLista": ser_instance}, status=200)

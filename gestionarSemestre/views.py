@@ -47,7 +47,7 @@ def agregarSemestre(request):
 def enviarCursoHorario(request,pk):
     print("Listado de Cursos")
     if request.POST:
-        planMedicion = PlanMedicion.objects.filter(especialidad_id=request.POST['especialidad']).filter(semestre=pk)
+        planMedicion = PlanMedicion.objects.filter(estado='1',especialidad_id=request.POST['especialidad']).filter(semestre=pk)
         e = list(planMedicion)
         for i in range(len(e)):
             print(e[i].nombre)
