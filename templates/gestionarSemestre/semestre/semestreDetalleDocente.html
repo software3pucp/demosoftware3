@@ -1,0 +1,171 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+
+    <link href="{% static 'lib/flatpickr/flatpickr.min.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <style>
+        #Titulo {
+            color: #0154ae
+        }
+
+        p {
+            line-height: 20%;
+            font-family: "Montserrat";
+        }
+
+        label {
+            font-family: "Montserrat";
+        }
+
+
+        .card:hover .plus {
+            background-color: #0154ae;
+            color: #f9fafd !important;
+            cursor: pointer;
+
+        }
+
+        .card {
+            background-color: #0154ae;
+            color: #f9fafd !important;
+
+        }
+
+
+    </style>
+
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+
+    {#AQUI COLOQUEN EL CÓDIGO#}
+    <div class="row d-flex justify-content-center ">
+
+        <div class="col-10 px-5">
+            <h3 id="Titulo" style="font-family: Montserrat">{{ semestreSeleccionado.nombreCodigo }}</h3>
+        </div>
+        <div class="col-2">
+            <a href="{% url 'listarSemestre' %}" style="font-family: Roboto"><h5 id="Retroceder">
+                <img class="img-fluid" style="height: 20px"
+                     src="https://image.flaticon.com/icons/png/512/60/60577.png">
+                <u>Volver</u>
+            </h5></a>
+        </div>
+    </div>
+
+    <hr style="background-color: #0154ae;">
+
+    <div class="col-12 mb-3">
+        <div class="d-flex flex-row align-items-center">
+            <div class="mr-2">
+                <label for="cboFacultad">Facultad:</label>
+                <select class="custom-select custom-select-sm mb-3" id="cboFacultad" name="cboFacultad"
+                        onchange="obtenerEspecialidades()">
+                    {% for facultad in facultades %}
+                        <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="cboEspecialidad">Especialidad:</label>
+                <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
+                        name="cboEspecialidad"
+                        onchange="listarCursos()">
+
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row d-flex justify-content-center">
+        <div class="card overflow-hidden mb-3 col-11 p-0">
+            <div class="card-header bg-light">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-sm-auto">
+                        <h5 class="mb-1 mb-md-0">Cursos del Ciclo</h5>
+                    </div>
+                </div>
+            </div>
+
+
+           <div id="listaCursos">
+
+           </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{#Aquí coloco el JS particular de la web#}
+{% block extrajs %}
+
+    <script>
+        $(document).ready(function () {
+            console.log("ready!");
+            obtenerEspecialidades();
+        });
+
+        function obtenerEspecialidades() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'obtenerEspecialidades' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    facultad: $("#cboFacultad").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["resp"]);
+
+                    $(".especialidad").remove();
+                    for (var i = 0; i < instance.length; i++) {
+                        data = '<option class="especialidad" onclick="listarHistorico()" value=' +
+                            instance[i]["pk"] + '>' +
+                            instance[i]["fields"].nombre + '</option>';
+                        $("#cboEspecialidad").append(data);
+                    }
+
+                    listarCursos();
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                },
+            });
+        }
+
+        function listarCursos() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'enviarCursoHorario' pk=semestreSeleccionado.pk %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    especialidad: $("#cboEspecialidad").val(),
+                },
+                success: function (response) {
+                   var instance = JSON.parse(response["cursoLista"]);
+                   var data = '';
+                   var i = 0;
+                   var tam = instance.length;
+                   data += '<div class="card-body fs--1 p-0">'
+                   for(i=0;i<tam;i++){
+                       data +=
+                              '<a class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300"' +
+                              ' href="/gestionarEvaluacion/evaluar/'+instance[i]['pk'] +'?sem='+'{{ semestreSeleccionado.pk }}'+'">'+
+                              '<div class="notification-body">'+ '<p class="mb-1">'+instance[i]["fields"].nombre+'</p>'+
+                              '</div> </a> </div>'
+                   }
+                   $('#listaCursos').html(data);
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                },
+            });
+        }
+
+
+    </script>
+{% endblock %}
