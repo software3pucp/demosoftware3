@@ -82,24 +82,38 @@ def enviarCursoHorario(request,pk):
     return render(request, 'gestionarSemestre/semestre/semestreDetalle.html', context)
 
 def listarSemestreDocente(request):
-    #user = request.user.pk
-    #print("hola")
-    #print(user)
-    '''
-    planes = PlanMedicion.objects.filter(estado='1')
-    for plan in planes:
-        listaPlanes = PlanMedicionCurso.objects.filter(planmedicion=plan.pk)
-        for horario in listaPlanes:
-            listaCursos = Horario.objects.filter(curso=horario.id)
-                for algo in listaCursos:
-                    if algo.responsable_id == request.user.pk:
-                        if
-    '''
+
     horarios_docente = Horario.objects.filter(responsable_id=request.user.pk)
     tabla2 = PlanMedicionCurso.objects.filter()
+    listaCursos=[]
+    listarSemestres = []
     for horario in horarios_docente:
-        horario.curso.planMedicion.estado
-    semestreLista = reversed(Semestre.objects.filter())
+        if(horario.curso.planMedicion.estado == '1'):
+            listaCursos.append(horario.curso.curso)
+            listarSemestres.append(horario.curso.semestre)
+
+    #semestreLista = reversed(Semestre.objects.filter())
+    semestreLista = list(set(semestreLista))
+
+    context = {
+        'ListaSemestre': semestreLista
+    }
+    return render(request, 'gestionarSemestre/listarSemestre.html', context)
+
+
+def listarCursosDocente(request,semestrepk):
+
+    horarios_docente = Horario.objects.filter(responsable_id=request.user.pk)
+    tabla2 = PlanMedicionCurso.objects.filter()
+    listaCursos = []
+    listarSemestres = []
+    for horario in horarios_docente:
+        if (horario.curso.planMedicion.estado == '1'):
+            listaCursos.append(horario.curso.curso)
+            listarSemestres.append(horario.curso.semestre)
+
+    # semestreLista = reversed(Semestre.objects.filter())
+    semestreLista = list(set(semestreLista))
 
     context = {
         'ListaSemestre': semestreLista
