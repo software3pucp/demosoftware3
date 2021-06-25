@@ -47,6 +47,8 @@ def Edit(request, pk):
     flag2= False
     media_path = MEDIA_URL
     user = User.objects.get(pk=pk)
+    current_user = user.username
+    current_contra = user.password
     print(request.POST)
     if request.POST:
         newname = request.POST['card-name']
@@ -80,7 +82,8 @@ def Edit(request, pk):
             login(request, user)
 
         if request.POST.getlist('choices-multiple-remove-button'):
-            user.groups.clear()
+            if (not user.groups is None):
+                user.groups.clear()
             roles = request.POST.getlist('choices-multiple-remove-button')
             for val in roles:
                 group = Group.objects.get(id=val)
