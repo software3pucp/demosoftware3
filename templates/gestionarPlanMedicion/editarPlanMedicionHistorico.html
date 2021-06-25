@@ -41,8 +41,13 @@
                     </div>
                     <div class="col-md-10">
                         <div class="form-group">
-                            <input name="codigo" class="form-control" id="codigo" type="text"
-                                   value="{{ historico.codigo }}">
+                            {% if user.rol_actual == 'Docente' %}
+                                <input name="codigo" class="form-control" id="codigo" type="text"
+                                       value="{{ historico.codigo }}" disabled>
+                            {% else %}
+                                <input name="codigo" class="form-control" id="codigo" type="text"
+                                       value="{{ historico.codigo }}">
+                            {%  endif %}
                         </div>
                     </div>
                 </div>
@@ -54,8 +59,13 @@
                     </div>
                     <div class="col-md-10">
                         <div class="form-group">
+                            {% if user.rol_actual == 'Docente' %}
                             <input name="nombre" class="form-control" id="nombre" type="text"
+                                   value="{{ historico.nombre }}" disabled>
+                            {% else %}
+                                <input name="nombre" class="form-control" id="nombre" type="text"
                                    value="{{ historico.nombre }}">
+                            {%  endif %}
                         </div>
                     </div>
                 </div>
@@ -66,10 +76,12 @@
                         Informacion actualizada correctamente
                     </div>
                 </div>
+                {% if user.rol_actual != 'Docente' %}
                 <a class="btn btn-outline-primary m-1" type="button"
                    href="{% url 'historico' %}">Cancelar</a>
                 <button class="btn btn-primary m-1" onclick="editarNombre()">Guardar
                 </button>
+                {% endif %}
             </div>
 
 
@@ -106,6 +118,7 @@
             </div>
             <hr style="background-color: #0154ae;">
 
+            {% if user.rol_actual != 'Docente' %}
             <div class="d-flex flex-row align-items-center">
                 <div class="mr-1">
                     <select class="custom-select custom-select-sm mb-3" id="cboSemestre" name="cboSemestre">
@@ -118,6 +131,7 @@
                     </button>
                 </div>
             </div>
+            {% endif %}
         </div>
         <div class="col">
 
@@ -129,6 +143,7 @@
                     <div class="card m-1">
                         <div class="card-body" style="padding: 1rem">
                             <div class="row">
+                                {% if user.rol_actual != 'Docente' %}
                                 <div class="col-md-8 p-0 d-flex justify-content-center">
                                     <form action="{% url 'listarPlanMedicion' %}" method="post">
                                         {% csrf_token %}
@@ -149,6 +164,23 @@
                                         <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
                                     </a>
                                 </div>
+                                {% else %}
+                                    <div class="col-md-12 p-0 d-flex justify-content-center">
+                                        <form action="{% url 'listarPlanMedicion' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="operacion" value="entrada">
+                                            <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
+                                            <input type="hidden" name="semestre" value="{{ semestreSelec.pk }}">
+                                            <input type="hidden" name="planMedicion" value="{{ historico.pk }}">
+                                            <input type="hidden" name="estado" value="1">
+
+                                            <button type="submit">
+                                                <h6>{{ semestreSelec.nombreCodigo }}</h6>
+                                            </button>
+
+                                        </form>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

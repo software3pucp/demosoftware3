@@ -237,6 +237,7 @@
                             <div class="curso col-md-4 equal">
                                 <div class="d-flex justify-content-center">
                                     <div class="product card">
+                                        {% if user.rol_actual != 'Docente' %}
                                         <div class="card-img-top imgbox" style="height: 15rem">
                                             <a href="#">
                                                 <img class="" src="{% static 'img/illustrations/3.png' %}">
@@ -270,10 +271,19 @@
                                                 </form>
                                             </div>
                                         </div>
+                                        {% else %}
+                                            <div class="card-img-top imgbox" style="height: 12rem">
+                                                <a href="#">
+                                                    <img class="" src="{% static 'img/illustrations/3.png' %}">
+                                                </a>
+                                            </div>
+                                            <h5 class="card-title ml-2" style="text-align: left">{{ plan.curso.nombre }}</h5>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
                         {% endfor %}
+                        {% if user.rol_actual != 'Docente' %}
                         <div id="nuevo" class="col-md-4 equal">
                             <div class="d-flex justify-content-center">
                                 <form class="product recent-work card" action="{% url 'crearPlanMedicion' pk='0' %}"
@@ -299,6 +309,7 @@
                                 </form>
                             </div>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
