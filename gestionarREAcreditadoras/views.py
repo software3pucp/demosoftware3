@@ -20,29 +20,42 @@ def listarRE(request, pk):
     lista=[]
     acreditadora = Acreditadora.objects.get(pk=pk)
     resultados = ResultadoAcreditadora.objects.filter(acreditadora=pk,estado=1)
-    plResPucp=PlanResultados.objects.get(estado=1)
-    id_especialidad=0
+    plResPucp=PlanResultados.objects.filter(estado=1)
+    impresionxFacultades=[]
+    idFacultad=-1
     if plResPucp:
-        resultadosPUCPs=ResultadoPUCP.objects.filter(estado=1,planResultado_id=plResPucp.pk)
-        id_especialidad=plResPucp.especialidad_id
-    else:
-        resultadosPUCPs=[]
-    if resultadosPUCPs:
-        for rPUCP in resultadosPUCPs:
-            indic=Indicador.objects.filter(resultado_id=rPUCP.pk,estado=1)
-            especialidad = Especialidad.objects.get(pk=id_especialidad)
-            id_facultad = especialidad.facultad_id
-            facultad = Facultad.objects.get(pk=id_facultad)
-            reacres=[]
-            for i in indic:
-                reAux=ResultadoAcreditadora.objects.filter(indicador_id=i.pk,estado=1)
-                if reAux:
-                    reacres=list(chain(reacres,reAux))
-                    # print(reacres)
-            if reacres:
-                reg=[rPUCP,especialidad,facultad,reacres]
-                print(reg)
-                lista.append(reg)
+        for plan in plResPucp:
+            resultadosPUCPs=ResultadoPUCP.objects.filter(estado=1,planResultado_id=plan.pk)
+            for rPUCP in resultadosPUCPs:
+                indic = Indicador.objects.filter(resultado_id=rPUCP.pk, estado=1)
+                id_especialidad=plan.especialidad_id
+                especialidad = Especialidad.objects.get(pk=id_especialidad)
+                id_facultad = especialidad.facultad_id
+                facultad = Facultad.objects.get(pk=id_facultad)
+                reacres = []
+                for i in indic:
+                    reAux = ResultadoAcreditadora.objects.filter(indicador_id=i.pk, estado=1)
+                    if reAux:
+                        reacres = list(chain(reacres, reAux))
+                        # print(reacres)
+                if reacres:
+                    reg = [rPUCP, especialidad, facultad, reacres]
+                    # print(reg)
+                    lista.append(reg)
+
+    tabla_contenido = []
+    for reg in lista:
+        if reg==-1:
+            idFacultad=reg[1].pk
+        print(reg[1].pk)
+        if idFacultad!=int(reg[1].pk):
+            impresionxFacultades.append(tabla_contenido)
+            tabla_contenido.clear()
+            tabla_contenido.append(reg);
+            idFacultad=reg[1].pk
+        else:
+            tabla_contenido.append(reg);
+    print(impresionxFacultades)
 
     context = {
         'acreditadora': acreditadora,
@@ -106,8 +119,9 @@ def editarRE(request, pk):
             id_indicador=resultadoAcreditadora.indicador_id
             indi=Indicador.objects.get(pk=id_indicador)
             resultadoPUCP=ResultadoPUCP.objects.get(pk=indi.resultado_id)
-            # resultadoSeleccionado = resultadoAcreditadora.resultadoPUCP_id
-            especialidadSeleccionada = resultadoPUCP.especialidad_id
+            planResultado=PlanResultados.objects.get(pk=resultadoPUCP.planResultado_id)
+            # resultadoSeleccionado = planResultado.resultadoPUCP_id
+            especialidadSeleccionada = planResultado.especialidad_id
             facultadSeleccionada = Especialidad.objects.get(pk=especialidadSeleccionada).facultad_id
 
         titulo = 'Editar'
@@ -145,18 +159,21 @@ def ajaxEditar(request):
             indicadores=Indicador.objects.filter(estado='1');
             for ind in indicadores:
                 # print(ind.descripcion)
-                result_aux=ResultadoPUCP.objects.get(pk=ind.resultado.pk)
-                if result_aux.especialidad_id == int(request.POST['especialidadPk']):
-                    resul_Acre_Aux=ResultadoAcreditadora.objects.filter(indicador_id=ind.pk, estado=1)
-                    # print(request.POST['resultadoAcredPK'])
-                    if not resul_Acre_Aux:
-                        ind_Aux.append(ind);
-                    else:
-                        for reAcre in resul_Acre_Aux:
-                            # print(reAcre.pk)
-                            if int(request.POST['resultadoAcredPK'])!=0 and int(request.POST['resultadoAcredPK'])==reAcre.pk:
-                                ind_Aux.append(ind);
-                                break;
+                result_aux=ResultadoPUCP.objects.get(pk=ind.resultado.pk, estado=1)
+                if result_aux:
+                    # print(result_aux.descripcion)
+                    plan=PlanResultados.objects.get(pk=result_aux.planResultado.pk,estado=1)
+                    if plan.especialidad_id == int(request.POST['especialidadPk']):
+                        resul_Acre_Aux=ResultadoAcreditadora.objects.filter(indicador_id=ind.pk, estado=1)
+                        # print(request.POST['resultadoAcredPK'])
+                        if not resul_Acre_Aux:
+                           ind_Aux.append(ind);
+                        else:
+                           for reAcre in resul_Acre_Aux:
+                              # print(reAcre.pk)
+                              if int(request.POST['resultadoAcredPK'])!=0 and int(request.POST['resultadoAcredPK'])==reAcre.pk:
+                                 ind_Aux.append(ind);
+                                 break;
 
             data = serializers.serialize("json", ind_Aux)
             return JsonResponse({"resp": data}, status=200)
