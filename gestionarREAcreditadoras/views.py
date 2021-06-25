@@ -12,17 +12,24 @@ from django.contrib.auth.decorators import login_required
 from gestionarResultados.models import ResultadoPUCP
 from itertools import chain
 
+from gestionarResultados.models import PlanResultados
+
+
 @login_required
 def listarRE(request, pk):
     lista=[]
     acreditadora = Acreditadora.objects.get(pk=pk)
     resultados = ResultadoAcreditadora.objects.filter(acreditadora=pk,estado=1)
-    resultadosPUCPs=ResultadoPUCP.objects.filter(estado=1)
-
+    plResPucp=PlanResultados.objects.get(estado=1)
+    id_especialidad=0
+    if plResPucp:
+        resultadosPUCPs=ResultadoPUCP.objects.filter(estado=1,planResultado_id=plResPucp.pk)
+        id_especialidad=plResPucp.especialidad_id
+    else:
+        resultadosPUCPs=[]
     if resultadosPUCPs:
         for rPUCP in resultadosPUCPs:
             indic=Indicador.objects.filter(resultado_id=rPUCP.pk,estado=1)
-            id_especialidad=rPUCP.especialidad_id
             especialidad = Especialidad.objects.get(pk=id_especialidad)
             id_facultad = especialidad.facultad_id
             facultad = Facultad.objects.get(pk=id_facultad)
