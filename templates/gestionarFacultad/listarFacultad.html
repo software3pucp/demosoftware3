@@ -137,7 +137,7 @@
                     </div>
                 {% endfor %}
 
-
+                {% if user.rol_actual == 'Coordinador de facultad' %}
                 <div class="col-sm-12 col-md-6 col-lg-4">
                     <div class="card-group service-work">
                         <button type="submit" class="recent-work card mr-4 mb-4 align-items-center"
@@ -147,15 +147,18 @@
                                     <span class="fas fa-plus fa-9x" style="text-align: center"></span>
                                 </div>
                             </div>
+
                             <div class="recent-work-vertical-ruk card-img-overlay">
                                 <div class="service-work-content">
                                     <h5 class="card-title" style="text-align: center; margin-top: 11.4rem">Agregar
                                         Facultad</h5>
                                 </div>
                             </div>
+
                         </button>
                     </div>
                 </div>
+                {% endif %}
             </div>
         </form>
     </div>
