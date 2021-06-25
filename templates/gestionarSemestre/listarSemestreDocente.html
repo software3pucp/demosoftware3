@@ -78,13 +78,7 @@
     <div class="row d-flex justify-content-center ">
 
         <div class="row d-flex justify-content-center col-12">
-            <h4 class="mr-auto" id="Titulo" style="font-family: Montserrat">Creación de Semestre</h4>
-            <a class="btn btn-primary mx-2" href="../../gestionarEvaluacion/historial/">Historial Mediciones</a>
-            <a href="#Titulo" style="font-family: Roboto"><h5 id="Retroceder">
-                <img class="img-fluid" style="height: 20px"
-                     src="https://image.flaticon.com/icons/png/512/60/60577.png">
-                <u>Volver</u>
-            </h5></a>
+            <h4 class="mr-auto" id="Titulo" style="font-family: Montserrat">Semestres</h4>
         </div>
     </div>
 
@@ -93,19 +87,19 @@
     <div id="Semestres" class="row d-flex  mt-1">
 
 
-        <div id="Anadir" class=" col-xl-3 col-md-4 col-sm-6 p-2">
-            <div class="card nav-link icon-indicator" href="#agregarSemestreNuevo" data-toggle="modal" role="button">
-                <div class="card-body d-flex justify-content-center p-0" >
-                        <div class="plus alt">
-                        </div>
-
-                </div>
-            </div>
-        </div>
+{#        <div id="Anadir" class=" col-xl-3 col-md-4 col-sm-6 p-2">#}
+{#            <div class="card nav-link icon-indicator" href="#agregarSemestreNuevo" data-toggle="modal" role="button">#}
+{#                <div class="card-body d-flex justify-content-center p-0" >#}
+{#                        <div class="plus alt">#}
+{#                        </div>#}
+{##}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
 
         {% for semestre in ListaSemestre %}
             <div class=" col-xl-3 col-md-4 col-sm-6 p-2">
-                <a href="../enviarCursoHorario/{{semestre.pk}}">
+                <a href="../enviarCursoHorarioDocente/{{semestre.pk}}">
                     <div class="card ">
                         <div class="card-body">
                             <p class="card-title">{{ semestre.nombreCodigo }}</p>

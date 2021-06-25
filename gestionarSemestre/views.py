@@ -96,7 +96,7 @@ def listarSemestreDocente(request):
     context = {
         'ListaSemestre': listarSemestres
     }
-    return render(request, 'gestionarSemestre/listarSemestre.html', context)
+    return render(request, 'gestionarSemestre/listarSemestreDocente.html', context)
 
 
 def enviarCursoHorarioDocente(request,semestrepk):
