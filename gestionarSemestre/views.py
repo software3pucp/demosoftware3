@@ -109,6 +109,6 @@ def enviarCursoHorarioDocente(request,semestrepk):
     listaCursos = list(set(listaCursos))
     print(listaCursos)
     context = {
-        'ListaSemestre': listaCursos
+        'listaCursos': listaCursos
     }
-    return render(request, 'gestionarSemestre/test.html', context)
+    return render(request, 'gestionarSemestre/semestre/semestreDetalleDocente.html', context)
