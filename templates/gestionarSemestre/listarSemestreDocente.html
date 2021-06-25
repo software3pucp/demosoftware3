@@ -1,0 +1,349 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+
+    <link href="{% static 'lib/flatpickr/flatpickr.min.css'%}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <style>
+        #Titulo{
+            color: #0154ae
+        }
+
+        .numInputWrapper{
+            visibility:hidden;
+        }
+
+        p{
+            line-height: 20%;
+            text-align: center;
+            font-family: "Montserrat";
+        }
+
+        label{
+            color: #f9fafd;
+            font-family: "Montserrat";
+        }
+        .plus {
+
+            display: inline-block;
+            color: #000;
+            font-size: 60px;
+            line-height: 65px;
+        }
+
+        .plus::before {
+            content: "+";
+        }
+
+        .card:hover .plus{
+            background-color: #0154ae;
+            color: #f9fafd  !important;
+            cursor: pointer;
+
+        }
+
+        .card:hover{
+            background-color: #0154ae;
+            color: #f9fafd  !important;
+            cursor: pointer;
+        }
+
+        .datetimepicker {
+            changeYear: false !important;
+        }
+
+        .card-title{
+            color: #000 ;
+        }
+        .card-text{
+            color: #000 ;
+        }
+        .card:hover .card-title{
+            color: #f9fafd ;
+        }
+        .card:hover .card-text{
+            color: #f9fafd;
+        }
+
+    </style>
+
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+
+    {#AQUI COLOQUEN EL CÓDIGO#}
+    <div class="row d-flex justify-content-center ">
+
+        <div class="row d-flex justify-content-center col-12">
+            <h4 class="mr-auto" id="Titulo" style="font-family: Montserrat">Creación de Semestre</h4>
+            <a class="btn btn-primary mx-2" href="../../gestionarEvaluacion/historial/">Historial Mediciones</a>
+            <a href="#Titulo" style="font-family: Roboto"><h5 id="Retroceder">
+                <img class="img-fluid" style="height: 20px"
+                     src="https://image.flaticon.com/icons/png/512/60/60577.png">
+                <u>Volver</u>
+            </h5></a>
+        </div>
+    </div>
+
+    <hr style="background-color: #0154ae;">
+
+    <div id="Semestres" class="row d-flex  mt-1">
+
+
+        <div id="Anadir" class=" col-xl-3 col-md-4 col-sm-6 p-2">
+            <div class="card nav-link icon-indicator" href="#agregarSemestreNuevo" data-toggle="modal" role="button">
+                <div class="card-body d-flex justify-content-center p-0" >
+                        <div class="plus alt">
+                        </div>
+
+                </div>
+            </div>
+        </div>
+
+        {% for semestre in ListaSemestre %}
+            <div class=" col-xl-3 col-md-4 col-sm-6 p-2">
+                <a href="../enviarCursoHorario/{{semestre.pk}}">
+                    <div class="card ">
+                        <div class="card-body">
+                            <p class="card-title">{{ semestre.nombreCodigo }}</p>
+                            <p class="card-text">Del {{ semestre.inicio }}</p>
+                            <p class="card-text">al {{ semestre.fin }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        {% endfor %}
+    </div>
+
+
+    <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
+         id="agregarSemestreNuevo" tabindex="-1" role="dialog"
+         aria-labelledby="settings-modal-label" aria-hidden="true"
+         data-options='{"autoShow":false,"autoShowDelay":10,"showOnce":false}'>
+
+        <div class="modal-dialog modal-dialog-vertical" style="opacity: 0.90" role="document">
+            <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar" style="background-color: #017ECD;" >
+
+                <div class="modal-body">
+                    <div class="row d-flex justify-content-center">
+                        <h5 style="color: #f9fafd; font-family:Montserrat">Agregar Semestre</h5>
+                        <hr  style="background-color: #f9fafd; width: 70%">
+                    </div>
+
+                    <div class="row d-flex justify-content-center m-2">
+                        <form name= "formAgregar" id="formAgregar">
+
+                            <div class="form-group row">
+                                <label name = "boxSemestre" for="boxSemestre" class="col-sm-4 col-form-label">Semestre</label>
+
+                                    <input type="text" class="form-control col-sm-8" id="boxSemestre" name="boxSemestre" placeholder="20XX-X" maxlength="6" >
+
+                            </div>
+
+                            <br>
+
+                            <div class="form-group row">
+                                <label for="dateInicio" class="col-sm-4 col-form-label">Inicio</label>
+                                    <input type="text" class="form-control datetimepicker col-sm-8" id="dateInicio" name="dateInicio" data-options='{"dateFormat":"d/m"}' >
+                            </div>
+
+                            <br>
+
+                            <div class="form-group row">
+                                <label for="dateFin" class="col-sm-4 col-form-label">Fin   </label>
+                                <input type="text" class="form-control datetimepicker col-sm-8" id="dateFin" name="dateFin" data-options='{"dateFormat":"d/m"}' >
+                            </div>
+
+                            <br>
+
+                            <div class="form-group row m-3 p-2">
+                                <div class="col-6">
+                                    <button class="btn btn-secondary" style="font-family: Roboto" type="button"
+                                            data-dismiss="modal" aria-label="Close">Cancelar
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                        <button id="agr" style="font-family: Roboto ; background-color: #0154ae !important;" type="button" class="btn btn-primary"  onclick="validar()">Agregar</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modalDuplicado" tabindex="-1" role="dialog" aria-labelledby="modalDuplicadoLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalDuplicadoLabel">Aviso</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                  <div class="modal-body">
+                    <form id="formError" name="formError">
+                        <div class="form-group">
+                            ¡El ciclo ingresado ya se encuentra registrado!
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnModalDuplicado" class="btn btn-primary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalFecha" tabindex="-1" role="dialog" aria-labelledby="modalFechaLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalFechaLabel">Aviso</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                  <div class="modal-body">
+                    <form id="formErrorFecha" name="formErrorFecha">
+                        <div class="form-group">
+                            ¡La fecha de fin debe ser mayor que la fecha inicio!
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnModalErrorFecha" class="btn btn-primary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{#Aquí coloco el JS particular de la web#}
+{% block extrajs %}
+    <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
+    <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+    <script>
+        $(document).ready(function () {
+            flatpickr(dateInicio, {
+                "locale": "es",
+                "dateFormat": "d/m",
+            });
+            flatpickr(dateFin, {
+                "locale": "es",
+                "dateFormat": "d/m",
+            });
+        });
+        ;
+    </script>
+
+    <script>
+        function validar(){
+            $("form[name='formAgregar']").validate({
+                rules: {
+                    boxSemestre : {
+                        required: true,
+                    },
+                    dateInicio: {
+                        required: true,
+                    },
+
+                    dateFin: {
+                        required: true,
+
+                    },
+
+                },
+                messages : {
+                    boxSemestre: {
+                        required: "Por favor ingrese el semestre"
+                    },
+                    dateInicio: {
+                        required: "Por favor ingrese la fecha de inicio"
+                    },
+                    dateFin: {
+                        required: "Por favor ingrese la fecha de fin"
+                    }
+                }
+            });
+
+        };
+        $("#agr").on('click', function () {
+            if ($("#formAgregar").valid()) {
+                if (ValidarFechas()) {
+                    agregar();
+                } else {
+                    $("#modalFecha").modal('show');
+                }
+            }
+        });
+    </script>
+
+    <script>
+        function ValidarFechas() {
+            var fechainicial = document.getElementById("dateInicio").value;
+            var fechafinal = document.getElementById("dateFin").value;
+
+            var fechaIniFix = fechainicial[3]+fechainicial[4]+'/'+fechainicial[0]+fechainicial[1];
+            var fechaFinFix = fechafinal[3]+fechafinal[4]+'/'+fechafinal[0]+fechafinal[1];
+            fechaIniFix += '/2000';
+            fechaFinFix += '/2000';
+            var fechaIni = new Date(fechaIniFix);
+            var fechaFin = new Date(fechaFinFix);
+
+            return (fechaFin > fechaIni);
+        }
+    </script>
+
+    <script>
+        function agregar(){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'agregarSemestre'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    nombreCodigo: $("#boxSemestre").val(),
+                    inicio: $("#dateInicio").val(),
+                    fin: $("#dateFin").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["nuevoSemestre"]);
+                    var fields = instance[0]["fields"];
+                    console.log(instance);
+                    data = '<div class=" col-xl-3 col-md-4 col-sm-6 p-2">'+
+                        '<a href="../enviarCursoHorario/'+instance[0]["pk"]+'">'+
+                        '<div class="card">'+
+                        '    <div class="card-body">'+
+                        '       <p class="card-title">'+fields.nombreCodigo+'</p>'+
+                        '       <p class="card-text">Del '+fields.inicio+'</p>'+
+                        '       <p class="card-text">al '+fields.fin+'</p>'+
+                        '    </div>'+
+                        '</div>'+
+                        '</a>'+
+                        '</div>'
+
+                    $("#dateInicio").val("");
+                    $("#dateFin").val("");
+                    $("#boxSemestre").val("");
+                    $(data).insertAfter($("#Anadir"));
+
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    $("#modalDuplicado").modal('show');
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+    </script>
+
+{% endblock %}

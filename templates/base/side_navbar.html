@@ -231,7 +231,7 @@
 
                 {% if request.user.rol_actual == 'Docente' %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{% url 'listarSemestreDocente' %}">
                         <div class="d-flex align-items-center">
                         <span class="nav-link-icon">
                             <span class="fas fa-cube"></span>

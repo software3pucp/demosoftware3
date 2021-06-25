@@ -5,6 +5,7 @@ from django.core import serializers
 from datetime import datetime
 
 from gestionarFacultad.models import Facultad
+from gestionarHorario.models import Horario
 from gestionarPlanMedicion.models import PlanMedicionCurso, PlanMedicion
 from gestionarSemestre.models import Semestre
 from gestionarCurso.models import Curso
@@ -79,3 +80,28 @@ def enviarCursoHorario(request,pk):
         "facultades": facultades,
     }
     return render(request, 'gestionarSemestre/semestre/semestreDetalle.html', context)
+
+def listarSemestreDocente(request):
+    #user = request.user.pk
+    #print("hola")
+    #print(user)
+    '''
+    planes = PlanMedicion.objects.filter(estado='1')
+    for plan in planes:
+        listaPlanes = PlanMedicionCurso.objects.filter(planmedicion=plan.pk)
+        for horario in listaPlanes:
+            listaCursos = Horario.objects.filter(curso=horario.id)
+                for algo in listaCursos:
+                    if algo.responsable_id == request.user.pk:
+                        if
+    '''
+    horarios_docente = Horario.objects.filter(responsable_id=request.user.pk)
+    tabla2 = PlanMedicionCurso.objects.filter()
+    for horario in horarios_docente:
+        horario.curso.planMedicion.estado
+    semestreLista = reversed(Semestre.objects.filter())
+
+    context = {
+        'ListaSemestre': semestreLista
+    }
+    return render(request, 'gestionarSemestre/listarSemestre.html', context)
