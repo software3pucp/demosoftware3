@@ -148,6 +148,7 @@
                     </div>
                 </div>
             {% endfor %}
+            {% if user.rol_actual == 'Coordinador de especialidad' %}
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <div class="card-group service-work">
                     <button type="submit" class="recent-work card mr-4 mb-4" style="height: 16rem">
@@ -165,6 +166,7 @@
                     </button>
                 </div>
             </div>
+            {% endif %}
         </div>
         </form>
     </div>
