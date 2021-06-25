@@ -75,6 +75,30 @@
 
         </div>
 
+        {% if not hay_semestres %}
+            <div class="modal fade" id="errorModal" tabindex="-1" role="dialog"
+                 aria-labelledby="errorModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info">
+                            <h5 class="modal-title" id="errorModalLabel">¡Aviso!</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Cerrar"><span
+                                    class="font-weight-light" aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body bg-soft-info">
+                            <p>Aun no se ha registrado semestres. comunicarse con el administrador para su creación </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+
         <div class="row-12">
             <div class="col-md-12">
                 <h4>Semestres del Resultado del Estudiante</h4>
@@ -203,7 +227,7 @@
                 },
                 success: function (response) {
                     console.log("Se edito correctamente");
-                    $("#alerta").fadeIn( 200 ).delay( 900 ).slideUp( 200 );
+                    $("#alerta").fadeIn(200).delay(900).slideUp(200);
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);
@@ -233,4 +257,13 @@
         }
 
     </script>
+
+    {% if not hay_semestres %}
+        <script>
+            $(document).ready(function () {
+                $("#errorModal").modal({backdrop: 'static', keyboard: false, show: true});
+                console.log()
+            });
+        </script>
+    {% endif %}
 {% endblock %}

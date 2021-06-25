@@ -280,7 +280,11 @@ def eliminarMedicion(request):
     return JsonResponse({}, status=200)
 
 def editarHistorico(request,pk):
-    listaSemestre = reversed(Semestre.objects.filter())
+    listaSemestre = (Semestre.objects.filter())
+    hay_semestres=False
+    if (len(listaSemestre)>0):
+        hay_semestres = True
+
     historico = PlanMedicion.objects.get(pk=pk)
     manySemestre = historico.semestre.all()
     semestresSeleccionados = reversed(manySemestre)
@@ -290,6 +294,7 @@ def editarHistorico(request,pk):
         'historico': historico,
         'especialidad': especialidad,
         'semestresSeleccionados': semestresSeleccionados,
+        'hay_semestres':hay_semestres,
     }
     return render(request, 'gestionarPlanMedicion/editarPlanMedicionHistorico.html', context)
 
