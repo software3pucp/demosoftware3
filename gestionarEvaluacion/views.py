@@ -74,16 +74,19 @@ def evaluar(request,pk):
         'users': User.objects.all(),
         'listaAux': listaArchivos,
     }
-    return render(request, 'gestionarEvaluacion/baseEvaluacion/base.html',context) @ login_required
+    return render(request, 'gestionarEvaluacion/baseEvaluacion/base.html',context)
 
-
+@login_required
 def evaluarDocente(request):
     pk = request.POST['cursoButton']
     media_path = MEDIA_URL
     listaAlumno = reversed(RespuestaEvaluacion.objects.filter(estado=1))
     cursoSeleccionado = Curso.objects.get(pk=pk)
     # REVISAR ESTA PARTE PORQUE FALTA EL ID DE PLAN DE MEDICION
-    plan = PlanMedicionCurso.objects.get(estado='1', curso_id=cursoSeleccionado.pk, semestre_id=request.POST['estado'])
+    planes = PlanMedicionCurso.objects.filter(estado='1', curso_id=cursoSeleccionado.pk, semestre_id=request.POST['estado'])
+    for item in planes:
+        if item.planMedicion.estado == '1':
+            plan = item
     planMedicion = PlanMedicion.objects.get(pk=plan.planMedicion_id)
     # horarios = plan.horario.all()
     horarios = Horario.objects.filter(curso_id=plan.pk, responsable_id=request.user.pk)
