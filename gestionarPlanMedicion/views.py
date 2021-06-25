@@ -106,6 +106,7 @@ def crearPlanMedicion(request,pk):
     if pk == '0':
         insert = True
     else:
+        plan = PlanMedicionCurso.objects.get(pk=pk)
         listaIndicadores = Indicador.objects.filter(resultado__planResultado__especialidad_id=request.POST['especialidad'],resultado__planResultado_id=planMedicion.planResultados_id, estado=1)
         manyInd = plan.indicador.all()
         manyHor = Horario.objects.filter(curso_id=pk,estado=1)

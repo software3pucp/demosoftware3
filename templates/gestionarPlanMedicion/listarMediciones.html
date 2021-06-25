@@ -194,7 +194,7 @@
                             '<div style="margin: 1%;">' +
                             '   <div class="card text-white bg-primary">' +
                             '        <div class="card-body">' +
-                            '           <div class="row no-gutters">' +
+                            '           <div class="row no-gutters align-items-center">' +
                             '               <div class="col-md-1">' +
                             '                   <h2 class="card-text text-white">' + instance[i]["fields"].codigo + '</h2>' +
                             '               </div>' +
@@ -203,7 +203,7 @@
                             '               </div>')
                         {% if user.rol_actual == 'Docente' %}
                             data += (
-                                '               <div class="col-md-2">' +
+                                '               <div class="col-md-2 align-items-end">' +
                                 '                   <div class="d-flex justify-content-center">' +
                                 '                       <button class="btn btn-falcon-primary mr-1 mb-1" onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">Visualizar</button>' +
                                 '                   </div>' +
