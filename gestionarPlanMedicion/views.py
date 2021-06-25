@@ -27,16 +27,10 @@ def listarPlanMedicion(request):
     estado = ''
     if request.POST:
         if request.POST['operacion'] == 'entrada':
-            print('***************************************************************************************************')
-            print(request.POST)
-            print('***************************************************************************************************')
             especialidad = Especialidad.objects.get(pk=request.POST['especialidad'])
             semestre = Semestre.objects.get(pk=request.POST['semestre'])
             planMedicion = PlanMedicion.objects.get(pk=request.POST['planMedicion'])
         elif request.POST['operacion'] == 'estado':
-            print('***************************************************************************************************')
-            print(request.POST)
-            print('***************************************************************************************************')
             planMedicionCurso = PlanMedicionCurso.objects.get(pk=request.POST['planCurso'])
             if planMedicionCurso.estado == '1':
                 planMedicionCurso.estado = '2'
@@ -45,9 +39,6 @@ def listarPlanMedicion(request):
             planMedicionCurso.save()
 
         elif request.POST['operacion'] == 'eliminar':
-            print('***************************************************************************************************')
-            print(request.POST)
-            print('***************************************************************************************************')
             planMedicionCurso = PlanMedicionCurso.objects.get(pk=request.POST['planCurso'])
             planMedicionCurso.estado = '0'
             planMedicionCurso.save()
@@ -89,15 +80,16 @@ def crearPlanMedicion(request,pk):
     indicadoresSelec = []
     if request.POST:
         if request.POST['operacion'] == 'entrada':
-            print('***************************************************************************************************')
-            print(request.POST)
-            print('***************************************************************************************************')
+            a=4 #Rellenar espacio
+            # print('***************************************************************************************************')
+            # print(request.POST)
+            # print('***************************************************************************************************')
         elif request.POST['operacion'] == 'editar':
             flag = 1
         elif request.POST['operacion'] == 'insertar':
-            print('***************************************************************************************************')
-            print(request.POST)
-            print('***************************************************************************************************')
+            # print('***************************************************************************************************')
+            # print(request.POST)
+            # print('***************************************************************************************************')
             planes = PlanMedicionCurso.objects.filter(curso_id=request.POST['curso'],planMedicion_id=request.POST['planMedicion'],semestre_id=request.POST['semestre']).exclude(estado=0)
             if len(planes) == 0:
                 PlanMedicionCurso.objects.create(curso_id=request.POST['curso'],planMedicion_id=request.POST['planMedicion'],semestre_id=request.POST['semestre'],estado=request.POST['estado'])
@@ -172,9 +164,9 @@ def crearAjax(request):
             data = serializers.serialize("json", indicador)
             return JsonResponse({"resp": data}, status=200)
         elif request.POST['operacion'] == 'agregarHorario':
-            print('***************************************************************************************************')
-            print(request.POST)
-            print('***************************************************************************************************')
+            # print('***************************************************************************************************')
+            # print(request.POST)
+            # print('***************************************************************************************************')
             plan = PlanMedicionCurso.objects.get(pk=request.POST["planPK"])
             horarios = Horario.objects.filter(curso_id=request.POST["planPK"],estado=1)
             for horario in horarios:
@@ -198,9 +190,9 @@ def crearAjax(request):
             data = serializers.serialize("json", horario)
             return JsonResponse({"resp": data}, status=200)
         elif request.POST['operacion'] == 'quitarHorario':
-            print('***************************************************************************************************')
-            print(request.POST)
-            print('***************************************************************************************************')
+            # print('***************************************************************************************************')
+            # print(request.POST)
+            # print('***************************************************************************************************')
             horario = Horario.objects.filter(pk=request.POST["horarioPk"])
             horarios = Horario.objects.filter(curso_id=request.POST["planPK"],estado=1)
             if horario[0] not in horarios:
@@ -306,8 +298,8 @@ def agregarSemestrePlan(request):
     semestre = Semestre.objects.get(pk=request.POST['semestrePk'])
     historico.semestre.add(semestre)
     ser_instance = serializers.serialize('json', [semestre, ])
-    print(historico.semestre.all().count())
-    print("////////////////////////////////////Se agrego 1////////////////////////////////////////")
+    # print(historico.semestre.all().count())
+    # print("////////////////////////////////////Se agrego 1////////////////////////////////////////")
     return JsonResponse({"semestreAgregado": ser_instance}, status=200)
 
 def eliminarSemestrePlan(request):
