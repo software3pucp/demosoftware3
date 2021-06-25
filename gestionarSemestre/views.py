@@ -84,7 +84,6 @@ def enviarCursoHorario(request,pk):
 def listarSemestreDocente(request):
 
     horarios_docente = Horario.objects.filter(responsable_id=request.user.pk)
-    tabla2 = PlanMedicionCurso.objects.filter()
     listaCursos=[]
     listarSemestres = []
     for horario in horarios_docente:
@@ -92,30 +91,24 @@ def listarSemestreDocente(request):
             listaCursos.append(horario.curso.curso)
             listarSemestres.append(horario.curso.semestre)
 
-    #semestreLista = reversed(Semestre.objects.filter())
-    semestreLista = list(set(semestreLista))
+    listarSemestres = list(set(listarSemestres))
 
     context = {
-        'ListaSemestre': semestreLista
+        'ListaSemestre': listarSemestres
     }
     return render(request, 'gestionarSemestre/listarSemestre.html', context)
 
 
-def listarCursosDocente(request,semestrepk):
+def enviarCursoHorarioDocente(request,semestrepk):
 
     horarios_docente = Horario.objects.filter(responsable_id=request.user.pk)
-    tabla2 = PlanMedicionCurso.objects.filter()
     listaCursos = []
-    listarSemestres = []
     for horario in horarios_docente:
-        if (horario.curso.planMedicion.estado == '1'):
+        if (horario.curso.planMedicion.estado == '1' and horario.curso.semestre.pk == int(semestrepk)):
             listaCursos.append(horario.curso.curso)
-            listarSemestres.append(horario.curso.semestre)
-
-    # semestreLista = reversed(Semestre.objects.filter())
-    semestreLista = list(set(semestreLista))
-
+    listaCursos = list(set(listaCursos))
+    print(listaCursos)
     context = {
-        'ListaSemestre': semestreLista
+        'ListaSemestre': listaCursos
     }
-    return render(request, 'gestionarSemestre/listarSemestre.html', context)
+    return render(request, 'gestionarSemestre/test.html', context)
