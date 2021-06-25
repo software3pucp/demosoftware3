@@ -35,6 +35,10 @@
         }
 
 
+
+
+
+
     </style>
 
 {% endblock %}
@@ -48,11 +52,10 @@
             <h3 id="Titulo" style="font-family: Montserrat">{{ semestreSeleccionado.nombreCodigo }}</h3>
         </div>
         <div class="col-2">
-            <a href="{% url 'listarSemestreDocente' %}" style="font-family: Roboto"><h5 id="Retroceder">
-                <img class="img-fluid" style="height: 20px"
-                     src="https://image.flaticon.com/icons/png/512/60/60577.png">
-                <u>Volver</u>
-            </h5></a>
+            <a class="d-flex flex-row justify-content-end mt-2 mr-6" href="{% url 'listarSemestreDocente' %}">
+                <div class="fas fa-reply mt-1 mr-2"></div>
+                <h5>Volver</h5>
+            </a>
         </div>
     </div>
 
@@ -71,11 +74,13 @@
             {% for curso in listaCursos %}
                 <form action="{% url 'evaluarDocente' %}" method="post">
                     {% csrf_token %}
-                    <input name="estado" type="hidden" id="estado{{ semestreSeleccionado.pk }}" value="{{ semestreSeleccionado.pk }}">
+                    <input name="estado" type="hidden" id="estado{{ semestreSeleccionado.pk }}"
+                           value="{{ semestreSeleccionado.pk }}">
                     <div class="card-body fs--1 p-0">
                         <a class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300">
                             <div class="notification-body">
-                                <button name="cursoButton" type="submit" class="mb-1" value="{{ curso.pk }}">{{ curso.nombre }}</button>
+                                <btn name="cursoButton" type="submit" class="btn mr-1 mb-1"
+                                        value="{{ curso.pk }}">{{ curso.nombre }}</btn>
                             </div>
                         </a>
                     </div>
