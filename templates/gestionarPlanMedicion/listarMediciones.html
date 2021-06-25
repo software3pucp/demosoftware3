@@ -55,11 +55,15 @@
 
                     <hr style="background-color: #0154ae;">
 
-
-                    <div style="margin: 1%;">
+                    {% if user.rol_actual != "Docente" %}
+                    <div class="m-1">
                         <span class="btn btn-primary" onclick="redirectCrearHistorico()">Crear</span>
                     </div>
-                    <div id="listadoMediciones"></div>
+                    {% endif %}
+
+
+
+                  <div id="listadoMediciones"></div>
 
                 </div>
             </div>
