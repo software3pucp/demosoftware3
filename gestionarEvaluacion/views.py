@@ -74,7 +74,62 @@ def evaluar(request,pk):
         'users': User.objects.all(),
         'listaAux': listaArchivos,
     }
-    return render(request, 'gestionarEvaluacion/baseEvaluacion/base.html',context)
+    return render(request, 'gestionarEvaluacion/baseEvaluacion/base.html',context) @ login_required
+
+
+def evaluarDocente(request):
+    pk = request.POST['cursoButton']
+    media_path = MEDIA_URL
+    listaAlumno = reversed(RespuestaEvaluacion.objects.filter(estado=1))
+    cursoSeleccionado = Curso.objects.get(pk=pk)
+    # REVISAR ESTA PARTE PORQUE FALTA EL ID DE PLAN DE MEDICION
+    plan = PlanMedicionCurso.objects.get(estado='1', curso_id=cursoSeleccionado.pk, semestre_id=request.POST['estado'])
+    planMedicion = PlanMedicion.objects.get(pk=plan.planMedicion_id)
+    # horarios = plan.horario.all()
+    horarios = Horario.objects.filter(curso_id=plan.pk, responsable_id=request.user.pk)
+    # listaHorario= Horario.objects.filter(curso_id=pk) #listaDeHorario asociado a un curso
+    especialidadPk = cursoSeleccionado.especialidad_id
+    planResultadoPk = PlanResultados.objects.get(especialidad_id=especialidadPk, estado='1')
+    resultado = list(ResultadoPUCP.objects.filter(planResultado_id=planResultadoPk))
+
+    if resultado:
+        indicadores = plan.indicador.all()
+        listaIndicador = list(indicadores)
+        # listaIndicador = Indicador.objects.filter(resultado_id=resultado[0].id ,estado=1)
+    else:
+        listaIndicador = []
+    listaHorarios = list(horarios)
+    # listaHorarios = list(Horario.objects.filter(curso_id=pk, estado=1))
+    # listaDocumentos = EvidenciasxHorario.objects.filter(estado=1)
+    listaDocumentos = EvidenciasxHorario.objects.none()
+    listaNombres = []
+    for i in range(len(listaHorarios)):
+        listaEDocumentos = EvidenciasxHorario.objects.filter(horario_id=listaHorarios[i].id, estado=1)
+        if listaEDocumentos:
+            aux = list(listaEDocumentos)
+            for j in range(len(aux)):
+                nombArchivo = str(aux[j].archivo)[8:]
+                listaNombres.append(nombArchivo)
+            # listaEDocumentos.update(archivo=nombArchivo)
+            listaDocumentos = listaDocumentos | listaEDocumentos
+    cantidad = len(listaNombres)
+    listaConjunta = zip(listaNombres, listaDocumentos)
+    listaArchivos = set(listaConjunta)
+    context = {
+        'media_path': media_path,
+        'listaAlumno': listaAlumno,
+        'planMedicionCurso': plan,
+        'planMedicion': planMedicion,
+        'listaIndicador': listaIndicador,
+        'cursoSeleccionado': cursoSeleccionado,
+        'listaHorario': listaHorarios,
+        'listaDocumentos': listaDocumentos,
+        'listaNombres': listaNombres,
+        'cantidad': cantidad,
+        'users': User.objects.all(),
+        'listaAux': listaArchivos,
+    }
+    return render(request, 'gestionarEvaluacion/baseEvaluacion/base.html', context)
 
 def agregarAlumno(request):
     print(request.POST)

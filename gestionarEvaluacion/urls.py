@@ -4,6 +4,7 @@ from gestionarEvaluacion import views
 
 urlpatterns = [
     path('evaluar/<pk>', views.evaluar, name='evaluar'),
+    path('evaluarDocente/', views.evaluarDocente, name='evaluarDocente'),
     path('agregarAlumno/', views.agregarAlumno, name='agregarAlumno'),
     path('muestraRubrica/',views.muestraRubrica,name='muestraRubrica'),
     path('listarAlumno/',views.listarAlumno,name='listarAlumno'),

@@ -10,15 +10,19 @@ from gestionarPlanMedicion.models import PlanMedicionCurso, PlanMedicion
 from gestionarSemestre.models import Semestre
 from gestionarCurso.models import Curso
 from django.contrib.auth.decorators import login_required
+
+
 @login_required
 def listarSemestre(request):
     semestreLista = reversed(Semestre.objects.filter())
 
     context = {
-        'ListaSemestre':semestreLista
+        'ListaSemestre': semestreLista
     }
     return render(request, 'gestionarSemestre/listarSemestre.html', context)
 
+
+@login_required
 def agregarSemestre(request):
     anho = int(request.POST["nombreCodigo"][0:4])
     etapa = int(request.POST["nombreCodigo"][5:6])
@@ -37,30 +41,33 @@ def agregarSemestre(request):
         "12": "Diciembre",
     }
 
-    fechaIni = request.POST["inicio"][0:2] + " de "+meses[request.POST["inicio"][3:5]]
-    fechaFin = request.POST["fin"][0:2] + " de "+meses[request.POST["fin"][3:5]]
+    fechaIni = request.POST["inicio"][0:2] + " de " + meses[request.POST["inicio"][3:5]]
+    fechaFin = request.POST["fin"][0:2] + " de " + meses[request.POST["fin"][3:5]]
     semestre = Semestre.objects.create(nombreCodigo=request.POST["nombreCodigo"], anho=anho,
-                            etapa=etapa, inicio=fechaIni, fin=fechaFin)
-    ser_instance = serializers.serialize('json', [semestre,])
+                                       etapa=etapa, inicio=fechaIni, fin=fechaFin)
+    ser_instance = serializers.serialize('json', [semestre, ])
     return JsonResponse({"nuevoSemestre": ser_instance}, status=200)
 
+
 @login_required
-def enviarCursoHorario(request,pk):
+def enviarCursoHorario(request, pk):
     print("Listado de Cursos")
     if request.POST:
-        planMedicion = PlanMedicion.objects.filter(estado='1',especialidad_id=request.POST['especialidad']).filter(semestre=pk)
+        planMedicion = PlanMedicion.objects.filter(estado='1', especialidad_id=request.POST['especialidad']).filter(
+            semestre=pk)
         e = list(planMedicion)
         for i in range(len(e)):
             print(e[i].nombre)
         print(planMedicion)
         try:
             listaCursos = []
-            planMedicionCursos = PlanMedicionCurso.objects.filter(estado=1,semestre=pk,planMedicion=planMedicion[0].pk)
+            planMedicionCursos = PlanMedicionCurso.objects.filter(estado=1, semestre=pk,
+                                                                  planMedicion=planMedicion[0].pk)
             for planMedicionCurso in planMedicionCursos:
-                curso = Curso.objects.get(pk=planMedicionCurso.curso_id,especialidad_id=request.POST['especialidad'])
+                curso = Curso.objects.get(pk=planMedicionCurso.curso_id, especialidad_id=request.POST['especialidad'])
                 print(curso.nombre)
                 listaCursos.append(curso)
-                #if curso is not None:
+                # if curso is not None:
                 #    listaCursos.append(curso)
         except:
             print("No existe plan de medicion asociado!!!")
@@ -81,13 +88,14 @@ def enviarCursoHorario(request,pk):
     }
     return render(request, 'gestionarSemestre/semestre/semestreDetalle.html', context)
 
-def listarSemestreDocente(request):
 
+@login_required
+def listarSemestreDocente(request):
     horarios_docente = Horario.objects.filter(responsable_id=request.user.pk)
-    listaCursos=[]
+    listaCursos = []
     listarSemestres = []
     for horario in horarios_docente:
-        if(horario.curso.planMedicion.estado == '1'):
+        if (horario.curso.planMedicion.estado == '1'):
             listaCursos.append(horario.curso.curso)
             listarSemestres.append(horario.curso.semestre)
 
@@ -99,16 +107,21 @@ def listarSemestreDocente(request):
     return render(request, 'gestionarSemestre/listarSemestreDocente.html', context)
 
 
-def enviarCursoHorarioDocente(request,semestrepk):
-
-    horarios_docente = Horario.objects.filter(responsable_id=request.user.pk)
+@login_required
+def enviarCursoHorarioDocente(request, semestrepk):
     listaCursos = []
-    for horario in horarios_docente:
-        if (horario.curso.planMedicion.estado == '1' and horario.curso.semestre.pk == int(semestrepk)):
-            listaCursos.append(horario.curso.curso)
-    listaCursos = list(set(listaCursos))
+    try:
+        horarios_docente = Horario.objects.filter(responsable_id=request.user.pk)
+        for horario in horarios_docente:
+            if (horario.curso.planMedicion.estado == '1' and horario.curso.semestre.pk == int(semestrepk)):
+                listaCursos.append(horario.curso.curso)
+        listaCursos = list(set(listaCursos))
+    except:
+        print("No existe plan de medicion docente asociado!!!")
     print(listaCursos)
+    semestre = Semestre.objects.get(pk=semestrepk)
     context = {
+        "semestreSeleccionado": semestre,
         'listaCursos': listaCursos
     }
     return render(request, 'gestionarSemestre/semestre/semestreDetalleDocente.html', context)

@@ -44,7 +44,6 @@
 
     {#AQUI COLOQUEN EL CÓDIGO#}
     <div class="row d-flex justify-content-center ">
-
         <div class="col-10 px-5">
             <h3 id="Titulo" style="font-family: Montserrat">{{ semestreSeleccionado.nombreCodigo }}</h3>
         </div>
@@ -69,18 +68,19 @@
                 </div>
             </div>
 
-
-
             {% for curso in listaCursos %}
-                <div class="card-body fs--1 p-0">
-                    <a class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300" href="#">
-                        <div class="notification-body">
-                            <p class="mb-1">{{ curso.nombre }}</p>
-                        </div>
-                    </a>
-                </div>
+                <form action="{% url 'evaluarDocente' %}" method="post">
+                    {% csrf_token %}
+                    <input name="estado" type="hidden" id="estado{{ semestreSeleccionado.pk }}" value="{{ semestreSeleccionado.pk }}">
+                    <div class="card-body fs--1 p-0">
+                        <a class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300">
+                            <div class="notification-body">
+                                <button name="cursoButton" type="submit" class="mb-1" value="{{ curso.pk }}">{{ curso.nombre }}</button>
+                            </div>
+                        </a>
+                    </div>
+                </form>
             {% endfor %}
-
         </div>
     </div>
 
@@ -89,68 +89,68 @@
 {#Aquí coloco el JS particular de la web#}
 {% block extrajs %}
 
-{#        <script>#}
-{#            $(document).ready(function () {#}
-{#                console.log("ready!");#}
-{#                obtenerEspecialidades();#}
-{#            });#}
-{##}
-{#            function obtenerEspecialidades() {#}
-{#                $.ajax({#}
-{#                    type: 'POST',#}
-{#                    url: "{% url 'obtenerEspecialidades' %}",#}
-{#                    data: {#}
-{#                        csrfmiddlewaretoken: '{{ csrf_token }}',#}
-{#                        facultad: $("#cboFacultad").val(),#}
-{#                    },#}
-{#                    success: function (response) {#}
-{#                        var instance = JSON.parse(response["resp"]);#}
-{##}
-{#                        $(".especialidad").remove();#}
-{#                        for (var i = 0; i < instance.length; i++) {#}
-{#                            data = '<option class="especialidad" onclick="listarHistorico()" value=' +#}
-{#                                instance[i]["pk"] + '>' +#}
-{#                                instance[i]["fields"].nombre + '</option>';#}
-{#                            $("#cboEspecialidad").append(data);#}
-{#                        }#}
-{##}
-{#                        listarCursos();#}
-{#                    },#}
-{#                    error: function (response) {#}
-{#                        alert(response["responseJSON"]["error"]);#}
-{#                    },#}
-{#                });#}
-{#            }#}
-{##}
-{#            function listarCursos() {#}
-{#                $.ajax({#}
-{#                    type: 'POST',#}
-{#                    url: "{% url 'enviarCursoHorario' pk=semestreSeleccionado.pk %}",#}
-{#                    data: {#}
-{#                        csrfmiddlewaretoken: '{{ csrf_token }}',#}
-{#                        especialidad: $("#cboEspecialidad").val(),#}
-{#                    },#}
-{#                    success: function (response) {#}
-{#                        var instance = JSON.parse(response["cursoLista"]);#}
-{#                        var data = '';#}
-{#                        var i = 0;#}
-{#                        var tam = instance.length;#}
-{#                        data += '<div class="card-body fs--1 p-0">'#}
-{#                        for (i = 0; i < tam; i++) {#}
-{#                            data +=#}
-{#                                '<a class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300"' +#}
-{#                                ' href="/gestionarEvaluacion/evaluar/' + instance[i]['pk'] + '?sem=' + '{{ semestreSeleccionado.pk }}' + '">' +#}
-{#                                '<div class="notification-body">' + '<p class="mb-1">' + instance[i]["fields"].nombre + '</p>' +#}
-{#                                '</div> </a> </div>'#}
-{#                        }#}
-{#                        $('#listaCursos').html(data);#}
-{#                    },#}
-{#                    error: function (response) {#}
-{#                        alert(response["responseJSON"]["error"]);#}
-{#                    },#}
-{#                });#}
-{#            }#}
-{##}
-{##}
-{#        </script>#}
+    {#        <script>#}
+    {#            $(document).ready(function () {#}
+    {#                console.log("ready!");#}
+    {#                obtenerEspecialidades();#}
+    {#            });#}
+    {##}
+    {#            function obtenerEspecialidades() {#}
+    {#                $.ajax({#}
+    {#                    type: 'POST',#}
+    {#                    url: "{% url 'obtenerEspecialidades' %}",#}
+    {#                    data: {#}
+    {#                        csrfmiddlewaretoken: '{{ csrf_token }}',#}
+    {#                        facultad: $("#cboFacultad").val(),#}
+    {#                    },#}
+    {#                    success: function (response) {#}
+    {#                        var instance = JSON.parse(response["resp"]);#}
+    {##}
+    {#                        $(".especialidad").remove();#}
+    {#                        for (var i = 0; i < instance.length; i++) {#}
+    {#                            data = '<option class="especialidad" onclick="listarHistorico()" value=' +#}
+    {#                                instance[i]["pk"] + '>' +#}
+    {#                                instance[i]["fields"].nombre + '</option>';#}
+    {#                            $("#cboEspecialidad").append(data);#}
+    {#                        }#}
+    {##}
+    {#                        listarCursos();#}
+    {#                    },#}
+    {#                    error: function (response) {#}
+    {#                        alert(response["responseJSON"]["error"]);#}
+    {#                    },#}
+    {#                });#}
+    {#            }#}
+    {##}
+    {#            function listarCursos() {#}
+    {#                $.ajax({#}
+    {#                    type: 'POST',#}
+    {#                    url: "{% url 'enviarCursoHorario' pk=semestreSeleccionado.pk %}",#}
+    {#                    data: {#}
+    {#                        csrfmiddlewaretoken: '{{ csrf_token }}',#}
+    {#                        especialidad: $("#cboEspecialidad").val(),#}
+    {#                    },#}
+    {#                    success: function (response) {#}
+    {#                        var instance = JSON.parse(response["cursoLista"]);#}
+    {#                        var data = '';#}
+    {#                        var i = 0;#}
+    {#                        var tam = instance.length;#}
+    {#                        data += '<div class="card-body fs--1 p-0">'#}
+    {#                        for (i = 0; i < tam; i++) {#}
+    {#                            data +=#}
+    {#                                '<a class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300"' +#}
+    {#                                ' href="/gestionarEvaluacion/evaluar/' + instance[i]['pk'] + '?sem=' + '{{ semestreSeleccionado.pk }}' + '">' +#}
+    {#                                '<div class="notification-body">' + '<p class="mb-1">' + instance[i]["fields"].nombre + '</p>' +#}
+    {#                                '</div> </a> </div>'#}
+    {#                        }#}
+    {#                        $('#listaCursos').html(data);#}
+    {#                    },#}
+    {#                    error: function (response) {#}
+    {#                        alert(response["responseJSON"]["error"]);#}
+    {#                    },#}
+    {#                });#}
+    {#            }#}
+    {##}
+    {##}
+    {#        </script>#}
 {% endblock %}
