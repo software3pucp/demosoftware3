@@ -2,111 +2,147 @@
 {% extends 'authentication/base/login_base.html' %}
 {% load static %}
 {% block extrastyle %}
-<style>
-    .btn btn-primary btn-esp {
-        color: #ff00fe;
-        background-color: #ff00fe;
-        text-align: right;
-    }
+    <style>
+        .btn btn-primary btn-esp {
+            color: #ff00fe;
+            background-color: #ff00fe;
+            text-align: right;
+        }
 
-    .btn-secondary {
-        color: #ff00fe;
-    !important;
-    }
+        .btn-secondary {
+            color: #ff00fe;
+        !important;
+        }
 
-    body {
-        letter-spacing: 0.7px;
-        background-color: #eee
-    }
+        body {
+            letter-spacing: 0.7px;
+            background-color: #eee
+        }
 
-    .container {
+        .container {
 
-    }
+        }
 
-    p {
-        font-size: 14px
-    }
+        p {
+            font-size: 14px
+        }
 
-    .btn-primary {
-        background-color: #42A5F5 !important;
-        border-color: #42A5F5 !important
-    }
+        .btn-primary {
+            background-color: #42A5F5 !important;
+            border-color: #42A5F5 !important
+        }
 
-    .cursor-pointer {
-        cursor: pointer;
-        color: #42A5F5
-    }
+        .cursor-pointer {
+            cursor: pointer;
+            color: #42A5F5
+        }
 
-    .pic {
-        margin-top: 30px;
-        margin-bottom: 20px
-    }
+        .pic {
+            margin-top: 30px;
+            margin-bottom: 20px
+        }
 
-    .card-block {
-        width: 200px;
-        min-height: 210px;
-        border: 1px solid lightgrey;
-        border-radius: 5px !important;
-        background-color: #FAFAFA;
-        margin-bottom: 30px
-    }
+        .card-block {
+            width: 200px;
+            min-height: 210px;
+            border: 1px solid lightgrey;
+            border-radius: 5px !important;
+            background-color: #FAFAFA;
+            margin-bottom: 30px
+        }
 
-    .card-body.show {
-        display: block
-    }
+        .card-body.show {
+            display: block
+        }
 
-    .card {
-        box-shadow: 2px 2px 6px 0px rgb(200, 167, 216)
-    }
+        .card {
+            box-shadow: 2px 2px 6px 0px rgb(200, 167, 216)
+        }
 
-    .radio {
-        display: inline-block;
-        border-radius: 0;
-        box-sizing: border-box;
-        cursor: pointer;
-        color: #000;
-        font-weight: 500;
-        -webkit-filter: grayscale(100%);
-        -moz-filter: grayscale(100%);
-        -o-filter: grayscale(100%);
-        -ms-filter: grayscale(100%);
-        filter: grayscale(100%)
-    }
+        .radio {
+            display: inline-block;
+            border-radius: 0;
+            box-sizing: border-box;
+            cursor: pointer;
+            color: #000;
+            font-weight: 500;
+            -webkit-filter: grayscale(100%);
+            -moz-filter: grayscale(100%);
+            -o-filter: grayscale(100%);
+            -ms-filter: grayscale(100%);
+            filter: grayscale(100%)
+        }
 
-    .radio:hover {
-        box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1)
-    }
+        .radio:hover {
+            box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1)
+        }
 
-    .radio.selected {
-        box-shadow: 0px 8px 16px 0px #EEEEEE;
-        -webkit-filter: grayscale(0%);
-        -moz-filter: grayscale(0%);
-        -o-filter: grayscale(0%);
-        -ms-filter: grayscale(0%);
-        filter: grayscale(0%)
-    }
+        .radio.selected {
+            box-shadow: 0px 8px 16px 0px #EEEEEE;
+            -webkit-filter: grayscale(0%);
+            -moz-filter: grayscale(0%);
+            -o-filter: grayscale(0%);
+            -ms-filter: grayscale(0%);
+            filter: grayscale(0%)
+        }
 
-    .selected {
-        background-color: #E0F2F1
-    }
+        .selected {
+            background-color: #E0F2F1
+        }
 
-    .a {
-        justify-content: center !important
-    }
+        .a {
+            justify-content: center !important
+        }
 
-    .btn {
-        border-radius: 0px
-    }
+        .btn {
+            border-radius: 0px
+        }
 
-    .btn,
-    .btn:focus,
-    .btn:active {
-        outline: none !important;
-        box-shadow: none !important
-    }
+        .btn,
+        .btn:focus,
+        .btn:active {
+            outline: none !important;
+            box-shadow: none !important
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
 
 
-</style>
+        /
+        Component
+
+        /
+
+        label {
+            width: 100%;
+        }
+
+        .card-input-element {
+            display: none;
+        }
+
+        .card-input {
+            margin: 10px;
+            padding: 00px;
+            box-shadow: 0 0 2px 2px #E0E1E2;
+        }
+
+        .card-input:hover {
+            cursor: pointer;
+            background-color: #4692F6;
+            color: #fff;
+        }
+
+        .card-input-element:checked + .card-input {
+            box-shadow: 0 0 2px 2px #4692F6;
+        }
+
+
+    </style>
 
 {% endblock %}
 
@@ -154,11 +190,23 @@
                                         <h3 class="mb-3">Deseo ingresar como: </h3>
 
 
-                                        <div class="container row">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-4 col-lg-4 col-sm-4">
 
+                                                    {% for x,y in roles %}
+                                                        <label>
+                                                            <input type="radio" name="product"
+                                                                   class="card-input-element" value="{{ x }}"/>
 
-                                                            {% for x,y in roles %}
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 radio-group justify-content-between text-center">
+                                                            <div class="panel panel-default card-input">
+                                                                <div class="panel-body">
+                                                                    {{ y }}
+                                                                </div>
+                                                            </div>
+                                                        </label>
+
+                                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 radio-group justify-content-between text-center">
                                                                 <div class="card-block text-center radio " data-value="{{ x }}">
                                                                     <div class="flex-row">
                                                                         <div class="col">
@@ -171,29 +219,32 @@
                                                                     </div>
                                                                 </div>
 
-                                                            </div>
-                                                             {% endfor %}
+                                                        </div>
 
 
-
-
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="row justify-content-between">
-                                                                <div class="col-auto">
-                                                                    <button type="button" class="btn btn-primary" onclick="ingresar_rol()">
-                                                                        Ingresar<span class="ml-2"><i
-                                                                            class="fa fa-angle-right"
-                                                                            aria-hidden="true"></i></span></button>
-                                                                </div>
-                                                            </div>
 
                                     </div>
+                                    <div class="row justify-content-between">
+                                        <div class="col-auto">
+                                            <button type="button" class="btn btn-primary"
+                                                    onclick="ingresar_rol()">
+                                                Ingresar<span class="ml-2"><i
+                                                    class="fa fa-angle-right"
+                                                    aria-hidden="true"></i></span></button>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
         </div>
         </div>
@@ -226,9 +277,35 @@
                 },
                 success: function (response) {
                     console.log(valor)
-                    //funciona
-                    //definir a que pagina ira cada usuario
-                    document.location.href = "../../facultades/listar/";
+
+                    //administrador
+                    if (valor == 1) {
+                        document.location.href = "../../users/";
+                    } else {
+                        if (valor == 2) {//Asistente de acreditacion
+                            document.location.href = "../../facultades/listar/";
+                        } else {
+                            if (valor == 3) {//Auditor
+                                document.location.href = "../../users/";
+                            } else {
+                                if (valor == 4) {//Coordinador de facultad
+                                    document.location.href = "../../gestionarSemestre/listar/";
+                                } else {
+                                    if (valor == 5) {
+                                        document.location.href = "../../facultades/listar/";
+                                    } else {
+                                        if (valor == 6) {
+                                            document.location.href = "../../gestionarSemestre/listarDocente/";
+                                        } else {
+                                            document.location.href = "../../facultades/listar/";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);
