@@ -3,119 +3,12 @@
 {% load static %}
 {% block extrastyle %}
     <style>
-        .btn btn-primary btn-esp {
-            color: #ff00fe;
-            background-color: #ff00fe;
-            text-align: right;
-        }
-
-        .btn-secondary {
-            color: #ff00fe;
-        !important;
-        }
-
-        body {
-            letter-spacing: 0.7px;
-            background-color: #eee
-        }
-
-        .container {
-
-        }
-
-        p {
-            font-size: 14px
-        }
-
-        .btn-primary {
-            background-color: #42A5F5 !important;
-            border-color: #42A5F5 !important
-        }
-
-        .cursor-pointer {
-            cursor: pointer;
-            color: #42A5F5
-        }
-
-        .pic {
-            margin-top: 30px;
-            margin-bottom: 20px
-        }
-
-        .card-block {
-            width: 200px;
-            min-height: 210px;
-            border: 1px solid lightgrey;
-            border-radius: 5px !important;
-            background-color: #FAFAFA;
-            margin-bottom: 30px
-        }
-
-        .card-body.show {
-            display: block
-        }
-
-        .card {
-            box-shadow: 2px 2px 6px 0px rgb(200, 167, 216)
-        }
-
-        .radio {
-            display: inline-block;
-            border-radius: 0;
-            box-sizing: border-box;
-            cursor: pointer;
-            color: #000;
-            font-weight: 500;
-            -webkit-filter: grayscale(100%);
-            -moz-filter: grayscale(100%);
-            -o-filter: grayscale(100%);
-            -ms-filter: grayscale(100%);
-            filter: grayscale(100%)
-        }
-
-        .radio:hover {
-            box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1)
-        }
-
-        .radio.selected {
-            box-shadow: 0px 8px 16px 0px #EEEEEE;
-            -webkit-filter: grayscale(0%);
-            -moz-filter: grayscale(0%);
-            -o-filter: grayscale(0%);
-            -ms-filter: grayscale(0%);
-            filter: grayscale(0%)
-        }
-
-        .selected {
-            background-color: #E0F2F1
-        }
-
-        .a {
-            justify-content: center !important
-        }
-
-        .btn {
-            border-radius: 0px
-        }
-
-        .btn,
-        .btn:focus,
-        .btn:active {
-            outline: none !important;
-            box-shadow: none !important
-        }
 
         .container {
             max-width: 600px;
             margin: 0 auto;
             text-align: center;
         }
-
-
-        /
-        Component
-
-        /
 
         label {
             width: 100%;
@@ -127,7 +20,7 @@
 
         .card-input {
             margin: 10px;
-            padding: 00px;
+            padding: 8px;
             box-shadow: 0 0 2px 2px #E0E1E2;
         }
 
@@ -152,7 +45,7 @@
     <main class="main" id="top">
         <div class="container-fluid">
             <div class="row min-vh-100 flex-center no-gutters">
-                <div class="">
+                <div class="col-lg-8 col-xxl-5 py-3">
                     <img class="bg-auth-circle-shape" src="../../static/img/illustrations/bg-shape.png" alt=""
                          width="250">
                     <img class="bg-auth-circle-shape-2" src="../../static/img/illustrations/shape-1.png"
@@ -170,10 +63,8 @@
                                         <div class="z-index-1 position-relative"><a
                                                 class="text-white mb-4 text-sans-serif font-weight-extra-bold fs-4 d-inline-block"
                                                 href="{% url 'home' %}">APOLO</a>
-                                            <p class="text-white opacity-75">Selecciona el rol con el que desea
-                                                ingresar,
-                                                dependiendo del rol se habilitarán diferentes permisos dentro de la
-                                                plataforma</p>
+                                            <p class="text-white opacity-75">Sistema de Acreditación y Mejora
+                                                Continua</p>
                                         </div>
                                     </div>
                                     <div class="mt-3 mb-4 mt-md-4 mb-md-5">
@@ -185,68 +76,42 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div class="col-md-7 d-flex align-items-center">
+                                <div class="col-md-7 d-flex flex-center">
                                     <div class="p-4 p-md-5 flex-grow-1 align-items-center">
                                         <h3 class="mb-3">Deseo ingresar como: </h3>
 
 
                                         <div class="container">
                                             <div class="row">
-                                                <div class="col-md-4 col-lg-4 col-sm-4">
 
-                                                    {% for x,y in roles %}
-                                                        <label>
-                                                            <input type="radio" name="product"
-                                                                   class="card-input-element" value="{{ x }}"/>
 
-                                                            <div class="panel panel-default card-input">
-                                                                <div class="panel-body">
-                                                                    {{ y }}
-                                                                </div>
+                                                {% for x,y in roles %}
+                                                    <label>
+                                                        <input type="radio" name="product"
+                                                               class="card-input-element" value="{{ y }}" id="{{ x }}" />
+                                                        <div class="panel panel-default card-input">
+                                                            <div class="panel-body">
+                                                                {{ y }}
                                                             </div>
-                                                        </label>
-
-                                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 radio-group justify-content-between text-center">
-                                                                <div class="card-block text-center radio " data-value="{{ x }}">
-                                                                    <div class="flex-row">
-                                                                        <div class="col">
-                                                                            <div class="pic"><img
-                                                                                    class="irc_mut img-fluid"
-                                                                                    src="https://i.imgur.com/6r0XCez.png"
-                                                                                    width="100" height="100"></div>
-                                                                            <p>{{ y }}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
                                                         </div>
+                                                    </label>
+                                                {% endfor %}
 
-
-                                                    {% endfor %}
-                                                </div>
                                             </div>
+
+                                        </div>
+                                        <div class="mt-3">
+                                            <button class="btn btn-primary btn-block" onclick="ingresar_rol()">
+                                            <span id="add_to_me"></span></button>
                                         </div>
 
                                     </div>
-                                    <div class="row justify-content-between">
-                                        <div class="col-auto">
-                                            <button type="button" class="btn btn-primary"
-                                                    onclick="ingresar_rol()">
-                                                Ingresar<span class="ml-2"><i
-                                                    class="fa fa-angle-right"
-                                                    aria-hidden="true"></i></span></button>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        </div>
-        </div>
         </div>
     </main>
 {% endblock %}
@@ -255,16 +120,27 @@
 
 {% block extrajs %}
     <script>
-        $(document).ready(function () {
-            $('.radio-group .radio').click(function () {
-                $('.selected .fa').removeClass('fa-check');
-                $('.radio').removeClass('selected');
-                $(this).addClass('selected');
-            });
-        });
+
+
+    const button = document.querySelector('button')
+    button.disabled = true
+    document.getElementById("add_to_me").innerHTML = "<span> Selecciona una opción </span>";
+
+
+
+    $(".card-input-element") // select the radio by its id
+    .change(function(){ // bind a function to the change event
+        if( $(this).is(":checked") ){ // check if the radio is checked
+            val = $(this).val(); // retrieve the value
+            console.log(val)
+            button.disabled = false
+            document.getElementById("add_to_me").innerHTML = "<span>Ingresar como </span>" + val;
+
+        }
+    });
 
         function ingresar_rol() {
-            var valor = $('.selected').attr('data-value');
+            var valor = $('.card-input-element').attr('id');
 
             console.log(valor)
 
