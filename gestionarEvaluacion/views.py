@@ -137,10 +137,14 @@ def evaluarDocente(request):
 def agregarAlumno(request):
     print(request.POST)
     niveles = Nivel.objects.filter(estado="1")
-    nuevoAlumno = RespuestaEvaluacion.objects.create(nombreAlumno=request.POST["nombreAlumno"],
+    plan = PlanMedicionCurso.objects.get(pk=request.POST["plan"])
+    listaIndicador = plan.indicador.all()
+    for indicador in listaIndicador:
+        print(indicador.pk)
+        nuevoAlumno = RespuestaEvaluacion.objects.create(nombreAlumno=request.POST["nombreAlumno"],
                                                      codigoAlumno=request.POST["codigoAlumno"],
                                                      horario_id=request.POST["horario"],
-                                                     indicador_id=request.POST["indicador"],
+                                                     indicador_id=indicador.pk,
                                                      planMedicion_id=request.POST["plan"])
     ser_instance = serializers.serialize('json', [nuevoAlumno,])
     ser_instance2 = serializers.serialize('json', list(niveles), fields=('id', 'nombre', 'valor', 'estado'))
@@ -210,17 +214,21 @@ def importarAlumno(request):
     #         RespuestaEvaluacion.objects.create(nombreAlumno=col[1], codigoAlumno=int(col[0]),
     #                                                horario_id=request.POST["horariopk"])
     # return JsonResponse({}, status=200)
+    plan = PlanMedicionCurso.objects.get(pk=request.POST["plan"])
+    listaIndicador = plan.indicador.all()
     excel = request.FILES['archivo']
     rows = excel.read().decode().split('\n')
     for row in rows:
         codigo = row[:8]
         nombre = row[9:-1]
         if(codigo!=""):
-            RespuestaEvaluacion.objects.create(nombreAlumno=nombre,
-                                               codigoAlumno=codigo,
-                                               horario_id=request.POST["horariopk"],
-                                               indicador_id=request.POST["indicador"],
-                                               planMedicion_id=request.POST["plan"])
+            for indicador in listaIndicador:
+                print(indicador.pk)
+                RespuestaEvaluacion.objects.create(nombreAlumno=nombre,
+                                                   codigoAlumno=codigo,
+                                                   horario_id=request.POST["horariopk"],
+                                                   indicador_id=indicador.pk,
+                                                   planMedicion_id=request.POST["plan"])
     return JsonResponse({}, status=200)
 
 def subirEvidencia(request):
