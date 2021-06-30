@@ -107,7 +107,7 @@
                         <tbody id="purchases">
                         {% for item in nivelLista %}
                             <tr class="btn-reveal-trigger">
-                                <th class="align-middle">{{ item.0.pk }} </th>
+                                <th class="align-middle">{{ forloop.counter }} </th>
                                 <th class="align-middle">{{ item.0.nombre }}</th>
                                 <td class="align-middle">
                                     <div class="input-group">
