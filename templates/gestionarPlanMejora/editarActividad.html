@@ -148,7 +148,7 @@
                                 <th class="align-middle"> {{ forloop.counter }}</th>
                                 <th class="align-middle">{{ evidencia.concepto }}</th>
                                 <td class="align-middle">{{ evidencia.descripcion }}</td>
-                                <td class="align-middle">{{ evidencia.archivo.name }}</td>
+                                <td class="align-middle">{{ evidencia.archivo.name|slice:"7:" }}</td>
                                 <th class="align-middle">{{ evidencia.fecha_creacion }}</th>
                                 <td class="align-middle text-right fs-0">
                                     <div class="row">
@@ -163,7 +163,7 @@
                                         </div>
                                         <div class="col">
                                             <button class="badge rounded-capsule badge-soft-danger outline-none"
-                                                    onclick="actividadesEliminarEvidencia('{{ evidencia.archivo.name }}', {{ evidencia.pk }})">
+                                                    onclick="actividadesEliminarEvidencia('{{ evidencia.archivo.name|slice:"7:" }}', {{ evidencia.pk }})">
                                                 <span>Eliminar</span>
                                             </button>
                                         </div>

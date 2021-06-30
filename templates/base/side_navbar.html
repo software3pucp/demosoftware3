@@ -1,7 +1,7 @@
 {% load static %}
 {% if request.user.is_authenticated %}
-<nav class="navbar navbar-vertical navbar-expand-xl navbar-light mt-3">
-    <div class="d-flex align-items-center">
+<nav class="navbar navbar-vertical navbar-expand-xl navbar-light">
+    <div class="d-flex align-items-center" style="padding: 16px; height: 75px">
         <div class="toggle-icon-wrapper">
 
             <button class="btn navbar-toggler-humburger-icon navbar-vertical-toggle" data-toggle="tooltip"
@@ -11,7 +11,7 @@
         </div>
         <a class="navbar-brand" href="{% url 'home' %}">PUCP</a>
     </div>
-    <hr>
+    <hr style="margin-top: 0rem; margin-bottom: 30px">
 
     <div class="collapse navbar-collapse" id="navbarVerticalCollapse">
         <div class="navbar-vertical-content perfect-scrollbar scrollbar">
