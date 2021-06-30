@@ -23,4 +23,5 @@ class User(AbstractUser):
     code = models.CharField(max_length=8, default='11111111')
     photo = models.ImageField(null=True, blank=True, upload_to=upload_location)
     rol_actual = models.CharField(max_length=50, default=None, null=True, blank=True)
+    n_Roles = models.CharField(max_length=2, default=None, null=True, blank=True)
 

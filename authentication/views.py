@@ -35,9 +35,14 @@ def Register(request):
                                         email=request.POST['card-correo'], password=request.POST['card-password'],
                                         photo=photo, is_active=True)
         roles = request.POST.getlist('choices-multiple-remove-button')
+        i = 0
         for val in roles:
+            i += 1
             group = Group.objects.get(id=val)
             group.user_set.add(user)
+        if (i==1):
+            user.n_Roles = '1'
+            user.save()
         return redirect(Show)
     return render(request, 'authentication/User_Add.html', context)
 
@@ -46,6 +51,7 @@ def Edit(request, pk):
     flag1= False
     flag2= False
     media_path = MEDIA_URL
+    i=0
     user = User.objects.get(pk=pk)
     current_user = user.username
     current_contra = user.password
@@ -86,9 +92,15 @@ def Edit(request, pk):
                 user.groups.clear()
             roles = request.POST.getlist('choices-multiple-remove-button')
             for val in roles:
+                i += 1
                 group = Group.objects.get(id=val)
                 group.user_set.add(user)
-
+            if (i==1):
+                user.n_Roles = '1'
+                user.save()
+            else:
+                user.n_Roles = None
+                user.save()
         return redirect(Show)
 
     context = {
