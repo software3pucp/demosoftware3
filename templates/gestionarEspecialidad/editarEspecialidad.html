@@ -42,6 +42,11 @@
             position: absolute;
             top: 50%;
         }
+
+        img.center {
+            display: block;
+            margin: 0 auto;
+        }
     </style>
 
 {% endblock %}
@@ -83,11 +88,13 @@
                             <input name="photo_name" type="text" class="form-control" readonly>
                             <span class="input-group-btn pb-3">
                                         <span class="btn btn-primary btn-file ml-3 " type="button">
-                                            Buscar… <input name="photo" type="file" id="imgInp" accept="image/png,image/jpeg,image/jpg"/>
+                                            Buscar… <input name="photo" type="file" id="imgInp"
+                                                           accept="image/png,image/jpeg,image/jpg"/>
                                         </span>
                                     </span>
                         </div>
-                        <img id='img-upload' src="
+                        <img class="center" id='img-upload' style="height: 35%; width: 35%;" src="
+
                                 {% if especialidad.foto %}{{ media_path }}{{ especialidad.foto }}{% else %}{% static 'img/illustrations/4.png' %}{% endif %}"/>
                     </div>
 
