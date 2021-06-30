@@ -42,6 +42,11 @@
             position: absolute;
             top: 50%;
         }
+
+        img.center {
+            display: block;
+            margin: 0 auto;
+        }
     </style>
 
 {% endblock %}
@@ -86,7 +91,7 @@
                                         </span>
                                     </span>
                         </div>
-                        <img id='img-upload' src="{% if facultad.foto %}{{ media_path }}{{ facultad.foto }}{% else %}{% static 'img/illustrations/3.png' %}{% endif %}"/>
+                        <img class="center" id='img-upload' style="height: 35%; width: 35%;" src="{% if facultad.foto %}{{ media_path }}{{ facultad.foto }}{% else %}{% static 'img/illustrations/3.png' %}{% endif %}"/>
                     </div>
                 </div>
                 <div class="wrapper">
