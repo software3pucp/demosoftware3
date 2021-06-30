@@ -37,7 +37,7 @@ def agregarFacultad(request):
                 'media_path': media_path,
                 'estado':request.POST["estado"]
             }
-            return render(request, 'gestionarFacultad/listarFacultad.html', context)
+            return redirect(listarFacultad)
         else:
             context = {
                 'ListaUsuarios': User.objects.all(),
