@@ -82,11 +82,11 @@
                             <input name="photo_name" type="text" class="form-control" readonly>
                             <span class="input-group-btn pb-3">
                                         <span class="btn btn-primary btn-file ml-3 " type="button">
-                                            Buscar… <input name="photo" type="file" id="imgInp"/>
+                                            Buscar… <input name="photo" type="file" id="imgInp" accept="image/png,image/jpeg,image/jpg"/>
                                         </span>
                                     </span>
                         </div>
-                        <img id='img-upload' src="{% if facultad.foto %}{{ media_path }}{{ facultad.foto }}{% else %}{% static 'img/team/avatar.png' %}{% endif %}"/>
+                        <img id='img-upload' src="{% if facultad.foto %}{{ media_path }}{{ facultad.foto }}{% else %}{% static 'img/illustrations/3.png' %}{% endif %}"/>
                     </div>
                 </div>
                 <div class="wrapper">
