@@ -137,9 +137,31 @@ def sing_out(request):
 
 def select_rol(request):
     user = User.objects.get(pk=request.user.pk)
+    lista = list(user.groups.values_list())
     context = {
         'roles': list(user.groups.values_list())
     }
+
+    if (len(lista)==1):
+        pk = lista[0][0]
+        name = lista[0][1]
+        user.rol_actual = name
+        user.save()
+        if(pk==1):
+            return redirect('showUsers')
+        elif (pk==2):
+            return redirect('listarFacultad')
+        elif (pk==3):
+            return redirect('showUsers')
+        elif (pk==4):
+            return redirect('listarSemestre')
+        elif (pk==5):
+            return redirect('listarFacultad')
+        elif (pk==6):
+            return redirect('listarSemestreDocente')
+        else:
+            return redirect('listarFacultad')
+
     if request.POST:
         # -- elegir roles
         pk = request.POST['rol_actual']
