@@ -33,7 +33,7 @@
                 </select>
             </div>
         </div>
-        {% if user.rol_actual == 'Coordinador de especialidad' %}
+        {% if request.user.rol_actual == 'Auditor' %}
         <div id="acreditadoras" class="row mt-4">
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <div class="card-group service-work">
