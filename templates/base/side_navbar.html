@@ -72,6 +72,18 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <div class="d-flex align-items-center">
+                        <span class="nav-link-icon">
+                            <span class="fas fa-home"></span>
+                        </span>
+                            <span class="nav-link-text">
+                            Especialidades
+                        </span>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'listarSemestre' %}">
                         <div class="d-flex align-items-center">
                         <span class="nav-link-icon">
@@ -123,19 +135,6 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'showUsers' %}">
-                        <div class="d-flex align-items-center">
-                        <span class="nav-link-icon">
-                            <span class="fas fa-users"></span>
-                        </span>
-                            <span class="nav-link-text">
-                            Usuarios
-                        </span>
-                        </div>
-                    </a>
-                </li>
-
-                <li class="nav-item">
                     <a class="nav-link" href="{% url 'historico' %}">
                         <div class="d-flex align-items-center">
                         <span class="nav-link-icon">
@@ -147,7 +146,42 @@
                         </div>
                     </a>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <div class="d-flex align-items-center">
+                        <span class="nav-link-icon">
+                            <span class="fas fa-file-alt"></span>
+                        </span>
+                            <span class="nav-link-text">
+                            Reportes
+                        </span>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <div class="d-flex align-items-center">
+                        <span class="nav-link-icon">
+                            <span class="fas fa-cube"></span>
+                        </span>
+                            <span class="nav-link-text">
+                            Objetivos
+                        </span>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'listarSemestreDocente' %}">
+                        <div class="d-flex align-items-center">
+                        <span class="nav-link-icon">
+                            <span class="fas fa-cube"></span>
+                        </span>
+                            <span class="nav-link-text">
+                            Mis Cursos
+                        </span>
+                        </div>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">
                         <div class="d-flex align-items-center">
@@ -214,6 +248,7 @@
                 {% endif %}
 
                 {% if request.user.rol_actual == 'Asistente de acreditación' %}
+
                 <li class="nav-item">
                     <a class="nav-link" href="#">
                         <div class="d-flex align-items-center">
@@ -230,6 +265,7 @@
                 {% endif %}
 
                 {% if request.user.rol_actual == 'Docente' %}
+
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'listarSemestreDocente' %}">
                         <div class="d-flex align-items-center">
