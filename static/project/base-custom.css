@@ -1,0 +1,108 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance: textfield; /* Firefox */
+}
+
+.text-color-custom {
+    color: #403D39;
+}
+
+.border-color {
+    border: 3px solid #73dc96;
+}
+
+@media (min-width: 1540px) {
+    .container, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
+        max-width: 1600px;
+    }
+}
+
+p, h1, h2, h3, h4, h5, h6, legend, .select2, .select2-results, th, td, label, ul, li {
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.bg-warning-custom {
+    color: #de9312;
+    background-color: #ffe7be;
+}
+
+div.dataTables_wrapper div.dataTables_info {
+    white-space: break-spaces;
+}
+
+.badge {
+    font-size: 0.8rem;
+}
+
+.star-color {
+    color: #f1c40f
+}
+
+.cat-badge {
+    position: absolute;
+    left: 116px;
+    bottom: 0;
+    background: linear-gradient(-45deg, #73dc96, #3aa59b);
+    text-align: center;
+    border-radius: 30px 30px 30px 30px;
+    color: white;
+    padding: 5px 10px;
+    font-size: 15px;
+}
+
+.fs--1 {
+    font-size: 0.9rem;
+}
+
+.select2, .select2-results {
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    width: 100% !important;
+}
+
+label.error {
+    font-style: italic;
+    color: #ca3d36;
+}
+
+abbr[title] {
+    border-bottom: none !important;
+    text-decoration: none !important;
+}
+
+.div_as_p {
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+p {
+    margin-bottom: 0;
+}
+
+.div_font_custom {
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.custom-margin::before {
+    display: block;
+    content: " ";
+    margin-top: -100px;
+    height: 100px;
+    visibility: hidden;
+    pointer-events: none;
+}
+.bg-light {
+    background-color: #fff !important;
+}
+.title {
+    color: #0154ae;
+    font-family: "Montserrat";
+}
+
+.bg-principal{
+    background-color: #0154ae;
+}
