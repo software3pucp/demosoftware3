@@ -17,7 +17,7 @@ from gestionarResultados.models import PlanResultados
 
 @login_required
 def listarRE(request, pk):
-    lista=[]
+    lista = []
     acreditadora = Acreditadora.objects.get(pk=pk)
     resultados = ResultadoAcreditadora.objects.filter(acreditadora=pk,estado=1)
     plResPucp=PlanResultados.objects.filter(estado=1)
@@ -25,6 +25,9 @@ def listarRE(request, pk):
     idFacultad=-1
     if plResPucp:
         for plan in plResPucp:
+            listaAux=[]
+            auxfac=None
+            auxesp=None
             resultadosPUCPs=ResultadoPUCP.objects.filter(estado=1,planResultado_id=plan.pk)
             for rPUCP in resultadosPUCPs:
                 indic = Indicador.objects.filter(resultado_id=rPUCP.pk, estado=1)
@@ -32,6 +35,8 @@ def listarRE(request, pk):
                 especialidad = Especialidad.objects.get(pk=id_especialidad)
                 id_facultad = especialidad.facultad_id
                 facultad = Facultad.objects.get(pk=id_facultad)
+                auxfac=facultad
+                auxesp=especialidad
                 reacres = []
                 for i in indic:
                     reAux = ResultadoAcreditadora.objects.filter(indicador_id=i.pk, estado=1)
@@ -39,23 +44,12 @@ def listarRE(request, pk):
                         reacres = list(chain(reacres, reAux))
                         # print(reacres)
                 if reacres:
-                    reg = [rPUCP, especialidad, facultad, reacres]
+                    reg = [rPUCP, reacres]
                     # print(reg)
-                    lista.append(reg)
-
-    tabla_contenido = []
-    for reg in lista:
-        if reg==-1:
-            idFacultad=reg[1].pk
-        print(reg[1].pk)
-        if idFacultad!=int(reg[1].pk):
-            impresionxFacultades.append(tabla_contenido)
-            tabla_contenido.clear()
-            tabla_contenido.append(reg);
-            idFacultad=reg[1].pk
-        else:
-            tabla_contenido.append(reg);
-    print(impresionxFacultades)
+                    listaAux.append(reg)
+            if auxfac is not None:
+                reg = [listaAux, auxesp, auxfac]
+                lista.append(reg)
 
     context = {
         'acreditadora': acreditadora,
