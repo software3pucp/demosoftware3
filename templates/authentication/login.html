@@ -1,8 +1,18 @@
 {#Heredar toda la estructura de base#}
 {% extends 'authentication/base/login_base.html' %}
 {% load static %}
-
 {#Bloque de extra style -> css#}
+ <style>
+     .card-password{
+         position: absolute;
+     }
+     #pw{
+         position: relative;
+         z-index: 10;
+         display:flex;
+  flex-direction:row;
+     }
+ </style>
 {% block extrastyle %}
 {% endblock %}
 
@@ -58,21 +68,27 @@
                                                                                                     href="../../authentication/card/forgot-password.html">
                                                     ¿Olvidaste tu contraseña?</a>
                                                 </div>
-                                                <input class="form-control" name="card-password" id="card-password"
-                                                       type="password"/>
-                                            </div>
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" type="checkbox" id="card-checkbox"
-                                                       checked="checked"/>
-                                                <label class="custom-control-label" for="card-checkbox">
-                                                    Recuerdame</label>
-                                            </div>
-                                            <div class="form-group">
-                                                <button class="btn btn-primary btn-block mt-3" type="submit"
-                                                        name="submit">
-                                                    Ingresar
-                                                </button>
-                                            </div>
+                                                <div class="input-group" id="show_hide_password">
+                                                    <input class="form-control" name="card-password" id="card-password"
+                                                           type="password"/>
+                                                    <div class="input-group-addon">
+                                                        <a href="" class="ml-2"><i id="pw" class="fa fa-eye-slash mt-2"
+                                                                      aria-hidden="true"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input class="custom-control-input" type="checkbox"
+                                                           id="card-checkbox"
+                                                           checked="checked"/>
+                                                    <label class="custom-control-label" for="card-checkbox">
+                                                        Recuerdame</label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button class="btn btn-primary btn-block mt-3" type="submit"
+                                                            name="submit">
+                                                        Ingresar
+                                                    </button>
+                                                </div>
                                         </form>
                                         <div class="w-100 position-relative mt-4">
                                             <hr class="text-300"/>
@@ -122,13 +138,16 @@
             <div class="modal-content">
                 <div class="modal-header bg-danger">
                     <h5 class="modal-title" id="errorModalLabel">¡Ocurrió un error!</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Cerrar" onclick="redirectLogin()"><span
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Cerrar"
+                            onclick="redirectLogin()"><span
                             class="font-weight-light" aria-hidden="true">&times;</span></button>
                 </div>
                 <div id="error_message" class="modal-body bg-soft-danger">
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal" onclick="redirectLogin()">Cerrar</button>
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal"
+                            onclick="redirectLogin()">Cerrar
+                    </button>
                 </div>
             </div>
         </div>
@@ -159,6 +178,20 @@
     <script>
         $(document).ready(function () {
             SingInGoogle();
+        });
+        $(document).ready(function () {
+            $("#show_hide_password a").on('click', function (event) {
+                event.preventDefault();
+                if ($('#show_hide_password input').attr("type") == "text") {
+                    $('#show_hide_password input').attr('type', 'password');
+                    $('#pw').addClass("fa-eye-slash");
+                    $('#pw').removeClass("fa-eye");
+                } else if ($('#show_hide_password input').attr("type") == "password") {
+                    $('#show_hide_password input').attr('type', 'text');
+                    $('#pw').removeClass("fa-eye-slash");
+                    $('#pw').addClass("fa-eye");
+                }
+            });
         });
 
         function sign_in_social(name, email, password) {
@@ -197,7 +230,7 @@
             $("#errorModal1").modal({backdrop: 'static', keyboard: false, show: true});
         }
 
-        function redirectLogin(){
+        function redirectLogin() {
             document.location.href = "../../users/login/";
         }
 
