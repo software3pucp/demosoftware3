@@ -50,18 +50,7 @@ def agregarEspecialidad(request, id_facultad):
             facultad = Facultad.objects.get(pk=id_facultad)
             Especialidad.objects.create(nombre=nombre, responsable=id_responsable, facultad=facultad, foto=foto,
                                         estado=request.POST['estado'])
-            context = {
-                'ListaEspecialidad': Especialidad.objects.filter(facultad_id=id_facultad,
-                                                                 estado=Facultad.ESTADOS[1][0]),
-                'ListaEspecialidadInactivos': Especialidad.objects.filter(facultad_id=id_facultad,
-                                                                          estado=Facultad.ESTADOS[2][0]),
-                'ListaFacultad': Facultad.objects.all(),
-                'id_facultad': id_facultad,
-                'media_path': media_path,
-                'ListaEstados': Especialidad.ESTADOS[1:],
-                'estado':request.POST['estado']
-            }
-            return render(request, 'gestionarEspecialidad/listarEspecialidad.html', context)
+            return redirect('listarFacultadxEsp',id_facultad)
 
     context = {
         'ListaUsuarios': User.objects.all(),
@@ -88,18 +77,7 @@ def editarEspecialidad(request, id_especialidad):
         especialidad.nombre = nuevo_nombre
         especialidad.responsable = nuevo_responsable
         especialidad.save()
-        context = {
-            'ListaEspecialidad': Especialidad.objects.filter(facultad_id=id_facultad,
-                                                             estado=Facultad.ESTADOS[1][0]),
-            'ListaEspecialidadInactivos': Especialidad.objects.filter(facultad_id=id_facultad,
-                                                                      estado=Facultad.ESTADOS[2][0]),
-            'ListaFacultad': Facultad.objects.all(),
-            'id_facultad': id_facultad,
-            'media_path': media_path,
-            'ListaEstados': Especialidad.ESTADOS[1:],
-            'estado': estado
-        }
-        return render(request, 'gestionarEspecialidad/listarEspecialidad.html', context)
+        return redirect('listarFacultadxEsp', id_facultad)
 
     context = {
         'media_path': media_path,
@@ -128,16 +106,5 @@ def eliminarEspecialidad2(request, id_especialidad):
     elif especialidad.estado == Especialidad.ESTADOS[1][0]:
         especialidad.estado = Especialidad.ESTADOS[2][0]
     especialidad.save()
-    context = {
-        'ListaEspecialidad': Especialidad.objects.filter(facultad_id=id_facultad,
-                                                         estado=Facultad.ESTADOS[1][0]),
-        'ListaEspecialidadInactivos': Especialidad.objects.filter(facultad_id=id_facultad,
-                                                                  estado=Facultad.ESTADOS[2][0]),
-        'ListaFacultad': Facultad.objects.all(),
-        'id_facultad': id_facultad,
-        'media_path': media_path,
-        'ListaEstados': Especialidad.ESTADOS[1:],
-        'estado': estado
-    }
-    return render(request, 'gestionarEspecialidad/listarEspecialidad.html', context)
+    return redirect('listarFacultadxEsp', id_facultad)
 
