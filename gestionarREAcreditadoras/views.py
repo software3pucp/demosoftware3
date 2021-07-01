@@ -21,8 +21,6 @@ def listarRE(request, pk):
     acreditadora = Acreditadora.objects.get(pk=pk)
     resultados = ResultadoAcreditadora.objects.filter(acreditadora=pk,estado=1)
     plResPucp=PlanResultados.objects.filter(estado=1)
-    impresionxFacultades=[]
-    idFacultad=-1
     if plResPucp:
         for plan in plResPucp:
             listaAux=[]
@@ -48,8 +46,18 @@ def listarRE(request, pk):
                     # print(reg)
                     listaAux.append(reg)
             if auxfac is not None:
-                reg = [listaAux, auxesp, auxfac]
-                lista.append(reg)
+                if listaAux:
+                    reg = [listaAux, auxesp, auxfac]
+                    lista.append(reg)
+    print("DEBUG")
+    print(lista)
+    for i in lista:
+        for a in i[0]:
+            print(a[0].descripcion)
+            print("================================")
+            for zzz in a[1]:
+                print(zzz.descripcion)
+            print("================================")
 
     context = {
         'acreditadora': acreditadora,
@@ -143,32 +151,30 @@ def eliminarRE(request, pk):
 
 
 def ajaxEditar(request):
-    if request.POST:
-        if request.POST['operacion'] == 'listEspe':
-            especialidades = Especialidad.objects.filter(facultad_id=request.POST['facultad'], estado='1')
-            data = serializers.serialize("json", especialidades)
-            return JsonResponse({"resp": data}, status=200)
-        if request.POST['operacion'] == 'listREPUCP':
-            ind_Aux=[];
-            indicadores=Indicador.objects.filter(estado='1');
-            for ind in indicadores:
-                # print(ind.descripcion)
-                result_aux=ResultadoPUCP.objects.get(pk=ind.resultado.pk, estado=1)
-                if result_aux:
-                    # print(result_aux.descripcion)
-                    plan=PlanResultados.objects.get(pk=result_aux.planResultado.pk,estado=1)
-                    if plan.especialidad_id == int(request.POST['especialidadPk']):
-                        resul_Acre_Aux=ResultadoAcreditadora.objects.filter(indicador_id=ind.pk, estado=1)
-                        # print(request.POST['resultadoAcredPK'])
-                        if not resul_Acre_Aux:
-                           ind_Aux.append(ind);
-                        else:
-                           for reAcre in resul_Acre_Aux:
-                              # print(reAcre.pk)
-                              if int(request.POST['resultadoAcredPK'])!=0 and int(request.POST['resultadoAcredPK'])==reAcre.pk:
-                                 ind_Aux.append(ind);
-                                 break;
-
-            data = serializers.serialize("json", ind_Aux)
-            return JsonResponse({"resp": data}, status=200)
+    try:
+        if request.POST:
+            if request.POST['operacion'] == 'listEspe':
+                especialidades = Especialidad.objects.filter(facultad_id=request.POST['facultad'], estado='1')
+                data = serializers.serialize("json", especialidades)
+                return JsonResponse({"resp": data}, status=200)
+            if request.POST['operacion'] == 'listREPUCP':
+                indicadores=[]
+                planes=PlanResultados.objects.filter(especialidad_id=int(request.POST['especialidadPk']), estado=1)
+                for p in planes:
+                    res=ResultadoPUCP.objects.filter(planResultado_id=p.pk, estado=1)
+                    for r in res:
+                        auxInd=Indicador.objects.filter(resultado_id=r.pk, estado=1)
+                        for i in auxInd:
+                            listaVerifica=ResultadoAcreditadora.objects.filter(indicador_id=i.pk, estado=1)
+                            if listaVerifica:
+                                print(listaVerifica[0].pk)
+                                print(int(request.POST['resultadoAcredPK']))
+                                if listaVerifica[0].pk==int(request.POST['resultadoAcredPK']):
+                                    indicadores.append(i)
+                            else:
+                                indicadores.append(i)
+                data = serializers.serialize("json", indicadores)
+                return JsonResponse({"resp": data}, status=200)
+    except:
+        return JsonResponse({"resp": None}, status=303)
     return
