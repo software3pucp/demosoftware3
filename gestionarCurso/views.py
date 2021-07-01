@@ -45,18 +45,7 @@ def agregarCurso(request, id_especialidad):
             especialidad = Especialidad.objects.get(pk=id_especialidad)
             Curso.objects.create(nombre=nombre, responsable=id_responsable, especialidad=especialidad,
                                  estado=request.POST['estado'])
-            context = {
-                'ListaCurso': Curso.objects.filter(especialidad_id=id_especialidad, estado=Especialidad.ESTADOS[1][0]),
-                'ListaCursoInactivos': Curso.objects.filter(especialidad_id=id_especialidad,
-                                                            estado=Especialidad.ESTADOS[2][0]),
-                'ListaEspecialidad': Especialidad.objects.all(),
-                'id_especialidad': id_especialidad,
-                'id_facultad': Especialidad.objects.get(pk=id_especialidad).facultad.pk,
-                'media_path': media_path,
-                'ListaEstados': Especialidad.ESTADOS[1:],
-                'estado': request.POST['estado']
-            }
-            return render(request, 'gestionarCurso/listarCurso.html', context)
+            return redirect('listarEspecialidadxCurso',id_especialidad)
 
 
     context = {
@@ -80,18 +69,7 @@ def editarCurso(request, id_curso):
         curso.nombre = nuevo_nombre
         curso.responsable = nuevo_responsable
         curso.save()
-        context = {
-            'ListaCurso': Curso.objects.filter(especialidad_id=id_especialidad, estado=Especialidad.ESTADOS[1][0]),
-            'ListaCursoInactivos': Curso.objects.filter(especialidad_id=id_especialidad,
-                                                        estado=Especialidad.ESTADOS[2][0]),
-            'ListaEspecialidad': Especialidad.objects.all(),
-            'id_especialidad': id_especialidad,
-            'id_facultad': Especialidad.objects.get(pk=id_especialidad).facultad.pk,
-            'media_path': media_path,
-            'ListaEstados': Especialidad.ESTADOS[1:],
-            'estado': estado
-        }
-        return render(request, 'gestionarCurso/listarCurso.html', context)
+        return redirect('listarEspecialidadxCurso', id_especialidad)
 
     context = {
         'curso': curso,
@@ -119,15 +97,4 @@ def eliminarCurso2(request, id_curso):
     elif curso.estado == Curso.ESTADOS[1][0]:
         curso.estado = Curso.ESTADOS[2][0]
     curso.save()
-    context = {
-        'ListaCurso': Curso.objects.filter(especialidad_id=id_especialidad, estado=Especialidad.ESTADOS[1][0]),
-        'ListaCursoInactivos': Curso.objects.filter(especialidad_id=id_especialidad,
-                                                    estado=Especialidad.ESTADOS[2][0]),
-        'ListaEspecialidad': Especialidad.objects.all(),
-        'id_especialidad': id_especialidad,
-        'id_facultad': Especialidad.objects.get(pk=id_especialidad).facultad.pk,
-        'media_path': media_path,
-        'ListaEstados': Especialidad.ESTADOS[1:],
-        'estado': estado
-    }
-    return render(request, 'gestionarCurso/listarCurso.html', context)
+    return redirect('listarEspecialidadxCurso',id_especialidad)
