@@ -12,15 +12,31 @@
     {#AQUI COLOQUEN EL CÓDIGO#}
     <div class="card m-3 p-3">
         <h1> Resultados de Mediciones </h1>
-        <div class="col-md-3"
-            <label for="horarios">Horarios:</label>
-            <select id="horarios" name="horarios" class="form-control" onchange="actualizar()">
-                <option value="All">All</option>
-            </select>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="semestres">Semestres:</label>
+                <select id="semestres" name="semestres" class="form-control" onchange="actualizarCursos()">
+                    {% for semestre in semestres %}
+                        <option value="{{ semestre.pk }}">{{ semestre.nombreCodigo }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="cursos">Cursos:</label>
+                <select id="cursos" name="cursos" class="form-control" onchange="agregarData()">
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="horarios">Horarios:</label>
+                <select id="horarios" name="horarios" class="form-control" onchange="actualizar()">
+                    <option value="All">All</option>
+                </select>
+            </div>
         </div>
         <div class="p-3">
             <canvas id="myChart" style="width:100%;"></canvas>
         </div>
+
     </div>
 
 {% endblock %}
@@ -32,8 +48,35 @@
 
         $(document).ready(function () {
             console.log("ready!");
-            agregarData();
+            actualizarCursos();
         });
+
+        function actualizarCursos() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'resultadosMediciones' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    operacion: 'actualizarCursos',
+                    semestre: $("#semestres").val(),
+                },
+                success: function (response) {
+                    var instance = response["resp"];
+                    $(".curso").remove();
+                    for (var i = 0; i < instance.length; i++) {
+                        curso = '<option class="curso" value=' +
+                            instance[i]["pk"] + '>' +
+                            instance[i]["curso"] + '</option>';
+                        console.log(curso);
+                        $("#cursos").append(curso);
+                    }
+                    agregarData();
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                },
+            });
+        }
 
         function agregarData() {
             $.ajax({
@@ -42,6 +85,7 @@
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     operacion: 'agregar',
+                    curso: $("#cursos").val(),
                 },
                 success: function (response) {
                     var xLabel = JSON.parse(response["xLabel"]);
@@ -53,9 +97,17 @@
                     console.log(yLabel["horarios"][0]["notas"]);
                     console.log(yLabel["horarios"][0]["notas"][3].cant);
 
+                    grafiquito.data.datasets.pop();
+                    for(var i=0; i<xValues.length; i++){
+                        xValues.pop();
+                    }
+                    grafiquito.update();
+
+                    $(".horario").remove();
                     for(var i=0; i<xLabel.length; i++){
                          xValues.push(xLabel[i]["fields"].codigo);
-                         var data = '<option value='+
+
+                         var data = '<option class="horario" value='+
                            xValues[i]+'>'+ xValues[i]+'</option>';
                         $("#horarios").append(data);
                     }

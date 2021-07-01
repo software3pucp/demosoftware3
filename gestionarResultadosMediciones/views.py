@@ -9,14 +9,22 @@ from gestionarCurso.models import Curso
 from gestionarEvaluacion.models import RespuestaEvaluacion
 from gestionarHorario.models import Horario
 from gestionarNiveles.models import Nivel
+from gestionarPlanMedicion.models import PlanMedicionCurso
+from gestionarSemestre.models import Semestre
+
+
 @login_required
 def resultadosMediciones(request):
-
+    print('***************************************************************************************************')
+    print(request.POST)
+    print('***************************************************************************************************')
     if request.POST:
         if request.POST['operacion'] == 'agregar':
-            curso = Curso.objects.get(pk=1)
-            niveles = Nivel.objects.filter(especialidad_id=1)
-            horarios = Horario.objects.filter(curso_id=1)
+            if(request.POST['curso'] == ''):
+                return
+            curso = PlanMedicionCurso.objects.get(pk=request.POST['curso'])
+            niveles = Nivel.objects.filter(especialidad_id=curso.curso.especialidad_id,estado='1')
+            horarios = Horario.objects.filter(curso_id=request.POST['curso'],estado='1')
             listaHor = []
             for horario in horarios:
                 listaNiv = []
@@ -26,11 +34,21 @@ def resultadosMediciones(request):
                     listaNiv.append(jsonNivel)
                 jsonHor = {"horario": horario.codigo, "notas": listaNiv}
                 listaHor.append(jsonHor)
-            resCur = {"nombre": curso.nombre,"horarios":listaHor}
+            resCur = {"nombre": curso.curso.nombre,"horarios":listaHor}
             dataX = serializers.serialize("json", horarios)
             return JsonResponse({"xLabel": dataX, "yLabel": resCur}, status=200)
 
-    context = {
+        elif request.POST['operacion'] == 'actualizarCursos':
+            cursos = list(PlanMedicionCurso.objects.filter(semestre_id=request.POST['semestre'],estado='1'))
+            data = []
+            for cur in cursos:
+                jsonCurso = {"pk": cur.pk, "curso": cur.curso.nombre}
+                data.append(jsonCurso)
+            print({"resp": data})
+            return JsonResponse({"resp": data}, status=200)
 
+    semestres = Semestre.objects.filter();
+    context = {
+        'semestres': semestres,
     }
     return render(request,'gestionarResultadosMediciones/resultadosMediciones.html',context)
