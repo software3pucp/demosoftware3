@@ -98,18 +98,21 @@
                     console.log(yLabel["horarios"][0]["notas"][3].cant);
 
                     grafiquito.data.datasets.pop();
-                    for(var i=0; i<xValues.length; i++){
-                        xValues.pop();
-                    }
+                    grafiquito.data.datasets = [];
+
+
+                    xValues = [];
                     grafiquito.update();
 
                     $(".horario").remove();
+                    var dataHorario;
                     for(var i=0; i<xLabel.length; i++){
                          xValues.push(xLabel[i]["fields"].codigo);
 
-                         var data = '<option class="horario" value='+
-                           xValues[i]+'>'+ xValues[i]+'</option>';
-                        $("#horarios").append(data);
+                          dataHorario = '<option class="horario" value='+
+                           xLabel[i]["fields"].codigo+'>'+ xLabel[i]["fields"].codigo+'</option>';
+
+                        $("#horarios").append(dataHorario);
                     }
 
                     var prueba=[];
@@ -122,6 +125,7 @@
                         prueba.push(lineal);
                     }
 
+                    console.log("PRUEBA");
                     console.log(prueba);
                     matriz = prueba[0].map((_, colIndex) => prueba.map(row => row[colIndex]));
                     console.log(matriz);
@@ -139,6 +143,7 @@
                     }
 
                     grafiquito.update();
+                    actualizar();
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);
