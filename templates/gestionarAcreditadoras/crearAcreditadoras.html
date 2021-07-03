@@ -61,28 +61,23 @@
                     </div>
                 </div>
 
-                <div class="row" style="padding-left: 1%;padding-right: 1%">
-                    <div class="col-md-4">
-                        <div class="form-group">
-
-                            <label for="nombre">Nombre:</label>
+                <div class="col">
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="nombre">Nombre</label>
                         </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
+                        <div class="row">
                             <input name="nombre" class="form-control" id="nombre" type="text"
                                    placeholder="Ingrese el nombre" value="{{ acreditadora.nombre }}">
                         </div>
+                        <div class="row">
+                            <label for="exampleFormControlFile1">Ingrese una imagen para la facultad</label>
+                        </div>
+
                     </div>
                 </div>
-
-                <div class="row" style="padding-left: 1%;padding-right: 1%">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="exampleFormControlFile1">Ingrese una imagen para la facultad: </label>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
+                <div>
+                    <div class="col px-0">
                         <div class="form-group">
                             <div class="input-group">
                                 <input name="photo_name" type="text" class="form-control" readonly>
@@ -95,22 +90,21 @@
                                                 Buscar… <input name="photo" type="file" id="imgInp"/>
                                             {% endif %}
                                         </span>
-                                    </span>
+                                </span>
                             </div>
                             {% if acreditadora.pk == "0" %}
-                                <img id='img-upload'/>
+                                <img id='img-upload' class="img-thumbnail" />
                             {% else %}
-                                <img id='img-upload' src="
-
-                                        {% if acreditadora.foto %}{{ media_path }}{{ acreditadora.foto }}{% else %}{% static 'img/team/avatar.png' %}{% endif %}"/>
+                                <img id='img-upload' class="img-thumbnail" src="
+                                    {% if acreditadora.foto %}{{ media_path }}{{ acreditadora.foto }}{% else %}{% static 'img/team/avatar.png' %}{% endif %}"/>
                             {% endif %}
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-12" style="text-align: right;">
-                        <a class="btn btn-outline-primary" type="button"
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <a class="btn btn-outline-primary mx-1" type="button"
                            href="{% url 'listarAcreditadoras' %}">Cancelar</a>
                         {% if acreditadora.pk == "0" %}
                             <input type="hidden" name="operacion" value="insertar">
