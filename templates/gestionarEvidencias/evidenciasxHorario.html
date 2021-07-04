@@ -203,13 +203,17 @@
 
         var pkEditar;
         var pkEliminar;
-
+        var edi;
         $(document).ready(function () {
             listarEvidencias();
             $(document).on('change', '.btn-file :file', function () {
                 var input = $(this),
-                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
                 input.trigger('fileselect', [label]);
+                edi=label;
+                console.log("aquqqqq");
+                console.log(edi);
+                console.log("fin");
             });
 
             $('.btn-file :file').on('fileselect', function (event, label) {
@@ -220,6 +224,8 @@
                 } else {
                     if (log) alert(log);
                 }
+                console.log("aquiii");
+                console.log(label);
             });
 
             function readURL(input) {
@@ -250,6 +256,8 @@
 
             $('#subirEvidencia').modal('hide');
             $('#nombre_archivo').val("");
+            console.log("Verificacion");
+            console.log($('#nombre_archivo_mod').val(""));
             $('#archivo').val("");
 
         });
@@ -284,7 +292,8 @@
             }
         }
 
-        $("#btnEditarEvidencia").on('click', function () {
+        $("#btnEditarEvidencia").on('click', function (e) {
+            e.preventDefault();
             if ($("#formEditarEvidencia").valid()) {
                 console.log('Despues de boton');
                 editarEvidencia(pkEditar);
@@ -296,8 +305,9 @@
             }
         });
 
-        function evidenciasEditar(concepto, descripcion, archivo, pk) {
+            function evidenciasEditar(concepto, descripcion, archivo, pk) {
             var nombre_archivo = archivo.toString();
+            console.log(nombre_archivo);
 
             data1 = '';
             data1 += (
@@ -335,11 +345,14 @@
                 '                       readonly value="'+nombre_archivo+'">'+
                 '                <span class="input-group-btn pb-3">'+
                 '                        <span class="btn btn-primary btn-file ml-3 " type="button">Seleccionar'+
-                '                        <input name="archivoMod" id="archivoMod"  type="file" required/>'+
+                '                        <input name="archivoMod" id="archivoMod"  type="file" />'+
                 '                        </span>'+
                 '                </span>'+
                 '            </div>'
-                )
+                );
+
+
+
 
             $("#editArchivo").html(data2);
             $("#editarEvidencia").modal('show');
@@ -350,10 +363,37 @@
 
             var fd = new FormData();
             var files = $('#archivoMod')[0].files;
-            console.log(files)
+            console.log("aqui estamos");
+            console.log(files.length);
             // Check file selected or not
             if (files.length > 0) {
+                console.log("aqui estamos 2");
+                console.log(files[0]);
                 fd.append('archivoMod', files[0]);
+                fd.append('evidenciapk', evidenciapk);
+                fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+                fd.append('nombre_archivo', $("#nombre_archivo_mod").val());
+                fd.append('conceptoMod', $("#conceptoMod").val());
+                fd.append('descripcionMod', $("#descripcionMod").val());
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'editarEvidencia' %}",
+                    data: fd,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        console.log('Se ha editado correctamente')
+                        listarEvidencias();
+                    },
+                    error: function (response) {
+                        console.log("ERROR")
+                        console.log(response)
+                    }
+                });
+            }
+            if (files != null && files.length == 0 ) {
+                console.log("aqui estamos 3");
                 fd.append('evidenciapk', evidenciapk);
                 fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
                 fd.append('nombre_archivo', $("#nombre_archivo_mod").val());

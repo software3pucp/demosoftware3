@@ -46,10 +46,18 @@ def subirEvidenciaxHorario(request):
 
 def editarEvidenciaxHorario(request):
     evidencia = EvidenciasxHorario.objects.get(pk=request.POST['evidenciapk'])
-    nuevoArchivo = request.FILES['archivoMod']
+    varFlag =0
+    nuevoArchivo = 0
+    try:
+        nuevoArchivo = request.FILES['archivoMod']
+    except:
+        varFlag=1
+
     nuevaDescripcion = request.POST['descripcionMod']
     nuevoConcepto = request.POST['conceptoMod']
-    evidencia.archivo = nuevoArchivo
+
+    if varFlag==0:
+        evidencia.archivo = nuevoArchivo
     evidencia.concepto = nuevoConcepto
     evidencia.descripcion = nuevaDescripcion
     evidencia.save()
