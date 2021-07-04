@@ -17,17 +17,18 @@ def evidenciasxHorario(request, id_curso, id_horario):
     tiene_evidencias = False
     # curso = Curso.objects.get(pk=id_curso)
     plan_medicion_curso = PlanMedicionCurso.objects.get(curso_id=id_curso)
+    semestre = plan_medicion_curso.semestre
     curso = plan_medicion_curso.curso
     horario = Horario.objects.get(pk=id_horario)
     listaEvidencias = EvidenciasxHorario.objects.filter(horario_id=id_horario, estado=1)
     if (len(listaEvidencias) > 0):
         tiene_evidencias = True
-
     context = {
         'curso': curso,
         'horario': horario,
         'listaEvidencias': listaEvidencias,
         'tiene_evidencias': tiene_evidencias,
+        'semestre':semestre,
         'media_path': MEDIA_URL
     }
     return render(request, 'gestionarEvidencias/evidenciasxHorario.html', context)

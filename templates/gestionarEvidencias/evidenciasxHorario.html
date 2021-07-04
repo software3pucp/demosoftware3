@@ -54,7 +54,8 @@
                                 horario {{ horario.codigo }} </h4>
                         </div>
                         <div class="col-2">
-                            <a href="{% url 'evaluar' pk=curso.pk %}" style="font-family: Roboto"><h5 id="Retroceder">
+                             <a href="/gestionarEvaluacion/evaluar/{{curso.pk}}?sem={{semestre.pk}}"
+                             style="font-family: Roboto"><h5 id="Retroceder">
                                 <img class="img-fluid" style="height: 20px"
                                      src="https://image.flaticon.com/icons/png/512/60/60577.png">
                                 <u>Volver</u>
