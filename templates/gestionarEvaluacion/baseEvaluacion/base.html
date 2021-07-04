@@ -13,6 +13,12 @@
             position: relative;
             overflow: hidden;
         }
+        button:disabled,
+        button[disabled]{
+            border: 1px solid #999999;
+            background-color: #cccccc;
+            color: #666666;
+        }
 
         .btn-file input[type=file] {
             position: absolute;
@@ -809,8 +815,8 @@
                             if (instance[i]["fields"].evidencia == '1') {
                                 data += ('<span class="fas fa-check-circle text-primary ml-1" data-toggle="tooltip" data-placement="right" title="Verified" data-fa-transform="shrink-1 down-1"></span>');
                             }
-
-                            data += ('</th>' +
+                            if (instance[i]["fields"].evidencia == '0') {
+                                data += ('</th>' +
                                 '<th>' +
                                 '<div class="row justify-content-between">' +
                                 ' <div class="col">' +
@@ -824,7 +830,7 @@
                                 '<i class="fa fa-download"></i>  Descargar</a>' +
                                 '</div>'+
                                 '<div class="col">' +
-                                '<button class="badge badge-pill badge-warning" onclick="evidenciasEliminar(\'' + instance[i]["fields"].archivo + '\',' + instance[i]["pk"] + ')">Eliminar Evidencia</button>' +
+                                '<button class="badge badge-pill badge-warning"  disabled onclick="evidenciasEliminar(\'' + instance[i]["fields"].archivo + '\',' + instance[i]["pk"] + ')">Eliminar Evidencia</button>' +
                                 '</div>' +
                                 '<div class="col">' +
                                 '<button class="badge badge-pill badge-danger" onclick="evaluarEliminar(' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ',)">Eliminar</button>' +
@@ -833,6 +839,33 @@
                                 '</th>' +
                                 '</tr>' +
                                 '   </th>');
+                            }else{
+                                data += ('</th>' +
+                                '<th>' +
+                                '<div class="row justify-content-between">' +
+                                ' <div class="col">' +
+                                '<button class="badge badge-pill badge-primary" onclick="mostrarModal(' + instance[i]["pk"] + ')">Subir Evidencia</button>' +
+                                '</div>' +
+                                '<div class="col">' +
+                                '<button class="badge badge-pill badge-secondary" onclick="evaluarEditar(\'' + instance[i]["fields"].nombreAlumno + '\',' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ')">Editar</button>' +
+                                '</div>' +
+                                '<div class="col">' +
+                                '<a class="badge badge-pill badge-primary" href="' + {{ media_path }} +instance[i]["fields"].archivo + '" download>' +
+                                '<i class="fa fa-download"></i>  Descargar</a>' +
+                                '</div>'+
+                                '<div class="col">' +
+                                '<button class="badge badge-pill badge-warning"   onclick="evidenciasEliminar(\'' + instance[i]["fields"].archivo + '\',' + instance[i]["pk"] + ')">Eliminar Evidencia</button>' +
+                                '</div>' +
+                                '<div class="col">' +
+                                '<button class="badge badge-pill badge-danger" onclick="evaluarEliminar(' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ',)">Eliminar</button>' +
+                                '</div>' +
+                                ' </div>' +
+                                '</th>' +
+                                '</tr>' +
+                                '   </th>');
+
+                            }
+
 
                             estado = ('<div> Alumnos Evaluados: ' +
                                 cont + '%' + '</div>'
