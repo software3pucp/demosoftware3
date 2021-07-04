@@ -268,7 +268,7 @@
                     <form id="formAgregarAlumno" name="formAgregarAlumno">
                         <div class="form-group">
                             <label for="codigoAlumno">Código</label>
-                            <input class="form-control" id="codigoAlumno" name="codigoAlumno" type="text" maxlength="8"
+                            <input class="form-control" id="codigoAlumno" name="codigoAlumno" type="text"
                                    placeholder="Código">
                         </div>
                         <div class="form-group">
@@ -382,6 +382,23 @@
             </div>
         </div>
     </div>
+     <!-- Modal Eliminar Evidencia -->
+    <div class="modal fade" id="eliminarEvidencia" tabindex="-1" role="dialog" aria-labelledby="eliminarEvidenciaLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarEvidenciaLabel">Ingresar alumno a evaluar</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                    <button id="btnEliminarEvidencia" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 
@@ -394,6 +411,7 @@
 
         let pkEditar;
         let pkEliminar;
+        var pkEliminarE;
         let pkSubirEvidencia;
 
         function redirectEvidencia() {
@@ -441,6 +459,42 @@
             console.log("cargado");
         });
 
+         $("#btnEliminarEvidencia").on('click', function () {
+            eliminarEvidencia(pkEliminarE);
+            $("#eliminarEvidencia").modal('hide');
+        });
+
+        function evidenciasEliminar(archivo, pk) {
+            console.log("evidencia eliminar ----")
+            console.log(archivo)
+            console.log(pk)
+
+            var nombreArchivo = archivo.toString();
+            data = '<h5 class="modal-title" id="eliminarEvidenciaLabel">Se eliminará la evidencia ' + nombreArchivo + '</h5>';
+            $("#eliminarEvidenciaLabel").html(data);
+            $("#eliminarEvidencia").modal('show');
+
+            pkEliminarE = pk;
+        };
+
+         function eliminarEvidencia(evidenciapk) {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'eliminarEvidencia' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    evidenciapk: evidenciapk,
+                },
+                success: function (response) {
+                    console.log("Se ha eliminado correctamente!");
+                    listarAlumno();
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
 
         $("#btnImportar").on('click', function (e) {
             e.preventDefault();
@@ -670,6 +724,7 @@
             });
         }
 
+
         function agregarAlumno() {
             $.ajax({
                 type: 'POST',
@@ -765,6 +820,13 @@
                                 '<button class="badge badge-pill badge-secondary" onclick="evaluarEditar(\'' + instance[i]["fields"].nombreAlumno + '\',' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ')">Editar</button>' +
                                 '</div>' +
                                 '<div class="col">' +
+                                '<a class="badge badge-pill badge-primary" href="' + {{ media_path }} +instance[i]["fields"].archivo + '" download>' +
+                                '<i class="fa fa-download"></i>  Descargar</a>' +
+                                '</div>'+
+                                '<div class="col">' +
+                                '<button class="badge badge-pill badge-warning" onclick="evidenciasEliminar(\'' + instance[i]["fields"].archivo + '\',' + instance[i]["pk"] + ')">Eliminar Evidencia</button>' +
+                                '</div>' +
+                                '<div class="col">' +
                                 '<button class="badge badge-pill badge-danger" onclick="evaluarEliminar(' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ',)">Eliminar</button>' +
                                 '</div>' +
                                 ' </div>' +
@@ -781,12 +843,13 @@
                             '<p class="m-2 text-center"> No se encontraron alumnos asignados al horario y al indicador seleccionados</p>' +
                             '</th>';
                     }
+
                     $("#tablaAlumno").html(data);
                     $("#textBuscar").val('');
                     $("#estado").html(estado);
 
-                    if ({{ planMedicion.estado }}=='2'
-                )
+
+                    if ({{ planMedicion.estado }}=='2')
                     {
                         $("input[type=radio]").attr('disabled', true);
                         $("#dashboard-actions").attr('hidden', true);

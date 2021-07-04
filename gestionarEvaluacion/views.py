@@ -161,12 +161,15 @@ def guardarPuntuacion(request):
     return JsonResponse({},status=200)
 
 def editarAlumno(request):
-    alumno = RespuestaEvaluacion.objects.get(pk = request.POST["idAlumno"])
+
+    alumno = RespuestaEvaluacion.objects.get(pk=request.POST["idAlumno"])
+    listaA= RespuestaEvaluacion.objects.filter(nombreAlumno=alumno.nombreAlumno,estado=1)
     nuevoCodigo = request.POST["codigoAlumno"]
     nuevoNombre = request.POST["nombreAlumno"]
-    alumno.codigoAlumno = nuevoCodigo
-    alumno.nombreAlumno = nuevoNombre
-    alumno.save()
+    for als in listaA:
+        als.codigoAlumno = nuevoCodigo
+        als.nombreAlumno = nuevoNombre
+        als.save()
     return JsonResponse({}, status=200)
 
 def eliminarAlumno(request):
@@ -196,7 +199,7 @@ def listarAlumno(request):
     else:
         listaAlumno = reversed(RespuestaEvaluacion.objects.filter(horario_id=request.POST["horarioSeleccionado"],indicador_id=request.POST["indicadorSeleccionado"], estado=1))
 
-    ser_instance = serializers.serialize('json', list(listaAlumno),fields=('id', 'nombreAlumno', 'codigoAlumno', 'horario','calificado', 'valorNota','evidencia'))
+    ser_instance = serializers.serialize('json', list(listaAlumno),fields=('id', 'nombreAlumno', 'codigoAlumno', 'horario','calificado', 'valorNota','evidencia','archivo'))
     ser_instance2 = serializers.serialize('json', list(niveles), fields=('id', 'nombre', 'valor', 'estado'))
     return JsonResponse({"listaAlumno": ser_instance, "niveles": ser_instance2},  status=200)
 
@@ -241,6 +244,15 @@ def subirEvidencia(request):
     alumno.save()
     # TODO::: Mandar una respuesta adecuada al front (Se hace con un IF y en dos JSONRESPONSE
     print(request.FILES["archivo"])
+    return JsonResponse({}, status=200)
+
+def eliminarEvidencia(request):
+    print(request.POST)
+    pk = request.POST['evidenciapk']
+    alumno = RespuestaEvaluacion.objects.get(pk=request.POST["evidenciapk"])
+    alumno.evidencia = 0
+    alumno.archivo = ""
+    alumno.save()
     return JsonResponse({}, status=200)
 
 
