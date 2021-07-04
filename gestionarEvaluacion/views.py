@@ -163,6 +163,7 @@ def guardarPuntuacion(request):
 def editarAlumno(request):
 
     alumno = RespuestaEvaluacion.objects.get(pk=request.POST["idAlumno"])
+
     listaA= RespuestaEvaluacion.objects.filter(nombreAlumno=alumno.nombreAlumno,estado=1)
     nuevoCodigo = request.POST["codigoAlumno"]
     nuevoNombre = request.POST["nombreAlumno"]
@@ -174,8 +175,10 @@ def editarAlumno(request):
 
 def eliminarAlumno(request):
     alumno = RespuestaEvaluacion.objects.get(pk = request.POST["idAlumno"])
-    alumno.estado = 0
-    alumno.save()
+    listaA = RespuestaEvaluacion.objects.filter(nombreAlumno=alumno.nombreAlumno, estado=1)
+    for als in listaA:
+        als.estado = 0
+        als.save()
     return JsonResponse({}, status=200)
 
 def muestraRubrica(request):
