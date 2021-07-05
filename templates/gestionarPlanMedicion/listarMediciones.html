@@ -187,64 +187,50 @@
                     var data2 = '';
                     for (i = 0; i < numero; i++) {
                         data += (
-                            '<div style="margin: 1%;">' +
-                            '   <div class="card text-white bg-primary">' +
-                            '        <div class="card-body">' +
-                            '           <div class="row no-gutters align-items-center">' +
-                            '               <div class="col-md-1">' +
-                            '                   <h2 class="card-text text-white">' + instance[i]["fields"].codigo + '</h2>' +
-                            '               </div>' +
-                            '               <div class="col-md-9 border-left border-right p-2">' +
-                            '                   <p>' + instance[i]["fields"].nombre + '</p>' +
-                            '               </div>')
+                            '<div class="card my-3 overflow-hidden" style="min-width: 12rem">' +
+                            '<div class="bg-holder bg-card"' + 'style="background-image:url(' + '{% static '/img/illustrations/corner-3.png' %}' + ');">' + '</div>' +
+                            '<div class="card-body position-relative">' +
+                            '<h5>' + instance[i]["fields"].codigo +
+                            '<div class="my-2">' + '<span>' + instance[i]["fields"].nombre + '<span>' + '</div> <div class = "d-flex">'
+                        );
                         {% if user.rol_actual == 'Docente' %}
                             data += (
-                                '               <div class="col-md-2 align-items-end">' +
-                                '                   <div class="d-flex justify-content-center">' +
+
                                 '                       <button class="btn btn-falcon-primary mr-1 mb-1" onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">Visualizar</button>' +
                                 '                   </div>' +
                                 '               </div>' +
-                                '           </div>' +
-                                '        </div>' +
-                                '    </div>' +
-                                '</div>')
+                                '           </div>'
                         {% else %}
                             data += (
-                                '                    <div class="col-md-2 ">' +
-                                '                        <div class="d-flex justify-content-center">' +
-                                '                           <button class="btn btn-falcon-primary mr-1 mb-1" onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">Editar</button>' +
-                                '                        </div>')
+
+                                ' <button class="btn btn-falcon-primary mr-1 mb-1" onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">Editar' +
+                                '</button>')
 
                             if (instance[i]["fields"].estado == '1') {
                                 data += (
-                                    '                        <div class="d-flex justify-content-center">' +
-                                    '                        <form action="{% url 'historico' %}" method="post">' +
+                                    '                         <form action="{% url 'historico' %}" method="post">' +
                                     '                           {% csrf_token %}' +
                                     '                           <input type="hidden" name="operacion" value="terminar">' +
                                     '                           <input type="hidden" name="planMedicion" value="' + instance[i]["pk"] + '">' +
-                                    '                           <button type="submit" class="btn btn-falcon-primary mr-1 mb-1">Terminar</button>' +
-                                    '                        </form>' +
-                                    '                        </div>')
+                                    '                           <button type="submit" class="btn btn-falcon-primary mr-1 mb-1 ">Terminar</button>' +
+                                    '                        </form>')
                             } else {
                                 data += (
-                                    '                        <div class="d-flex justify-content-center">' +
+
                                     '                        <form action="{% url 'historico' %}" method="post">' +
                                     '                           {% csrf_token %}' +
                                     '                           <input type="hidden" name="operacion" value="ver plan">' +
                                     '                           <input type="hidden" name="planMedicion" value="' + instance[i]["pk"] + '">' +
                                     '                           <button class="btn btn-falcon-primary mr-1 mb-1">Ver Plan Mejora</button>' +
-                                    '                        </form>' +
-                                    '                        </div>')
+                                    '                        </form>')
                             }
                             data += (
-                                '                        <div class="d-flex justify-content-center">' +
-                                '                        <button class="btn btn-falcon-primary mr-1 mb-1" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">Eliminar</button>' +
-                                '                        </div>' +
+                                '                        <button class="btn btn-falcon-danger mb-1 mr-2" data-toggle="tooltip"' +
+                                ' data-placement="top" title="Eliminar plan de Medición" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
+                                '<span class="fa fa-times"></span></button>' +
                                 '                    </div>' +
                                 '                </div>' +
-                                '        </div>' +
-                                '    </div>' +
-                                '</div>')
+                                '        </div>' + '</div>' )
                         {% endif %}
                     }
 
@@ -253,6 +239,7 @@
                     $("#listadoMediciones").html(data);
                 }
                 ,
+
                 error: function (response) {
                     // alert the error if any error occured
                     alert(response["responseJSON"]["error"]);
