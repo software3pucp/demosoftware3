@@ -37,15 +37,28 @@
                     </div>
                     <div class="row align-items-start">
                         <div class="col-auto text-center pr-card">
-                            <select class="custom-select custom-select-sm">
-                                <option>Indicador1</option>
-                                <option>Indicador2</option>
+                            <select id="IndPorcentajeAlumnosMedia" class="custom-select custom-select-sm" onchange="getPorcentajeAlumnosMedia()">
+                                {% for indicador in indicadores %}
+                                    <option value="{{ indicador.pk }}">{{ indicador.codigo }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="progress-circle mb-4" data-options='{"progress":96,"color": "url(#gradient)"}'></div>
+                    {% for indicador, porcentaje in porcentajeAlumnosMedia %}
+                        <div id="CirclePorcentajeAlumnosMedia{{ indicador.pk }}" class="CirclePorcentajeAlumnosMedia">
+                        {% if porcentaje < 50 %}
+                            <div class="progress-circle mb-4" data-options='{"progress":{{ porcentaje }},"color": "#e63757"}'></div>
+                        {% elif porcentaje < 75 %}
+                            <div class="progress-circle mb-4" data-options='{"progress":{{ porcentaje }},"color": "#f5803e"}'></div>
+                        {% elif porcentaje < 100 %}
+                            <div class="progress-circle mb-4" data-options='{"progress":{{ porcentaje }},"color": "#27bcfd"}'></div>
+                        {% else %}
+                            <div class="progress-circle mb-4" data-options='{"progress":{{ porcentaje }},"color": "#00d27a"}'></div>
+                        {% endif %}
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -162,20 +175,19 @@
             </div>
         </div>
     </div>
-
     <div class="card-deck">
         {% for nivel,cantidad in cantNiveles %}
             <div class="card mb-3 overflow-hidden">
                 <div class="card-body position-relative">
                     <h5>{{ nivel }}</h5>
-                    <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif text-info" data-countup='{"count":{{ cantidad }}}'>0</div>
+                    <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif text-info" data-countup='{"count":{{ cantidad }}}'>{{ cantidad }}</div>
                 </div>
             </div>
         {% endfor %}
     </div>
 
     <div class="row">
-        <div class="col-4 mb-3">
+        <div class="col-6 mb-3">
             <div class="card h-lg-100 overflow-hidden">
                 <div class="card-header">
                     <div class="row align-items-center">
@@ -201,7 +213,7 @@
                                         {% if progreso < 50 %}
                                             <div class="progress-bar bg-danger" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
                                         {% elif progreso < 75 %}
-                                            <div class="progress-bar bg-warning" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
+                                            <div class="progress-bar bg-warning" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
                                         {% elif progreso < 100 %}
                                             <div class="progress-bar bg-info" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
                                         {% else %}
@@ -257,6 +269,7 @@
 
         $(document).ready(function () {
             console.log("ready!");
+            getPorcentajeAlumnosMedia()
             actualizarCursos();
         });
 
@@ -439,6 +452,12 @@
         }
 
         var grafiquito = new Chart("myChart", config);
+
+        function getPorcentajeAlumnosMedia(){
+            var selec = $("#IndPorcentajeAlumnosMedia").val();
+            $(".CirclePorcentajeAlumnosMedia").hide();
+            $("#CirclePorcentajeAlumnosMedia"+selec).show();
+        }
 
     </script>
 {% endblock %}
