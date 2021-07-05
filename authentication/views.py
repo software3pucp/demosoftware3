@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.urls import reverse
+from django.core import serializers
 
 
 from authentication.models import User
@@ -270,15 +271,14 @@ def send_email_reset_pwd(request,user,message):
         mailServer.sendmail(settings.EMAIL_HOST_USER,
                             email_to,
                             mensaje.as_string())
+        message = "Correo enviado!!!"
     except Exception as e:
         message = str(e)
     return message
 
 def ResetPassword(request):
-    method  = "GET"
     message = None
     if request.POST:
-        method="POST"
         try:
             username = request.POST['email']
             if User.objects.filter(username=username).exists():
@@ -288,9 +288,9 @@ def ResetPassword(request):
                 message = "El usuario no existe"
         except Exception as e:
             message = str(e)
-    context = {
-        'method' : method,
-        'message': message
-    }
-    return render(request,'authentication/resetPassword.html',context)
+
+        message = serializers.serialize('json',[message,])
+        return JsonResponse({'message':message},status=200)
+
+    return render(request,'authentication/resetPassword.html')
 
