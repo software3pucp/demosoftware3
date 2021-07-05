@@ -67,38 +67,24 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Indicador1</td>
-                                <td>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-danger w-25" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Indicador2</td>
-                                <td>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-warning w-50" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Indicador3</td>
-                                <td>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-info w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Indicador4</td>
-                                <td>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success w-100" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
-                                    </div>
-                                </td>
-                            </tr>
+                            {% for indicador, progreso in progreIndicadores %}
+                                <tr>
+                                    <td>{{ indicador.codigo }}</td>
+                                    <td>
+                                        <div class="progress">
+                                            {% if progreso < 50 %}
+                                                <div class="progress-bar bg-danger" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
+                                            {% elif progreso < 75 %}
+                                                <div class="progress-bar bg-warning" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
+                                            {% elif progreso < 100 %}
+                                                <div class="progress-bar bg-info" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
+                                            {% else %}
+                                                <div class="progress-bar bg-success" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -178,32 +164,56 @@
     </div>
 
     <div class="card-deck">
-        <div class="card mb-3 overflow-hidden">
-            <div class="bg-holder bg-card" style="background-image:url(assets/img/illustrations/corner-1.png);"></div>
-            <div class="card-body position-relative">
-                <h5>Nivel1</h5>
-                <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif" data-countup='{"count":500}'></div>
+        {% for nivel,cantidad in cantNiveles %}
+            <div class="card mb-3 overflow-hidden">
+                <div class="card-body position-relative">
+                    <h5>{{ nivel }}</h5>
+                    <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif text-info" data-countup='{"count":{{ cantidad }}}'>0</div>
+                </div>
             </div>
-        </div>
-        <div class="card mb-3 overflow-hidden">
-            <div class="bg-holder bg-card" style="background-image:url(assets/img/illustrations/corner-1.png);"></div>
-            <div class="card-body position-relative">
-                <h5>Nivel2</h5>
-                <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif text-warning" data-countup='{"count":200}'></div>
-            </div>
-        </div>
-        <div class="card mb-3 overflow-hidden">
-            <div class="bg-holder bg-card" style="background-image:url(assets/img/illustrations/corner-1.png);"></div>
-            <div class="card-body position-relative">
-                <h5>Nivel3</h5>
-                <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif text-warning" data-countup='{"count":200}'></div>
-            </div>
-        </div>
-        <div class="card mb-3 overflow-hidden">
-            <div class="bg-holder bg-card" style="background-image:url(assets/img/illustrations/corner-1.png);"></div>
-            <div class="card-body position-relative">
-                <h5>Nivel4</h5>
-                <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif text-info" data-countup='{"count":1000}'></div>
+        {% endfor %}
+    </div>
+
+    <div class="row">
+        <div class="col-4 mb-3">
+            <div class="card h-lg-100 overflow-hidden">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5>Progreso de Responsables</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0 scrollbar perfect-scrollbar" style="height: 400px">
+                    <table class="table table-dashboard mb-0 table-borderless fs--1">
+                        <thead>
+                            <tr class="text-900">
+                                <th>Responsable</th>
+                                <th>Progreso(%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for nombre,progreso in progreResponsables %}
+                            <tr>
+                                <td>{{ nombre }}</td>
+                                <td>
+                                    <div class="progress">
+                                        {% if progreso < 50 %}
+                                            <div class="progress-bar bg-danger" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
+                                        {% elif progreso < 75 %}
+                                            <div class="progress-bar bg-warning" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
+                                        {% elif progreso < 100 %}
+                                            <div class="progress-bar bg-info" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
+                                        {% else %}
+                                            <div class="progress-bar bg-success" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
