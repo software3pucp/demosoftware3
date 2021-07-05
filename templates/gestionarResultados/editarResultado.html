@@ -3,6 +3,25 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
+    <style>
+
+        .modal-side {
+            display: inline-block;
+            padding: 24px 32px;
+            border: 0;
+            text-decoration: none;
+            border-radius: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(30px);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            text-transform: uppercase;
+
+        }
+    </style>
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
@@ -31,7 +50,7 @@
                                 <label for="codigo">Código:</label>
                             </div>
                         </div>
-                        <div class="col-md-10">
+                        <div class="col-md-10 mb-3">
                             <div class="form-group">
                                 <input name="codigo" class="form-control" id="codigo" type="text"
                                        value="{{ resultado.codigo }}">
@@ -120,8 +139,8 @@
          aria-labelledby="settings-modal-label" aria-hidden="true"
          data-options='{"autoShow":false,"autoShowDelay":10,"showOnce":false}'>
 
-        <div class="modal-dialog modal-lg modal-dialog-vertical" style="opacity: 0.90" role="document">
-            <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar" style="background-color: #017ECD;">
+        <div class="modal-dialog modal-dialog-vertical" role="document">
+            <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar modal-side">
                 <div class="modal-body">
                     <div class="row d-flex justify-content-center">
                         <h5 class="text-white">Agregar Indicador</h5>
@@ -144,17 +163,18 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-center">
+
                             <div class="col-6">
                                 <div class="d-flex justify-content-center mt-3">
-                                    <button class="btn btn-secondary" type="button"
-                                            data-dismiss="modal" aria-label="Close">Cancelar
+                                    <button
+                                            type="button" class="btn btn-primary  mb-1" onclick="agregar()">Agregar
                                     </button>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="d-flex justify-content-center mt-3">
-                                    <button
-                                            type="button" class="btn btn-primary" onclick="agregar()">Agregar
+                                    <button class="btn btn-outline-light mb-1" type="button"
+                                            data-dismiss="modal" aria-label="Close">Cancelar
                                     </button>
                                 </div>
                             </div>
