@@ -56,16 +56,31 @@ def resultadosMediciones(request):
     et = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',planMedicion__planMedicion__especialidad_id=5, estado='1').values('indicador').annotate(total=Count('indicador_id')).order_by('indicador_id')
     e = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',planMedicion__planMedicion__especialidad_id=5, calificado='1', estado='1').values('indicador').annotate(total=Count('indicador_id')).order_by('indicador_id')
     for i in indicadores:
-        por = round((e.get(indicador=i.pk)['total']/et.get(indicador=i.pk)['total'])*100)
+        try:
+            por = round((e.get(indicador=i.pk)['total'] / et.get(indicador=i.pk)['total']) * 100)
+        except:
+            por = 0
         progreIndicadores.append((i,por))
 
     for n in niveles:
         cantNiveles.append((n.nombre,cantNiv.get(valorNota=n.valor)['cant']))
 
+    responsables = RespuestaEvaluacion.objects.filter(estado='1').values("horario__responsable","horario__responsable__first_name").annotate(total=Count("horario__responsable__first_name")).order_by()
+    evaluados = RespuestaEvaluacion.objects.filter(estado='1', calificado="1", evidencia="1").values("horario__responsable","horario__responsable__first_name").annotate(total=Count("horario__responsable__first_name")).order_by()
+
+    progreResponsables= []
+    for r in responsables:
+        try:
+            por = round((evaluados.get(horario__responsable=r["horario__responsable"])['total'] / responsables.get(horario__responsable=r["horario__responsable"])['total']) * 100)
+        except:
+            por = 0
+        progreResponsables.append((r["horario__responsable__first_name"], por))
+
     context = {
         'semestres': semestres,
         'progreIndicadores': progreIndicadores,
         'cantNiveles': cantNiveles,
+        'progreResponsables' : progreResponsables,
     }
     return render(request,'gestionarResultadosMediciones/resultadosMediciones.html',context)
 
