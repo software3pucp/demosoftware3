@@ -66,6 +66,23 @@
             color: #f9fafd;
         }
 
+        .modal-side {
+            display: inline-block;
+            padding: 24px 32px;
+            border: 0;
+            text-decoration: none;
+            border-radius: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(30px);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            text-transform: uppercase;
+
+        }
+
     </style>
 
 {% endblock %}
@@ -83,25 +100,22 @@
             </div>
         </div>
     </div>
-    <div class="row d-flex align-items-lg-end">
-        <div class="col-8">
 
+    <div class="d-flex flex-row-reverse bd-highlight">
+        <div class="p-2 bd-highlight">
+            <a class="d-flex flex-row justify-content-end mt-2 mr-3" href="{% url 'listarFacultad' %}">
+                <div class="fas fa-reply mt-1 mr-2"></div>
+                <h5>Volver</h5>
+            </a>
         </div>
-        <div class="col-4 d-flex mx-0 p-0">
-            <div class="row">
-                <a class="btn btn-primary " href="../../gestionarEvaluacion/historial/">Historial Mediciones</a>
-                <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'listarFacultad' %}">
-                    <div class="fas fa-reply mt-1 ml-6 align-right"></div>
-                    <h5>Volver</h5>
-                </a>
-
-
+            <div class="p-2 bd-highlight">
+                <a class="btn btn-primary " href="../../gestionarEvaluacion/historial/">Historial
+                Mediciones</a>
             </div>
-
-        </div>
     </div>
 
-    <hr style="background-color: #0154ae;">
+
+
 
     <div id="Semestres" class="row d-flex  mt-1">
 
@@ -140,13 +154,13 @@
          aria-labelledby="settings-modal-label" aria-hidden="true"
          data-options='{"autoShow":false,"autoShowDelay":10,"showOnce":false}'>
 
-        <div class="modal-dialog modal-dialog-vertical" style="opacity: 0.90" role="document">
-            <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar" style="background-color: #017ECD;">
+        <div class="modal-dialog modal-dialog-vertical" role="document">
+            <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar modal-side">
 
-                <div class="modal-body">
+                <div class="modal-body ">
                     <div class="row d-flex justify-content-center">
-                        <h5 style="color: #f9fafd; font-family:Montserrat">Agregar Semestre</h5>
-                        <hr style="background-color: #f9fafd; width: 70%">
+                        <h5 style="color: #fff; font-family:Montserrat">Agregar Semestre</h5>
+                        <hr style="background-color: #fff; width: 70%">
                     </div>
 
                     <div class="row d-flex justify-content-center m-2">
@@ -180,14 +194,14 @@
                             <br>
 
                             <div class="form-group row m-3 p-2">
+
                                 <div class="col-6">
-                                    <button class="btn btn-secondary" style="font-family: Roboto" type="button"
-                                            data-dismiss="modal" aria-label="Close">Cancelar
+                                    <button id="agr" class="btn btn-primary mr-1 mb-1" onclick="validar()">Agregar
                                     </button>
                                 </div>
                                 <div class="col-6">
-                                    <button id="agr" style="font-family: Roboto ; background-color: #0154ae !important;"
-                                            type="button" class="btn btn-primary" onclick="validar()">Agregar
+                                    <button class="btn btn-outline-light mr-1 mb-1" type="button"
+                                            data-dismiss="modal" aria-label="Close">Cancelar
                                     </button>
                                 </div>
                             </div>

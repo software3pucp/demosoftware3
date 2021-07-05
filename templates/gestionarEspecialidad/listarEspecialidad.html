@@ -16,7 +16,7 @@
         <form action="{% url 'agregarEspecialidad' id_facultad=id_facultad%}" method="post">
             {% csrf_token %}
         <div class="row" style="margin-right: 0.8rem">
-            <div class="col-6">
+            <div class="col-sm-12 col-lg-6 ">
                 <select disabled="true" class="form-control" id="facultadFormControl">
                     {% for facultad in ListaFacultad %}
                         {% if id_facultad|add:"0" == facultad.pk %}
@@ -25,14 +25,14 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="col-3">
+            <div class="col-sm-5 col-lg-3 my-lg-0 my-2">
                 <select id="estado" name="estado" class="form-control" id="ControlSelect2" onchange="">
                     {% for estado in ListaEstados %}
                         <option value={{ estado.0 }}>{{ estado.1 }}</option>
                     {% endfor %}
                 </select>
             </div>
-            <div class="col-3 text-right">
+            <div class="col-sm-5 col-lg-3 text-right">
                 <a class="d-flex flex-row justify-content-end mt-2 mr-3" href="{% url 'listarFacultad' %}">
                     <div class="fas fa-reply mt-1 mr-2"></div>
                     <h5>Volver</h5>
