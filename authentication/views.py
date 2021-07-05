@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.urls import reverse
-
+from django.views.generic import FormView
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 import requests
@@ -12,6 +14,13 @@ from gestionarFacultad.views import listarFacultad
 from django.contrib.auth import authenticate
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import Group
+from authentication.forms import  ResetPasswordForm
+from demosoftware3 import settings
+import  uuid
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from django.template.loader import render_to_string
 
 
 def Show(request):
@@ -211,3 +220,61 @@ def social_sign_in(request):
         noRegistrado = False
         url = reverse('listarFacultad')
         return JsonResponse({"url": url, "noRegistrado":noRegistrado}, safe=False)
+
+class ResetPasswordView(FormView):
+
+    form_class = ResetPasswordForm
+    template_name = 'authentication/resetPassword.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def send_email_reset_pwd(self, user):
+        data = {}
+        try:
+            URL = settings.DOMAIN if not settings.DEBUG else self.request.META['HTTP_HOST']
+            user.token = uuid.uuid4()
+            user.save()
+
+            mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+            mailServer.starttls()
+            mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+            email_to = user.email
+            mensaje = MIMEMultipart()
+            mensaje['From'] = settings.EMAIL_HOST_USER
+            mensaje['To'] = email_to
+            mensaje['Subject'] = 'Reseteo de contraseña'
+
+            content = render_to_string('authentication/send_email.html', {
+                'user': user,
+                'link_resetpwd': 'http://{}/login/change/password/{}/'.format(URL, str(user.token)),
+                'link_home': 'http://{}'.format(URL)
+            })
+            mensaje.attach(MIMEText(content, 'html'))
+
+            mailServer.sendmail(settings.EMAIL_HOST_USER,
+                                email_to,
+                                mensaje.as_string())
+        except Exception as e:
+            data['error'] = str(e)
+        return data
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            form = ResetPasswordForm(request.POST)
+            if form.is_valid():
+                user = form.get_user()
+                data = self.send_email_reset_pwd(user)
+            else:
+                data['error'] = form.errors
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data,safe=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Reseteo de Contraseña'
+        return context

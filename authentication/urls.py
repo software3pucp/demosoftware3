@@ -15,5 +15,6 @@ urlpatterns = [
     path('select_rol/',views.select_rol, name="selectrol"),
     path('validation/',views.validation,name="validation"),
     path('social_sign_in/', views.social_sign_in, name='social_sign_in'),
+    path('reset/password/', views.ResetPasswordView.as_view(), name='reset_password'),
 
 ]
