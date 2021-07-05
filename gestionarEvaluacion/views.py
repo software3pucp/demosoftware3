@@ -153,6 +153,13 @@ def agregarAlumno(request):
 def guardarPuntuacion(request):
     alumno = RespuestaEvaluacion.objects.get(pk=request.POST["idAlumno"])
     descripcion = Rubrica.objects.get(indicador_id=request.POST["indicadorSeleccionado"],nivel_id=request.POST["nivelSeleccionado"]).descripcion
+    if (alumno.valorNota == int(request.POST["nivelSeleccionado"])):
+        alumno.descripcionP = ''
+        alumno.valorNota = None
+        alumno.rubrica_id = None
+        alumno.calificado = 0
+        alumno.save()
+        return JsonResponse({}, status=200)
     alumno.descripcionP = descripcion
     alumno.valorNota = Nivel.objects.get(pk=request.POST["nivelSeleccionado"]).valor
     alumno.rubrica_id = Rubrica.objects.get(indicador_id=request.POST["indicadorSeleccionado"],nivel_id=request.POST["nivelSeleccionado"]).pk
