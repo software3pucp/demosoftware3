@@ -476,6 +476,7 @@
             console.log(pk)
 
             var nombreArchivo = archivo.toString();
+            nombreArchivo = nombreArchivo.slice(8);
             data = '<h5 class="modal-title" id="eliminarEvidenciaLabel">Se eliminará la evidencia ' + nombreArchivo + '</h5>';
             $("#eliminarEvidenciaLabel").html(data);
             $("#eliminarEvidencia").modal('show');
