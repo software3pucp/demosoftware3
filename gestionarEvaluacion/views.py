@@ -241,11 +241,13 @@ def subirEvidencia(request):
     # TODO::: Subir archivo a BBDD del PK del Evaluado
     print(request.POST["evaluadopk"])
     alumno = RespuestaEvaluacion.objects.get(pk=request.POST["evaluadopk"])
-    # TODO::: Agregar una columna para guardar la evidencia
-    alumno.evidencia = 1
-    alumno.archivo = request.FILES["archivo"]
-    alumno.save()
-    # TODO::: Mandar una respuesta adecuada al front (Se hace con un IF y en dos JSONRESPONSE
+    listaA= RespuestaEvaluacion.objects.filter(codigoAlumno=alumno.codigoAlumno,nombreAlumno=alumno.nombreAlumno,estado=1)
+
+    for als in listaA:
+        als.evidencia = 1
+        als.archivo = request.FILES["archivo"]
+        als.save()
+    # TODO::: Agregar una columna para guardar la evidencia una respuesta adecuada al front (Se hace con un IF y en dos JSONRESPONSE
     print(request.FILES["archivo"])
     return JsonResponse({}, status=200)
 

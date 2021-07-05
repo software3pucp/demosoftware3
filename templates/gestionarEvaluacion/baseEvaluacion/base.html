@@ -551,6 +551,7 @@
             var fd = new FormData();
             var files = $('#evidenciaArchivo')[0].files;
             {% comment %}TODO::: Enviar data por ajax{% endcomment %}
+            console.log(files[0]);
             fd.append('archivo', files[0]);
             fd.append('evaluadopk', pkSubirEvidencia);
             fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
