@@ -2,16 +2,19 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.urls import reverse
 
-# Create your views here.
 
-import requests
-from django.views.generic import CreateView
 from authentication.models import User
 from demosoftware3.settings import MEDIA_URL
 from gestionarFacultad.views import listarFacultad
 from django.contrib.auth import authenticate
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import Group
+from demosoftware3 import settings
+import  uuid
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from django.template.loader import render_to_string
 
 
 def Show(request):
@@ -22,6 +25,33 @@ def Show(request):
     }
     return render(request, 'authentication/User_List.html', context)
 
+def EnviarCorreoBienvenida(request, user,p):
+    try:
+        URL = settings.DOMAIN if not settings.DEBUG else request.META['HTTP_HOST']
+        print(type(p))
+        print("==========================================")
+        mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+        mailServer.starttls()
+        mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+        email_to = user.email
+        mensaje = MIMEMultipart()
+        mensaje['From'] = settings.EMAIL_HOST_USER
+        mensaje['To'] = email_to
+        mensaje['Subject'] = 'Bienvenido a Apolo PUCP'
+
+        content = render_to_string('authentication/welcome_email.html', {
+            'user': user,
+            'password': p,
+            'link_home': 'http://{}'.format(URL)
+        })
+        mensaje.attach(MIMEText(content, 'html'))
+
+        mailServer.sendmail(settings.EMAIL_HOST_USER,
+                            email_to,
+                            mensaje.as_string())
+    except:
+        print("error al enviar correo")
 
 def Register(request):
     context = {
@@ -34,6 +64,7 @@ def Register(request):
                                         username=request.POST['card-correo'], code=request.POST['card-codigo'],
                                         email=request.POST['card-correo'], password=request.POST['card-password'],
                                         photo=photo, is_active=True)
+        p=request.POST['card-password']
         roles = request.POST.getlist('choices-multiple-remove-button')
         i = 0
         for val in roles:
@@ -43,6 +74,7 @@ def Register(request):
         if (i==1):
             user.n_Roles = '1'
             user.save()
+        EnviarCorreoBienvenida(request, user, p)
         return redirect(Show)
     return render(request, 'authentication/User_Add.html', context)
 
@@ -211,3 +243,54 @@ def social_sign_in(request):
         noRegistrado = False
         url = reverse('listarFacultad')
         return JsonResponse({"url": url, "noRegistrado":noRegistrado}, safe=False)
+
+def send_email_reset_pwd(request,user,message):
+    try:
+        URL = settings.DOMAIN if not settings.DEBUG else request.META['HTTP_HOST']
+        user.token = uuid.uuid4()
+        user.save()
+
+        mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+        mailServer.starttls()
+        mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+        email_to = user.email
+        mensaje = MIMEMultipart()
+        mensaje['From'] = settings.EMAIL_HOST_USER
+        mensaje['To'] = email_to
+        mensaje['Subject'] = 'Reseteo de contraseña'
+
+        content = render_to_string('authentication/send_email.html', {
+            'user': user,
+            'link_resetpwd': 'http://{}/login/change/password/{}/'.format(URL, str(user.token)),
+            'link_home': 'http://{}'.format(URL)
+        })
+        mensaje.attach(MIMEText(content, 'html'))
+
+        mailServer.sendmail(settings.EMAIL_HOST_USER,
+                            email_to,
+                            mensaje.as_string())
+    except Exception as e:
+        message = str(e)
+    return message
+
+def ResetPassword(request):
+    method  = "GET"
+    message = None
+    if request.POST:
+        method="POST"
+        try:
+            username = request.POST['email']
+            if User.objects.filter(username=username).exists():
+                user = User.objects.get(username=username)
+                message = send_email_reset_pwd(request,user,message)
+            else:
+                message = "El usuario no existe"
+        except Exception as e:
+            message = str(e)
+    context = {
+        'method' : method,
+        'message': message
+    }
+    return render(request,'authentication/resetPassword.html',context)
+

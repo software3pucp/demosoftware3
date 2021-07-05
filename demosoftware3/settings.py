@@ -159,6 +159,16 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+#EMAIL
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'apolo.pucp@gmail.com'
+EMAIL_HOST_PASSWORD = 'apolo.pucpqwerty'
+EMAIL_USE_TLS = True
+DOMAIN = ''
+
+
+
 
 if platform.platform().startswith('Windows'):
     fichero_log = os.path.join(os.getenv('HOMEDRIVE'),
