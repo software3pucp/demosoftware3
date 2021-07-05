@@ -10,172 +10,173 @@
 
     {#AQUI COLOQUEN EL CÓDIGO#}
     <div class="container-fluid content-row">
-     <form action="{% url 'agregarCurso' id_especialidad=id_especialidad %}" method="post">
+        <form action="{% url 'agregarCurso' id_especialidad=id_especialidad %}" method="post">
             {% csrf_token %}
-        <div class="row" style="margin-right: 0.8rem">
-            <div class="col-6">
-                <select disabled="true" class="form-control" id="especFormControl">
-                    {% for especialidad in ListaEspecialidad %}
-                        {% if id_especialidad|add:"0" == especialidad.pk %}
-                            <option value={{ especialidad.pk }} selected>{{ especialidad.nombre }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
+            <div class="row" style="margin-right: 0.8rem">
+                <div class="col-sm-12 col-lg-6 ">
+                    <select disabled="true" class="form-control" id="especFormControl">
+                        {% for especialidad in ListaEspecialidad %}
+                            {% if id_especialidad|add:"0" == especialidad.pk %}
+                                <option value={{ especialidad.pk }} selected>{{ especialidad.nombre }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-5 col-lg-3 my-lg-0 my-2">
+                    <select id="estado" name="estado" class="form-control" id="ControlSelect2" onchange="">
+                        {% for estado in ListaEstados %}
+                            <option value={{ estado.0 }}>{{ estado.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-5 col-lg-3 text-right">
+                    <a class="d-flex flex-row justify-content-end mt-2 mr-3"
+                       href="{% url 'listarFacultadxEsp' id_facultad=id_facultad %}">
+                        <div class="fas fa-reply mt-1 mr-2"></div>
+                        <h5>Volver</h5>
+                    </a>
+                </div>
             </div>
-            <div class="col-3">
-                <select id="estado" name="estado" class="form-control" id="ControlSelect2" onchange="">
-                    {% for estado in ListaEstados %}
-                        <option value={{ estado.0 }}>{{ estado.1 }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-3 text-right">
-                <a class="d-flex flex-row justify-content-end mt-2 mr-3"
-                   href="{% url 'listarFacultadxEsp' id_facultad=id_facultad %}">
-                    <div class="fas fa-reply mt-1 mr-2"></div>
-                    <h5>Volver</h5>
-                </a>
-            </div>
-        </div>
-        <div class="row mt-4">
-            {% for curso in ListaCurso %}
-                <div class="col-sm-12 col-md-6 col-lg-4 CursoActivos">
-                    <div class="card-group">
-                        <div class="product card mr-4 mb-4" style="height: 16rem">
-                            <div class="card-img-top imgbox" style="height: 15rem">
-{#                                <a href="{% url 'listarCursoxHorario' id_curso=curso.pk %}">#}
-{#                                    <img class="" src="{% static 'img/illustrations/3.png' %}">#}
-{#                                </a>#}
+            <div class="row mt-4">
+                {% for curso in ListaCurso %}
+                    <div class="col-sm-12 col-md-6 col-lg-4 CursoActivos">
+                        <div class="card-group">
+                            <div class="product card mr-4 mb-4" style="height: 16rem">
+                                <div class="card-img-top imgbox" style="height: 15rem">
+                                    {#                                <a href="{% url 'listarCursoxHorario' id_curso=curso.pk %}">#}
+                                    {#                                    <img class="" src="{% static 'img/illustrations/3.png' %}">#}
+                                    {#                                </a>#}
                                     <img class="" src="{% static 'img/illustrations/3.png' %}">
-                            </div>
-                            <div class="specifies card-body p-1">
-                                <h5 class="card-title ml-2">{{ curso.nombre }}</h5>
-                                <hr class="divider">
-                                <div class="row">
-                                    <div class="col">
-                                        <a class="float-right mr-3 pt-2 tooltip-inner arrow" data-toggle="tooltip"
-                                           data-placement="top"
-                                           title="Desactivar"
-                                           href="{% url 'eliminarCurso2' id_curso=curso.pk %}"
-                                           role="link">
-                                            <div class="fas fa-power-off iconColorNBorder"></div>
-                                        </a>
-                                        <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip"
-                                           data-placement="top"
-                                           title="Editar"
-                                           href="{% url 'editarCurso'  id_curso=curso.pk %}"
-                                           role="link">
-                                            <div class="fas fa-pen iconColorNBorder"></div>
-                                        </a>
+                                </div>
+                                <div class="specifies card-body p-1">
+                                    <h5 class="card-title ml-2">{{ curso.nombre }}</h5>
+                                    <hr class="divider">
+                                    <div class="row">
+                                        <div class="col">
+                                            <a class="float-right mr-3 pt-2 tooltip-inner arrow" data-toggle="tooltip"
+                                               data-placement="top"
+                                               title="Desactivar"
+                                               href="{% url 'eliminarCurso2' id_curso=curso.pk %}"
+                                               role="link">
+                                                <div class="fas fa-power-off iconColorNBorder"></div>
+                                            </a>
+                                            <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip"
+                                               data-placement="top"
+                                               title="Editar"
+                                               href="{% url 'editarCurso'  id_curso=curso.pk %}"
+                                               role="link">
+                                                <div class="fas fa-pen iconColorNBorder"></div>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-            {% for curso in ListaCursoInactivos %}
-                <div class="col-sm-12 col-md-6 col-lg-4 CursoInactivos">
-                    <div class="card-group">
-                        <div class="product card mr-4 mb-4" style="height: 16rem">
-                            <div class="card-img-top imgbox" style="height: 15rem">
-                                <a href="{% url 'listarCursoxHorario' id_curso=curso.pk %}">
-                                    <img class="" src="{% static 'img/illustrations/3.png' %}">
-                                </a>
-                            </div>
-                            <div class="specifies card-body p-1">
-                                <h5 class="card-title ml-2">{{ curso.nombre }}</h5>
-                                <hr class="divider">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip"
-                                             data-placement="top"
-                                             title="Eliminar">
-                                            <i class="fas fa-trash" data-toggle="modal" data-target="#exampleModal"
-                                               style="color: rgba(1, 126, 205, 1);"></i>
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Eliminar
-                                                                Curso</h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            ¿Desea eliminar {{ curso.nombre }}?
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Cancelar
-                                                            </button>
-                                                            <a type="button" class="btn btn-primary"
-                                                               href="{% url 'eliminarCurso' id_curso=curso.pk %}">
-                                                                Eliminar
-                                                            </a>
+                {% endfor %}
+                {% for curso in ListaCursoInactivos %}
+                    <div class="col-sm-12 col-md-6 col-lg-4 CursoInactivos">
+                        <div class="card-group">
+                            <div class="product card mr-4 mb-4" style="height: 16rem">
+                                <div class="card-img-top imgbox" style="height: 15rem">
+                                    <a href="{% url 'listarCursoxHorario' id_curso=curso.pk %}">
+                                        <img class="" src="{% static 'img/illustrations/3.png' %}">
+                                    </a>
+                                </div>
+                                <div class="specifies card-body p-1">
+                                    <h5 class="card-title ml-2">{{ curso.nombre }}</h5>
+                                    <hr class="divider">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip"
+                                                 data-placement="top"
+                                                 title="Eliminar">
+                                                <i class="fas fa-trash" data-toggle="modal" data-target="#exampleModal"
+                                                   style="color: rgba(1, 126, 205, 1);"></i>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Eliminar
+                                                                    Curso</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ¿Desea eliminar {{ curso.nombre }}?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Cancelar
+                                                                </button>
+                                                                <a type="button" class="btn btn-primary"
+                                                                   href="{% url 'eliminarCurso' id_curso=curso.pk %}">
+                                                                    Eliminar
+                                                                </a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <a class="float-right mr-3 pt-2 tooltip-inner arrow" data-toggle="tooltip"
+                                               data-placement="top"
+                                               title="Activar"
+                                               href="{% url 'eliminarCurso2' id_curso=curso.pk %}"
+                                               role="link">
+                                                <div class="fas fa-power-off iconColorNBorder"></div>
+                                            </a>
+                                            <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip"
+                                               data-placement="top"
+                                               title="Editar"
+                                               href="{% url 'editarCurso'  id_curso=curso.pk %}"
+                                               role="link">
+                                                <div class="fas fa-pen iconColorNBorder"></div>
+                                            </a>
                                         </div>
-                                        <a class="float-right mr-3 pt-2 tooltip-inner arrow" data-toggle="tooltip"
-                                           data-placement="top"
-                                           title="Activar"
-                                           href="{% url 'eliminarCurso2' id_curso=curso.pk %}"
-                                           role="link">
-                                            <div class="fas fa-power-off iconColorNBorder"></div>
-                                        </a>
-                                        <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip"
-                                           data-placement="top"
-                                           title="Editar"
-                                           href="{% url 'editarCurso'  id_curso=curso.pk %}"
-                                           role="link">
-                                            <div class="fas fa-pen iconColorNBorder"></div>
-                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-            <div class="col-sm-12 col-md-6 col-lg-4">
-                <div class="card-group service-work">
-                    <button type="submit" class="recent-work card mr-4 mb-4 align-items-center" style="height: 16rem">
-                        <div class="nav-link icon-indicator" role="button">
-                            <div class="mt-4" style="text-align: center;">
-                                <span class="fas fa-plus fa-9x" style="text-align: center"></span>
+                {% endfor %}
+                <div class="col-sm-12 col-md-6 col-lg-4">
+                    <div class="card-group service-work">
+                        <button type="submit" class="recent-work card mr-4 mb-4 align-items-center"
+                                style="height: 16rem">
+                            <div class="nav-link icon-indicator" role="button">
+                                <div class="mt-4" style="text-align: center;">
+                                    <span class="fas fa-plus fa-9x" style="text-align: center"></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="recent-work-vertical-ruk card-img-overlay">
-                            <div class="service-work-content">
-                                <h5 class="card-title" style="text-align: center; margin-top: 11.4rem">Agregar
-                                    Curso</h5>
+                            <div class="recent-work-vertical-ruk card-img-overlay">
+                                <div class="service-work-content">
+                                    <h5 class="card-title" style="text-align: center; margin-top: 11.4rem">Agregar
+                                        Curso</h5>
+                                </div>
                             </div>
-                        </div>
-                    </button>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-     </form>
+        </form>
     </div>
 {% endblock %}
 
 {% block extrajs %}
     <script>
 
-         $(document).ready(function () {
+        $(document).ready(function () {
             if ("{{estado}}" == 1) {
-                    $('.CursoActivos').show();
-                    $('.CursoInactivos').hide();
-                } else {
-                    $('.CursoActivos').hide();
-                    $('.CursoInactivos').show();
-                }
+                $('.CursoActivos').show();
+                $('.CursoInactivos').hide();
+            } else {
+                $('.CursoActivos').hide();
+                $('.CursoInactivos').show();
+            }
 
             $("#estado").val({{ estado }});
         });
