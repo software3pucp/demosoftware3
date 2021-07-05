@@ -476,6 +476,7 @@
             console.log(pk)
 
             var nombreArchivo = archivo.toString();
+            nombreArchivo = nombreArchivo.slice(8);
             data = '<h5 class="modal-title" id="eliminarEvidenciaLabel">Se eliminará la evidencia ' + nombreArchivo + '</h5>';
             $("#eliminarEvidenciaLabel").html(data);
             $("#eliminarEvidencia").modal('show');
@@ -551,6 +552,7 @@
             var fd = new FormData();
             var files = $('#evidenciaArchivo')[0].files;
             {% comment %}TODO::: Enviar data por ajax{% endcomment %}
+            console.log(files[0]);
             fd.append('archivo', files[0]);
             fd.append('evaluadopk', pkSubirEvidencia);
             fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
