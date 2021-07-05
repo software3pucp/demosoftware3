@@ -255,9 +255,12 @@ def eliminarEvidencia(request):
     print(request.POST)
     pk = request.POST['evidenciapk']
     alumno = RespuestaEvaluacion.objects.get(pk=request.POST["evidenciapk"])
-    alumno.evidencia = 0
-    alumno.archivo = ""
-    alumno.save()
+    listaA = RespuestaEvaluacion.objects.filter(codigoAlumno=alumno.codigoAlumno, nombreAlumno=alumno.nombreAlumno,
+                                                estado=1)
+    for als in listaA:
+        als.evidencia = 0
+        als.archivo = ""
+        als.save()
     return JsonResponse({}, status=200)
 
 
