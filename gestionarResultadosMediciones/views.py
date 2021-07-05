@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.core import serializers
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 # Create your views here.
 from gestionarCurso.models import Curso
 from gestionarEvaluacion.models import RespuestaEvaluacion
@@ -15,9 +16,6 @@ from gestionarSemestre.models import Semestre
 
 @login_required
 def resultadosMediciones(request):
-    print('***************************************************************************************************')
-    print(request.POST)
-    print('***************************************************************************************************')
     if request.POST:
         if request.POST['operacion'] == 'agregar':
             if(request.POST['curso'] == ''):
@@ -48,6 +46,13 @@ def resultadosMediciones(request):
             return JsonResponse({"resp": data}, status=200)
 
     semestres = Semestre.objects.filter();
+    progreIndicador = {}
+    et = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',planMedicion__planMedicion__especialidad_id=5, estado='1').values('indicador_id').annotate(total=Count('indicador_id')).order_by('indicador_id')
+    e = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',planMedicion__planMedicion__especialidad_id=5, calificado='1', estado='1').values('indicador_id').annotate(total=Count('indicador_id')).order_by('indicador_id')
+    print('***************************************************************************************************')
+    print(et)
+    print(e)
+    print('***************************************************************************************************')
     context = {
         'semestres': semestres,
     }
