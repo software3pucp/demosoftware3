@@ -31,6 +31,33 @@ def Show(request):
     }
     return render(request, 'authentication/User_List.html', context)
 
+def EnviarCorreoBienvenida(request, user,p):
+    try:
+        URL = settings.DOMAIN if not settings.DEBUG else request.META['HTTP_HOST']
+        print(type(p))
+        print("==========================================")
+        mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+        mailServer.starttls()
+        mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+        email_to = user.email
+        mensaje = MIMEMultipart()
+        mensaje['From'] = settings.EMAIL_HOST_USER
+        mensaje['To'] = email_to
+        mensaje['Subject'] = 'Bienvenido a Apolo PUCP'
+
+        content = render_to_string('authentication/welcome_email.html', {
+            'user': user,
+            'password': p,
+            'link_home': 'http://{}'.format(URL)
+        })
+        mensaje.attach(MIMEText(content, 'html'))
+
+        mailServer.sendmail(settings.EMAIL_HOST_USER,
+                            email_to,
+                            mensaje.as_string())
+    except:
+        print("error al enviar correo")
 
 def Register(request):
     context = {
@@ -43,6 +70,7 @@ def Register(request):
                                         username=request.POST['card-correo'], code=request.POST['card-codigo'],
                                         email=request.POST['card-correo'], password=request.POST['card-password'],
                                         photo=photo, is_active=True)
+        p=request.POST['card-password']
         roles = request.POST.getlist('choices-multiple-remove-button')
         i = 0
         for val in roles:
@@ -52,6 +80,7 @@ def Register(request):
         if (i==1):
             user.n_Roles = '1'
             user.save()
+        EnviarCorreoBienvenida(request, user, p)
         return redirect(Show)
     return render(request, 'authentication/User_Add.html', context)
 
