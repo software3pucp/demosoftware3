@@ -259,6 +259,7 @@ def eliminarEvidencia(request):
                                                 estado=1)
     for als in listaA:
         als.evidencia = 0
+        os.remove(als.archivo.path)
         als.archivo = ""
         als.save()
     return JsonResponse({}, status=200)
