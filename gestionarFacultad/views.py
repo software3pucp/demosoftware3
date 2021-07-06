@@ -39,7 +39,7 @@ def listarFacultad(request):
             'ListaFacultad':facultades,
             'media_path': media_path,
         }
-        return render(request, 'gestionarFacultad/listarFacultad.html', context)
+        return render(request, 'gestionarFacultad/listarFacultadCoordinador.html', context)
 
 
     media_path = MEDIA_URL
