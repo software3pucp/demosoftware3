@@ -48,7 +48,7 @@
                         "lengthMenu": "Mostrar _MENU_ Entradas",
                         "loadingRecords": "Cargando...",
                         "processing": "Procesando...",
-                        "search": "<span class=\"fas fa-search\"></span>",
+                        "search": " <span class=\"fas fa-search\"></span>",
                         "searchPlaceholder":"Criterio de búsqueda",
                         "zeroRecords": "Sin resultados encontrados",
                         "paginate": {
@@ -64,7 +64,7 @@
                         <th class="align-middle sort">Nombre</th>
                         <th class="align-middle sort pr-7">Código</th>
                         <th class="align-middle sort" style="min-width: 12.5rem;">Correo</th>
-                        <th class="align-middle no-sort">Acción</th>
+                        <th class="align-middle text-center no-sort">Acciones</th>
                     </tr>
                     </thead>
                     <tbody id="orders">
@@ -93,10 +93,14 @@
                             <td class="align-middle">{{ user.code }}</td>
                             <td class="align-middle">{{ user.email }}</td>
                             <td class="align-middle">
-                                <a class="btn btn-falcon-default btn-sm mr-2  text-body" type="button"
+                                <a class="btn btn-falcon-default btn-sm mr-2  text-body align-left" type="button"
                                    href="{% url 'deleteUser' pk=user.pk %}"><span
-                                        class="fas fa-ban mr-1"></span>Eliminar</a>
+                                        class="fas fa-trash mr-1"></span></a>
+                                <a class="btn btn-falcon-default btn-sm mr-2  text-body align-right" type="button"
+                                   href="{% url 'activateUser' pk=user.pk %}"><span
+                                        class="fas fa-power-off mr-1"></span><Activado></Activado></a>
                             </td>
+
                         </tr>
                     {% endfor %}
                     </tbody>

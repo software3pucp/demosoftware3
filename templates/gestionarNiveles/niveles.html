@@ -22,60 +22,59 @@
 
     <div class="card">
         <div class="card-body">
-            <div class="d-flex justify-content-center">
-                <div class="col-12">
-
-                    <div class="col-12 mb-3">
-                        <div class="d-flex flex-row align-items-center">
-                            <div class="mr-2">
-                                <label for="cboFacultad">Facultad:</label>
-                                <select class="custom-select custom-select-sm mb-3" id="cboFacultad" name="cboFacultad"
-                                        onchange="filtrarEspecialidades()">
-                                    {% for facultad in facultades %}
-                                        <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-
-                            <div>
-                                <label for="cboEspecialidad">Especialidad:</label>
-                                <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
-                                        name="cboEspecialidad"
-                                        onchange="listarNiveles()">
-                                </select>
-                            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-6 pl-4 pr-4">
+                        <div class="row">
+                            <label for="cboFacultad">Facultad:</label>
+                        </div>
+                        <div class="row">
+                            <select class="custom-select custom-select-sm mb-3" id="cboFacultad" name="cboFacultad"
+                                    onchange="filtrarEspecialidades()">
+                                {% for facultad in facultades %}
+                                    <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
-
-                    <div id="tituloEspecialidadNiveles"></div>
-
+                    <div class="col-sm-12 col-lg-6 pl-4 pr-4">
+                        <div class="row">
+                            <label for="cboEspecialidad">Especialidad:</label>
+                        </div>
+                        <div class="row">
+                            <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
+                                    name="cboEspecialidad"
+                                    onchange="listarNiveles()">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-lg-10 px-0 pl-3" id="tituloEspecialidadNiveles"></div>
                     <hr style="background-color: #0154ae;">
-
-                    <div class="btn btn-falcon-primary mb-2" href="#agregarNivel" data-toggle="modal"
-                         role="button">
-                        <span class="fa fa-plus"></span>
-                    </div>
-                    <div class="dashboard-data-table">
-                        <table class="table table-sm fs--1 border-bottom"
-                               data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
-                            <thead class="bg-200 text-900">
-                            <tr>
-                                <th class="sort pr-1 align-middle">N°</th>
-                                <th class="sort pr-1 align-middle">Nombre</th>
-                                <th class="sort pr-1 align-middle">Valor</th>
-                                <th class="sort pr-1 align-middle text-center">Acción</th>
-                            </tr>
-                            </thead>
-                            <tbody id="tablaNiveles">
-                            </tbody>
-                        </table>
-                    </div>
+                </div>
+                <div class="btn btn-falcon-primary mb-2" href="#agregarNivel" data-toggle="modal"
+                     role="button">
+                    <span class="fa fa-plus"></span>
+                </div>
+                <div class="dashboard-data-table">
+                    <table class="table table-sm fs--1 border-bottom"
+                           data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
+                        <thead class="bg-200 text-900">
+                        <tr>
+                            <th class="sort pr-1 align-middle">N°</th>
+                            <th class="sort pr-1 align-middle">Nombre</th>
+                            <th class="sort pr-1 align-middle">Valor</th>
+                            <th class="sort pr-1 align-middle text-right pr-8">Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tablaNiveles">
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-
-
 
     <!-- Modal Agregar Nivel -->
     <div class="modal fade" id="agregarNivel" tabindex="-1" role="dialog" aria-labelledby="agregarNivelLabel"
@@ -105,6 +104,9 @@
                     <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
                     <button id="btnAgregarNivel" class="btn btn-primary btn-sm" type="button"
                             onclick="validarNivel()">Agregar
+                    </button>
+                    <button id="btnAgregarNivelYCerrar" class="btn btn-primary btn-sm" type="button"
+                            onclick="validarNivel()">Agregar y cerrar
                     </button>
                 </div>
             </div>
@@ -258,15 +260,11 @@
                             '        <tr class="btn-reveal-trigger">' +
                             '            <th class="align-middle">  ' + j + '  </th>' +
                             '            <th class="align-middle">' + instance[i]["fields"].nombre + '</th>' +
-                            '            <td class="align-middle">' + instance[i]["fields"].valor + '</td>' +
-                            '            <td class="align-middle text-right fs-0">' +
-                            '                    <div class="row">' +
-                            '                        <div class="col">' +
-                            '                         <button class="badge badge rounded-capsule badge-soft-info" onclick="nivelesEditar(\'' + instance[i]["fields"].nombre + '\',\'' + instance[i]["fields"].valor + '\',' + instance[i]["pk"] + ')">Editar</button>' +
-                            '                        </div>' +
-                            '                        <div class="col">' +
-                            '                        <button class="badge badge rounded-capsule badge-soft-danger" onclick="nivelesEliminar(\'' + instance[i]["fields"].nombre + '\',' + instance[i]["pk"] + ')">Eliminar</button>' +
-                            '                        </div>' +
+                            '            <td class="align-middle" >' + instance[i]["fields"].valor + '</td>' +
+                            '            <td class="">' +
+                            '                    <div class="row float-right mr-4">' +
+                            '                        <button class="btn btn-falcon-primary mr-1 mb-1" type="button" onclick="nivelesEditar(\'' + instance[i]["fields"].nombre + '\',\'' + instance[i]["fields"].valor + '\',' + instance[i]["pk"] + ')">Editar</button>' +
+                            '                        <button class="btn btn-falcon-primary mr-1 mb-1" type="button" onclick="nivelesEliminar(\'' + instance[i]["fields"].nombre + '\',' + instance[i]["pk"] + ')">Eliminar</button>' +
                             '                    </div>' +
                             '            </td>' +
                             '        </tr>'
@@ -307,22 +305,7 @@
             });
         }
 
-
-        $("#btnAgregarNivel").on('click', function () {
-            console.log('dentro de registrar nivel')
-            validarNivel();
-            if ($("#formAgregarNivel").valid()) {
-                crearNivel();
-                $("#nombreNivel").val('');
-                $("#valorNivel").val('');
-
-            }
-        });
-
-
         function validarNivel() {
-            console.log('dentro de validar nivel')
-
             $("form[name='formAgregarNivel']").validate({
                 rules: {
                     nombreNivel: {
@@ -350,6 +333,28 @@
             if ($("#formEditarNivel").valid()) {
                 editarNivel(pkEditarN);
                 $("#editarNivel").modal('hide');
+            }
+        });
+
+        $("#btnAgregarNivel").on('click', function () {
+            console.log('dentro de registrar nivel')
+            validarNivel();
+            if ($("#formAgregarNivel").valid()) {
+                crearNivel();
+                $("#nombreNivel").val('');
+                $("#valorNivel").val('');
+
+            }
+        });
+
+        $("#btnAgregarNivelYCerrar").on('click', function () {
+            console.log('dentro de registrar nivel')
+            validarNivel();
+            if ($("#formAgregarNivel").valid()) {
+                crearNivel();
+                $("#nombreNivel").val('');
+                $("#valorNivel").val('');
+                $("#agregarNivel").modal('hide');
             }
         });
 
@@ -410,6 +415,8 @@
                 }
             });
         }
+
+
 
 
     </script>

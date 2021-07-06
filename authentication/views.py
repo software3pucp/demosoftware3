@@ -21,7 +21,7 @@ from django.template.loader import render_to_string
 def Show(request):
     media_path = MEDIA_URL
     context = {
-        'users': User.objects.all(),
+        'users': User.objects.filter().exclude(estado='0'),
         'media_path': media_path
     }
     return render(request, 'authentication/User_List.html', context)
@@ -64,14 +64,14 @@ def Register(request):
         user = User.objects.create_user(first_name=request.POST['card-name'],
                                         username=request.POST['card-correo'], code=request.POST['card-codigo'],
                                         email=request.POST['card-correo'], password=request.POST['card-password'],
-                                        photo=photo, is_active=True)
+                                        photo=photo, is_active=True,estado=1)
         p=request.POST['card-password']
         roles = request.POST.getlist('choices-multiple-remove-button')
         i = 0
         for val in roles:
             i += 1
             group = Group.objects.get(id=val)
-            group.user_set.add(user)
+            group.user__set.add(user)
         if (i==1):
             user.n_Roles = '1'
             user.save()
@@ -148,7 +148,18 @@ def Edit(request, pk):
 
 def Delete(request, pk):
     user = User.objects.get(pk=pk)
-    user.delete()
+    user.estado = 0
+    return redirect(Show)
+
+def Activate(request, pk):
+    user = User.objects.get(pk=pk)
+    if user.estado == 1:
+        user.estado = 2
+    else:
+        user.estado = 1
+    return redirect(Show)
+
+
     return redirect(Show)
 
 

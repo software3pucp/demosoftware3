@@ -8,6 +8,7 @@ from gestionarFacultad.models import Facultad
 from django.shortcuts import render, redirect
 from authentication.models import User
 
+
 @login_required
 # Create your views here.
 def listarFacultad(request):
@@ -20,6 +21,7 @@ def listarFacultad(request):
         'estado': '1'
     }
     return render(request, 'gestionarFacultad/listarFacultad.html', context)
+
 
 @login_required
 def agregarFacultad(request):
@@ -34,7 +36,7 @@ def agregarFacultad(request):
         else:
             context = {
                 'ListaUsuarios': User.objects.all(),
-                'estado':request.POST['estado'],
+                'estado': request.POST['estado'],
             }
             return render(request, 'gestionarFacultad/agregarFacultad.html', context)
     context = {
@@ -42,12 +44,14 @@ def agregarFacultad(request):
     }
     return render(request, 'gestionarFacultad/agregarFacultad.html', context)
 
+
 @login_required
 def listarFacultadxEsp(request, id_facultad):
     media_path = MEDIA_URL
     context = {
         'ListaEspecialidad': Especialidad.objects.filter(facultad_id=id_facultad, estado=Facultad.ESTADOS[1][0]),
-        'ListaEspecialidadInactivos': Especialidad.objects.filter(facultad_id=id_facultad, estado=Facultad.ESTADOS[2][0]),
+        'ListaEspecialidadInactivos': Especialidad.objects.filter(facultad_id=id_facultad,
+                                                                  estado=Facultad.ESTADOS[2][0]),
         'ListaFacultad': Facultad.objects.all(),
         'id_facultad': id_facultad,
         'media_path': media_path,
@@ -55,6 +59,7 @@ def listarFacultadxEsp(request, id_facultad):
         'estado': '1'
     }
     return render(request, 'gestionarEspecialidad/listarEspecialidad.html', context)
+
 
 @login_required
 def editarFacultad(request, id_facultad):
@@ -80,6 +85,7 @@ def editarFacultad(request, id_facultad):
     }
     return render(request, 'gestionarFacultad/editarFacultad.html', context)
 
+
 @login_required
 def eliminarFacultad(request, id_facultad):
     media_path = MEDIA_URL
@@ -94,6 +100,7 @@ def eliminarFacultad(request, id_facultad):
     facultad.delete()
     print("Correcto eliminar Facultad!")
     return render(request, 'gestionarFacultad/listarFacultad.html', context)
+
 
 @login_required
 def eliminarFacultad2(request, id_facultad):
