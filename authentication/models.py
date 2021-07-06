@@ -5,6 +5,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
 from gestionarFacultad.models import Facultad
 from gestionarEspecialidad.models import Especialidad
+from django.utils.translation import gettext_lazy as _
 # Create your models here.
 def remove_accents(input_str):
     nfkd_form = unicodedata.normalize('NFKD', input_str)
@@ -33,14 +34,26 @@ class User(AbstractUser):
     rol_actual = models.CharField(max_length=50, default=None, null=True, blank=True)
     n_Roles = models.CharField(max_length=2, default=None, null=True, blank=True)
     token = models.UUIDField(primary_key=False, editable=False, null=True, blank=True)
+    grupos = models.ManyToManyField(
+        Group,
+        verbose_name=_('groups'),
+        blank=True,
+        help_text=_(
+            'The groups this user belongs to. A user will get all permissions '
+            'granted to each of their groups.'
+        ),
+        related_name="user__set",
+        related_query_name="user",
+        through="UserGroups"
+    )
 
-class UserxGroups(models.Model):
-    user = models.ForeignKey(User,on_delete= models.DO_NOTHING)
-    group = models.ForeignKey(Group,on_delete= models.DO_NOTHING)
-    facultad = models.ForeignKey(Facultad,on_delete= models.DO_NOTHING,null=True)
-    especialidad = models.ForeignKey(Especialidad,on_delete= models.DO_NOTHING,null=True)
 
 
+class UserGroups(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    facultad = models.ForeignKey(Facultad, on_delete=models.DO_NOTHING, null=True)
+    especialidad = models.ForeignKey(Especialidad, on_delete=models.DO_NOTHING, null=True)
 
 
 

@@ -58,7 +58,7 @@
       "code": "00000000",
       "photo": "",
       "n_Roles": "1",
-      "groups": [
+      "grupos": [
         1
       ],
       "user_permissions": []
@@ -81,7 +81,7 @@
       "code": "00000000",
       "photo": "",
       "n_Roles": "1",
-      "groups": [
+      "grupos": [
         2
       ],
       "user_permissions": []
@@ -104,7 +104,7 @@
       "code": "00000000",
       "photo": "",
       "n_Roles": "1",
-      "groups": [
+      "grupos": [
         3
       ],
       "user_permissions": []
@@ -127,7 +127,7 @@
       "code": "00000000",
       "photo": "",
       "n_Roles": "1",
-      "groups": [
+      "grupos": [
         5
       ],
       "user_permissions": []
@@ -150,7 +150,7 @@
       "code": "00000000",
       "photo": "",
       "n_Roles": "1",
-      "groups": [
+      "grupos": [
         4
       ],
       "user_permissions": []
@@ -173,7 +173,7 @@
       "code": "00000000",
       "photo": "",
       "n_Roles": "1",
-      "groups": [
+      "grupos": [
         6
       ],
       "user_permissions": []

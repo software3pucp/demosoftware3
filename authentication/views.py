@@ -71,7 +71,7 @@ def Register(request):
         for val in roles:
             i += 1
             group = Group.objects.get(id=val)
-            group.user_set.add(user)
+            group.user__set.add(user)
         if (i==1):
             user.n_Roles = '1'
             user.save()
