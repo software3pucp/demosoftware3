@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def listarSemestre(request):
-    semestreLista = reversed(Semestre.objects.filter())
+    semestreLista = Semestre.objects.filter().order_by("nombreCodigo")
 
     context = {
         'ListaSemestre': semestreLista

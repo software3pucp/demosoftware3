@@ -101,40 +101,33 @@
         </div>
     </div>
 
-    <div class="d-flex flex-row-reverse bd-highlight">
+    {% comment %} <div class="d-flex flex-row-reverse bd-highlight">
         <div class="p-2 bd-highlight">
             <a class="d-flex flex-row justify-content-end mt-2 mr-3" href="{% url 'listarFacultad' %}">
                 <div class="fas fa-reply mt-1 mr-2"></div>
                 <h5>Volver</h5>
             </a>
         </div>
-            <div class="p-2 bd-highlight">
-                <a class="btn btn-primary " href="../../gestionarEvaluacion/historial/">Historial
-                Mediciones</a>
-            </div>
-    </div>
+    </div>{% endcomment %}
+     <div id="Semestres" class="row d-flex  mt-1 p-2">
 
-
-
-
-    <div id="Semestres" class="row d-flex  mt-1">
-
-        {% if request.user.rol_actual == 'Auditor' %}
-            <div id="Anadir" class=" col-xl-3 col-md-4 col-sm-6 p-2">
-                <div class="card nav-link icon-indicator" href="#agregarSemestreNuevo" data-toggle="modal"
-                     role="button">
-                    <div class="card-body d-flex justify-content-center p-0">
-                        <div class="plus alt">
+            {% if request.user.rol_actual == 'Administrador' %}
+                <div id="Anadir" class=" col-xl-3 col-md-4 col-sm-6 p-2">
+                    <div class="card nav-link icon-indicator p-4" href="#agregarSemestreNuevo" data-toggle="modal"
+                         role="button">
+                        <div class="card-body d-flex justify-content-center  p-0">
+                            <div class="plus alt">
+                            </div>
                         </div>
-
                     </div>
                 </div>
-            </div>
-        {% endif %}
+            {% endif %}
 
-        {% for semestre in ListaSemestre %}
-            <div class=" col-xl-3 col-md-4 col-sm-6 p-2">
-                <a href="../enviarCursoHorario/{{ semestre.pk }}">
+            {% for semestre in ListaSemestre %}
+                <div class=" col-xl-3 col-md-4 col-sm-6 p-2">
+                    {% if request.user.rol_actual != 'Administrador' %}
+                        <a href="../enviarCursoHorario/{{ semestre.pk }}">
+                    {% endif %}
                     <div class="card ">
                         <div class="card-body">
                             <p class="card-title">{{ semestre.nombreCodigo }}</p>
@@ -142,11 +135,11 @@
                             <p class="card-text">al {{ semestre.fin }}</p>
                         </div>
                     </div>
-                </a>
-            </div>
+                    </a>
+                </div>
+            {% endfor %}
 
-        {% endfor %}
-    </div>
+        </div>
 
 
     <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
@@ -165,14 +158,11 @@
 
                     <div class="row d-flex justify-content-center m-2">
                         <form name="formAgregar" id="formAgregar">
-
                             <div class="form-group row">
                                 <label name="boxSemestre" for="boxSemestre"
                                        class="col-sm-4 col-form-label">Semestre</label>
-
                                 <input type="text" class="form-control col-sm-8" id="boxSemestre" name="boxSemestre"
                                        placeholder="20XX-X" maxlength="6">
-
                             </div>
 
                             <br>
@@ -239,6 +229,7 @@
         </div>
     </div>
 
+
     <div class="modal fade" id="modalFecha" tabindex="-1" role="dialog" aria-labelledby="modalFechaLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -252,6 +243,31 @@
                     <form id="formErrorFecha" name="formErrorFecha">
                         <div class="form-group">
                             ¡La fecha de fin debe ser mayor que la fecha inicio!
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnModalErrorFecha" class="btn btn-primary btn-sm" type="button" data-dismiss="modal">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalNombreCodigo" tabindex="-1" role="dialog" aria-labelledby="modalNombreCodigoLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalFechaLabel">Aviso</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formErrorNombreCodigo" name="formErrorNombreCodigo">
+                        <div class="form-group">
+                            ¡Ingrese un semestre válido!
                         </div>
                     </form>
                 </div>
@@ -298,7 +314,6 @@
 
                     dateFin: {
                         required: true,
-
                     },
 
                 },
@@ -318,16 +333,35 @@
         };
         $("#agr").on('click', function () {
             if ($("#formAgregar").valid()) {
-                if (ValidarFechas()) {
+                var codigoCorrecto = ValidarNombreCodigo();
+                var fechasCorrectas = ValidarFechas();
+
+                console.log(codigoCorrecto)
+                console.log(fechasCorrectas)
+
+                if (ValidarNombreCodigo() && ValidarFechas()) {
+                    console.log("bandera 11111111")
                     agregar();
-                } else {
+                } else if(!ValidarFechas()){
+                    console.log("bandera 22222222")
                     $("#modalFecha").modal('show');
+                } else if(!ValidarNombreCodigo()){
+                    console.log("bandera 33333333")
+                    $("#modalNombreCodigo").modal('show');
                 }
             }
         });
     </script>
 
     <script>
+
+        function ValidarNombreCodigo(){
+            var regex =/20[0-9][0-9]-[1-2]/;
+            resultado = regex.test( $("#boxSemestre").val() )
+            console.log(resultado)
+            return resultado
+        }
+
         function ValidarFechas() {
             var fechainicial = document.getElementById("dateInicio").value;
             var fechafinal = document.getElementById("dateFin").value;
@@ -345,6 +379,7 @@
 
     <script>
         function agregar() {
+            console.log("dentro de la función agregar")
             $.ajax({
                 type: 'POST',
                 url: "{% url 'agregarSemestre'%}",
@@ -378,6 +413,7 @@
                 },
                 error: function (response) {
                     // alert the error if any error occured
+                    console.log("Ha ocurrido un error")
                     $("#modalDuplicado").modal('show');
                     alert(response["responseJSON"]["error"]);
                 }
