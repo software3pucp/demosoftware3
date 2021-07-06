@@ -298,11 +298,6 @@
                 "dateFormat": "d/m",
             });
         });
-        ;
-    </script>
-
-    <script>
-        function validar() {
             $("form[name='formAgregar']").validate({
                 rules: {
                     boxSemestre: {
@@ -329,8 +324,10 @@
                     }
                 }
             });
+    </script>
 
-        };
+    <script>
+
         $("#agr").on('click', function () {
             if ($("#formAgregar").valid()) {
                 var codigoCorrecto = ValidarNombreCodigo();
@@ -350,6 +347,7 @@
                     $("#modalNombreCodigo").modal('show');
                 }
             }
+            return false;
         });
     </script>
 
@@ -409,6 +407,7 @@
                     $("#dateFin").val("");
                     $("#boxSemestre").val("");
                     $(data).insertAfter($("#Anadir"));
+                    location.reload()
 
                 },
                 error: function (response) {
