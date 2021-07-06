@@ -109,37 +109,42 @@
             </a>
         </div>
     </div>{% endcomment %}
-     <div id="Semestres" class="row d-flex  mt-1 p-2">
+    <div id="Semestres" class="row d-flex  mt-1 p-2">
 
-            {% if request.user.rol_actual == 'Administrador' %}
-                <div id="Anadir" class=" col-xl-3 col-md-4 col-sm-6 p-2">
-                    <div class="card nav-link icon-indicator p-4" href="#agregarSemestreNuevo" data-toggle="modal"
-                         role="button">
-                        <div class="card-body d-flex justify-content-center  p-0">
-                            <div class="plus alt">
-                            </div>
+        {% if request.user.rol_actual == 'Administrador' %}
+            <div id="Anadir" class=" col-xl-3 col-md-4 col-sm-6 p-2">
+                <div class="card nav-link icon-indicator p-4" href="#agregarSemestreNuevo" data-toggle="modal"
+                     role="button">
+                    <div class="card-body d-flex justify-content-center  p-0">
+                        <div class="plus alt">
                         </div>
                     </div>
                 </div>
-            {% endif %}
+            </div>
+        {% endif %}
 
-            {% for semestre in ListaSemestre %}
-                <div class=" col-xl-3 col-md-4 col-sm-6 p-2">
-                    {% if request.user.rol_actual != 'Administrador' %}
-                        <a href="../enviarCursoHorario/{{ semestre.pk }}">
-                    {% endif %}
-                    <div class="card ">
-                        <div class="card-body">
-                            <p class="card-title">{{ semestre.nombreCodigo }}</p>
-                            <p class="card-text">Del {{ semestre.inicio }}</p>
-                            <p class="card-text">al {{ semestre.fin }}</p>
-                        </div>
+        {% for semestre in ListaSemestre %}
+            <div class=" col-xl-3 col-md-4 col-sm-6 p-2">
+                {% if request.user.rol_actual != 'Administrador' %}
+                    <a href="../enviarCursoHorario/{{ semestre.pk }}">
+                {% endif %}
+                <div class="card ">
+                    <div class="card-body">
+                        <p class="card-title">{{ semestre.nombreCodigo }}</p>
+                        <p class="card-text">Del {{ semestre.inicio }}</p>
+                        <p class="card-text">al {{ semestre.fin }}</p>
                     </div>
-                    </a>
+                    <div class="d-flex justify-content-center">
+                        <a class="btn btn-falcon-default btn-sm mr-2  text-body align-left" type="button"
+                           onclick="SemestresEliminar('{{ semestre.nombreCodigo }}', {{ semestre.pk }})"><span
+                                class="fas fa-trash mr-1"></span></a>
+                    </div>
                 </div>
-            {% endfor %}
+                </a>
+            </div>
+        {% endfor %}
 
-        </div>
+    </div>
 
 
     <div class="modal fade modal-fixed-right modal-theme overflow-hidden"
@@ -229,7 +234,6 @@
         </div>
     </div>
 
-
     <div class="modal fade" id="modalFecha" tabindex="-1" role="dialog" aria-labelledby="modalFechaLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -255,7 +259,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalNombreCodigo" tabindex="-1" role="dialog" aria-labelledby="modalNombreCodigoLabel"
+    <div class="modal fade" id="modalNombreCodigo" tabindex="-1" role="dialog" aria-labelledby="modalErrorLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -280,6 +284,50 @@
         </div>
     </div>
 
+    <div class="modal fade" id="errorEliminar" tabindex="-1" role="dialog" aria-labelledby="modalErrorLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header badge-danger">
+                    <h5 class="modal-title" id="modalErrorLabel">!Error!</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body badge-soft-danger">
+                    <form id="formErrorEliminar" name="formErrorEliminar">
+                        <div class="form-group">
+                            No se puede eliminar debido a que tiene planes de medición asociados.
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnModalErrorFecha" class="btn btn-primary btn-sm" type="button" data-dismiss="modal">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Eliminar Resultado -->
+    <div class="modal fade" id="eliminarSemestre" tabindex="-1" role="dialog" aria-labelledby="eliminarSemestreLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarSemestreLabel"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                    <button id="btnEliminarSemestre" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
 
 {#Aquí coloco el JS particular de la web#}
@@ -298,35 +346,36 @@
                 "dateFormat": "d/m",
             });
         });
-            $("form[name='formAgregar']").validate({
-                rules: {
-                    boxSemestre: {
-                        required: true,
-                    },
-                    dateInicio: {
-                        required: true,
-                    },
-
-                    dateFin: {
-                        required: true,
-                    },
-
+        $("form[name='formAgregar']").validate({
+            rules: {
+                boxSemestre: {
+                    required: true,
                 },
-                messages: {
-                    boxSemestre: {
-                        required: "Por favor ingrese el semestre"
-                    },
-                    dateInicio: {
-                        required: "Por favor ingrese la fecha de inicio"
-                    },
-                    dateFin: {
-                        required: "Por favor ingrese la fecha de fin"
-                    }
+                dateInicio: {
+                    required: true,
+                },
+
+                dateFin: {
+                    required: true,
+                },
+
+            },
+            messages: {
+                boxSemestre: {
+                    required: "Por favor ingrese el semestre"
+                },
+                dateInicio: {
+                    required: "Por favor ingrese la fecha de inicio"
+                },
+                dateFin: {
+                    required: "Por favor ingrese la fecha de fin"
                 }
-            });
+            }
+        });
     </script>
 
     <script>
+        var pkEliminar;
 
         $("#agr").on('click', function () {
             if ($("#formAgregar").valid()) {
@@ -335,21 +384,58 @@
 
                 if (ValidarNombreCodigo() && ValidarFechas()) {
                     agregar();
-                } else if(!ValidarFechas()){
+                } else if (!ValidarFechas()) {
                     $("#modalFecha").modal('show');
-                } else if(!ValidarNombreCodigo()){
+                } else if (!ValidarNombreCodigo()) {
                     $("#modalNombreCodigo").modal('show');
                 }
             }
             return false;
         });
+
+        function SemestresEliminar(codigoSemestre, pk) {
+            console.log(codigoSemestre)
+            console.log(pk)
+            data = '<h5 class="modal-title" id="eliminarResultadoLabel">¿Deseas eliminar el semestre ' + codigoSemestre + '?</h5>';
+            $("#eliminarSemestreLabel").html(data);
+            $("#eliminarSemestre").modal('show');
+            pkEliminar = pk;
+        };
+
+        $("#btnEliminarSemestre").on('click', function () {
+            eliminarSemestre(pkEliminar);
+            $("#eliminarSemestre").modal('hide');
+        });
+
+        function eliminarSemestre(semestrepk) {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'eliminarSemestre' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    semestrepk: semestrepk,
+                },
+                success: function (response) {
+                    if(response["tieneMediciones"]){
+                         $("#errorEliminar").modal('show');
+                    }else{
+                        location.reload();
+                    }
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+
     </script>
 
     <script>
 
-        function ValidarNombreCodigo(){
-            var regex =/20[0-9][0-9]-[1-2]/;
-            resultado = regex.test( $("#boxSemestre").val() )
+        function ValidarNombreCodigo() {
+            var regex = /20[0-9][0-9]-[1-2]/;
+            resultado = regex.test($("#boxSemestre").val())
             console.log(resultado)
             return resultado
         }

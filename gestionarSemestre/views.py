@@ -125,3 +125,19 @@ def enviarCursoHorarioDocente(request, semestrepk):
         'listaCursos': listaCursos
     }
     return render(request, 'gestionarSemestre/semestre/semestreDetalleDocente.html', context)
+
+
+def eliminarSemestre(request):
+    semestrepk = int(request.POST['semestrepk'])
+    semestre = Semestre.objects.get(pk=semestrepk)
+    # evaluamos si se ha programado un plan de medicion en el semestre
+    semestresxplan = PlanMedicion.semestre.through.objects.all()
+    tieneMediciones = False
+    for item in semestresxplan:
+        itempk =item.semestre.pk
+        if (itempk == semestrepk):
+            tieneMediciones = True
+            break
+    if(not tieneMediciones): # se elimina si no hay mediciones en el semestre
+        semestre.delete()
+    return JsonResponse({"tieneMediciones":tieneMediciones}, status=200)
