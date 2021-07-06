@@ -65,7 +65,7 @@
                             <th class="sort pr-1 align-middle">N°</th>
                             <th class="sort pr-1 align-middle">Nombre</th>
                             <th class="sort pr-1 align-middle">Valor</th>
-                            <th class="sort pr-1 align-middle text-center">Acción</th>
+                            <th class="sort pr-1 align-middle text-right pr-8">Acción</th>
                         </tr>
                         </thead>
                         <tbody id="tablaNiveles">
@@ -260,15 +260,11 @@
                             '        <tr class="btn-reveal-trigger">' +
                             '            <th class="align-middle">  ' + j + '  </th>' +
                             '            <th class="align-middle">' + instance[i]["fields"].nombre + '</th>' +
-                            '            <td class="align-middle">' + instance[i]["fields"].valor + '</td>' +
-                            '            <td class="align-middle text-right fs-0">' +
-                            '                    <div class="row">' +
-                            '                        <div class="col ml-7">' +
-                            '                         <button class="badge badge rounded-capsule badge-soft-info" onclick="nivelesEditar(\'' + instance[i]["fields"].nombre + '\',\'' + instance[i]["fields"].valor + '\',' + instance[i]["pk"] + ')">Editar</button>' +
-                            '                        </div>' +
-                            '                        <div class="col">' +
-                            '                        <button class="badge badge rounded-capsule badge-soft-danger" onclick="nivelesEliminar(\'' + instance[i]["fields"].nombre + '\',' + instance[i]["pk"] + ')">Eliminar</button>' +
-                            '                        </div>' +
+                            '            <td class="align-middle" >' + instance[i]["fields"].valor + '</td>' +
+                            '            <td class="">' +
+                            '                    <div class="row float-right mr-4">' +
+                            '                        <button class="btn btn-falcon-primary mr-1 mb-1" type="button" onclick="nivelesEditar(\'' + instance[i]["fields"].nombre + '\',\'' + instance[i]["fields"].valor + '\',' + instance[i]["pk"] + ')">Editar</button>' +
+                            '                        <button class="btn btn-falcon-primary mr-1 mb-1" type="button" onclick="nivelesEliminar(\'' + instance[i]["fields"].nombre + '\',' + instance[i]["pk"] + ')">Eliminar</button>' +
                             '                    </div>' +
                             '            </td>' +
                             '        </tr>'
