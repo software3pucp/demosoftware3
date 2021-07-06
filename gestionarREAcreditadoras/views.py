@@ -129,8 +129,7 @@ def editarRE(request, pk):
                 return redirect('listarRE', acreditadora.pk)
 
             elif request.POST['operacion'] == 'insertar':
-                if not ('select' in request.POST):
-                    resultadoAcreditadora = ResultadoAcreditadora.objects.create(codigo=request.POST["codigo"],
+                resultadoAcreditadora = ResultadoAcreditadora.objects.create(codigo=request.POST["codigo"],
                                                                                  descripcion=request.POST["descripcion"],
                                                                                  acreditadora_id=request.POST[
                                                                                      "acreditadora"])
