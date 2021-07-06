@@ -271,13 +271,12 @@ def send_email_reset_pwd(request,user,message):
         mailServer.sendmail(settings.EMAIL_HOST_USER,
                             email_to,
                             mensaje.as_string())
-        message = "Correo enviado!!!"
     except Exception as e:
         message = str(e)
     return message
 
 def ResetPassword(request):
-    message = None
+    message = ''
     if request.POST:
         try:
             username = request.POST['email']
@@ -288,9 +287,7 @@ def ResetPassword(request):
                 message = "El usuario no existe"
         except Exception as e:
             message = str(e)
-
-        message = serializers.serialize('json',[message,])
         return JsonResponse({'message':message},status=200)
 
-    return render(request,'authentication/resetPassword.html')
-
+def renderForgotPassword(request):
+    return render(request, 'authentication/resetPassword.html')
