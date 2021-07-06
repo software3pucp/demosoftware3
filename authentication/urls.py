@@ -4,6 +4,7 @@ from django.urls import path
 from django.contrib.auth.views import  LoginView,LogoutView
 from authentication import views
 
+
 urlpatterns = [
     # path( url hijo, backend, nombre de la variable)
     path('login/',views.sing_in, name="login"),
@@ -17,5 +18,6 @@ urlpatterns = [
     path('social_sign_in/', views.social_sign_in, name='social_sign_in'),
     path('forgotPassword/', views.renderForgotPassword, name='forgotPassword'),
     path('reset/password/', views.ResetPassword, name='reset_password'),
+    path('change/password/<str:token>/', views.ChangePasswordView.as_view(), name='change_password'),
 
 ]

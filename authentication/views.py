@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.urls import reverse
-from django.core import serializers
-
-
+from django.views.generic import FormView
+from authentication.forms import ChangePasswordForm
+from django.http import HttpResponseRedirect
 from authentication.models import User
 from demosoftware3.settings import MEDIA_URL
 from gestionarFacultad.views import listarFacultad
@@ -263,7 +263,7 @@ def send_email_reset_pwd(request,user,message):
 
         content = render_to_string('authentication/send_email.html', {
             'user': user,
-            'link_resetpwd': 'http://{}/login/change/password/{}/'.format(URL, str(user.token)),
+            'link_resetpwd': 'http://{}/users/change/password/{}/'.format(URL, str(user.token)),
             'link_home': 'http://{}'.format(URL)
         })
         mensaje.attach(MIMEText(content, 'html'))
@@ -291,3 +291,14 @@ def ResetPassword(request):
 
 def renderForgotPassword(request):
     return render(request, 'authentication/resetPassword.html')
+
+class ChangePasswordView(FormView):
+    form_class = ChangePasswordForm
+    template_name = 'authentication/changePassword.html'
+
+    def get(self, request, *args, **kwargs):
+        token = self.kwargs['token']
+        print(token)
+        if User.objects.filter(token=token).exists():
+            return super().get(request, *args, **kwargs)
+        return HttpResponseRedirect('/')
