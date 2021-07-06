@@ -42,13 +42,6 @@
     }
   },
   {
-    "model": "auth.group",
-    "pk": 7,
-    "fields": {
-      "name": "Usuario"
-    }
-  },
-  {
     "model": "authentication.user",
     "pk": 1,
     "fields": {
@@ -182,29 +175,6 @@
       "n_Roles": "1",
       "groups": [
         6
-      ],
-      "user_permissions": []
-    }
-  },
-  {
-    "model": "authentication.user",
-    "pk": 7,
-    "fields": {
-      "password": "pbkdf2_sha256$216000$kVlNaiO1sg3t$2HQWW2hBETrJJACoA5DYRgYBZgELPIR334l8IfeDBBA=",
-      "last_login": null,
-      "is_superuser": false,
-      "username": "Usuario@apolo.pe",
-      "first_name": "Usuario",
-      "last_name": "",
-      "email": "Usuario@apolo.pe",
-      "is_staff": false,
-      "is_active": true,
-      "date_joined": "2021-06-10T16:50:08.208Z",
-      "code": "00000000",
-      "photo": "",
-      "n_Roles": "1",
-      "groups": [
-        7
       ],
       "user_permissions": []
     }
