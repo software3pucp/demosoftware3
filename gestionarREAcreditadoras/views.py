@@ -17,139 +17,168 @@ from gestionarResultados.models import PlanResultados
 
 @login_required
 def listarRE(request, pk):
-    lista = []
-    acreditadora = Acreditadora.objects.get(pk=pk)
-    resultados = ResultadoAcreditadora.objects.filter(acreditadora=pk,estado=1)
-    plResPucp=PlanResultados.objects.filter(estado=1)
-    if plResPucp:
-        for plan in plResPucp:
-            listaAux=[]
-            auxfac=None
-            auxesp=None
-            resultadosPUCPs=ResultadoPUCP.objects.filter(estado=1,planResultado_id=plan.pk)
-            for rPUCP in resultadosPUCPs:
-                indic = Indicador.objects.filter(resultado_id=rPUCP.pk, estado=1)
-                id_especialidad=plan.especialidad_id
-                especialidad = Especialidad.objects.get(pk=id_especialidad)
-                id_facultad = especialidad.facultad_id
-                facultad = Facultad.objects.get(pk=id_facultad)
-                auxfac=facultad
-                auxesp=especialidad
-                reacres = []
-                for i in indic:
-                    reAux = ResultadoAcreditadora.objects.filter(indicador_id=i.pk, estado=1)
-                    if reAux:
-                        reacres = list(chain(reacres, reAux))
-                        # print(reacres)
-                if reacres:
-                    reg = [rPUCP, reacres]
-                    # print(reg)
-                    listaAux.append(reg)
-            if auxfac is not None:
-                if listaAux:
-                    reg = [listaAux, auxesp, auxfac]
-                    lista.append(reg)
-    print("DEBUG")
-    print(lista)
-    for i in lista:
-        for a in i[0]:
-            print(a[0].descripcion)
-            print("================================")
-            for zzz in a[1]:
-                print(zzz.descripcion)
-            print("================================")
+    try:
+        lista = []
+        acreditadora = Acreditadora.objects.get(pk=pk)
+        resultados = ResultadoAcreditadora.objects.filter(acreditadora=pk,estado=1)
+        plResPucp=PlanResultados.objects.filter(estado=1)
+        if plResPucp:
+            for plan in plResPucp:
+                listaAux=[]
+                auxfac=None
+                auxesp=None
+                resultadosPUCPs=ResultadoPUCP.objects.filter(estado=1,planResultado_id=plan.pk)
+                for rPUCP in resultadosPUCPs:
+                    indic = Indicador.objects.filter(resultado_id=rPUCP.pk, estado=1)
+                    pksREA = []
+                    for ind in indic:
+                        if ind.resultadoAcreditadora_id:
+                            pksREA.append(ind.resultadoAcreditadora_id)
+                    # print(pksREA)
+                    id_especialidad = plan.especialidad_id
+                    especialidad = Especialidad.objects.get(pk=id_especialidad)
+                    id_facultad = especialidad.facultad_id
+                    facultad = Facultad.objects.get(pk=id_facultad)
+                    auxfac = facultad
+                    auxesp = especialidad
+                    reacres = ResultadoAcreditadora.objects.filter(pk__in=pksREA, estado=1)
+                    if reacres:
+                        reg = [rPUCP, reacres]
+                        # print(reg)
+                        listaAux.append(reg)
+                if auxfac is not None:
+                    if listaAux:
+                        reg = [listaAux, auxesp, auxfac]
+                        lista.append(reg)
+        print("DEBUG")
+        print(lista)
+        for i in lista:
+            for a in i[0]:
+                print(a[0].descripcion)
+                print("================================")
+                for zzz in a[1]:
+                    print(zzz.descripcion)
+                print("================================")
 
-    context = {
-        'acreditadora': acreditadora,
-        'resultados': resultados,
-        'repucps' : lista,
-    }
-    return render(request, 'gestionarREAcreditadoras/listarRE.html', context)
+        context = {
+            'acreditadora': acreditadora,
+            'resultados': resultados,
+            'repucps' : lista,
+        }
+        return render(request, 'gestionarREAcreditadoras/listarRE.html', context)
+    except:
+        return JsonResponse({"resp": None}, status=303)
+
+
+def conectarIndicadores(listaIndicadores,pk):
+    print(listaIndicadores)
+    print(pk)
+    if listaIndicadores:
+        indicadoresVincular=Indicador.objects.filter(pk__in=listaIndicadores,estado=1)
+        if indicadoresVincular:
+            for i in indicadoresVincular:
+                i.resultadoAcreditadora_id=pk
+                i.save()
+    indicadoresDesvincular=Indicador.objects.filter(resultadoAcreditadora_id=pk, estado=1).exclude(pk__in=listaIndicadores)
+    if indicadoresDesvincular:
+        for i in indicadoresDesvincular:
+            i.resultadoAcreditadora = None
+            i.save()
+
 
 @login_required
 def editarRE(request, pk):
-    insert = False
-    flag = 0
-    id_indicador = 0
-    resultadoSeleccionado = 0
-    especialidadSeleccionada = 0
-    facultadSeleccionada = 0
-    resultadoAcreditadora = ResultadoAcreditadora()
-    resultadoAcreditadora.pk = pk
-    acreditadora = Acreditadora.objects.get(pk=request.POST["acreditadora"])
-    facultades = Facultad.objects.filter(estado='1')
-    if request.POST:
-        # print(request.POST)
-        if request.POST['operacion'] == 'entrada':
-            resultadoAcreditadora.acreditadora_id = request.POST["acreditadora"]
-            # print('***************************************************************************************************')
+    # try:
+        insert = False
+        flag = 0
+        id_indicador = 0
+        resultadoSeleccionado = 0
+        especialidadSeleccionada = 0
+        facultadSeleccionada = 0
+        resultadoAcreditadora = ResultadoAcreditadora()
+        resultadoAcreditadora.pk = pk
+        acreditadora = Acreditadora.objects.get(pk=request.POST["acreditadora"])
+        facultades = Facultad.objects.filter(estado='1')
+        indicadoresAsociados = []
+        iAUX = Indicador.objects.filter(resultadoAcreditadora_id=pk, estado=1)
+        if iAUX:
+            for i in iAUX:
+                indicadoresAsociados.append(i.pk)
+        else:
+            indicadoresAsociados = []
+
+        listaIndicadoresMarcados = []
+        for key, values in request.POST.lists():
+            # print(key, values)
+            if key == 'select':
+                listaIndicadoresMarcados=values
+
+        if request.POST:
             # print(request.POST)
-            # print('***************************************************************************************************')
+            if request.POST['operacion'] == 'entrada':
+                resultadoAcreditadora.acreditadora_id = request.POST["acreditadora"]
 
-        elif request.POST['operacion'] == 'editar':
+            elif request.POST['operacion'] == 'editar':
+                resultadoAcreditadora = ResultadoAcreditadora.objects.get(pk=pk)
+                resultadoAcreditadora.codigo = request.POST["codigo"]
+                resultadoAcreditadora.descripcion = request.POST["descripcion"]
+                conectarIndicadores(listaIndicadoresMarcados,pk)
+                resultadoAcreditadora.acreditadora_id = request.POST["acreditadora"]
+                resultadoAcreditadora.save()
+                flag = 1
+                return redirect('listarRE', acreditadora.pk)
+
+            elif request.POST['operacion'] == 'insertar':
+                if not ('select' in request.POST):
+                    resultadoAcreditadora = ResultadoAcreditadora.objects.create(codigo=request.POST["codigo"],
+                                                                                 descripcion=request.POST["descripcion"],
+                                                                                 acreditadora_id=request.POST[
+                                                                                     "acreditadora"])
+                if ('select' in request.POST):
+                    conectarIndicadores(listaIndicadoresMarcados,resultadoAcreditadora.pk)
+                pk = resultadoAcreditadora.pk
+                insert = True
+                flag = 2
+                return redirect('listarRE', acreditadora.pk)
+
+        if pk != '0':
             resultadoAcreditadora = ResultadoAcreditadora.objects.get(pk=pk)
-            resultadoAcreditadora.codigo = request.POST["codigo"]
-            resultadoAcreditadora.descripcion = request.POST["descripcion"]
-            if ('select' in request.POST):
-                resultadoAcreditadora.indicador_id = request.POST["select"]
-            resultadoAcreditadora.acreditadora_id = request.POST["acreditadora"]
-            resultadoAcreditadora.save()
-            flag = 1
-            return redirect('listarRE', acreditadora.pk)
+            planActivos = PlanResultados.objects.filter(estado=1)
+            for plan in planActivos:
+                resPucpAux = ResultadoPUCP.objects.filter(planResultado_id=plan.pk, estado=1);
+                for resP in resPucpAux:
+                    indi = Indicador.objects.filter(resultado_id=resP.pk, resultadoAcreditadora_id=pk, estado=1)
+                    if indi:
+                        especialidadSeleccionada = plan.especialidad_id
+                        facultadSeleccionada = Especialidad.objects.get(pk=especialidadSeleccionada).facultad_id
 
-        elif request.POST['operacion'] == 'insertar':
-            if not ('select' in request.POST):
-                resultadoAcreditadora = ResultadoAcreditadora.objects.create(codigo=request.POST["codigo"],
-                                                                             descripcion=request.POST["descripcion"],
-                                                                             acreditadora_id=request.POST[
-                                                                                 "acreditadora"])
-            else:
-                resultadoAcreditadora = ResultadoAcreditadora.objects.create(codigo=request.POST["codigo"],
-                                                                             descripcion=request.POST["descripcion"],
-                                                                             acreditadora_id=request.POST[
-                                                                                 "acreditadora"],
-                                                                             indicador_id=request.POST["select"])
+            titulo = 'Editar'
+        else:
+            titulo = 'Nuevo'
 
-            pk = resultadoAcreditadora.pk
-            insert = True
-            flag = 2
-            return redirect('listarRE', acreditadora.pk)
+        context = {
+            'insert': insert,
+            'indicadorSeleccionado':id_indicador,
+            'indicadoresAsociados': indicadoresAsociados,
+            'resultadoAcreditadora': resultadoAcreditadora,
+            'facultadSeleccionada': facultadSeleccionada,
+            'especialidadSeleccionada': especialidadSeleccionada,
+            'facultades': facultades,
+            'flag': flag,
+            'acreditadora': acreditadora,
+            'titulo': titulo,
+        }
+        return render(request, 'gestionarREAcreditadoras/editarRE.html', context)
+    # except:
+    #     return JsonResponse({"resp": None}, status=303)
 
-    if pk != '0':
-        resultadoAcreditadora = ResultadoAcreditadora.objects.get(pk=pk)
-        if resultadoAcreditadora.indicador_id:
-            id_indicador=resultadoAcreditadora.indicador_id
-            indi=Indicador.objects.get(pk=id_indicador)
-            resultadoPUCP=ResultadoPUCP.objects.get(pk=indi.resultado_id)
-            planResultado=PlanResultados.objects.get(pk=resultadoPUCP.planResultado_id)
-            # resultadoSeleccionado = planResultado.resultadoPUCP_id
-            especialidadSeleccionada = planResultado.especialidad_id
-            facultadSeleccionada = Especialidad.objects.get(pk=especialidadSeleccionada).facultad_id
-
-        titulo = 'Editar'
-    else:
-        titulo = 'Nuevo'
-
-    context = {
-        'insert': insert,
-        'indicadorSeleccionado':id_indicador,
-        'resultadoAcreditadora': resultadoAcreditadora,
-        'facultadSeleccionada': facultadSeleccionada,
-        'especialidadSeleccionada': especialidadSeleccionada,
-        'facultades': facultades,
-        'flag': flag,
-        'acreditadora': acreditadora,
-        'titulo': titulo,
-    }
-    return render(request, 'gestionarREAcreditadoras/editarRE.html', context)
-
-
+@login_required
 def eliminarRE(request, pk):
     # Candidate.objects.filter(pk=pk).delete()
     print(request.POST)
     return
 
-
+@login_required
 def ajaxEditar(request):
     try:
         if request.POST:
@@ -159,22 +188,49 @@ def ajaxEditar(request):
                 return JsonResponse({"resp": data}, status=200)
             if request.POST['operacion'] == 'listREPUCP':
                 indicadores=[]
-                planes=PlanResultados.objects.filter(especialidad_id=int(request.POST['especialidadPk']), estado=1)
+                planes = PlanResultados.objects.filter(especialidad_id=int(request.POST['especialidadPk']), estado=1)
                 for p in planes:
-                    res=ResultadoPUCP.objects.filter(planResultado_id=p.pk, estado=1)
+                    res = ResultadoPUCP.objects.filter(planResultado_id=p.pk, estado=1)
                     for r in res:
-                        auxInd=Indicador.objects.filter(resultado_id=r.pk, estado=1)
+                        auxInd = Indicador.objects.filter(resultado_id=r.pk, resultadoAcreditadora_id=None, estado=1)
                         for i in auxInd:
-                            listaVerifica=ResultadoAcreditadora.objects.filter(indicador_id=i.pk, estado=1)
-                            if listaVerifica:
-                                print(listaVerifica[0].pk)
-                                print(int(request.POST['resultadoAcredPK']))
-                                if listaVerifica[0].pk==int(request.POST['resultadoAcredPK']):
-                                    indicadores.append(i)
-                            else:
-                                indicadores.append(i)
+                            indicadores.append(i)
+                        auxInd2 = Indicador.objects.filter(resultado_id=r.pk, resultadoAcreditadora_id=int(
+                            request.POST['resultadoAcredPK']), estado=1)
+                        for x in auxInd2:
+                            indicadores.append(x)
                 data = serializers.serialize("json", indicadores)
                 return JsonResponse({"resp": data}, status=200)
     except:
         return JsonResponse({"resp": None}, status=303)
     return
+
+@login_required
+def activarREA(request):
+    try:
+        re=ResultadoAcreditadora.objects.get(pk=request.POST["reAcreditadoraPK"])
+        re.estado = '1'
+        re.save()
+        return JsonResponse({}, status=200)
+    except:
+        return JsonResponse({"resp": None}, status=303)
+
+@login_required
+def desactivarREA(request):
+    try:
+        re=ResultadoAcreditadora.objects.get(pk=request.POST["reAcreditadoraPK"])
+        re.estado = '2'
+        re.save()
+        return JsonResponse({}, status=200)
+    except:
+        return JsonResponse({"resp": None}, status=303)
+
+@login_required
+def listarREA(request):
+    try:
+        id_acreditadora = request.POST['acreditadora']
+        reAcre = ResultadoAcreditadora.objects.filter(acreditadora_id=id_acreditadora).exclude(estado=0)
+        ser_instance = serializers.serialize('json', reAcre)
+        return JsonResponse({"reAcre": ser_instance}, status=200)
+    except:
+        return JsonResponse({"resp": None}, status=303)

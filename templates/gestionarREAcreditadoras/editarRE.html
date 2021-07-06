@@ -199,15 +199,24 @@
                                 '   <td>' + instance[i]["fields"].descripcion + '</td>' +
                                 '   <td>';
 
-                            if ({{ indicadorSeleccionado }} != 0 && {{ indicadorSeleccionado }} == instance[i]["pk"]) {
-                                data += '   <input class="form-check-input" id="' + instance[i]["pk"]
-                                    + '" type="radio" name="select" value="' + instance[i]["pk"] + '" checked>' +
-                                    '<label class="form-check-label" for="' + instance[i]["pk"] + '"></label>';
+                            var cantIndAsociados={{ indicadoresAsociados }}.length
+                            var flag=1
+                            for (var j=0;j<cantIndAsociados;j++){
+                                if (instance[i]["pk"] == {{ indicadoresAsociados }}[j])
+                                {
+                                    console.log("TRUEEEEEEEEEEEEEEEEEE")
+                                    console.log({{ indicadoresAsociados }}[j])
+                                    data += '   <input class="form-check-input" id="' + instance[i]["pk"]
+                                        + '" type="checkbox" name="select" value="' + instance[i]["pk"] + '" checked>' +
+                                        '<label class="form-check-label" for="' + instance[i]["pk"] + '"></label>';
 
-
-                            } else {
+                                    flag=0
+                                }
+                            }
+                            if (flag==1)
+                            {
                                 data += '           <input class="form-check-input" id="' + instance[i]["pk"]
-                                    + '" type="radio" name="select" value="' + instance[i]["pk"] + '" >' +
+                                    + '" type="checkbox" name="select" value="' + instance[i]["pk"] + '" >' +
                                     '<label class="form-check-label" for="' + instance[i]["pk"] + '"></label>';
                             }
 

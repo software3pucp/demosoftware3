@@ -47,34 +47,7 @@
                         <input type="hidden" name="acreditadora" value={{ acreditadora.pk }}>
                         <input type="submit" class="btn btn-primary mr-1 mb-1" value="Añadir">
                     </form>
-                    {% for resultado in resultados %}
-                        <div style="margin: 1%;">
-                            <div class="card text-white bg-primary">
-                                <div class="card-body">
-                                    <div class="row no-gutters">
-                                        <div class="col-md-1">
-                                            <h2 style="color: #fff;">{{ resultado.codigo }}</h2>
-                                        </div>
-                                        <div class="col-md-9"
-                                             style="border-left: 1px solid #fff;border-right: 1px solid #fff;padding-left: 2%;">
-                                            <p>{{ resultado.descripcion }}</p>
-                                        </div>
-                                        <div class="col-md-2" style="text-align: center;padding-left: 2%;">
-                                            <form action="{% url 'editarRE' pk=resultado.pk %}" method="post">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="operacion" value="entrada">
-                                                <input type="hidden" name="acreditadora" value={{ acreditadora.pk }}>
-                                                <input type="submit" class="btn btn-falcon-primary mr-1 mb-1"
-                                                       value="Editar">
-                                            </form>
-                                            <button class="btn btn-falcon-primary mr-1 mb-1" type="button">Activar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
+                    <div id="listadoREA"></div>
                 </div>
                 <div class="tab-content">
                         {% for repucp in repucps %}
@@ -125,4 +98,126 @@
         </div>
     </div>
 
+{% endblock %}
+{% block extrajs %}
+    <script>
+        $(document).ready(function () {
+            listarREA();
+            listarRelaciones();
+        });
+
+        function redirectEditarREA(id_resultado) {
+            console.log(id_resultado)
+            $( '#edit'+id_resultado ).click ();
+
+        }
+
+        function activarREA(pk) {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'activarREA' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    reAcreditadoraPK: pk,
+                },
+                success: function (response) {
+                    listarREA();
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                },
+            });
+        }
+
+        function desactivarREA(pk) {
+            console.log(pk)
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'desactivarREA' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    reAcreditadoraPK: pk,
+                },
+                success: function (response) {
+                    listarREA();
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                },
+            });
+        }
+
+        function listarREA() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'listarREA'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    acreditadora: {{ acreditadora.pk }},
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response['reAcre']);
+                    var i = 0;
+                    var numero = instance.length;
+                    console.log(numero)
+                    var data = '';
+                    for (i = 0; i < numero; i++) {
+                        data += (
+                            '<div class="card my-3 overflow-hidden" style="min-width: 12rem">' +
+                            '<div class="bg-holder bg-card"' + 'style="background-image:url(' + '{% static '/img/illustrations/corner-3.png' %}' + ');">' + '</div>' +
+                            '<div class="card-body position-relative">' +
+                            '<h5>' + instance[i]["fields"].codigo
+                        );
+                        if (instance[i]["fields"].estado == '1') {
+                            data += (
+                                '<span class="badge badge-soft-success rounded-capsule ml-2 mt-1">ACTIVO</span></h5>'
+                            );
+                        } else {
+                            data += (
+                                '<span class="badge badge-soft-secondary rounded-capsule ml-2 mt-1">INACTIVO</span></h5>'
+                            );
+                        }
+                        data +=(
+                            '<form action="../editar/' + instance[i]["pk"] + '" method="post" hidden>'+
+                                '{% csrf_token %}'+
+                                '<input type="hidden" name="operacion" value="entrada">'+
+                                '<input type="hidden" name="acreditadora" value=1>'+
+                                '<input type="submit" id="edit' + instance[i]["pk"] + '" class="btn btn-falcon-primary mr-1 mb-1" value="Editar">'+
+                            '</form>'+
+                            '<div class="my-1">' + instance[i]["fields"].descripcion + '</div>' +
+                            '<div class="btn btn-falcon-default my-1 mr-2" data-toggle="tooltip"' +
+                            ' data-placement="top" title="Editar resultado acreditadora" ' +
+                            'onclick="redirectEditarREA(' + instance[i]["pk"] + ')">' +
+                            '<span class="fa fa-pen"></span>' + '</div>'
+                        )
+                        if (instance[i]["fields"].estado == '1') {
+                            data += (
+                                '<button class="btn btn-falcon-default my-1" onclick="desactivarREA(' + instance[i]["pk"] + ')">Desactivar</button>'
+                            );
+                        } else {
+                            data += (
+                                '<button class="btn btn-falcon-success my-1" onclick="activarREA(' + instance[i]["pk"] + ')">Activar</button>'
+                            );
+                        }
+                        data += (
+                            '</div>' +
+                            '</div>' +
+                            '</div>'
+
+                        )
+                    }
+                    $("#listadoREA").html(data);
+
+                }
+                ,
+                error: function (response) {
+                    // alert the error if any error occured
+                    console.log(response)
+                }
+            });
+        }
+
+    </script>
 {% endblock %}
