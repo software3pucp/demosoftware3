@@ -302,3 +302,26 @@ class ChangePasswordView(FormView):
         if User.objects.filter(token=token).exists():
             return super().get(request, *args, **kwargs)
         return HttpResponseRedirect('/')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        token = self.kwargs['token']
+        if User.objects.filter(token=token).exists():
+            context['user'] = User.objects.get(token=token)
+        return context
+
+def changePassword(request,pk):
+    message = ""
+    try:
+        user = User.objects.get(pk=pk)
+        password = request.POST['password']
+        confirmPassword = request.POST['confirmPassword']
+        if(password!=confirmPassword):
+            message = "Contraseña de confirmación no coincide"
+        else:
+            user.set_password(password)
+            user.token = uuid.uuid4()
+            user.save()
+    except Exception as e:
+        message = str(e)
+    return JsonResponse({'message':message},status=200)

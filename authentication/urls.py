@@ -16,8 +16,9 @@ urlpatterns = [
     path('select_rol/',views.select_rol, name="selectrol"),
     path('validation/',views.validation,name="validation"),
     path('social_sign_in/', views.social_sign_in, name='social_sign_in'),
-    path('forgotPassword/', views.renderForgotPassword, name='forgotPassword'),
-    path('reset/password/', views.ResetPassword, name='reset_password'),
-    path('change/password/<str:token>/', views.ChangePasswordView.as_view(), name='change_password'),
+    path('reset/password/', views.renderForgotPassword, name='forgotPassword'),
+    path('forgotPassword', views.ResetPassword, name='reset_password'),
+    path('change/password/<str:token>/', views.ChangePasswordView.as_view(), name='renderChangePassword'),
+    path('changePassword/<pk>/',views.changePassword,name='changePassword')
 
 ]
