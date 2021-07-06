@@ -92,7 +92,7 @@
 {#                </div>#}
 {#            </div>#}
 {#        </div>#}
-
+    {% if ListaSemestre %}
         {% for semestre in ListaSemestre %}
             <div class=" col-xl-3 col-md-4 col-sm-6 p-2">
                 <a href="../enviarCursoHorarioDocente/{{semestre.pk}}">
@@ -105,8 +105,12 @@
                     </div>
                 </a>
             </div>
-
         {% endfor %}
+    {% else %}
+        <div class="row d-flex justify-content-center col-12">
+            <div class="alert alert-info" role="alert">No existen procesos de medicion asignados a este perfil</div>
+        </div>
+    {% endif %}
     </div>
 
 
