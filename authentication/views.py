@@ -71,7 +71,7 @@ def Register(request):
         for val in roles:
             i += 1
             group = Group.objects.get(id=val)
-            group.user__set.add(user)
+            group.user_set.add(user)
         if (i==1):
             user.n_Roles = '1'
             user.save()
@@ -158,10 +158,6 @@ def Activate(request, pk):
     else:
         user.estado = 1
     return redirect(Show)
-
-
-    return redirect(Show)
-
 
 def sing_in(request):
     if request.POST:
