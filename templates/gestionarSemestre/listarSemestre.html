@@ -186,7 +186,7 @@
                             <div class="form-group row m-3 p-2">
 
                                 <div class="col-6">
-                                    <button id="agr" class="btn btn-primary mr-1 mb-1" onclick="validar()">Agregar
+                                    <button id="agr" class="btn btn-primary mr-1 mb-1">Agregar
                                     </button>
                                 </div>
                                 <div class="col-6">
@@ -333,17 +333,11 @@
                 var codigoCorrecto = ValidarNombreCodigo();
                 var fechasCorrectas = ValidarFechas();
 
-                console.log(codigoCorrecto)
-                console.log(fechasCorrectas)
-
                 if (ValidarNombreCodigo() && ValidarFechas()) {
-                    console.log("bandera 11111111")
                     agregar();
                 } else if(!ValidarFechas()){
-                    console.log("bandera 22222222")
                     $("#modalFecha").modal('show');
                 } else if(!ValidarNombreCodigo()){
-                    console.log("bandera 33333333")
                     $("#modalNombreCodigo").modal('show');
                 }
             }
