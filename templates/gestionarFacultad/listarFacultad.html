@@ -42,13 +42,23 @@
                         <div class="card-group">
                             <div class="product card mr-4 mb-4" style="height: 16rem">
                                 <div class="card-img-top imgbox" style="height: 15rem">
-                                    <a href="{% url 'listarFacultadxEsp' id_facultad=facultad.pk %}">
-                                        {% if facultad.foto.name %}
-                                            <img class="" src="{{ media_path }}{{ facultad.foto.name }}/">
-                                        {% else %}
-                                            <img class="" src="{% static 'img/illustrations/3.png' %}">
-                                        {% endif %}
-                                    </a>
+                                    {% if request.user.rol_actual != 'Administrador' %}
+                                        <a href="{% url 'listarFacultadxEsp' id_facultad=facultad.pk %}">
+                                            {% if facultad.foto.name %}
+                                                <img class="" src="{{ media_path }}{{ facultad.foto.name }}/">
+                                            {% else %}
+                                                <img class="" src="{% static 'img/illustrations/3.png' %}">
+                                            {% endif %}
+                                        </a>
+                                    {% else %}
+                                        <a href="#">
+                                            {% if facultad.foto.name %}
+                                                <img class="" src="{{ media_path }}{{ facultad.foto.name }}/">
+                                            {% else %}
+                                                <img class="" src="{% static 'img/illustrations/3.png' %}">
+                                            {% endif %}
+                                        </a>
+                                    {% endif %}
                                 </div>
                                 <div class="specifies card-body p-1">
                                     <h5 class="card-title ml-2">{{ facultad.nombre }}</h5>
