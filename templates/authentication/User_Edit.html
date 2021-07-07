@@ -4,6 +4,13 @@
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
     <style>
+        .choices__list--multiple .choices__item {
+            padding-left: 5px !important;
+
+        }
+        button.choices__button{
+            background-color: #AAA9AB;
+        }
         html {
             font-family: 'Open Sans', sans-serif;
         }
@@ -251,7 +258,7 @@
                                     <div class="card-header">
                                         <h5 class="mb-0">Usuario</h5>
                                     </div>
-                                    <div class="card-body bg-light">
+                                    <div class="card-body bg-ligh py-0">
                                         <div class="form-group">
                                             <label for="">Roles Asignados</label>
                                             <select id="choices-multiple-remove-button"
@@ -263,12 +270,12 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="card-body bg-light">
+                                    <div class="card-body bg-light py-0">
                                         <form id="applicantForm" action="{% url 'editUsers' pk=user.pk %}" method="POST"
                                               enctype="multipart/form-data">
                                             {% csrf_token %}
 
-                                            <div class="form-group">
+                                            <div class="form-group" hidden>
                                                 <label for="">Ingrese nuevos roles</label>
                                                 <select id="choices-multiple-remove-button"
                                                         name="choices-multiple-remove-button"
@@ -306,8 +313,14 @@
                                             </div>
                                             <div class="form-group">
                                                 <div class="row">
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <button class="btn btn-primary btn-block mt-3 " type="submit"
+                                                                name="submit">
+                                                            Guardar Cambios
+                                                        </button>
 
-                                                    <div class="col-6">
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-12">
 
                                                         <a class="btn btn-outline-primary btn-block mt-3"  type="button"
                                                                 href="{% url 'showUsers' %}">Cancelar
@@ -315,13 +328,7 @@
                                                      
 
                                                     </div>
-                                                    <div class="col-6">
-                                                        <button class="btn btn-primary btn-block mt-3" type="submit"
-                                                                name="submit">
-                                                            Registrar
-                                                        </button>
 
-                                                    </div>
                                                 </div>
                                             </div>
                                         </form>
@@ -355,6 +362,8 @@
 
     <script>
         $(document).ready(function () {
+            $('.choices__button').hide();
+            let texto = $('.choices__item').text() + ' ';
             $(document).on('change', '.btn-file :file', function () {
                 var input = $(this),
                     label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
