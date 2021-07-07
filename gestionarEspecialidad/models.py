@@ -1,4 +1,8 @@
+
 from django.db import models
+from django.conf import settings
+
+from authentication.models import User
 from gestionarFacultad.models import Facultad
 import unicodedata
 
@@ -29,3 +33,11 @@ class Especialidad(models.Model):
         ('2', 'Inactivo'),
     ]
     estado = models.CharField(max_length=2, choices=ESTADOS, default=None, null=True, blank=True)
+
+class Asistente(models.Model):
+    especialidad = models.ForeignKey(Especialidad, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+class Auditor(models.Model):
+    especialidad = models.ForeignKey(Especialidad, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
