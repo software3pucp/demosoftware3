@@ -6,6 +6,7 @@ from gestionarCurso.models import Curso
 from django.shortcuts import render, redirect
 from authentication.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 # Create your views here.
 from gestionarFacultad.views import listarFacultadxEsp, listarFacultad
 
@@ -50,6 +51,13 @@ def agregarEspecialidad(request, id_facultad):
             facultad = Facultad.objects.get(pk=id_facultad)
             Especialidad.objects.create(nombre=nombre, responsable=id_responsable, facultad=facultad, foto=foto,
                                         estado=request.POST['estado'])
+
+            #Si el usuario no tiene rol de cooordinador de facultad se lo agrego
+            user = User.objects.get(pk=id_responsable)
+            group = Group.objects.get(name="Coordinador de especialidad")
+            userGroup = list(User.groups.through.objects.filter(user_id=id_responsable,group_id=group.pk))
+            if len(userGroup) == 0:
+                group.user_set.add(user)
             return redirect('listarFacultadxEsp',id_facultad)
 
     context = {

@@ -153,7 +153,7 @@
                 </div>
             {% endfor %}
             {% if user.rol_actual == 'Coordinador de facultad' %}
-            <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="col-sm-12 col-md-6 col-lg-4 btnAgregar">
                 <div class="card-group service-work">
                     <button type="submit" class="recent-work card mr-4 mb-4" style="height: 16rem">
                         <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
@@ -183,9 +183,11 @@
             if ("{{estado}}" == 1) {
                     $('.especialidadesActivas').show();
                     $('.especialidadesInactivos').hide();
+                    $('.btnAgregar').show();
                 } else {
                     $('.especialidadesActivas').hide();
                     $('.especialidadesInactivos').show();
+                    $('.btnAgregar').hide()
                 }
 
             $("#estado").val({{ estado }});
@@ -197,9 +199,11 @@
                 if (this.value == 1) {
                     $('.especialidadesActivas').show();
                     $('.especialidadesInactivos').hide();
+                    $('.btnAgregar').show();
                 } else {
                     $('.especialidadesActivas').hide();
                     $('.especialidadesInactivos').show();
+                    $('.btnAgregar').hide();
                 }
             });
         });
