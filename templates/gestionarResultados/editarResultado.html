@@ -37,7 +37,8 @@
                             <h4>Resultado del Estudiante</h4>
                         </div>
                         <div class="col-2 ">
-                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'resultados' id_plan=plan.pk %}">
+                            <a class="d-flex flex-row justify-content-end mt-2"
+                               href="{% url 'resultados' id_plan=plan.pk %}">
                                 <div class="fas fa-reply mt-1 mr-2"></div>
                                 <h5>Volver</h5>
                             </a>
@@ -106,24 +107,18 @@
                                 <th class="align-middle">{{ indicador.codigo }}</th>
                                 <td class="align-middle">{{ indicador.descripcion }}</td>
                                 <td class="align-middle text-right fs-0">
-                                    <form action="{% url 'eliminarIndicadorxResultado' id_resultado=resultado.pk %}"
-                                          method="post">
-                                        {% csrf_token %}
-                                        <div class="row">
-                                            <div class="col">
-                                                <a href="{% url 'editarIndicador' pk=indicador.pk %}"
-                                                   class="badge badge rounded-capsule badge-soft-info">Editar</a>
-                                            </div>
-                                            <div class="col">
-                                                <button type="submit"
-                                                        class="badge rounded-capsule badge-soft-danger outline-none">
-                                                    <span>Eliminar</span>
-                                                </button>
-                                            </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <a href="{% url 'editarIndicador' pk=indicador.pk %}"
+                                               class="badge badge rounded-capsule badge-soft-info">Editar</a>
                                         </div>
-                                        <input type="hidden" id="indicador_pk" name="indicador_pk"
-                                               value="{{ indicador.pk }}">
-                                    </form>
+                                        <div class="col">
+                                            <button class="badge badge rounded-capsule badge-soft-danger"
+                                                    onclick="indicadoresEliminar('{{ indicador.codigo }}',{{ indicador.pk }} )">
+                                                    Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -185,6 +180,25 @@
         </div>
     </div>
 
+    <!-- Modal Eliminar Indicador -->
+
+    <div class="modal fade" id="eliminarIndicador" tabindex="-1" role="dialog" aria-labelledby="eliminarIndicadorLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarIndicadorLabel"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                    <button id="btnEliminarIndicador" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block extrajs %}
@@ -192,6 +206,43 @@
     <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
 
     <script>
+
+        let pkEliminar;
+
+        function indicadoresEliminar(codigoIndicador, pk) {
+            console.log(codigoIndicador)
+            console.log(pk)
+
+            data = '<h5 class="modal-title" id="eliminarActividadLabel">Se eliminará el indicador ' + codigoIndicador + '</h5>';
+            $("#eliminarIndicadorLabel").html(data);
+            $("#eliminarIndicador").modal('show');
+            pkEliminar = pk;
+        };
+
+        $("#btnEliminarIndicador").on('click', function () {
+            eliminarIndicador(pkEliminar);
+            $("#eliminarIndicador").modal('hide');
+        });
+
+        function eliminarIndicador(indicadorpk) {
+            console.log('dentro de eliminar')
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'eliminarIndicadorxResultado' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    indicadorpk: indicadorpk,
+                },
+                success: function (response) {
+                    location.reload()
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+
         function agregar() {
             $.ajax({
                 type: 'POST',
