@@ -8,8 +8,6 @@ from gestionarNiveles.models import Nivel
 
 
 
-
-
 @login_required
 def niveles(request):
     facultades = Facultad.objects.filter(estado='1')

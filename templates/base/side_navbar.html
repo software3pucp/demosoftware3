@@ -222,13 +222,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href= "{% url 'listarFacultad' %}">
                         <div class="d-flex align-items-center">
                         <span class="nav-link-icon">
                             <span class="fas fa-home"></span>
                         </span>
                             <span class="nav-link-text">
-                            Especialidades
+                            Facultades
                         </span>
                         </div>
                     </a>
@@ -306,6 +306,18 @@
 
                 {% if request.user.rol_actual == 'Coordinador de especialidad' %}
                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'resultadosMediciones' %}">
+                        <div class="d-flex align-items-center">
+                        <span class="nav-link-icon">
+                            <span class="fas fa-poll"></span>
+                        </span>
+                            <span class="nav-link-text">
+                            Dashboard
+                        </span>
+                        </div>
+                    </a>
+                </li>
+                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'listarFacultad' %}">
                         <div class="d-flex align-items-center">
                         <span class="nav-link-icon">
@@ -373,6 +385,18 @@
                         </span>
                             <span class="nav-link-text">
                             Acreditadoras
+                        </span>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'objetivos' %}">
+                        <div class="d-flex align-items-center">
+                        <span class="nav-link-icon">
+                            <span class="fas fa-graduation-cap"></span>
+                        </span>
+                            <span class="nav-link-text">
+                            Objetivos educacionales
                         </span>
                         </div>
                     </a>

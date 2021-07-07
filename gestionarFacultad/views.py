@@ -1,7 +1,9 @@
+from django.contrib.auth.models import Group
+
 from demosoftware3.settings import MEDIA_URL
 from gestionarFacultad.models import Facultad
 from django.shortcuts import render, redirect
-from authentication.models import User
+from authentication.models import User, User_Groups_Extended
 from django.contrib.auth.decorators import login_required
 from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
@@ -12,6 +14,20 @@ from authentication.models import User
 @login_required
 # Create your views here.
 def listarFacultad(request):
+    # print(request.user.rol_actual)
+
+    if (request.user.rol_actual == 'Coordinador de facultad'):
+        usuario = User.objects.get(pk=request.user.pk)
+        facultades = Facultad.objects.filter(responsable=request.user.pk,estado='1')
+
+        media_path = MEDIA_URL
+        context = {
+            'ListaFacultad':facultades,
+            'media_path': media_path,
+        }
+        return render(request, 'gestionarFacultad/listarFacultadCoordinador.html', context)
+
+
     media_path = MEDIA_URL
     context = {
         'ListaFacultad': Facultad.objects.filter(estado=Facultad.ESTADOS[1][0]),
@@ -32,6 +48,14 @@ def agregarFacultad(request):
             id_responsable = request.POST['responsable']
             foto = request.FILES['photo']
             Facultad.objects.create(nombre=nombre, responsable=id_responsable, foto=foto, estado=request.POST["estado"])
+
+            #Si el usuario no tiene rol de cooordinador de facultad se lo agrego
+            user = User.objects.get(pk=id_responsable)
+            group = Group.objects.get(name="Coordinador de facultad")
+            userGroup = list(User.groups.through.objects.filter(user_id=id_responsable,group_id=group.pk))
+            if len(userGroup) == 0:
+                group.user_set.add(user)
+
             return redirect(listarFacultad)
         else:
             context = {
@@ -67,6 +91,15 @@ def editarFacultad(request, id_facultad):
     media_path = MEDIA_URL
     facultad = Facultad.objects.get(pk=id_facultad)
     if request.POST:
+        group = Group.objects.get(name="Coordinador de facultad")
+
+        #Quitar rol de coordinador de facultad a responsable si es necesario
+        responsable = User.objects.get(pk=facultad.responsable)
+        facultades = list(Facultad.objects.filter(responsable=responsable.pk))
+        if len(facultades) == 1:
+            group.user_set.remove(responsable)
+
+        #Asociar nuevo responsable con facultad
         nuevo_nombre = request.POST["name"]
         nuevo_responsable = request.POST["responsable"]
         if request.FILES.get('photo'):
@@ -75,6 +108,13 @@ def editarFacultad(request, id_facultad):
         facultad.nombre = nuevo_nombre
         facultad.responsable = nuevo_responsable
         facultad.save()
+
+        #Agregar rol de coordinador de facultad a nuevo responsable si no lo tiene
+        user = User.objects.get(pk=nuevo_responsable)
+        userGroup = list(User.groups.through.objects.filter(user_id=nuevo_responsable, group_id=group.pk))
+        if len(userGroup) == 0:
+            group.user_set.add(user)
+
         return redirect('listarFacultad')
 
     context = {

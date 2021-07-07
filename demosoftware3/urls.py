@@ -38,5 +38,6 @@ urlpatterns = [
                   path('gestionarEvidencia/', include('gestionarEvidencias.urls')),
                   path('gestionarHistoricoEv/', include('gestionarHistoricoEv.urls')),
                   path('gestionarPlanMejora/', include('gestionarPlanMejora.urls')),
+                  path('gestionarObjetivosEducacionales/', include('gestionarObjetivosEducacionales.urls')),
                   path('accounts/', include('allauth.urls'))
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

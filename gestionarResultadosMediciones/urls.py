@@ -4,4 +4,5 @@ from gestionarResultadosMediciones import views
 
 urlpatterns = [
     path('resultados/', views.resultadosMediciones, name="resultadosMediciones"),
+    path('getListaProgresoCurso', views.getListaProgresoCurso, name="getListaProgresoCurso"),
 ]

@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'gestionarPlanMejora',
     'gestionarEvidencias',
     'gestionarHistoricoEv',
+    'gestionarObjetivosEducacionales',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

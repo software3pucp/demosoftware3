@@ -21,11 +21,11 @@ def editarIndicador(request, pk):
     rubrica = Rubrica.objects.filter(indicador_id=pk)
     nivelLista2 = []
     hay_niveles = False
-    mensaje_aviso=''
+    mensaje_aviso = ''
     if (len(nivelLista) > 0):
         hay_niveles = True
     else:
-        mensaje_aviso="Aun no se han registrado niveles de desempeño en la +\
+        mensaje_aviso = "Aun no se han registrado niveles de desempeño en la +\
                      especialidad! Por favor registar niveles de desempeño"
 
     for nivel in nivelLista:  # Creamos una lista de registros- registo (nivel, descripcion)
@@ -62,7 +62,7 @@ def editarIndicador(request, pk):
         'id_resultado': id_resultado,
         'nivelLista': nivelLista2,
         'hay_niveles': hay_niveles,
-        'mensaje_aviso':mensaje_aviso,
+        'mensaje_aviso': mensaje_aviso,
     }
     return render(request, 'gestionarIndicadores/editarIndicador.html', context)
 
@@ -75,13 +75,12 @@ def obtenerEspecialidadIndicador(indicador):
 
 
 @login_required
-def eliminarIndicadorxResultado(request, id_resultado):
-    if request.POST:
-        print(request.POST)
-        indicador = Indicador.objects.get(pk=request.POST['indicador_pk'])
-        indicador.estado = 0  # eliminación lógica
-        indicador.save()
-        return redirect('editarResultado', pk=id_resultado)
+def eliminarIndicadorxResultado(request):
+    indicadorpk = request.POST['indicadorpk']
+    indicador = Indicador.objects.get(pk=indicadorpk)
+    indicador.estado = 0  # eliminación lógica
+    indicador.save()
+    return JsonResponse({}, status=200)
 
 
 def agregarIndicador(request, id_resultado):

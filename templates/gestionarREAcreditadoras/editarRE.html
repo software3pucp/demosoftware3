@@ -3,34 +3,30 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
-    <style>
-
-        hr {
-            height: .5px;
-            background-color: #2F5496;
-        }
-
-    </style>
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
 {% block body %}
 
     {#AQUI COLOQUEN EL CÓDIGO#}
+    <div class="card mb-3 bg-card-gradient mr-2">
+        <div class="card-body ">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-12">
+                    <h5 class="mb-2 mb-md-0 text-white">Acreditadoras</h5>
+                </div>
+            </div>
+        </div>
+    </div>
     <form action="{% url 'editarRE' pk=resultadoAcreditadora.pk %}" method="post">
         {% csrf_token %}
         <div class="row">
-            <div class="col-md-12">
-                <div style="float: right;">
-                    <a class="btn btn-outline-primary" type="button"
-                       href="{% url 'listarRE' pk=acreditadora.pk %}">
-                        <img class="img-fluid" style="height: 20px"
-                             src="https://image.flaticon.com/icons/png/512/60/60577.png">
-                        Volver
-                    </a>
-                </div>
-                <h3>{{ acreditadora.nombre }} - {{ titulo }} Resultado del Estudiante </h3>
-                <hr>
+            <div class="col-9 "></div>
+            <div class="col-3 text-right mb-3">
+                <a class="d-flex flex-row justify-content-end mt-2 mr-3" href="{% url 'listarFacultad' %}">
+                    <div class="fas fa-reply mt-1 mr-2"></div>
+                    <h5>Volver</h5>
+                </a>
             </div>
         </div>
 
@@ -89,10 +85,10 @@
         </div>
         <p></p>
         <div class="row">
-            <div class="col-md-12">
-                <div class="form-check">
+            <div class="col">
+                <div class="form-check px-0 pt-3">
                     <table class="table">
-                        <thead class="thead-dark">
+                        <thead class="thead" style="color:white; background-color: rgb(1, 84, 174);">
                         <tr>
                             <th scope="col">Código</th>
                             <th scope="col">Descripción</th>

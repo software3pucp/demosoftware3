@@ -21,6 +21,7 @@
             <div class="row justify-content-between align-items-center">
                 <div class="col-12">
                     <h2 class="mb-2 mb-md-0 text-white">Dashboard</h2>
+                    <p class="text-white">Información de la especialidad de {{ especialidad.nombre }} del plan de medición {{ plan }}.</p>
                 </div>
             </div>
         </div>
@@ -111,9 +112,10 @@
                             <h5>Progreso de Cursos por Indicador</h5>
                         </div>
                         <div class="col-auto text-center pr-card">
-                            <select class="custom-select custom-select-sm">
-                                <option>Indicador1</option>
-                                <option>Indicador2</option>
+                            <select id="IndPorcentajeCurso" class="custom-select custom-select-sm" onchange="getListaProgresoCurso()">
+                                {% for indicador in indicadores %}
+                                    <option value="{{ indicador.pk }}">{{ indicador.codigo }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -126,39 +128,7 @@
                                 <th>Progreso(%)</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Curso1</td>
-                                <td>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-danger w-25" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Curso2</td>
-                                <td>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-warning w-50" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Curso3</td>
-                                <td>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-info w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Curso4</td>
-                                <td>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success w-100" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
-                                    </div>
-                                </td>
-                            </tr>
+                        <tbody id="ListaProgresoCurso">
                         </tbody>
                     </table>
                 </div>
@@ -170,7 +140,7 @@
         <div class="card-body ">
             <div class="row justify-content-between align-items-center">
                 <div class="col-12">
-                    <h5 class="mb-2 mb-md-0">Número de alumnos por nivel</h5>
+                    <h5 class="mb-2 mb-md-0">Número de alumnos evaluados por nivel</h5>
                 </div>
             </div>
         </div>
@@ -269,7 +239,8 @@
 
         $(document).ready(function () {
             console.log("ready!");
-            getPorcentajeAlumnosMedia()
+            getPorcentajeAlumnosMedia();
+            getListaProgresoCurso();
             actualizarCursos();
         });
 
@@ -457,6 +428,46 @@
             var selec = $("#IndPorcentajeAlumnosMedia").val();
             $(".CirclePorcentajeAlumnosMedia").hide();
             $("#CirclePorcentajeAlumnosMedia"+selec).show();
+        }
+
+        function getListaProgresoCurso(){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'getListaProgresoCurso'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    indicador: $("#IndPorcentajeCurso").val(),
+                },
+                success: function (response) {
+                    var instance = response['resp'];
+                    $(".ProgresoCurso").remove();
+                    for (var i=0; i<instance.length; i++) {
+                        var data = '<tr class="ProgresoCurso">' +
+                            '<td>'+instance[i]['curso']+'</td>' +
+                            '<td>' +
+                            '<div class="progress">';
+
+                        if (instance[i]['porcentaje']<50) {
+                            data +='<div class="progress-bar bg-danger" style="width: '+instance[i]['porcentaje']+'%;" role="progressbar" aria-valuenow="'+instance[i]['porcentaje']+'" aria-valuemin="0" aria-valuemax="100">'+instance[i]['porcentaje']+'%</div>';
+                        } else if(instance[i]['porcentaje']<75) {
+                            data +='<div class="progress-bar bg-warning" style="width: '+instance[i]['porcentaje']+'%;" role="progressbar" aria-valuenow="'+instance[i]['porcentaje']+'" aria-valuemin="0" aria-valuemax="100">'+instance[i]['porcentaje']+'%</div>';
+                        } else if(instance[i]['porcentaje']<100) {
+                            data +='<div class="progress-bar bg-info" style="width: '+instance[i]['porcentaje']+'%;" role="progressbar" aria-valuenow="'+instance[i]['porcentaje']+'" aria-valuemin="0" aria-valuemax="100">'+instance[i]['porcentaje']+'%</div>';
+                        } else {
+                            data +='<div class="progress-bar bg-success" style="width: '+instance[i]['porcentaje']+'%;" role="progressbar" aria-valuenow="'+instance[i]['porcentaje']+'" aria-valuemin="0" aria-valuemax="100">'+instance[i]['porcentaje']+'%</div>';
+                        }
+
+                        data += '</div>' +
+                            '</td>' +
+                            '</tr>';
+                        $("#ListaProgresoCurso").append(data);
+                    }
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            })
         }
 
     </script>
