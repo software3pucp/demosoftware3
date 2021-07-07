@@ -75,15 +75,16 @@
                 <div class="modal-body">
                     <form id="formAgregarObjetivo" name="formAgregarObjetivo">
                         <div class="form-group">
-                            <label for="codigoObjetivo">Código</label>
-                            <input class="form-control" id="codigoObjetivo" name="codigoObjetivo" type="text"
-                                   placeholder="Código">
+                            <label for="codigoObjetivo">Código:</label>
+                            <input class="form-control" id="codigoObjetivo" name="codigoObjetivo" type="text">
                         </div>
+
                         <div class="form-group">
-                            <label for="descripcionObjetivo">Descripcion</label>
-                            <input class="form-control" id="descripcionObjetivo" name="descripcionObjetivo" type="value"
-                                   placeholder="Descripción">
+                            <label for="descripcionObjetivo">Descripción:</label>
+                            <textarea id="descripcionObjetivo" name="descripcionObjetivo" class="form-control"
+                                      aria-label="With textarea" rows="4"></textarea>
                         </div>
+
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -242,21 +243,21 @@
                     for (i = 0; i < numero; i++) {
                         data += (
                             '<div class="card my-3 overflow-hidden" style="min-width: 12rem">' +
-                                '<div class="bg-holder bg-card"' + 'style="background-image:url(' + '{% static '/img/illustrations/corner-3.png' %}' + ');">' + '</div>' +
-                                    '<div class="card-body position-relative">' +
-                                        '<h5>' + instance[i]["fields"].codigo +
-                                        '<div class="my-1">' + instance[i]["fields"].descripcion +
-                                        '</div>'+
-                                        '<div class="btn btn-falcon-default my-1 mr-2" data-toggle="tooltip"' +
-                                            'data-placement="top" title="Editar plan de Resultado" ' +
-                                            'onclick="objetivosEditar(\'' + instance[i]["fields"].codigo + '\', \'' + instance[i]["fields"].descripcion + '\',' + instance[i]["pk"] + ')">' +
-                                            '<span class="fa fa-pen "</span>' +
-                                        '</div>'+
-                                        '<button class="btn btn-falcon-danger my-1 mr-2" onclick="objetivosEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
-                                        '<span class="fa fa-times"></span> Eliminar</button>'+
-                                    '</div>'+
-                                '</div>'+
-                           '</div>'
+                            '<div class="bg-holder bg-card"' + 'style="background-image:url(' + '{% static '/img/illustrations/corner-3.png' %}' + ');">' + '</div>' +
+                            '<div class="card-body position-relative">' +
+                            '<h5>' + instance[i]["fields"].codigo +
+                            '<div class="my-1">' + instance[i]["fields"].descripcion +
+                            '</div>' +
+                            '<div class="btn btn-falcon-default my-1 mr-2" data-toggle="tooltip"' +
+                            'data-placement="top" title="Editar plan de Resultado" ' +
+                            'onclick="objetivosEditar(\'' + instance[i]["fields"].codigo + '\', \'' + instance[i]["fields"].descripcion + '\',' + instance[i]["pk"] + ')">' +
+                            '<span class="fa fa-pen "</span>' +
+                            '</div>' +
+                            '<button class="btn btn-falcon-danger my-1 mr-2" onclick="objetivosEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
+                            '<span class="fa fa-times"></span> Eliminar</button>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>'
                         );
                     }
 
@@ -347,11 +348,12 @@
 
         function objetivosEditar(codigoObjetivo, descripcionObjetivo, pk) {
             var nomb = codigoObjetivo.toString();
+            var desc = descripcionObjetivo.toString();
             data = '';
             data += '<input class="form-control" id="codigoObjetivoMod" name="codigoObjetivoMod" type="text" value="' + nomb + '">';
             $("#editCodigo").html(data);
 
-            data = '<input class="form-control" id="descripcionObjetivoMod" name="descripcionObjetivoMod" type="text" value=' + descripcionObjetivo + '>';
+            data = '<textarea id="descripcionObjetivoMod" name="descripcionObjetivoMod" class="form-control" aria-label="With textarea" rows="4">' + desc + '</textarea>';
             $("#editDescripcion").html(data);
             $("#editarObjetivo").modal('show');
 
