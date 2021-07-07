@@ -19,17 +19,13 @@ from gestionarSemestre.models import Semestre
 
 
 @login_required
-def resultadosMediciones(request):
-    especialidad = Especialidad.objects.get(pk=5)
-    plan = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',
-                                              planMedicion__planMedicion__especialidad_id=especialidad.pk,
-                                              estado='1').values('planMedicion__planMedicion__nombre').annotate(cant=Count('planMedicion__planMedicion__nombre')).order_by()
-    semestres = Semestre.objects.filter()
-    indicadores = Indicador.objects.filter(resultado__planResultado__estado='1')
-    res = ResultadoPUCP.objects.filter(planResultado__estado='1')
-    niveles = Nivel.objects.filter(especialidad_id='5', estado='1')
-    cantNiv = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',
-                                                 planMedicion__planMedicion__especialidad_id=especialidad.pk, estado='1').values(
+def resultadosMediciones(request,pk):
+
+    plan = PlanMedicion.objects.get(pk=pk)
+    indicadores = Indicador.objects.filter(resultado__planResultado_id=plan.planResultados_id)
+    res = ResultadoPUCP.objects.filter(planResultado_id=plan.planResultados_id)
+    niveles = Nivel.objects.filter(especialidad_id=plan.especialidad_id, estado='1')
+    cantNiv = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=pk, estado='1').values(
         'valorNota').annotate(cant=Count('valorNota')).order_by('valorNota')
 
     progreIndicadores = []
@@ -38,31 +34,26 @@ def resultadosMediciones(request):
     progreResponsables = []
     progreREs = []
 
-    et = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',
-                                            planMedicion__planMedicion__especialidad_id=especialidad.pk, estado='1').values(
+    et = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=pk, estado='1').values(
         'indicador').annotate(total=Count('indicador_id')).order_by('indicador_id')
-    e = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',
-                                           planMedicion__planMedicion__especialidad_id=especialidad.pk, calificado='1', evidencia='1',
+    e = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=pk, calificado='1', evidencia='1',
                                            estado='1').values('indicador').annotate(
         total=Count('indicador_id')).order_by('indicador_id')
 
     mediana = 2
-    mt = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',
-                                           planMedicion__planMedicion__especialidad_id=especialidad.pk, calificado='1', evidencia='1',
+    mt = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=pk, calificado='1', evidencia='1',
                                            estado='1').values('indicador').annotate(
         total=Count('indicador_id')).order_by('indicador_id')
-    m = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1', valorNota__gt=mediana,
-                                           planMedicion__planMedicion__especialidad_id=especialidad.pk, calificado='1', evidencia='1',
+    m = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=pk, calificado='1', evidencia='1',
+                                           valorNota__gt=mediana,
                                            estado='1').values('indicador').annotate(
         total=Count('indicador_id')).order_by('indicador_id')
 
-    pt = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',
-                                            planMedicion__planMedicion__especialidad_id=especialidad.pk,
+    pt = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=pk,
                                             estado='1').values('indicador__resultado_id').annotate(
         total=Count('indicador__resultado_id')).order_by('indicador__resultado_id')
 
-    p = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',
-                                           planMedicion__planMedicion__especialidad_id=especialidad.pk, calificado='1', evidencia='1',
+    p = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=pk, calificado='1', evidencia='1',
                                            estado='1').values('indicador__resultado_id').annotate(
         total=Count('indicador__resultado_id')).order_by('indicador__resultado_id')
 
@@ -80,7 +71,11 @@ def resultadosMediciones(request):
         porcentajeAlumnosMedia.append((i,por))
 
     for n in niveles:
-        cantNiveles.append((n.nombre, cantNiv.get(valorNota=n.valor)['cant']))
+        try:
+            cant = cantNiv.get(valorNota=n.valor)['cant']
+        except:
+            cant = 0
+        cantNiveles.append((n.nombre, cant))
 
     responsables = RespuestaEvaluacion.objects.filter(estado='1').values("horario__responsable",
                                                                          "horario__responsable__first_name").annotate(
@@ -106,9 +101,7 @@ def resultadosMediciones(request):
         progreREs.append((r,por))
 
     context = {
-        'especialidad': especialidad,
-        'plan': plan.get()['planMedicion__planMedicion__nombre'],
-        'semestres': semestres,
+        'plan': plan,
         'indicadores': indicadores,
         'res': res,
         'progreResultados': progreREs,
@@ -123,14 +116,13 @@ def resultadosMediciones(request):
 @login_required
 def getListaProgresoCurso(request):
     if request.POST:
-        especialidad = Especialidad.objects.get(pk=5)
-        cursosTot = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',indicador_id=request.POST['indicador'],
-                                                    planMedicion__planMedicion__especialidad_id=especialidad.pk, estado='1').values(
+        cursosTot = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=request.POST['planMedicion'],
+                                                       indicador_id=request.POST['indicador'], estado='1').values(
             'planMedicion__curso').annotate(total=Count('planMedicion__curso')).order_by('planMedicion__curso')
-        cursosCalif = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',indicador_id=request.POST['indicador'],
-                                                    planMedicion__planMedicion__especialidad_id=especialidad.pk, calificado='1',
-                                                    evidencia='1', estado='1').values('planMedicion__curso').annotate(
-            total=Count('planMedicion__curso')).order_by('planMedicion__curso')
+        cursosCalif = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=request.POST['planMedicion'],
+                                                         indicador_id=request.POST['indicador'], calificado='1',
+                                                         evidencia='1', estado='1').values(
+            'planMedicion__curso').annotate(total=Count('planMedicion__curso')).order_by('planMedicion__curso')
         progreCursos = []
 
         for curso in cursosTot:

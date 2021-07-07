@@ -21,7 +21,7 @@
             <div class="row justify-content-between align-items-center">
                 <div class="col-12">
                     <h2 class="mb-2 mb-md-0 text-white">Dashboard</h2>
-                    <p class="text-white">Información de la especialidad de {{ especialidad.nombre }} del plan de medición {{ plan }}.</p>
+                    <p class="text-white">Información del plan de medición <b>{{ plan.nombre }}</b> de la especialidad de <b>{{ plan.especialidad.nombre }}</b> .</p>
                 </div>
             </div>
         </div>
@@ -246,36 +246,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-3">
-                    <label for="semestres">Semestres:</label>
-                    <select id="semestres" name="semestres" class="form-control" onchange="actualizarCursos()">
-                        {% for semestre in semestres %}
-                            <option value="{{ semestre.pk }}">{{ semestre.nombreCodigo }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label for="cursos">Cursos:</label>
-                    <select id="cursos" name="cursos" class="form-control" onchange="agregarData()">
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label for="horarios">Horarios:</label>
-                    <select id="horarios" name="horarios" class="form-control" onchange="actualizar()">
-                        <option value="All">All</option>
-                    </select>
-                </div>
-            </div>
-            <div class="p-3">
-                <canvas id="myChart" style="width:100%;"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <div class="card mb-3">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-3">
-                    <label for="REPorcentaje">Semestres:</label>
+                    <label for="REPorcentaje">Resultado del Estudiante:</label>
                     <select id="REPorcentaje" name="REPorcentaje" class="form-control" onchange="getPorcentajeMedia()">
                         {% for re in res %}
                             <option value="{{ re.pk }}">{{ re.codigo }}</option>
@@ -290,195 +261,11 @@
 {% block extrajs %}
     <script>
 
-        var xValues = [];
-        var matriz=[];
-
         $(document).ready(function () {
             console.log("ready!");
             getPorcentajeAlumnosMedia();
             getListaProgresoCurso();
-            actualizarCursos();
         });
-
-        function actualizarCursos() {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'resultadosMediciones' %}",
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    operacion: 'actualizarCursos',
-                    semestre: $("#semestres").val(),
-                },
-                success: function (response) {
-                    var instance = response["resp"];
-                    $(".curso").remove();
-                    for (var i = 0; i < instance.length; i++) {
-                        curso = '<option class="curso" value=' +
-                            instance[i]["pk"] + '>' +
-                            instance[i]["curso"] + '</option>';
-                        console.log(curso);
-                        $("#cursos").append(curso);
-                    }
-                    agregarData();
-                },
-                error: function (response) {
-                    alert(response["responseJSON"]["error"]);
-                },
-            });
-        }
-
-        function agregarData() {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'resultadosMediciones' %}",
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    operacion: 'agregar',
-                    curso: $("#cursos").val(),
-                },
-                success: function (response) {
-                    var xLabel = JSON.parse(response["xLabel"]);
-                    var yLabel = response["yLabel"];
-
-                    console.log(xLabel);
-                    console.log(yLabel);
-
-                    console.log(yLabel["horarios"][0]["notas"]);
-                    console.log(yLabel["horarios"][0]["notas"][3].cant);
-
-                    grafiquito.data.datasets.pop();
-                    grafiquito.data.datasets = [];
-
-                    xValues = [];
-                    grafiquito.update();
-
-                    $(".horario").remove();
-                    var dataHorario;
-                    for(var i=0; i<xLabel.length; i++){
-                         xValues.push(xLabel[i]["fields"].codigo);
-
-                          dataHorario = '<option class="horario" value='+
-                           xLabel[i]["fields"].codigo+'>'+ xLabel[i]["fields"].codigo+'</option>';
-
-                        $("#horarios").append(dataHorario);
-                    }
-
-                    var prueba=[];
-
-                    for (var i = 0; i < yLabel["horarios"].length; i++) {
-                        var lineal = [];
-                        for (var j = 0; j < yLabel["horarios"][i]["notas"].length; j++) {
-                            lineal.push(yLabel["horarios"][i]["notas"][j].cant);
-                        }
-                        prueba.push(lineal);
-                    }
-
-                    console.log("PRUEBA");
-                    console.log(prueba);
-                    matriz = prueba[0].map((_, colIndex) => prueba.map(row => row[colIndex]));
-                    console.log(matriz);
-
-                    for(var i=0;i<matriz.length; i++){
-                        const newDataset = {
-                            label: 'Nivel ' + (i+1),
-                            fill: false,
-                            lineTension: 0,
-                            backgroundColor: generateRandomColor(),
-                            borderColor: generateRandomColor(),
-                            data: matriz[i]
-                        };
-                        grafiquito.data.datasets.push(newDataset);
-                    }
-
-                    grafiquito.update();
-                    actualizar();
-                },
-                error: function (response) {
-                    alert(response["responseJSON"]["error"]);
-                },
-            });
-        }
-
-        function generateRandomColor() {
-            var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
-            return randomColor;
-            //random color will be freshly served
-        }
-
-        function actualizar() {
-            grafiquito.data.labels = [$("#horarios").val()];
-
-            var posicion=-1;
-            for(var i=0; i<xValues.length; i++){
-                if($("#horarios").val() == xValues[i]) posicion=i;
-            }
-
-
-            if ($("#horarios").val() == 'All') {
-                grafiquito.data.labels = xValues;
-                for (var i = 0; i < matriz.length; i++) {
-                    grafiquito.data.datasets[i].data = matriz[i];
-                }
-            } else {
-                grafiquito.data.labels = [$("#horarios").val()];
-                for (var i = 0; i < matriz.length; i++) {
-                    var mini = [];
-                    mini.push(matriz[i][posicion]);
-                    grafiquito.data.datasets[i].data = mini;
-                    console.log(matriz[i][posicion]);
-                }
-            }
-            grafiquito.update();
-        }
-
-
-        const data = {
-            labels: xValues,
-            datasets: [
-            ]
-        };
-
-        const config = {
-            type: 'bar',
-            data: data,
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Cantidad de alumnos evaluados por Horario'
-                    }
-                },
-                interaction: {
-                    intersect: false,
-                    mode: 'point',
-                },
-                scales: {
-                    y: {
-                        min: 0,
-                        max: 5,
-                        title: {
-                            display: true,
-                            text: 'Cantidad de alumnos',
-                        },
-                        ticks: {
-                            stepSize: 1
-                        }
-                    },
-                     x: {
-                        title: {
-                            display: true,
-                            text: 'Horarios',
-                        }
-                     }
-                },
-            },
-        }
-
-        var grafiquito = new Chart("myChart", config);
 
         function getPorcentajeAlumnosMedia(){
             var selec = $("#IndPorcentajeAlumnosMedia").val();
@@ -489,9 +276,10 @@
         function getListaProgresoCurso(){
             $.ajax({
                 type: 'POST',
-                url: "{% url 'getListaProgresoCurso'%}",
+                url: "{% url 'getListaProgresoCurso' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
+                    planMedicion : {{ plan.pk }},
                     indicador: $("#IndPorcentajeCurso").val(),
                 },
                 success: function (response) {
@@ -529,9 +317,10 @@
         function getPorcentajeMedia(){
             $.ajax({
                 type: 'POST',
-                url: "{% url 'getPorcentajeMedia'%}",
+                url: "{% url 'getPorcentajeMedia' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
+                    planMedicion : {{ plan.pk }},
                     RE: $("#REPorcentaje").val(),
                 },
                 success: function (response) {
