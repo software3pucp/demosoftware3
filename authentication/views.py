@@ -11,12 +11,12 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import Group
 from demosoftware3 import settings
-import  uuid
+import uuid
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from django.template.loader import render_to_string
-
+import pandas as pd
 
 def Show(request):
     media_path = MEDIA_URL
@@ -332,3 +332,27 @@ def changePassword(request,pk):
     except Exception as e:
         message = str(e)
     return JsonResponse({'message':message},status=200)
+
+def importarUsuarios(request):
+    excel = request.FILES['archivo']
+    df=pd.read_csv(excel,header=None, usecols=[0,1,2])
+    rows=len(df.index)
+    codigos=df[0].tolist()
+    nombres=df[1].tolist()
+    correos=df[2].tolist()
+
+    for i in range(rows):
+        codigo = codigos[i]
+        nombre = nombres[i]
+        correo = correos[i]
+
+        if (codigo != ""):
+            user=User.objects.filter(username=correo)
+            if not user:
+                User.objects.create_user(first_name=nombre,
+                                            username=correo, code=codigo,
+                                            email=correo,
+                                            is_active=True, estado=1)
+
+
+    return JsonResponse({}, status=200)

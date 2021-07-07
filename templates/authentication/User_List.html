@@ -1,10 +1,34 @@
 {% extends 'base/base.html' %}
+{% load static %}
+{% block extrastyle %}
 <style>
     .fa-plus {
         color: #FFFFFF !important;
     }
+
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: center;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+
 </style>
-{% load static %}
+{% endblock %}
 
 {% block body %}
 
@@ -24,6 +48,12 @@
                 {#                <div class="col-4 col-sm-auto d-flex align-items-center pr-0">#}
                 {#                    <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Usuarios</h5>#}
                 {#                </div>#}
+
+                <a href="" data-toggle="modal" data-target="#importarUsuarios"
+                   class="btn btn-primary mr-1 mb-1" type="button">
+                    <span class="fas fa-plus mr-1"></span><span>Importar Usuarios</span>
+                </a>
+
                 <div class="col-8 col-sm-auto ml-auto text-right pl-0">
                     <div id="dashboard-actions">
                         <a href="{% url 'user' %}" class="btn btn-primary mr-1 mb-1" type="button">
@@ -109,6 +139,117 @@
         </div>
     </div>
 
+    <!-- Modal Importar Usuarios -->
+    <div class="modal fade" id="importarUsuarios" tabindex="-1" role="dialog" aria-labelledby="importarUsuariosLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importarUsuariosLabel">Subir Archivo</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formImportar" name="formImportar" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="nombre_archivo">Seleccione un archivo csv: </label>
+                            <div class="input-group">
+                                <input name="nombre_archivo" id="nombre_archivo" type="text" class="form-control"
+                                       readonly>
+                                <span class="input-group-btn pb-3">
+                                        <span class="btn btn-primary btn-file ml-3 " type="button">Seleccionar
+                                            <input name="archivo" id="archivo" type="file" required/>
+                                        </span>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary btn-sm" id="btnImportar">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+{% endblock %}
+
+{% block extrajs %}
+    <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
+    <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $(document).on('change', '.btn-file :file', function () {
+                var input = $(this),
+                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                input.trigger('fileselect', [label]);
+            });
+
+            $('.btn-file :file').on('fileselect', function (event, label) {
+                var input = $(this).parents('.input-group').find(':text'),
+                    log = label;
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+            });
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#img-upload').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#archivo").change(function () {
+                readURL(this);
+            });
+
+            console.log("cargado");
+        });
+
+        $("#btnImportar").on('click', function (e) {
+            e.preventDefault();
+            if ($("#formImportar").valid()) {
+                console.log("ENTRA?")
+                importarUsuarios();
+                $("#importarUsuarios").modal('hide')
+            }
+        });
+
+        function importarUsuarios() {
+            var fd = new FormData();
+            var files = $('#archivo')[0].files;
+
+            // Check file selected or not
+            if (files.length > 0) {
+                fd.append('archivo', files[0]);
+                fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+                fd.append('nombre_archivo', $("#nombre_archivo").val());
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'importarUsuarios' %}",
+                    data: fd,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        location.reload();
+                    },
+                    error: function (response) {
+                        console.log("ERROR")
+                        console.log(response)
+                    }
+                });
+            }
+        }
+    </script>
 {% endblock %}

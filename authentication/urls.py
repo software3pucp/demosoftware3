@@ -20,6 +20,7 @@ urlpatterns = [
     path('reset/password/', views.renderForgotPassword, name='forgotPassword'),
     path('forgotPassword', views.ResetPassword, name='reset_password'),
     path('change/password/<str:token>/', views.ChangePasswordView.as_view(), name='renderChangePassword'),
-    path('changePassword/<pk>/',views.changePassword,name='changePassword')
+    path('changePassword/<pk>/',views.changePassword,name='changePassword'),
+    path('importarUsuarios/',views.importarUsuarios,name='importarUsuarios'),
 
 ]
