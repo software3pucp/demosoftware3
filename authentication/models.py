@@ -5,6 +5,8 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
 from gestionarFacultad.models import Facultad
 from gestionarEspecialidad.models import Especialidad
+
+
 # Create your models here.
 def remove_accents(input_str):
     nfkd_form = unicodedata.normalize('NFKD', input_str)
@@ -35,11 +37,7 @@ class User(AbstractUser):
     token = models.UUIDField(primary_key=False, editable=False, null=True, blank=True)
 
 
-class UserxGroups(models.Model):
-    user = models.ForeignKey(User,on_delete= models.DO_NOTHING)
-    group = models.ForeignKey(Group,on_delete= models.DO_NOTHING)
-    facultad = models.ForeignKey(Facultad,on_delete= models.DO_NOTHING,null=True)
-    especialidad = models.ForeignKey(Especialidad,on_delete= models.DO_NOTHING,null=True)
-
-
-
+class User_Groups_Extended(models.Model):
+    userGroup = models.IntegerField(null=False)
+    facultad = models.ForeignKey(Facultad, on_delete=models.CASCADE, null=True, blank=True)
+    especialidad = models.ForeignKey(Especialidad, on_delete=models.CASCADE, null=True, blank=True)

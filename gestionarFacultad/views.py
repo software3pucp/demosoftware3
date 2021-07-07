@@ -1,7 +1,9 @@
+from django.contrib.auth.models import Group
+
 from demosoftware3.settings import MEDIA_URL
 from gestionarFacultad.models import Facultad
 from django.shortcuts import render, redirect
-from authentication.models import User
+from authentication.models import User, User_Groups_Extended
 from django.contrib.auth.decorators import login_required
 from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
@@ -12,6 +14,34 @@ from authentication.models import User
 @login_required
 # Create your views here.
 def listarFacultad(request):
+    # print(request.user.rol_actual)
+
+    if (request.user.rol_actual == 'Coordinador de facultad'):
+        usuario = request.user
+        grupo = Group.objects.get(name="Coordinador de facultad")
+
+        print(usuario)
+        print(grupo)
+
+        usuario_grupo = User.groups.through.objects.get(user_id=usuario.pk, group_id=grupo.pk)
+        print(usuario_grupo.id)
+        print(usuario_grupo.user_id)
+        print(usuario_grupo.group_id)
+        registros = User_Groups_Extended.objects.filter(userGroup=usuario_grupo.id)
+
+        facultades=[]
+        for item in registros:
+            facultad = Facultad.objects.get(pk=item.facultad.pk)
+            facultades.append(facultad)
+
+        media_path = MEDIA_URL
+        context = {
+            'ListaFacultad':facultades,
+            'media_path': media_path,
+        }
+        return render(request, 'gestionarFacultad/listarFacultadCoordinador.html', context)
+
+
     media_path = MEDIA_URL
     context = {
         'ListaFacultad': Facultad.objects.filter(estado=Facultad.ESTADOS[1][0]),

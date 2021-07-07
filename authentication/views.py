@@ -26,6 +26,7 @@ def Show(request):
     }
     return render(request, 'authentication/User_List.html', context)
 
+
 def EnviarCorreoBienvenida(request, user,p):
     try:
         URL = settings.DOMAIN if not settings.DEBUG else request.META['HTTP_HOST']
@@ -81,6 +82,8 @@ def Register(request):
 
 
 def Edit(request, pk):
+    print("holaaaaaaaaaaaaaaaaaaa")
+    print(pk)
     flag1= False
     flag2= False
     media_path = MEDIA_URL
