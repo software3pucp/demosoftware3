@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from validate_email import validate_email
 from django.urls import reverse
 from django.views.generic import FormView
 from authentication.forms import ChangePasswordForm
@@ -17,6 +18,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from django.template.loader import render_to_string
 import pandas as pd
+import math
 
 def Show(request):
     media_path = MEDIA_URL
@@ -336,26 +338,80 @@ def changePassword(request,pk):
         message = str(e)
     return JsonResponse({'message':message},status=200)
 
+def concatElementosLista(list,cadena):
+    tamañoList=len(list)
+    for i in range(tamañoList):
+        cadena=cadena+str(list[i]+1)
+        if i!=(tamañoList-1):
+            cadena=cadena+", "
+        else:
+            cadena=cadena+"\n"
+    return cadena
+
 def importarUsuarios(request):
-    excel = request.FILES['archivo']
-    df=pd.read_csv(excel,header=None, usecols=[0,1,2])
-    rows=len(df.index)
-    codigos=df[0].tolist()
-    nombres=df[1].tolist()
-    correos=df[2].tolist()
+    try:
+        excel = request.FILES['archivo']
+        df=pd.read_csv(excel,header=None, usecols=[0,1,2])
+        rows=len(df.index)
+        codigos=df[0].tolist()
+        nombres=df[1].tolist()
+        correos=df[2].tolist()
+        filasFaltanDatos=[]
+        filasCorreoMaltipeado=[]
+        listaUsuarioRechazados = []
+        filasInsertadas=[]
+        hayError=False
+        success_message="Se han guardado los datos correctamente"
+        error_message=""
+        for i in range(rows):
+            codigo = codigos[i]
+            nombre = nombres[i]
+            correo = correos[i]
+            if type(codigo)==float and math.isnan(codigo)==False:
+                codigo=int(codigo)
 
-    for i in range(rows):
-        codigo = codigos[i]
-        nombre = nombres[i]
-        correo = correos[i]
+            if ((type(codigo)==int or type(codigo)==str) and type(nombre)==str and type(correo)==str):
+                user=User.objects.filter(username=correo)
+                user2=User.objects.filter(code=codigo)
+                if not user and not user2:
+                    if validate_email(correo):
+                        User.objects.create_user(first_name=nombre,
+                                                    username=correo, code=codigo,
+                                                    email=correo,
+                                                    is_active=True, estado=1)
+                        filasInsertadas.append(i)
+                    else:
+                        filasCorreoMaltipeado.append(i)
+                else:
+                    listaUsuarioRechazados.append(i)
+            else:
+                filasFaltanDatos.append(i)
 
-        if (codigo != ""):
-            user=User.objects.filter(username=correo)
-            if not user:
-                User.objects.create_user(first_name=nombre,
-                                            username=correo, code=codigo,
-                                            email=correo,
-                                            is_active=True, estado=1)
+        if filasFaltanDatos:
+            print("Faltan Datos en las siguientes filas")
+            print(filasFaltanDatos)
+            error_message=error_message+"Faltan Datos en las siguientes filas:\n"
+            error_message=concatElementosLista(filasFaltanDatos, error_message)
+            hayError=True
 
+        if filasCorreoMaltipeado:
+            print("Correos mal tipeados en las siguientes filas")
+            print(filasCorreoMaltipeado)
+            error_message=error_message+"Correos mal tipeados en las siguientes filas:\n"
+            error_message=concatElementosLista(filasCorreoMaltipeado, error_message)
+            hayError=True
 
-    return JsonResponse({}, status=200)
+        if listaUsuarioRechazados:
+            print("Usuarios rechazado por que el codigo o el correo ya esta en la base de datos")
+            print(listaUsuarioRechazados)
+            error_message=error_message+"Filas donde los usuarios son rechazado por que el codigo o el correo ya esta en la base de datos:\n"
+            error_message=concatElementosLista(listaUsuarioRechazados, error_message)
+            hayError=True
+        if filasInsertadas:
+            if hayError:
+                error_message=error_message+"Por otra parte las demas filas fueron agregadas correctamente"
+
+        print(error_message)
+        return JsonResponse({"hayError":hayError, "error_message": error_message, "success_message":success_message}, status=202)
+    except:
+        return JsonResponse("Error al agregar Usuarios", status=303)

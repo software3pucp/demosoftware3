@@ -181,12 +181,38 @@
         </div>
     </div>
 
+    <!-- Modal Error-->
+    <div class="modal fade" id="errorModal1" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title" id="errorModalLabel">¡Ocurrió un error!</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Cerrar"
+                            onclick="redirectPage()"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div id="error_message" class="modal-body bg-soft-danger">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal"
+                            onclick="redirectPage()">Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block extrajs %}
     <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
     <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
     <script>
+
+        function redirectPage() {
+            location.reload();
+        }
 
         $(document).ready(function () {
 
@@ -232,6 +258,15 @@
             }
         });
 
+        $("#btnImportar").on('click', function (e) {
+            e.preventDefault();
+            if ($("#formImportar").valid()) {
+                console.log("ENTRA?")
+                importarUsuarios();
+                $("#importarUsuarios").modal('hide')
+            }
+        });
+
         function importarUsuarios() {
             var fd = new FormData();
             var files = $('#archivo')[0].files;
@@ -249,7 +284,12 @@
                     contentType: false,
                     processData: false,
                     success: function (response) {
-                        location.reload();
+                        if (response["hayError"]) {
+                            mostrarError(response["error_message"]);
+                        }
+                        else{
+                            mostrarError(response["success_message"]);
+                        }
                     },
                     error: function (response) {
                         console.log("ERROR")
@@ -258,5 +298,16 @@
                 });
             }
         }
+
+        function mostrarError(error_message) {
+            console.log(error_message);
+            data = '';
+            data += (
+                '<p>' + error_message + '</p>'
+            )
+            $("#error_message").html(data);
+            $("#errorModal1").modal({backdrop: 'static', keyboard: false, show: true});
+        }
+
     </script>
 {% endblock %}
