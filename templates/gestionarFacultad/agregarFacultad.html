@@ -3,6 +3,7 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
+    <link href="{% static 'lib/select2/select2.min.css' %}" rel="stylesheet">
     <style>
         html {
             font-family: 'Open Sans', sans-serif;
@@ -72,7 +73,7 @@
                     <p></p>
                     <div class="form-group">
                         <label for="exampleFormControlSelect1">Seleccione responsable(s)</label>
-                        <select name="responsable" class="form-control" id="exampleFormControlSelect1">
+                        <select name="responsable" class="form-control selectpicker" id="exampleFormControlSelect1">
                             {% for responsable in ListaUsuarios %}
                                 <option value={{ responsable.pk }}>{{ responsable.first_name }} {{ responsable.last_name }}</option>
                             {% endfor %}
@@ -107,6 +108,7 @@
 {% endblock %}
 
 {% block extrajs %}
+    <script src="{% static 'lib/select2/select2.min.js' %}"></script>
     <script>
         $(document).ready(function () {
             $(document).on('change', '.btn-file :file', function () {
