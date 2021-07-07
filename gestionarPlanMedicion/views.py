@@ -1,7 +1,7 @@
 import requests
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-
+from django.contrib.auth.models import Group
 # Create your views here.
 from django.core import serializers
 from gestionarCurso.models import Curso
@@ -173,7 +173,16 @@ def crearAjax(request):
             for horario in horarios:
                 if horario.codigo == request.POST["codigo"]:
                     return JsonResponse({'status':'false','message':'Horario ya ingresado'}, status=500)
+
             Horario.objects.create(codigo=request.POST["codigo"],curso_id=request.POST["planPK"],responsable_id=request.POST["responsablePk"],estado=1)
+
+            #insertar rol docente si es que no lo tiene
+            user= User.objects.get(pk=request.POST["responsablePk"])
+            group= Group.objects.get(name="Docente")
+            userGroup = list(User.groups.through.objects.filter(user_id=request.POST["responsablePk"], group_id=group.pk))
+            if len(userGroup) ==0:
+                group.user_set.add(user)
+
             hor = Horario.objects.latest('id')
             horario = Horario.objects.filter(pk=hor.pk)
             data = serializers.serialize("json", horario)
@@ -183,10 +192,26 @@ def crearAjax(request):
             horarios = Horario.objects.filter(curso_id=request.POST["planPK"], estado=1)
             if horario[0] not in horarios:
                 return JsonResponse({'status': 'false', 'message': 'Horario no encontrado'}, status=500)
+
             hor = Horario.objects.get(pk=request.POST["horarioPk"])
+            group = Group.objects.get(name="Docente")
+
+            #Quitar rol de docente a responsable si es necesario
+            responsable = User.objects.get(pk=hor.responsable.pk)
+            horarios = list(Horario.objects.filter(responsable=responsable.pk))
+            if len(horarios) == 1:
+                group.user_set.remove(responsable)
+
             hor.codigo = request.POST["codigo"]
             hor.responsable_id = request.POST["responsablePk"]
             hor.save()
+
+            #Agregar rol de docente a nuevo responsable si es requerido
+            user = User.objects.get(pk=request.POST["responsablePk"])
+            userGroup = list(User.groups.through.objects.filter(user_id=request.POST["responsablePk"], group_id=group.pk))
+            if len(userGroup) == 0:
+                group.user_set.add(user)
+
             horario = Horario.objects.filter(pk=request.POST["horarioPk"])
             data = serializers.serialize("json", horario)
             return JsonResponse({"resp": data}, status=200)
@@ -199,6 +224,15 @@ def crearAjax(request):
             if horario[0] not in horarios:
                 return JsonResponse({'status': 'false', 'message': 'Horario no encontrado'}, status=500)
             hor = Horario.objects.get(pk=request.POST["horarioPk"])
+
+            #Quitar rol de docente si es necesario
+            group = Group.objects.get(name="Docente")
+            responsable = User.objects.get(pk=hor.responsable.pk)
+            horarios = list(Horario.objects.filter(responsable=responsable.pk))
+            if len(horarios) == 1:
+                group.user_set.remove(responsable)
+
+            hor.responsable_id = None
             hor.estado = 0
             hor.save()
             data = serializers.serialize("json", horario)

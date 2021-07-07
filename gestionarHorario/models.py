@@ -26,7 +26,7 @@ def upload_location_archive(instance, filename):
 
 class Horario(models.Model):
     codigo = models.CharField(max_length=30)
-    responsable = models.ForeignKey(User, on_delete=models.RESTRICT)
+    responsable = models.ForeignKey(User, on_delete=models.RESTRICT,null=True,blank=True)
     curso = models.ForeignKey(PlanMedicionCurso, on_delete=models.RESTRICT)
     ESTADOS = [
         ('0', 'Eliminado'),
