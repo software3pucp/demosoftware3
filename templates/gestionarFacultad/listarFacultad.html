@@ -82,7 +82,11 @@
                             <div class="product card mr-4 mb-4" style="height: 16rem">
                                 <div class="card-img-top imgbox" style="height: 15rem">
                                     <a href="{% url 'listarFacultadxEsp' id_facultad=facultad.pk %}">
-                                        <img class="" src="{{ media_path }}{{ facultad.foto.name }}/">
+                                        {% if facultad.foto.name %}
+                                            <img class="" src="{{ media_path }}{{ facultad.foto.name }}/">
+                                        {% else %}
+                                            <img class="" src="{% static 'img/illustrations/3.png' %}">
+                                        {% endif %}
                                     </a>
                                 </div>
                                 <div class="specifies card-body p-1">
