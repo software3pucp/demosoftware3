@@ -20,33 +20,6 @@ from gestionarSemestre.models import Semestre
 
 @login_required
 def resultadosMediciones(request):
-    if request.POST:
-        if request.POST['operacion'] == 'agregar':
-            if (request.POST['curso'] == ''):
-                return
-            curso = PlanMedicionCurso.objects.get(pk=request.POST['curso'])
-            niveles = Nivel.objects.filter(especialidad_id=curso.curso.especialidad_id, estado='1')
-            horarios = Horario.objects.filter(curso_id=request.POST['curso'], estado='1')
-            listaHor = []
-            for horario in horarios:
-                listaNiv = []
-                for nivel in niveles:
-                    c = RespuestaEvaluacion.objects.filter(valorNota=nivel.valor, horario_id=horario.pk).count()
-                    jsonNivel = {"nivel": nivel.valor, "cant": c}
-                    listaNiv.append(jsonNivel)
-                jsonHor = {"horario": horario.codigo, "notas": listaNiv}
-                listaHor.append(jsonHor)
-            resCur = {"nombre": curso.curso.nombre, "horarios": listaHor}
-            dataX = serializers.serialize("json", horarios)
-            return JsonResponse({"xLabel": dataX, "yLabel": resCur}, status=200)
-
-        elif request.POST['operacion'] == 'actualizarCursos':
-            cursos = list(PlanMedicionCurso.objects.filter(semestre_id=request.POST['semestre'], estado='1'))
-            data = []
-            for cur in cursos:
-                jsonCurso = {"pk": cur.pk, "curso": cur.curso.nombre}
-                data.append(jsonCurso)
-            return JsonResponse({"resp": data}, status=200)
     especialidad = Especialidad.objects.get(pk=5)
     plan = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',
                                               planMedicion__planMedicion__especialidad_id=especialidad.pk,
@@ -62,6 +35,8 @@ def resultadosMediciones(request):
     progreIndicadores = []
     porcentajeAlumnosMedia = []
     cantNiveles = []
+    progreResponsables = []
+    progreREs = []
 
     et = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',
                                             planMedicion__planMedicion__especialidad_id=especialidad.pk, estado='1').values(
@@ -70,6 +45,7 @@ def resultadosMediciones(request):
                                            planMedicion__planMedicion__especialidad_id=especialidad.pk, calificado='1', evidencia='1',
                                            estado='1').values('indicador').annotate(
         total=Count('indicador_id')).order_by('indicador_id')
+
     mediana = 2
     mt = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',
                                            planMedicion__planMedicion__especialidad_id=especialidad.pk, calificado='1', evidencia='1',
@@ -79,6 +55,16 @@ def resultadosMediciones(request):
                                            planMedicion__planMedicion__especialidad_id=especialidad.pk, calificado='1', evidencia='1',
                                            estado='1').values('indicador').annotate(
         total=Count('indicador_id')).order_by('indicador_id')
+
+    pt = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',
+                                            planMedicion__planMedicion__especialidad_id=especialidad.pk,
+                                            estado='1').values('indicador__resultado_id').annotate(
+        total=Count('indicador__resultado_id')).order_by('indicador__resultado_id')
+
+    p = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion__estado='1',
+                                           planMedicion__planMedicion__especialidad_id=especialidad.pk, calificado='1', evidencia='1',
+                                           estado='1').values('indicador__resultado_id').annotate(
+        total=Count('indicador__resultado_id')).order_by('indicador__resultado_id')
 
     for i in indicadores:
         try:
@@ -103,7 +89,6 @@ def resultadosMediciones(request):
         "horario__responsable", "horario__responsable__first_name").annotate(
         total=Count("horario__responsable__first_name")).order_by()
 
-    progreResponsables = []
     for r in responsables:
         try:
             por = round((evaluados.get(horario__responsable=r["horario__responsable"])['total'] /
@@ -111,13 +96,22 @@ def resultadosMediciones(request):
         except:
             por = 0
         progreResponsables.append((r["horario__responsable__first_name"], por))
-        print(plan)
+
+    for r in res:
+        try:
+            por = round((p.get(indicador__resultado_id=r.pk)['total'] /
+                         pt.get(indicador__resultado_id=r.pk)['total']) * 100)
+        except:
+            por = 0
+        progreREs.append((r,por))
+
     context = {
         'especialidad': especialidad,
         'plan': plan.get()['planMedicion__planMedicion__nombre'],
         'semestres': semestres,
         'indicadores': indicadores,
         'res': res,
+        'progreResultados': progreREs,
         'porcentajeAlumnosMedia': porcentajeAlumnosMedia,
         'progreIndicadores': progreIndicadores,
         'cantNiveles': cantNiveles,
@@ -147,8 +141,6 @@ def getListaProgresoCurso(request):
                 por = 0
             cur = Curso.objects.get(pk=curso['planMedicion__curso'])
             progreCursos.append({"curso": cur.nombre, "porcentaje": por})
-
-        print(progreCursos)
 
         return JsonResponse({"resp": progreCursos}, status=200)
 
