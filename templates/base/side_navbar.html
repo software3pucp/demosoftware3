@@ -389,6 +389,18 @@
                         </div>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'objetivos' %}">
+                        <div class="d-flex align-items-center">
+                        <span class="nav-link-icon">
+                            <span class="fas fa-graduation-cap"></span>
+                        </span>
+                            <span class="nav-link-text">
+                            Objetivos educacionales
+                        </span>
+                        </div>
+                    </a>
+                </li>
                 {% endif %}
 
             {% if request.user.n_Roles != '1' %}

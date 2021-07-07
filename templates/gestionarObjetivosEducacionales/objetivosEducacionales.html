@@ -1,0 +1,403 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+
+
+    <div class="card mb-3 bg-card-gradient">
+        <div class="card-body ">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-12">
+                    <h5 class="mb-2 mb-md-0 text-white">Objetivos Educacionales</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-6 pl-4 pr-4">
+                        <div class="row">
+                            <label for="cboFacultad">Facultad:</label>
+                        </div>
+                        <div class="row">
+                            <select class="custom-select custom-select-sm mb-3" id="cboFacultad" name="cboFacultad"
+                                    onchange="obtenerEspecialidades()">
+                                {% for facultad in facultades %}
+                                    <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-6 pl-4 pr-4">
+                        <div class="row">
+                            <label for="cboEspecialidad">Especialidad:</label>
+                        </div>
+                        <div class="row">
+                            <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
+                                    name="cboEspecialidad"
+                                    onchange="listarObjetivos()">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-lg-10 px-0" id="tituloEspecialidadMediciones"></div>
+                    <div class="col-sm-12 col-lg-2 float-right text-right">
+                        <span class="btn btn-primary" href="#agregarObjetivo" data-toggle="modal">Agregar</span>
+                    </div>
+                </div>
+                <div id="listadoObjetivos"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Agregar Objetivo -->
+    <div class="modal fade" id="agregarObjetivo" tabindex="-1" role="dialog" aria-labelledby="agregarObjetivoLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="agregarObjetivoLabel">Registrar Objetivo</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAgregarObjetivo" name="formAgregarObjetivo">
+                        <div class="form-group">
+                            <label for="codigoObjetivo">Código</label>
+                            <input class="form-control" id="codigoObjetivo" name="codigoObjetivo" type="text"
+                                   placeholder="Código">
+                        </div>
+                        <div class="form-group">
+                            <label for="descripcionObjetivo">Descripcion</label>
+                            <input class="form-control" id="descripcionObjetivo" name="descripcionObjetivo" type="value"
+                                   placeholder="Descripción">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
+                    <button id="btnAgregarObjetivo" class="btn btn-primary btn-sm" type="button"
+                            onclick="validarObjetivo()">Agregar
+                    </button>
+                    <button id="btnAgregarObjetivoYCerrar" class="btn btn-primary btn-sm" type="button"
+                            onclick="validarObjetivo()">Agregar y cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Editar Objetivo -->
+    <div class="modal fade" id="editarObjetivo" tabindex="-1" role="dialog" aria-labelledby="editarObjetivoLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarObjetivoLabel">Editar Objetivo</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditarObjetivo" name="formEditarObjetivo">
+                        <div class="form-group">
+                            <label for="codigoObjetivoMod">Nombre</label>
+                            <div id="editCodigo"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="descripcionObjetivoMod">Valor</label>
+                            <div id="editDescripcion"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
+                    <button id="btnEditarObjetivo" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Eliminar Objetivo -->
+    <div class="modal fade" id="eliminarObjetivo" tabindex="-1" role="dialog" aria-labelledby="eliminarObjetivoLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarObjetivoLabel"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                    <button id="btnEliminarObjetivo" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block extrajs %}
+
+    <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
+    <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
+
+
+    <script>
+        var pkEliminarN;
+        var pkEditarN;
+
+
+        $(document).ready(function () {
+            filtrarEspecialidades();
+        });
+
+
+        $("#btnEliminarObjetivo").on('click', function () {
+            eliminarObjetivo(pkEliminarN);
+            $("#eliminarObjetivo").modal('hide');
+        });
+
+        function objetivosEliminar(codigoObjetivo, pk) {
+            data = '<h5 class="modal-title" id="eliminarObjetivoLabel">Se eliminará el objetivo: ' + codigoObjetivo + '</h5>';
+            $("#eliminarObjetivoLabel").html(data);
+            $("#eliminarObjetivo").modal('show');
+            pkEliminarN = pk;
+        };
+
+
+        function eliminarObjetivo(objetivopk) {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'eliminarObjetivo' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    objetivopk: objetivopk,
+                },
+                success: function (response) {
+                    listarObjetivos();
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+        function filtrarEspecialidades() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'obtenerEspecialidades' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    facultad: $("#cboFacultad").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["resp"]);
+
+                    $(".especialidad").remove();
+                    for (var i = 0; i < instance.length; i++) {
+                        data = '<option class="especialidad" value=' +
+                            instance[i]["pk"] + '>' +
+                            instance[i]["fields"].nombre + '</option>';
+                        $("#cboEspecialidad").append(data);
+                    }
+
+                    listarObjetivos();
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                },
+            });
+        }
+
+        function listarObjetivos() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'listarObjetivos'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    especialidad: $("#cboEspecialidad").val(),
+
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response['objetivos']);
+                    var i = 0;
+                    var numero = instance.length;
+                    var data = '';
+                    var data2 = '';
+                    for (i = 0; i < numero; i++) {
+                        data += (
+                            '<div class="card my-3 overflow-hidden" style="min-width: 12rem">' +
+                                '<div class="bg-holder bg-card"' + 'style="background-image:url(' + '{% static '/img/illustrations/corner-3.png' %}' + ');">' + '</div>' +
+                                    '<div class="card-body position-relative">' +
+                                        '<h5>' + instance[i]["fields"].codigo +
+                                        '<div class="my-1">' + instance[i]["fields"].descripcion +
+                                        '</div>'+
+                                        '<div class="btn btn-falcon-default my-1 mr-2" data-toggle="tooltip"' +
+                                            'data-placement="top" title="Editar plan de Resultado" ' +
+                                            'onclick="objetivosEditar(\'' + instance[i]["fields"].codigo + '\', \'' + instance[i]["fields"].descripcion + '\',' + instance[i]["pk"] + ')">' +
+                                            '<span class="fa fa-pen "</span>' +
+                                        '</div>'+
+                                        '<button class="btn btn-falcon-danger my-1 mr-2" onclick="objetivosEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
+                                        '<span class="fa fa-times"></span> Eliminar</button>'+
+                                    '</div>'+
+                                '</div>'+
+                           '</div>'
+                        );
+                    }
+
+                    data2 = ('<h5 class="ml-3 mt-2">Objetivos de ' + $("#cboEspecialidad option:selected").text() + '</h5>');
+                    $("#tituloEspecialidadObjetivos").html(data2);
+                    $("#listadoObjetivos").html(data);
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    console.log(response)
+                }
+            });
+        }
+
+
+        function crearObjetivo() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearObjetivo' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    codigo: $("#codigoObjetivo").val(),
+                    descripcion: $("#descripcionObjetivo").val(),
+                    especialidadpk: $("#cboEspecialidad").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["nuevoObjetivo"]);
+                    var fields = instance[0]["fields"];
+                    console.log(instance)
+
+                    listarObjetivos();
+                },
+                error: function (response) {
+                    console.log("ocurrio un error")
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+        function validarObjetivo() {
+            $("form[name='formAgregarObjetivo']").validate({
+                rules: {
+                    codigoObjetivo: {
+                        required: true,
+                    },
+                    descripcionObjetivo: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    codigoObjetivo: {
+                        required: "Por favor ingrese el codigo del objetivo",
+                    },
+                    descripcionObjetivo: {
+                        required: "Por favor ingrese la descripcion del objetivo",
+                    }
+                }
+            });
+        };
+
+
+        $("#btnEditarObjetivo").on('click', function () {
+            if ($("#formEditarObjetivo").valid()) {
+                editarObjetivo(pkEditarN);
+                $("#editarObjetivo").modal('hide');
+            }
+        });
+
+        $("#btnAgregarObjetivo").on('click', function () {
+            validarObjetivo();
+            if ($("#formAgregarObjetivo").valid()) {
+                crearObjetivo();
+                $("#codigoObjetivo").val('');
+                $("#descripcionObjetivo").val('');
+            }
+        });
+
+        $("#btnAgregarObjetivoYCerrar").on('click', function () {
+            validarObjetivo();
+            if ($("#formAgregarObjetivo").valid()) {
+                crearObjetivo();
+                $("#codigoObjetivo").val('');
+                $("#descripcionObjetivo").val('');
+                $("#agregarObjetivo").modal('hide');
+            }
+        });
+
+
+        function objetivosEditar(codigoObjetivo, descripcionObjetivo, pk) {
+            var nomb = codigoObjetivo.toString();
+            data = '';
+            data += '<input class="form-control" id="codigoObjetivoMod" name="codigoObjetivoMod" type="text" value="' + nomb + '">';
+            $("#editCodigo").html(data);
+
+            data = '<input class="form-control" id="descripcionObjetivoMod" name="descripcionObjetivoMod" type="text" value=' + descripcionObjetivo + '>';
+            $("#editDescripcion").html(data);
+            $("#editarObjetivo").modal('show');
+
+            $("form[name='formEditarObjetivo']").validate({
+                rules: {
+                    codigoObjetivoMod: {
+                        required: true,
+                    },
+                    descripcionObjetivoMod: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    codigoObjetivoMod: {
+                        required: "Por favor ingrese el codigo del objetivo",
+                    },
+                    descripcionObjetivoMod: {
+                        required: "Por favor ingrese la descripcion del objetivo",
+                    }
+                }
+            });
+            pkEditarN = pk;
+        };
+
+
+        function editarObjetivo(idObjetivo) {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'editarObjetivo'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    objetivopk: idObjetivo,
+                    codigoObjetivoMod: $("#codigoObjetivoMod").val(),
+                    descripcionObjetivoMod: $("#descripcionObjetivoMod").val()
+                },
+                success: function (response) {
+                    console.log("Se ha editado correctamente!");
+                    listarObjetivos();
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+
+    </script>
+{% endblock %}
