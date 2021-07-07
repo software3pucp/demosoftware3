@@ -212,9 +212,8 @@
                 label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
                 input.trigger('fileselect', [label]);
                 edi=label;
-                console.log("aquqqqq");
                 console.log(edi);
-                console.log("fin");
+                $("#nombre_archivo_mod").val(edi);
             });
 
             $('.btn-file :file').on('fileselect', function (event, label) {
