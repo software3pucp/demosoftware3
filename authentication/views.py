@@ -414,4 +414,4 @@ def importarUsuarios(request):
         print(error_message)
         return JsonResponse({"hayError":hayError, "error_message": error_message, "success_message":success_message}, status=202)
     except:
-        return JsonResponse("Error al agregar Usuarios", status=303)
+        return JsonResponse({"resp": None}, status=303)
