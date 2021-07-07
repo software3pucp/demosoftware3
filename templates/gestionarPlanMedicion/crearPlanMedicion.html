@@ -3,6 +3,7 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
+    <link href="{% static 'lib/select2/select2.min.css' %}" rel="stylesheet">
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
@@ -211,7 +212,7 @@
             <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar"
                  style="background-color: #017ECD;">
 
-                <div class="modal-body text-white">
+                <div class="modal-body">
                     <div class="row d-flex justify-content-center">
                         <h5 id="textoModal" class="text-white">Crear Horario</h5>
                         <hr class="mb-4" style="background-color: #f9fafd; width: 70%">
@@ -219,7 +220,7 @@
 
                     <div class="row d-flex justify-content-start">
                         <div class="col-12 pl-5">
-                            <label for="name">Código</label>
+                            <label class="text-white" for="name">Código:</label>
                             <input id="codigoSelec" name="name" class="form-control p-3" id="name" type="text"
                                    placeholder="Ingrese el código del horario" required/>
                         </div>
@@ -227,8 +228,8 @@
                     <br>
                     <div class="row d-flex justify-content-start">
                         <div class="col-12 pl-5">
-                            <label for="exampleFormControlSelect1">Seleccione responsable(s)</label>
-                            <select id="responsableSelec" name="responsable" class="form-control" id="exampleFormControlSelect1">
+                            <label class="text-white" for="responsable">Seleccione responsable:</label>
+                            <select id="responsableSelec" name="responsable" class="form-control selectpicker text-black" id="responsable">
                                 {% for responsable in ListaUsuarios %}
                                     <option value={{ responsable.pk }}>{{ responsable.first_name }} {{ responsable.last_name }}</option>
                                 {% endfor %}
@@ -324,6 +325,7 @@
 {% endblock %}
 
 {% block extrajs %}
+    <script src="{% static 'lib/select2/select2.min.js' %}"></script>
     <script>
         $(document).ready(function () {
             console.log("ready!");
