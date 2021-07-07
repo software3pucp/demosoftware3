@@ -229,6 +229,20 @@
         </div>
     </div>
 
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="REPorcentaje">Semestres:</label>
+                    <select id="REPorcentaje" name="REPorcentaje" class="form-control" onchange="getPorcentajeMedia()">
+                        {% for re in res %}
+                            <option value="{{ re.pk }}">{{ re.codigo }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block extrajs %}
@@ -462,6 +476,24 @@
                             '</tr>';
                         $("#ListaProgresoCurso").append(data);
                     }
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            })
+        }
+
+        function getPorcentajeMedia(){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'getPorcentajeMedia'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    RE: $("#REPorcentaje").val(),
+                },
+                success: function (response) {
+
                 },
                 error: function (response) {
                     // alert the error if any error occured
