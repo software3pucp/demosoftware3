@@ -77,6 +77,14 @@ def editarEspecialidad(request, id_especialidad):
     estado = especialidad.estado
     if request.POST:
         print(request.POST)
+        group = Group.objects.get(name="Coordinador de especialidad")
+
+        # Quitar rol de coordinador de especialidad a responsable si es necesario
+        responsable = User.objects.get(pk=especialidad.responsable)
+        especialidades = list(Especialidad.objects.filter(responsable=responsable.pk))
+        if len(especialidades) == 1:
+            group.user_set.remove(responsable)
+
         nuevo_nombre = request.POST["name"]
         nuevo_responsable = request.POST["responsable"]
         if request.FILES.get('photo'):
@@ -85,6 +93,13 @@ def editarEspecialidad(request, id_especialidad):
         especialidad.nombre = nuevo_nombre
         especialidad.responsable = nuevo_responsable
         especialidad.save()
+
+        #Agregar rol de coordinador de especialidad a nuevo responsable si no lo tiene
+        user = User.objects.get(pk=nuevo_responsable)
+        userGroup = list(User.groups.through.objects.filter(user_id=nuevo_responsable, group_id=group.pk))
+        if len(userGroup) == 0:
+            group.user_set.add(user)
+
         return redirect('listarFacultadxEsp', id_facultad)
 
     context = {
