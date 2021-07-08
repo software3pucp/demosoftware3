@@ -309,7 +309,8 @@
             <div class="row">
                 <div class="col-md-3">
                     <label for="REPorcentajeTot">Resultado del Estudiante:</label>
-                    <select id="REPorcentajeTot" name="REPorcentajeTot" class="form-control" onchange="getPorcentajeTot()">
+                    <select id="REPorcentajeTot" name="REPorcentajeTot" class="form-control"
+                            onchange="getPorcentajeTot()">
                         {% for re in res %}
                             <option value="{{ re.pk }}">{{ re.codigo }}</option>
                         {% endfor %}
@@ -317,6 +318,7 @@
                 </div>
             </div>
             <div class="p-3">
+                <canvas id="myChart2" style="width:100%;"></canvas>
             </div>
         </div>
     </div>
@@ -395,27 +397,25 @@
                     grafiquito.data.labels = [];
 
                     //Eje X
-                    for(var i=0; i<indicadores.length; i++){
-                         grafiquito.data.labels.push(indicadores[i]["indicador"]);
+                    for (var i = 0; i < indicadores.length; i++) {
+                        grafiquito.data.labels.push(indicadores[i]["indicador"]);
                     }
                     //Eje Y
-                    var datos=[];
+                    var datos = [];
                     for (var i = 0; i < indicadores.length; i++) {
                         datos.push(indicadores[i]["porcentaje"]);
                     }
                     //Nuevo DataSet
                     const newDataset = {
-                            label: 'Porcentaje de alumnos en nivel 3 y 4',
-                            fill: false,
-                            lineTension: 0,
-                            backgroundColor: generateRandomColor(),
-                            borderColor: generateRandomColor(),
-                            data: datos
-                        };
+                        label: 'Porcentaje de alumnos en nivel 3 y 4',
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: generateRandomColor(),
+                        borderColor: generateRandomColor(),
+                        data: datos
+                    };
                     //Push Dataset
                     grafiquito.data.datasets.push(newDataset);
-                    //Posicion de Leyenda
-                    grafiquito.options.plugins.legend.position = 'top';
                     grafiquito.update();
                 },
                 error: function (response) {
@@ -435,6 +435,43 @@
                     RE: $("#REPorcentajeTot").val(),
                 },
                 success: function (response) {
+                    var indicadores = response['resp'];
+                    grafiquito2.data.datasets = [];
+                    grafiquito2.data.labels = [];
+
+                    //Eje X
+                    for (var i = 0; i < indicadores.length; i++) {
+                        grafiquito2.data.labels.push(indicadores[i]["indicador"]);
+                    }
+
+                    //Eje Y
+                    var datosSuperior = [];
+                    var datosInferior = [];
+                    for (var i = 0; i < indicadores.length; i++) {
+                        datosSuperior.push(indicadores[i]["porcentajeSuperior"]);
+                        datosInferior.push(indicadores[i]["porcentajeInferior"]);
+                    }
+
+                    //DataSet Superior
+                    const dataSetSuperior = {
+                        label: 'Niveles Superiores',
+                        backgroundColor: generateRandomColor(),
+                        borderColor: generateRandomColor(),
+                        data: datosSuperior
+                    };
+                    //DataSet Inferior
+                    const dataSetInferior = {
+                        label: 'Niveles Inferiores',
+                        backgroundColor: generateRandomColor(),
+                        borderColor: generateRandomColor(),
+                        data: datosInferior
+                    };
+
+                    //Push Dataset
+                    grafiquito2.data.datasets.push(dataSetSuperior);
+                    grafiquito2.data.datasets.push(dataSetInferior);
+                    grafiquito2.update();
+
 
                 },
                 error: function (response) {
@@ -465,7 +502,7 @@
                 responsive: true,
                 plugins: {
                     legend: {
-                        position: 'bottom',
+                        position: 'top',
                     },
                     title: {
                         display: false,
@@ -499,6 +536,40 @@
         }
 
         var grafiquito = new Chart("myChart", config);
+
+        const data2 = {
+            labels: [],
+            datasets: [],
+            fill: false,
+            lineTension: 0,
+            backgroundColor: generateRandomColor(),
+            borderColor: generateRandomColor(),
+        };
+        const config2 = {
+            type: 'bar',
+            data: data2,
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Porcentaje de alumnos'
+                    },
+                },
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        min: 0,
+                        max: 100,
+                        stacked: true
+                    }
+                }
+            }
+        };
+
+        var grafiquito2 = new Chart("myChart2", config2);
 
 
     </script>
