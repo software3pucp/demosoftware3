@@ -77,7 +77,7 @@ def resultadosMediciones(request,pk):
             cant = 0
         cantNiveles.append((n.nombre, cant))
 
-    responsables = RespuestaEvaluacion.objects.filter(estado='1').values("horario__responsable",
+    responsables = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=pk,estado='1').values("horario__responsable",
                                                                          "horario__responsable__first_name").annotate(
         total=Count("horario__responsable__first_name")).order_by()
     evaluados = RespuestaEvaluacion.objects.filter(estado='1', calificado="1", evidencia="1").values(
@@ -141,7 +141,7 @@ def getPorcentajeMedia(request):
     if request.POST:
         porcentajeMedia = []
         resultado = ResultadoPUCP.objects.get(pk=request.POST['RE'])
-        plan = PlanMedicion.objects.get(planResultados_id=resultado.planResultado_id, estado='1')
+        plan = PlanMedicion.objects.get(pk=request.POST['planMedicion'], estado='1')
         indicadores = Indicador.objects.filter(resultado_id=request.POST['RE'])
         mediana = 2
         mt = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=plan.pk,
