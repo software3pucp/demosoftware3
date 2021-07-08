@@ -157,7 +157,7 @@ def activarPlan(request):
     planes.update(estado='2')
     plan.estado = '1'
     plan.save()
-    return JsonResponse({}, status=200)
+    return redirect(request,'show')
 
 
 def desactivarPlan(request):

@@ -23,7 +23,7 @@ import math
 def Show(request):
     media_path = MEDIA_URL
     context = {
-        'users': User.objects.filter().exclude(estado='0'),
+        'users': User.objects.filter().all(),
         'media_path': media_path
     }
     return render(request, 'authentication/User_List.html', context)
@@ -151,17 +151,13 @@ def Edit(request, pk):
     return render(request, 'authentication/User_Edit.html', context)
 
 
-def Delete(request, pk):
-    user = User.objects.get(pk=pk)
-    user.estado = 0
-    return redirect(Show)
-
 def Activate(request, pk):
     user = User.objects.get(pk=pk)
-    if user.estado == 1:
-        user.estado = 2
+    if user.is_active:
+        user.is_active = False
     else:
-        user.estado = 1
+        user.is_active = True
+    user.save()
     return redirect(Show)
 
 def sing_in(request):

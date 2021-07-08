@@ -24,12 +24,6 @@ def upload_location(instance, filename):
 
 
 class User(AbstractUser):
-    ESTADOS = [
-        ('0', 'Eliminado'),
-        ('1', 'Activo'),
-        ('2', 'Inactivo'),
-    ]
-    estado = models.CharField(max_length=2, choices=ESTADOS, default='1', null=True, blank=True)
     code = models.CharField(max_length=8, default='11111111')
     photo = models.ImageField(null=True, blank=True, upload_to=upload_location)
     rol_actual = models.CharField(max_length=50, default=None, null=True, blank=True)
