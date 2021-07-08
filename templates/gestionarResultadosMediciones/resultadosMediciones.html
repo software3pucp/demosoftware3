@@ -5,10 +5,10 @@
 {% block extrastyle %}
     <style>
         #container {
-          margin: 20px;
-          width: 200px;
-          height: 200px;
-          position: relative;
+            margin: 20px;
+            width: 200px;
+            height: 200px;
+            position: relative;
         }
     </style>
 {% endblock %}
@@ -21,7 +21,8 @@
             <div class="row justify-content-between align-items-center">
                 <div class="col-12">
                     <h2 class="mb-2 mb-md-0 text-white">Dashboard</h2>
-                    <p class="text-white">Información del plan de medición <b>{{ plan.nombre }}</b> de la especialidad de <b>{{ plan.especialidad.nombre }}</b> .</p>
+                    <p class="text-white">Información del plan de medición <b>{{ plan.nombre }}</b> de la especialidad
+                        de <b>{{ plan.especialidad.nombre }}</b> .</p>
                 </div>
             </div>
         </div>
@@ -38,7 +39,8 @@
                     </div>
                     <div class="row align-items-start">
                         <div class="col-auto text-center pr-card">
-                            <select id="IndPorcentajeAlumnosMedia" class="custom-select custom-select-sm" onchange="getPorcentajeAlumnosMedia()">
+                            <select id="IndPorcentajeAlumnosMedia" class="custom-select custom-select-sm"
+                                    onchange="getPorcentajeAlumnosMedia()">
                                 {% for indicador in indicadores %}
                                     <option value="{{ indicador.pk }}">{{ indicador.codigo }}</option>
                                 {% endfor %}
@@ -49,15 +51,19 @@
                 <div class="card-body">
                     {% for indicador, porcentaje in porcentajeAlumnosMedia %}
                         <div id="CirclePorcentajeAlumnosMedia{{ indicador.pk }}" class="CirclePorcentajeAlumnosMedia">
-                        {% if porcentaje < 50 %}
-                            <div class="progress-circle mb-4" data-options='{"progress":{{ porcentaje }},"color": "#e63757"}'></div>
-                        {% elif porcentaje < 75 %}
-                            <div class="progress-circle mb-4" data-options='{"progress":{{ porcentaje }},"color": "#f5803e"}'></div>
-                        {% elif porcentaje < 100 %}
-                            <div class="progress-circle mb-4" data-options='{"progress":{{ porcentaje }},"color": "#27bcfd"}'></div>
-                        {% else %}
-                            <div class="progress-circle mb-4" data-options='{"progress":{{ porcentaje }},"color": "#00d27a"}'></div>
-                        {% endif %}
+                            {% if porcentaje < 50 %}
+                                <div class="progress-circle mb-4"
+                                     data-options='{"progress":{{ porcentaje }},"color": "#e63757"}'></div>
+                            {% elif porcentaje < 75 %}
+                                <div class="progress-circle mb-4"
+                                     data-options='{"progress":{{ porcentaje }},"color": "#f5803e"}'></div>
+                            {% elif porcentaje < 100 %}
+                                <div class="progress-circle mb-4"
+                                     data-options='{"progress":{{ porcentaje }},"color": "#27bcfd"}'></div>
+                            {% else %}
+                                <div class="progress-circle mb-4"
+                                     data-options='{"progress":{{ porcentaje }},"color": "#00d27a"}'></div>
+                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>
@@ -75,30 +81,42 @@
                 <div class="card-body p-0">
                     <table class="table table-dashboard mb-0 table-borderless fs--1">
                         <thead>
-                            <tr class="text-900">
-                                <th>Indicador</th>
-                                <th>Progreso(%)</th>
-                            </tr>
+                        <tr class="text-900">
+                            <th>Indicador</th>
+                            <th>Progreso(%)</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {% for indicador, progreso in progreIndicadores %}
-                                <tr>
-                                    <td>{{ indicador.codigo }}</td>
-                                    <td>
-                                        <div class="progress">
-                                            {% if progreso < 50 %}
-                                                <div class="progress-bar bg-danger" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
-                                            {% elif progreso < 75 %}
-                                                <div class="progress-bar bg-warning" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
-                                            {% elif progreso < 100 %}
-                                                <div class="progress-bar bg-info" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
-                                            {% else %}
-                                                <div class="progress-bar bg-success" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
-                                            {% endif %}
-                                        </div>
-                                    </td>
-                                </tr>
-                            {% endfor %}
+                        {% for indicador, progreso in progreIndicadores %}
+                            <tr>
+                                <td>{{ indicador.codigo }}</td>
+                                <td>
+                                    <div class="progress">
+                                        {% if progreso < 50 %}
+                                            <div class="progress-bar bg-danger" style="width: {{ progreso }}%;"
+                                                 role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0"
+                                                 aria-valuemax="100">{{ progreso }}%
+                                            </div>
+                                        {% elif progreso < 75 %}
+                                            <div class="progress-bar bg-warning" style="width: {{ progreso }}%;"
+                                                 role="progressbar" aria-valuenow="75" aria-valuemin="0"
+                                                 aria-valuemax="100">{{ progreso }}%
+                                            </div>
+                                        {% elif progreso < 100 %}
+                                            <div class="progress-bar bg-info" style="width: {{ progreso }}%;"
+                                                 role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0"
+                                                 aria-valuemax="100">{{ progreso }}%
+                                            </div>
+                                        {% else %}
+                                            <div class="progress-bar bg-success" style="width: {{ progreso }}%;"
+                                                 role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0"
+                                                 aria-valuemax="100">{{ progreso }}%
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -112,7 +130,8 @@
                             <h5>Progreso de Cursos por Indicador</h5>
                         </div>
                         <div class="col-auto text-center pr-card">
-                            <select id="IndPorcentajeCurso" class="custom-select custom-select-sm" onchange="getListaProgresoCurso()">
+                            <select id="IndPorcentajeCurso" class="custom-select custom-select-sm"
+                                    onchange="getListaProgresoCurso()">
                                 {% for indicador in indicadores %}
                                     <option value="{{ indicador.pk }}">{{ indicador.codigo }}</option>
                                 {% endfor %}
@@ -123,10 +142,10 @@
                 <div class="card-body p-0">
                     <table class="table table-dashboard mb-0 table-borderless fs--1">
                         <thead>
-                            <tr class="text-900">
-                                <th>Curso</th>
-                                <th>Progreso(%)</th>
-                            </tr>
+                        <tr class="text-900">
+                            <th>Curso</th>
+                            <th>Progreso(%)</th>
+                        </tr>
                         </thead>
                         <tbody id="ListaProgresoCurso">
                         </tbody>
@@ -150,7 +169,8 @@
             <div class="card mb-3 overflow-hidden">
                 <div class="card-body position-relative">
                     <h5>{{ nivel }}</h5>
-                    <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif text-info" data-countup='{"count":{{ cantidad }}}'>{{ cantidad }}</div>
+                    <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif text-info"
+                         data-countup='{"count":{{ cantidad }}}'>{{ cantidad }}</div>
                 </div>
             </div>
         {% endfor %}
@@ -169,10 +189,10 @@
                 <div class="card-body p-0 scrollbar perfect-scrollbar" style="height: 400px">
                     <table class="table table-dashboard mb-0 table-borderless fs--1">
                         <thead>
-                            <tr class="text-900">
-                                <th>Responsable</th>
-                                <th>Progreso(%)</th>
-                            </tr>
+                        <tr class="text-900">
+                            <th>Responsable</th>
+                            <th>Progreso(%)</th>
+                        </tr>
                         </thead>
                         <tbody>
                         {% for nombre,progreso in progreResponsables %}
@@ -181,13 +201,25 @@
                                 <td>
                                     <div class="progress">
                                         {% if progreso < 50 %}
-                                            <div class="progress-bar bg-danger" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
+                                            <div class="progress-bar bg-danger" style="width: {{ progreso }}%;"
+                                                 role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0"
+                                                 aria-valuemax="100">{{ progreso }}%
+                                            </div>
                                         {% elif progreso < 75 %}
-                                            <div class="progress-bar bg-warning" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
+                                            <div class="progress-bar bg-warning" style="width: {{ progreso }}%;"
+                                                 role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0"
+                                                 aria-valuemax="100">{{ progreso }}%
+                                            </div>
                                         {% elif progreso < 100 %}
-                                            <div class="progress-bar bg-info" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
+                                            <div class="progress-bar bg-info" style="width: {{ progreso }}%;"
+                                                 role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0"
+                                                 aria-valuemax="100">{{ progreso }}%
+                                            </div>
                                         {% else %}
-                                            <div class="progress-bar bg-success" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
+                                            <div class="progress-bar bg-success" style="width: {{ progreso }}%;"
+                                                 role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0"
+                                                 aria-valuemax="100">{{ progreso }}%
+                                            </div>
                                         {% endif %}
                                     </div>
                                 </td>
@@ -211,10 +243,10 @@
                 <div class="card-body p-0 scrollbar perfect-scrollbar" style="height: 400px">
                     <table class="table table-dashboard mb-0 table-borderless fs--1">
                         <thead>
-                            <tr class="text-900">
-                                <th>Resultado</th>
-                                <th>Progreso(%)</th>
-                            </tr>
+                        <tr class="text-900">
+                            <th>Resultado</th>
+                            <th>Progreso(%)</th>
+                        </tr>
                         </thead>
                         <tbody>
                         {% for resultado,progreso in progreResultados %}
@@ -223,13 +255,25 @@
                                 <td>
                                     <div class="progress">
                                         {% if progreso < 50 %}
-                                            <div class="progress-bar bg-danger" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
+                                            <div class="progress-bar bg-danger" style="width: {{ progreso }}%;"
+                                                 role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0"
+                                                 aria-valuemax="100">{{ progreso }}%
+                                            </div>
                                         {% elif progreso < 75 %}
-                                            <div class="progress-bar bg-warning" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
+                                            <div class="progress-bar bg-warning" style="width: {{ progreso }}%;"
+                                                 role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0"
+                                                 aria-valuemax="100">{{ progreso }}%
+                                            </div>
                                         {% elif progreso < 100 %}
-                                            <div class="progress-bar bg-info" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
+                                            <div class="progress-bar bg-info" style="width: {{ progreso }}%;"
+                                                 role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0"
+                                                 aria-valuemax="100">{{ progreso }}%
+                                            </div>
                                         {% else %}
-                                            <div class="progress-bar bg-success" style="width: {{ progreso }}%;" role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0" aria-valuemax="100">{{ progreso }}%</div>
+                                            <div class="progress-bar bg-success" style="width: {{ progreso }}%;"
+                                                 role="progressbar" aria-valuenow="{{ progreso }}" aria-valuemin="0"
+                                                 aria-valuemax="100">{{ progreso }}%
+                                            </div>
                                         {% endif %}
                                     </div>
                                 </td>
@@ -243,16 +287,19 @@
     </div>
 
     <div class="card mb-3">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-3">
-                    <label for="REPorcentaje">Resultado del Estudiante:</label>
-                    <select id="REPorcentaje" name="REPorcentaje" class="form-control" onchange="getPorcentajeMedia()">
-                        {% for re in res %}
-                            <option value="{{ re.pk }}">{{ re.codigo }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="REPorcentaje">Resultado del Estudiante:</label>
+                <select id="REPorcentaje" name="REPorcentaje" class="form-control" onchange="getPorcentajeMedia()">
+                    {% for re in res %}
+                        <option value="{{ re.pk }}">{{ re.codigo }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="p-3">
+            <canvas id="myChart" style="width:100%;"></canvas>
         </div>
     </div>
 
@@ -260,45 +307,45 @@
 
 {% block extrajs %}
     <script>
-
         $(document).ready(function () {
             console.log("ready!");
             getPorcentajeAlumnosMedia();
             getListaProgresoCurso();
+            getPorcentajeMedia();
         });
 
-        function getPorcentajeAlumnosMedia(){
+        function getPorcentajeAlumnosMedia() {
             var selec = $("#IndPorcentajeAlumnosMedia").val();
             $(".CirclePorcentajeAlumnosMedia").hide();
-            $("#CirclePorcentajeAlumnosMedia"+selec).show();
+            $("#CirclePorcentajeAlumnosMedia" + selec).show();
         }
 
-        function getListaProgresoCurso(){
+        function getListaProgresoCurso() {
             $.ajax({
                 type: 'POST',
                 url: "{% url 'getListaProgresoCurso' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    planMedicion : {{ plan.pk }},
+                    planMedicion: {{ plan.pk }},
                     indicador: $("#IndPorcentajeCurso").val(),
                 },
                 success: function (response) {
                     var instance = response['resp'];
                     $(".ProgresoCurso").remove();
-                    for (var i=0; i<instance.length; i++) {
+                    for (var i = 0; i < instance.length; i++) {
                         var data = '<tr class="ProgresoCurso">' +
-                            '<td>'+instance[i]['curso']+'</td>' +
+                            '<td>' + instance[i]['curso'] + '</td>' +
                             '<td>' +
                             '<div class="progress">';
 
-                        if (instance[i]['porcentaje']<50) {
-                            data +='<div class="progress-bar bg-danger" style="width: '+instance[i]['porcentaje']+'%;" role="progressbar" aria-valuenow="'+instance[i]['porcentaje']+'" aria-valuemin="0" aria-valuemax="100">'+instance[i]['porcentaje']+'%</div>';
-                        } else if(instance[i]['porcentaje']<75) {
-                            data +='<div class="progress-bar bg-warning" style="width: '+instance[i]['porcentaje']+'%;" role="progressbar" aria-valuenow="'+instance[i]['porcentaje']+'" aria-valuemin="0" aria-valuemax="100">'+instance[i]['porcentaje']+'%</div>';
-                        } else if(instance[i]['porcentaje']<100) {
-                            data +='<div class="progress-bar bg-info" style="width: '+instance[i]['porcentaje']+'%;" role="progressbar" aria-valuenow="'+instance[i]['porcentaje']+'" aria-valuemin="0" aria-valuemax="100">'+instance[i]['porcentaje']+'%</div>';
+                        if (instance[i]['porcentaje'] < 50) {
+                            data += '<div class="progress-bar bg-danger" style="width: ' + instance[i]['porcentaje'] + '%;" role="progressbar" aria-valuenow="' + instance[i]['porcentaje'] + '" aria-valuemin="0" aria-valuemax="100">' + instance[i]['porcentaje'] + '%</div>';
+                        } else if (instance[i]['porcentaje'] < 75) {
+                            data += '<div class="progress-bar bg-warning" style="width: ' + instance[i]['porcentaje'] + '%;" role="progressbar" aria-valuenow="' + instance[i]['porcentaje'] + '" aria-valuemin="0" aria-valuemax="100">' + instance[i]['porcentaje'] + '%</div>';
+                        } else if (instance[i]['porcentaje'] < 100) {
+                            data += '<div class="progress-bar bg-info" style="width: ' + instance[i]['porcentaje'] + '%;" role="progressbar" aria-valuenow="' + instance[i]['porcentaje'] + '" aria-valuemin="0" aria-valuemax="100">' + instance[i]['porcentaje'] + '%</div>';
                         } else {
-                            data +='<div class="progress-bar bg-success" style="width: '+instance[i]['porcentaje']+'%;" role="progressbar" aria-valuenow="'+instance[i]['porcentaje']+'" aria-valuemin="0" aria-valuemax="100">'+instance[i]['porcentaje']+'%</div>';
+                            data += '<div class="progress-bar bg-success" style="width: ' + instance[i]['porcentaje'] + '%;" role="progressbar" aria-valuenow="' + instance[i]['porcentaje'] + '" aria-valuemin="0" aria-valuemax="100">' + instance[i]['porcentaje'] + '%</div>';
                         }
 
                         data += '</div>' +
@@ -314,17 +361,43 @@
             })
         }
 
-        function getPorcentajeMedia(){
+        function getPorcentajeMedia() {
             $.ajax({
                 type: 'POST',
                 url: "{% url 'getPorcentajeMedia' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    planMedicion : {{ plan.pk }},
+                    planMedicion: {{ plan.pk }},
                     RE: $("#REPorcentaje").val(),
                 },
                 success: function (response) {
+                    var indicadores = response['resp'];
+                    grafiquito.data.datasets = [];
+                    grafiquito.data.labels = [];
 
+                    //Eje X
+                    for(var i=0; i<indicadores.length; i++){
+                         grafiquito.data.labels.push(indicadores[i]["indicador"]);
+                    }
+                    //Eje Y
+                    var datos=[];
+                    for (var i = 0; i < indicadores.length; i++) {
+                        datos.push(indicadores[i]["porcentaje"]);
+                    }
+                    //Nuevo DataSet
+                    const newDataset = {
+                            label: 'Porcentaje de alumnos en nivel 3 y 4',
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: generateRandomColor(),
+                            borderColor: generateRandomColor(),
+                            data: datos
+                        };
+                    //Push Dataset
+                    grafiquito.data.datasets.push(newDataset);
+                    //Posicion de Leyenda
+                    grafiquito.options.plugins.legend.position = 'top';
+                    grafiquito.update();
                 },
                 error: function (response) {
                     // alert the error if any error occured
@@ -332,6 +405,63 @@
                 }
             })
         }
+
+        function generateRandomColor() {
+            var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+            return randomColor;
+            //random color will be freshly served
+        }
+
+        const data = {
+            labels: [],
+            datasets: [],
+            fill: false,
+            lineTension: 0,
+            backgroundColor: generateRandomColor(),
+            borderColor: generateRandomColor(),
+        };
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: false,
+                        text: 'Porcentaje de alumnos en nivel 3 y 4'
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'point',
+                },
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'Porcentaje',
+                        },
+                        ticks: {
+                            stepSize: 1
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Indicadores',
+                        }
+                    }
+                },
+            },
+        }
+
+        var grafiquito = new Chart("myChart", config);
+
 
     </script>
 {% endblock %}
