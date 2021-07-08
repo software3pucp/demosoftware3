@@ -1,7 +1,7 @@
 import json
 from django.core import serializers
 from django.http import JsonResponse
-
+from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
 from django.db.models import Q
 # Create your views here.
@@ -100,11 +100,24 @@ def editarResultado(request, pk):
 
 @login_required
 def planDeResultado(request):
-    facultades = Facultad.objects.filter(estado='1')
-    context = {
-        'facultades': facultades,
-    }
-    return render(request, 'gestionarResultados/planDeResultado.html', context)
+    if (request.user.rol_actual == "Coordinador de facultad"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=4)
+        facultades = Facultad.objects.filter(responsable=usuario.pk, estado='1')
+        context = {
+            'facultades': facultades,
+        }
+        return render(request, 'gestionarResultados/planDeResultadosCF.html', context)
+
+    if (request.user.rol_actual == "Coordinador de especialidad"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=5)
+        especialidades = Especialidad.objects.filter(responsable=usuario.pk, estado='1')
+        context = {
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarResultados/planDeResultadosCE.html', context)
+
 
 
 def crearPlanResultado(request, id_especialidad):
