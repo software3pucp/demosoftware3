@@ -1,33 +1,33 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% block extrastyle %}
-<style>
-    .fa-plus {
-        color: #FFFFFF !important;
-    }
+    <style>
+        .fa-plus {
+            color: #FFFFFF !important;
+        }
 
-    .btn-file {
-        position: relative;
-        overflow: hidden;
-    }
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+        }
 
-    .btn-file input[type=file] {
-        position: absolute;
-        top: 0;
-        right: 0;
-        min-width: 100%;
-        min-height: 100%;
-        font-size: 100px;
-        text-align: center;
-        filter: alpha(opacity=0);
-        opacity: 0;
-        outline: none;
-        background: white;
-        cursor: inherit;
-        display: block;
-    }
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: center;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
 
-</style>
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -35,40 +35,32 @@
     <div class="card mb-3 bg-card-gradient">
         <div class="card-body ">
             <div class="d-flex flex justify-content-start">
-                    <h5 class="mb-2 mb-md-0 text-white">Usuarios</h5>
+                <h5 class="mb-2 mb-md-0 text-white">Usuarios</h5>
 
             </div>
         </div>
     </div>
-
-    <div class="row ml-0 mr-0 mb-3 px-0">
-
-                {#                <div class="col-4 col-sm-auto d-flex align-items-center pr-0">#}
-                {#                    <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Usuarios</h5>#}
-                {#                </div>#}
-
-
-                <a href="" data-toggle="modal" data-target="#importarUsuarios"
-                   class="btn btn-primary mb-1" type="button" style="width: 100%">
-                    <span class="fas fa-plus mr-1"></span><span>Importar Usuarios</span>
-                </a>
-
-        </div>
-        <div class="card-body p-0">
+    <div class="card-body p-0">
         <div class="card">
-        <div class="card-body">
+            <div class="card-body">
 
-                <div class="col-8 col-sm-auto ml-auto">
-
-                    <div id="dashboard-actions">
-                        <a href="{% url 'user' %}" class="btn btn-primary mr-1 mb-1" type="button">
-                            <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span><span>Agregar</span></a>
+                <div id="dashboard-actions">
+                    <div class="row ml-1">
+                        <a href="{% url 'user' %}" class="btn btn-primary mr-2 mb-1" type="button">
+                                    <span class="fas fa-plus mr-1"
+                                          data-fa-transform="shrink-3"></span><span>Agregar</span>
+                        </a>
+                        <a href="" data-toggle="modal" data-target="#importarUsuarios"
+                           class="btn btn-primary mb-1" type="button">
+                            <span class="fas fa-plus mr-1"></span><span>Importar Usuarios</span>
+                        </a>
                     </div>
-                </div>
-           <div class="falcon-data-table" style="position: initial; margin-top: -2vm">
 
-                <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200"
-                       data-options='{"searching":true,"responsive":false,"paging":true,"info":true,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>",
+                </div>
+                <div class="falcon-data-table" style="position: initial; margin-top: -2vm">
+
+                    <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200"
+                           data-options='{"searching":true,"responsive":false,"paging":true,"info":true,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>",
                         "language":{
                         "decimal": "",
                         "emptyTable": "No hay información",
@@ -91,33 +83,33 @@
                             }
                         }}'>
 
-                    <thead class="bg-200 text-900">
+                        <thead class="bg-200 text-900">
 
-                    <tr>
-                        <th class="align-middle no-sort"></th>
-                        <th class="align-middle sort">Nombre</th>
-                        <th class="align-middle sort pr-7">Código</th>
-                        <th class="align-middle sort" style="min-width: 12.5rem;">Correo</th>
-                        <th class="align-middle text-left no-sort">Estado</th>
-                    </tr>
-                    </thead>
-                    <tbody id="orders">
-                    {% for user in users %}
-                        <tr class="btn-reveal-trigger">
-                            <td class="align-middle">
-                                <div class="avatar avatar-3xl mr-3">
+                        <tr>
+                            <th class="align-middle no-sort"></th>
+                            <th class="align-middle sort">Nombre</th>
+                            <th class="align-middle sort pr-7">Código</th>
+                            <th class="align-middle sort" style="min-width: 12.5rem;">Correo</th>
+                            <th class="align-middle text-left no-sort">Estado</th>
+                        </tr>
+                        </thead>
+                        <tbody id="orders">
+                        {% for user in users %}
+                            <tr class="btn-reveal-trigger">
+                                <td class="align-middle">
+                                    <div class="avatar avatar-3xl mr-3">
 
 
-                                    {% if user.photo.name %}
+                                        {% if user.photo.name %}
 
-                                        <img class="rounded-circle"
-                                             src="/media/{{ user.photo.name }}/"
-                                             alt=""/>
-                                    {% else %}
-                                        <img class="rounded-circle"
-                                             src="{% static 'img/team/avatar.png' %}"
-                                             alt=""/>
-                                    {% endif %}
+                                            <img class="rounded-circle"
+                                                 src="/media/{{ user.photo.name }}/"
+                                                 alt=""/>
+                                        {% else %}
+                                            <img class="rounded-circle"
+                                                 src="{% static 'img/team/avatar.png' %}"
+                                                 alt=""/>
+                                        {% endif %}
 
 
                                     </div>
@@ -128,8 +120,10 @@
                                 <td class="align-middle">{{ user.email }}</td>
                                 <td class="align-middle">
                                     {% if user.is_active %}
-                                        <a href="{% url 'activateUser' pk=user.id %}" class="btn btn-primary mr-1 mb-1" type="button">
-                                            <span class="fas fa-power-off mr-1" style="color: white;" data-fa-transform="shrink-3"></span>Activo
+                                        <a href="{% url 'activateUser' pk=user.id %}" class="btn btn-primary mr-1 mb-1"
+                                           type="button">
+                                            <span class="fas fa-power-off mr-1" style="color: white;"
+                                                  data-fa-transform="shrink-3"></span>Activo
                                         </a>
                                     {% else %}
                                         <a href="{% url 'activateUser' pk=user.id %}"
@@ -138,15 +132,15 @@
                                     {% endif %}
                                 </td>
 
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-        </div>
 
-        </div>
+    </div>
     </div>
 
     <!-- Modal Importar Usuarios -->
@@ -302,8 +296,7 @@
                     success: function (response) {
                         if (response["hayError"]) {
                             mostrarError(response["error_message"]);
-                        }
-                        else{
+                        } else {
                             mostrarTodoBien(response["success_message"]);
                         }
                     },
