@@ -27,25 +27,14 @@
                 <div class="row">
                     <div class="col-sm-12 col-lg-6 pl-4 pr-4">
                         <div class="row">
-                            <label for="cboFacultad">Facultad:</label>
-                        </div>
-                        <div class="row">
-                            <select class="custom-select custom-select-sm mb-3" id="cboFacultad" name="cboFacultad"
-                                    onchange="obtenerEspecialidades()">
-                                {% for facultad in facultades %}
-                                    <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-lg-6 pl-4 pr-4">
-                        <div class="row">
                             <label for="cboEspecialidad">Especialidad:</label>
                         </div>
                         <div class="row">
-                            <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
-                                    name="cboEspecialidad"
-                                    onchange="listarObjetivos()">
+                            <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad" name="cboEspecialidad"
+                                     onchange="listarObjetivos()">
+                                {% for especialidad in especialidades %}
+                                    <option value={{ especialidad.pk }}>{{ especialidad.nombre }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -114,11 +103,11 @@
                 <div class="modal-body">
                     <form id="formEditarObjetivo" name="formEditarObjetivo">
                         <div class="form-group">
-                            <label for="codigoObjetivoMod">Nombre</label>
+                            <label for="codigoObjetivoMod">Código:</label>
                             <div id="editCodigo"></div>
                         </div>
                         <div class="form-group">
-                            <label for="descripcionObjetivoMod">Valor</label>
+                            <label for="descripcionObjetivoMod">Descripción:</label>
                             <div id="editDescripcion"></div>
                         </div>
                     </form>
@@ -164,7 +153,7 @@
 
 
         $(document).ready(function () {
-            filtrarEspecialidades();
+            listarObjetivos();
         });
 
 
@@ -198,32 +187,7 @@
             });
         }
 
-        function filtrarEspecialidades() {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'obtenerEspecialidades' %}",
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    facultad: $("#cboFacultad").val(),
-                },
-                success: function (response) {
-                    var instance = JSON.parse(response["resp"]);
 
-                    $(".especialidad").remove();
-                    for (var i = 0; i < instance.length; i++) {
-                        data = '<option class="especialidad" value=' +
-                            instance[i]["pk"] + '>' +
-                            instance[i]["fields"].nombre + '</option>';
-                        $("#cboEspecialidad").append(data);
-                    }
-
-                    listarObjetivos();
-                },
-                error: function (response) {
-                    alert(response["responseJSON"]["error"]);
-                },
-            });
-        }
 
         function listarObjetivos() {
             $.ajax({

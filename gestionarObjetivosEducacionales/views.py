@@ -4,15 +4,21 @@ from django.core import serializers
 from django.http import JsonResponse
 # Create your views here.
 from gestionarEspecialidad.models import Especialidad
-from gestionarFacultad.models import Facultad
+from django.contrib.auth.models import Group
 from gestionarObjetivosEducacionales.models import ObjetivoEducacional
 
 
 @login_required
 def objetivos(request):
-    facultades = Facultad.objects.filter(estado='1')
+    especialidades = []
+
+    if (request.user.rol_actual == "Coordinador de especialidad"):
+        usuario = request.user
+        grupo = Group.objects.get(name="Coordinador de especialidad")
+        especialidades = Especialidad.objects.filter(responsable=usuario.pk)
+
     context = {
-        'facultades': facultades,
+        'especialidades': especialidades,
     }
     return render(request, 'gestionarObjetivosEducacionales/objetivosEducacionales.html', context)
 
@@ -50,9 +56,3 @@ def eliminarObjetivo(request):
     objetivo.estado = '0'  # eliminación lógica
     objetivo.save()
     return JsonResponse({}, status=200)
-
-def obtEspecialidades(request):
-    id_facultad = request.POST['facultad']
-    especialidades = Especialidad.objects.filter(facultad_id=id_facultad, estado='1')
-    data = serializers.serialize("json", especialidades)
-    return JsonResponse({"resp": data}, status=200)
