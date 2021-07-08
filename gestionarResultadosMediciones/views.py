@@ -40,7 +40,7 @@ def resultadosMediciones(request,pk):
                                            estado='1').values('indicador').annotate(
         total=Count('indicador_id')).order_by('indicador_id')
 
-    mediana = 2
+    mediana = len(niveles) // 2
     mt = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=pk, calificado='1', evidencia='1',
                                            estado='1').values('indicador').annotate(
         total=Count('indicador_id')).order_by('indicador_id')
@@ -140,10 +140,10 @@ def getListaProgresoCurso(request):
 def getPorcentajeMedia(request):
     if request.POST:
         porcentajeMedia = []
-        resultado = ResultadoPUCP.objects.get(pk=request.POST['RE'])
-        plan = PlanMedicion.objects.get(pk=request.POST['planMedicion'], estado='1')
+        plan = PlanMedicion.objects.get(pk=request.POST['planMedicion'])
         indicadores = Indicador.objects.filter(resultado_id=request.POST['RE'])
-        mediana = 2
+        niveles = Nivel.objects.filter(especialidad_id=plan.especialidad_id, estado='1')
+        mediana = len(niveles) // 2
         mt = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=plan.pk,
                                                 calificado='1', evidencia='1',
                                                 estado='1').values('indicador').annotate(
@@ -159,6 +159,35 @@ def getPorcentajeMedia(request):
                 por = 0
             porcentajeMedia.append({"indicador": i.descripcion, "porcentaje": por})
 
-        print(porcentajeMedia)
+        return JsonResponse({"resp": porcentajeMedia}, status=200)
+
+@login_required
+def getPorcentajeTot(request):
+    if request.POST:
+        porcentajeMedia = []
+        plan = PlanMedicion.objects.get(pk=request.POST['planMedicion'])
+        indicadores = Indicador.objects.filter(resultado_id=request.POST['RE'])
+        niveles = Nivel.objects.filter(especialidad_id=plan.especialidad_id, estado='1')
+        mediana = len(niveles) // 2
+        mt = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=plan.pk,
+                                                calificado='1', evidencia='1',
+                                                estado='1').values('indicador').annotate(
+            total=Count('indicador_id')).order_by('indicador_id')
+        ms = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=plan.pk, valorNota__gt=mediana,
+                                               calificado='1', evidencia='1',
+                                               estado='1').values('indicador').annotate(
+            total=Count('indicador_id')).order_by('indicador_id')
+        mi = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=plan.pk, valorNota__lte=mediana,
+                                               calificado='1', evidencia='1',
+                                               estado='1').values('indicador').annotate(
+            total=Count('indicador_id')).order_by('indicador_id')
+        for i in indicadores:
+            try:
+                pors = round((ms.get(indicador=i.pk)['total'] / mt.get(indicador=i.pk)['total']) * 100)
+                pori = round((mi.get(indicador=i.pk)['total'] / mt.get(indicador=i.pk)['total']) * 100)
+            except:
+                pors = 0
+                pori = 0
+            porcentajeMedia.append({"indicador": i.descripcion, "porcentajeSuperior": pors, "porcentajeInferior": pori})
 
         return JsonResponse({"resp": porcentajeMedia}, status=200)
