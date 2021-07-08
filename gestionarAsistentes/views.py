@@ -35,7 +35,7 @@ def registrarAsistente(request):
     if len(userGroup) == 0:  # Verificamos si el usuario tiene el rol
         group.user_set.add(user)  # sino se le asigna el rol al usuario
 
-    registro = Asistente.objects.filter(user_id=user.pk)
+    registro = Asistente.objects.filter(user_id=user.pk, especialidad_id=especialidadpk)
     if (registro.__len__() == 0):
         Asistente.objects.create(user=user, especialidad=especialidad)
     else:
