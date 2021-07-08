@@ -67,7 +67,7 @@ def Register(request):
         user = User.objects.create_user(first_name=request.POST['card-name'],
                                         username=request.POST['card-correo'], code=request.POST['card-codigo'],
                                         email=request.POST['card-correo'], password=request.POST['card-password'],
-                                        photo=photo, is_active=True,estado=1)
+                                        photo=photo, is_active=True)
         p=request.POST['card-password']
         roles = request.POST.getlist('choices-multiple-remove-button')
         i = 0
@@ -376,7 +376,7 @@ def importarUsuarios(request):
                         User.objects.create_user(first_name=nombre,
                                                     username=correo, code=codigo,
                                                     email=correo,
-                                                    is_active=True, estado=1)
+                                                    is_active=True)
                         filasInsertadas.append(i)
                     else:
                         filasCorreoMaltipeado.append(i)
