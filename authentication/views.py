@@ -205,7 +205,7 @@ def select_rol(request):
         elif (pk==2):
             return redirect('listarFacultad')
         elif (pk==3):
-            return redirect('showUsers')
+            return redirect('listarSemestre')
         elif (pk==4):
             return redirect('listarSemestre')
         elif (pk==5):
