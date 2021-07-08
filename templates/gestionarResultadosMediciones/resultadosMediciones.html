@@ -395,7 +395,8 @@
                     var indicadores = response['resp'];
                     grafiquito.data.datasets = [];
                     grafiquito.data.labels = [];
-
+                    console.log("Grafico 1");
+                    console.log(indicadores);
                     //Eje X
                     for (var i = 0; i < indicadores.length; i++) {
                         grafiquito.data.labels.push(indicadores[i]["indicador"]);
@@ -435,21 +436,22 @@
                     RE: $("#REPorcentajeTot").val(),
                 },
                 success: function (response) {
-                    var indicadores = response['resp'];
+                    var indicadores2 = response['resp'];
                     grafiquito2.data.datasets = [];
                     grafiquito2.data.labels = [];
-
+                    console.log("Grafico 1");
+                    console.log(indicadores2);
                     //Eje X
-                    for (var i = 0; i < indicadores.length; i++) {
-                        grafiquito2.data.labels.push(indicadores[i]["indicador"]);
+                    for (var i = 0; i < indicadores2.length; i++) {
+                        grafiquito2.data.labels.push(indicadores2[i]["indicador"]);
                     }
 
                     //Eje Y
                     var datosSuperior = [];
                     var datosInferior = [];
-                    for (var i = 0; i < indicadores.length; i++) {
-                        datosSuperior.push(indicadores[i]["porcentajeSuperior"]);
-                        datosInferior.push(indicadores[i]["porcentajeInferior"]);
+                    for (var i = 0; i < indicadores2.length; i++) {
+                        datosSuperior.push(indicadores2[i]["porcentajeSuperior"]);
+                        datosInferior.push(indicadores2[i]["porcentajeInferior"]);
                     }
 
                     //DataSet Superior
@@ -521,9 +523,6 @@
                             display: true,
                             text: 'Porcentaje',
                         },
-                        ticks: {
-                            stepSize: 1
-                        }
                     },
                     x: {
                         title: {

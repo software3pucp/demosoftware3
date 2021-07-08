@@ -183,7 +183,7 @@
     "model": "gestionarFacultad.facultad",
     "pk": 10,
     "fields": {
-      "nombre": "Ciencias e Ingenieria",
+      "nombre": "Ciencias e Ingeniería",
       "responsable": "1",
       "foto": "",
       "estado": "1"
@@ -203,7 +203,7 @@
     "model": "gestionarEspecialidad.especialidad",
     "pk": 5,
     "fields": {
-      "nombre": "Ingenieria Informatica",
+      "nombre": "Ingeniería Informática",
       "responsable": "1",
       "facultad": 10,
       "foto": "",
@@ -214,7 +214,7 @@
     "model": "gestionarEspecialidad.especialidad",
     "pk": 6,
     "fields": {
-      "nombre": "Ingenieria Industrial",
+      "nombre": "Ingeniería Industrial",
       "responsable": "1",
       "facultad": 10,
       "foto": "",
@@ -225,7 +225,7 @@
     "model": "gestionarEspecialidad.especialidad",
     "pk": 7,
     "fields": {
-      "nombre": "Ingenieria Civil",
+      "nombre": "Ingeniería Civil",
       "responsable": "1",
       "facultad": 10,
       "foto": "",
@@ -287,7 +287,7 @@
     "model": "gestionarCurso.curso",
     "pk": 13,
     "fields": {
-      "nombre": "Control de Gestion Industrial",
+      "nombre": "Control de Gestión Industrial",
       "responsable": "1",
       "especialidad": 6,
       "estado": "1"
@@ -297,7 +297,7 @@
     "model": "gestionarCurso.curso",
     "pk": 14,
     "fields": {
-      "nombre": "Investigacion Operativa",
+      "nombre": "Investigación Operativa",
       "responsable": "1",
       "especialidad": 6,
       "estado": "1"
@@ -307,7 +307,7 @@
     "model": "gestionarCurso.curso",
     "pk": 15,
     "fields": {
-      "nombre": "Ingenieria Economica",
+      "nombre": "Ingeniería Económica",
       "responsable": "1",
       "especialidad": 6,
       "estado": "1"
@@ -317,7 +317,7 @@
     "model": "gestionarCurso.curso",
     "pk": 16,
     "fields": {
-      "nombre": "Ingenieria de Transporte",
+      "nombre": "Ingeniería de Transporte",
       "responsable": "1",
       "especialidad": 7,
       "estado": "1"
@@ -327,7 +327,7 @@
     "model": "gestionarCurso.curso",
     "pk": 17,
     "fields": {
-      "nombre": "Ingenieria Sismorresistente",
+      "nombre": "Ingeniería Sismorresistente",
       "responsable": "1",
       "especialidad": 7,
       "estado": "1"
@@ -337,7 +337,7 @@
     "model": "gestionarCurso.curso",
     "pk": 18,
     "fields": {
-      "nombre": "Ingenieria Geotecnica",
+      "nombre": "Ingeniería Geotecnica",
       "responsable": "1",
       "especialidad": 7,
       "estado": "1"
@@ -367,7 +367,7 @@
     "model": "gestionarCurso.curso",
     "pk": 21,
     "fields": {
-      "nombre": "Seminario PFC - Teoria",
+      "nombre": "Seminario PFC - Teoría",
       "responsable": "1",
       "especialidad": 8,
       "estado": "1"
@@ -377,7 +377,7 @@
     "model": "gestionarCurso.curso",
     "pk": 22,
     "fields": {
-      "nombre": "Seminario PFC - Estructuras y Construccion",
+      "nombre": "Seminario PFC - Estructuras y Construcción",
       "responsable": "1",
       "especialidad": 8,
       "estado": "1"

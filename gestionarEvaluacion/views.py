@@ -21,7 +21,8 @@ from authentication.models import User
 from gestionarResultados.models import ResultadoPUCP
 from gestionarPlanMedicion.models import PlanMedicionCurso, PlanMedicion
 from django.contrib.auth.decorators import login_required
-# import xlrd libreria para importar Alumnos
+import xlrd
+import pandas as pd
 @login_required
 def evaluar(request,pk):
     media_path = MEDIA_URL
@@ -226,22 +227,17 @@ def importarAlumno(request):
     #     else:
     #         RespuestaEvaluacion.objects.create(nombreAlumno=col[1], codigoAlumno=int(col[0]),
     #                                                horario_id=request.POST["horariopk"])
-    # return JsonResponse({}, status=200)
     plan = PlanMedicionCurso.objects.get(pk=request.POST["plan"])
     listaIndicador = plan.indicador.all()
-    excel = request.FILES['archivo']
-    rows = excel.read().decode().split('\n')
-    for row in rows:
-        codigo = row[:8]
-        nombre = row[9:-1]
-        if(codigo!=""):
-            for indicador in listaIndicador:
-                print(indicador.pk)
-                RespuestaEvaluacion.objects.create(nombreAlumno=nombre,
-                                                   codigoAlumno=codigo,
-                                                   horario_id=request.POST["horariopk"],
-                                                   indicador_id=indicador.pk,
-                                                   planMedicion_id=request.POST["plan"])
+    archivo = request.FILES['archivo']
+    data = pd.read_csv(archivo, sep="\t",skiprows=6,engine='c',encoding_errors='ignore',encoding='latin-1')
+    for index,row in data.iterrows():
+        for indicador in listaIndicador:
+            RespuestaEvaluacion.objects.create(nombreAlumno=row[1],
+                                                           codigoAlumno=row[0],
+                                                           horario_id=request.POST["horariopk"],
+                                                           indicador_id=indicador.pk,
+                                                           planMedicion_id=request.POST["plan"])
     return JsonResponse({}, status=200)
 
 def subirEvidencia(request):

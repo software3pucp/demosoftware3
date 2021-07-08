@@ -15,7 +15,7 @@
         <div class="card-body ">
             <div class="row justify-content-between align-items-center">
                 <div class="col-12">
-                    <h5 class="mb-2 mb-md-0 text-white">Asistentes </h5>
+                    <h5 class="mb-2 mb-md-0 text-white">Auditores </h5>
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
                         <div class="row">
                             <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
                                     name="cboEspecialidad"
-                                    onchange="listarAsistentes()">
+                                    onchange="listarAuditores()">
                                 {% for especialidad in especialidades %}
                                     <option value={{ especialidad.pk }}>{{ especialidad.nombre }}</option>
                                 {% endfor %}
@@ -42,33 +42,32 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12 col-lg-10 px-0" id="tituloEspecialidadAsistentes"></div>
+                    <div class="col-sm-12 col-lg-10 px-0" id="tituloEspecialidadAuditores"></div>
                     <div class="col-sm-12 col-lg-2 float-right text-right">
-                        <span class="btn btn-primary" href="#agregarAsistente" data-toggle="modal">Agregar</span>
+                        <span class="btn btn-primary" href="#agregarAuditor" data-toggle="modal">Agregar</span>
                     </div>
                 </div>
-                <div id="listadoAsistentes"></div>
+                <div id="listadoAuditores"></div>
             </div>
         </div>
     </div>
 
 
-    <!-- Modal Agregar Asistente -->
-    <div class="modal fade" id="agregarAsistente" tabindex="-1" role="dialog" aria-labelledby="agregarAsistenteLabel"
+    <!-- Modal Agregar Auditor -->
+    <div class="modal fade" id="agregarAuditor" tabindex="-1" role="dialog" aria-labelledby="agregarAuditorLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="agregarAsistenteLabel">Registrar Asistente</h5>
+                    <h5 class="modal-title" id="agregarAuditorLabel">Registrar Auditor</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
                             class="font-weight-light" aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formAgregarAsistente" name="formAgregarAsistente">
-
+                    <form id="formAgregarAuditor" name="formAgregarAuditor">
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">Seleccione un usuario</label>
-                            <select name="asistente" class="form-control selectpicker" id="asistente">
+                            <select name="auditor" class="form-control selectpicker" id="auditor">
                                 {% for responsable in ListaUsuarios %}
                                     {% if id_responsable|add:"0" == responsable.pk %}
                                         <option value={{ responsable.pk }} selected>{{ responsable.first_name }} {{ responsable.last_name }}</option>
@@ -83,9 +82,9 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cerrar</button>
-                    <button id="btnAgregarAsistente" class="btn btn-primary btn-sm" type="button">Agregar
+                    <button id="btnAgregarAuditor" class="btn btn-primary btn-sm" type="button">Agregar
                     </button>
-                    <button id="btnAgregarAsistenteYCerrar" class="btn btn-primary btn-sm" type="button">Agregar y
+                    <button id="btnAgregarAuditorYCerrar" class="btn btn-primary btn-sm" type="button">Agregar y
                         cerrar
                     </button>
                 </div>
@@ -94,19 +93,19 @@
     </div>
 
 
-    <!-- Modal Eliminar Asistente -->
-    <div class="modal fade" id="eliminarAsistente" tabindex="-1" role="dialog" aria-labelledby="eliminarAsistenteLabel"
+    <!-- Modal Eliminar Auditor -->
+    <div class="modal fade" id="eliminarAuditor" tabindex="-1" role="dialog" aria-labelledby="eliminarAuditorLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="eliminarAsistenteLabel"></h5>
+                    <h5 class="modal-title" id="eliminarAuditorLabel"></h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
                             class="font-weight-light" aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
-                    <button id="btnEliminarAsistente" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                    <button id="btnEliminarAuditor" class="btn btn-primary btn-sm" type="button">Confirmar</button>
                 </div>
             </div>
         </div>
@@ -125,26 +124,26 @@
 
 
         $(document).ready(function () {
-            listarAsistentes();
+            listarAuditores();
         });
 
-        $("#btnAgregarAsistente").on('click', function () {
-            registrarAsistente();
+        $("#btnAgregarAuditor").on('click', function () {
+            registrarAuditor();
         });
 
-        $("#btnAgregarAsistenteYCerrar").on('click', function () {
-            registrarAsistente();
-            $("#agregarAsistente").modal('hide');
+        $("#btnAgregarAuditorYCerrar").on('click', function () {
+            registrarAuditor();
+            $("#agregarAuditor").modal('hide');
         });
 
-        function registrarAsistente() {
+        function registrarAuditor() {
 
             $.ajax({
                 type: 'POST',
-                url: "{% url 'registrarAsistente' %}",
+                url: "{% url 'registrarAuditor' %}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    asistente: $("#asistente").val(),
+                    auditor: $("#auditor").val(),
                     especialidad: $("#cboEspecialidad").val(),
 
                 },
@@ -154,7 +153,7 @@
                         $("#messageError").empty();
                         $("#messageError").append('<p>' + response["message_error"] + '</p>');
                     }
-                    listarAsistentes();
+                    listarAuditores();
                 },
                 error: function (response) {
                     console.log("ocurrio un error");
@@ -164,30 +163,30 @@
         }
 
 
-        $("#btnEliminarAsistente").on('click', function () {
-            eliminarAsistente(pkEliminarN);
-            $("#eliminarAsistente").modal('hide');
+        $("#btnEliminarAuditor").on('click', function () {
+            eliminarAuditor(pkEliminarN);
+            $("#eliminarAuditor").modal('hide');
         });
 
-        function asistentesEliminar(nombreAsistente, pk) {
-            data = '<h5 class="modal-title" id="eliminarAsistenteLabel">Se eliminará el asistente: ' + nombreAsistente + '</h5>';
-            $("#eliminarAsistenteLabel").html(data);
-            $("#eliminarAsistente").modal('show');
+        function auditoresEliminar(nombreAuditor, pk) {
+            data = '<h5 class="modal-title" id="eliminarAuditorLabel">Se eliminará el auditor: ' + nombreAuditor + '</h5>';
+            $("#eliminarAuditorLabel").html(data);
+            $("#eliminarAuditor").modal('show');
             pkEliminarN = pk;
         };
 
 
-        function eliminarAsistente(asistentepk) {
+        function eliminarAuditor(auditorpk) {
              $.ajax({
                  type: 'POST',
-                 url: "{% url 'eliminarAsistente' %}",
+                 url: "{% url 'eliminarAuditor' %}",
                  data: {
                      csrfmiddlewaretoken: '{{ csrf_token }}',
-                     asistentepk: asistentepk,
+                     auditorpk: auditorpk,
                      especialidad: $("#cboEspecialidad").val(),
                  },
                  success: function (response) {
-                     listarAsistentes();
+                     listarAuditores();
                  },
                  error: function (response) {
                      alert(response["responseJSON"]["error"]);
@@ -196,17 +195,17 @@
         }
 
 
-        function listarAsistentes() {
+        function listarAuditores() {
             $.ajax({
                 type: 'POST',
-                url: "{% url 'listarAsistentes'%}",
+                url: "{% url 'listarAuditores'%}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     especialidad: $("#cboEspecialidad").val(),
 
                 },
                 success: function (response) {
-                    var instance = JSON.parse(response['asistentes']);
+                    var instance = JSON.parse(response['auditores']);
                     var i = 0;
                     var numero = instance.length;
                     var data = '';
@@ -220,7 +219,7 @@
                                         '<h5>' + instance[i]["fields"].first_name +
                                     '<div class="my-1">' + instance[i]["fields"].email +
                                     '</div>' +
-                                        '<button class="btn btn-falcon-danger my-1 mr-2" onclick="asistentesEliminar(\'' + instance[i]["fields"].first_name + '\',' + instance[i]["pk"] + ')">' +
+                                        '<button class="btn btn-falcon-danger my-1 mr-2" onclick="auditoresEliminar(\'' + instance[i]["fields"].first_name + '\',' + instance[i]["pk"] + ')">' +
                                         '<span class="fa fa-times"></span> Eliminar</button>' +
                                     '</div>' +
                                 '</div>' +
@@ -228,9 +227,9 @@
                         );
                     }
 
-                    data2 = ('<h5 class="ml-3 mt-2">Asistentes de ' + $("#cboEspecialidad option:selected").text() + '</h5>');
-                    $("#tituloEspecialidadAsistentes").html(data2);
-                    $("#listadoAsistentes").html(data);
+                    data2 = ('<h5 class="ml-3 mt-2">Auditores de ' + $("#cboEspecialidad option:selected").text() + '</h5>');
+                    $("#tituloEspecialidadAuditores").html(data2);
+                    $("#listadoAuditores").html(data);
                 },
                 error: function (response) {
                     // alert the error if any error occured

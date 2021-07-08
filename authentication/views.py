@@ -23,7 +23,7 @@ import math
 def Show(request):
     media_path = MEDIA_URL
     context = {
-        'users': User.objects.filter().exclude(estado='0'),
+        'users': User.objects.filter().all(),
         'media_path': media_path
     }
     return render(request, 'authentication/User_List.html', context)
@@ -67,7 +67,7 @@ def Register(request):
         user = User.objects.create_user(first_name=request.POST['card-name'],
                                         username=request.POST['card-correo'], code=request.POST['card-codigo'],
                                         email=request.POST['card-correo'], password=request.POST['card-password'],
-                                        photo=photo, is_active=True,estado=1)
+                                        photo=photo, is_active=True)
         p=request.POST['card-password']
         roles = request.POST.getlist('choices-multiple-remove-button')
         i = 0
@@ -151,17 +151,13 @@ def Edit(request, pk):
     return render(request, 'authentication/User_Edit.html', context)
 
 
-def Delete(request, pk):
-    user = User.objects.get(pk=pk)
-    user.estado = 0
-    return redirect(Show)
-
 def Activate(request, pk):
     user = User.objects.get(pk=pk)
-    if user.estado == 1:
-        user.estado = 2
+    if user.is_active:
+        user.is_active = False
     else:
-        user.estado = 1
+        user.is_active = True
+    user.save()
     return redirect(Show)
 
 def sing_in(request):
@@ -380,7 +376,7 @@ def importarUsuarios(request):
                         User.objects.create_user(first_name=nombre,
                                                     username=correo, code=codigo,
                                                     email=correo,
-                                                    is_active=True, estado=1)
+                                                    is_active=True)
                         filasInsertadas.append(i)
                     else:
                         filasCorreoMaltipeado.append(i)
