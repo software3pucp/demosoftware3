@@ -348,6 +348,7 @@ def concatElementosLista(list,cadena):
             cadena=cadena+"\n"
     return cadena
 
+
 def importarUsuarios(request):
     try:
         excel = request.FILES['archivo']
@@ -361,6 +362,7 @@ def importarUsuarios(request):
         listaUsuarioRechazados = []
         filasInsertadas=[]
         hayError=False
+
         success_message="Se han guardado los datos correctamente"
         error_message=""
         for i in range(rows):
