@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.core import serializers
 from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
-from gestionarREAcreditadoras.models import Acreditadora, ResultadoAcreditadora
+from gestionarREAcreditadoras.models import Acreditadora, ResultadoAcreditadora, HistoriaREAcred
 from gestionarIndicadores.models import Indicador
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -220,6 +220,19 @@ def desactivarREA(request):
         re=ResultadoAcreditadora.objects.get(pk=request.POST["reAcreditadoraPK"])
         re.estado = '2'
         re.save()
+        indic=Indicador.objects.filter(resultadoAcreditadora_id=request.POST["reAcreditadoraPK"], estado=1)
+        for i in indic:
+            print(i.codigo, i.descripcion)
+            # resAux=ResultadoPUCP.objects.get(pk=i.resultado_id)
+            # plRAux=PlanResultados.objects.get(pk=resAux.planResultado_id)
+            # espAux=Especialidad.objects.get(pk=plRAux.especialidad_id)
+            # facAux=Facultad.objects.get(pk=espAux.facultad_id)
+            # HistoriaREAcred.objects.create(resultadoAcreditadora_id=request.POST["reAcreditadoraPK"],
+            #                                 codIndicador=i.codigo, descpIndicador=i.descripcion,
+            #                                 facultad=facAux.nombre,
+            #                                 especialidad=espAux.nombre)
+            i.resultadoAcreditadora=None
+            i.save()
         return JsonResponse({}, status=200)
     except:
         return JsonResponse({"resp": None}, status=303)

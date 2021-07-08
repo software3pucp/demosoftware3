@@ -1,0 +1,137 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+
+    {#AQUI COLOQUEN EL CÓDIGO#}
+    <div class="card mb-3 bg-card-gradient mr-2">
+        <div class="card-body ">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-12">
+                    <h5 class="mb-2 mb-md-0 text-white">Acreditadoras</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form action="{% url 'editarRE' pk=resultadoAcreditadora.pk %}" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-9 "></div>
+            <div class="col-3 text-right mb-3">
+                <a class="d-flex flex-row justify-content-end mt-2 mr-3" href="{% url 'listarFacultad' %}">
+                    <div class="fas fa-reply mt-1 mr-2"></div>
+                    <h5>Volver</h5>
+                </a>
+            </div>
+        </div>
+
+        <div class="row" style="padding-left: 1%;padding-right: 1%">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="codigo">Código:</label>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <input name="codigo" class="form-control" id="codigo" type="text" placeholder="Ingrese un código"
+                           value="{{ resultadoAcreditadora.codigo }}" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="padding-left: 1%;padding-right: 1%">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="descripcion">Descripción:</label>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <textarea name="descripcion" class="form-control" id="descripcion"
+                              placeholder="Ingrese una descripción"
+                              rows="4" required>{{ resultadoAcreditadora.descripcion }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Asociación {{ acreditadora.nombre }} - PUCP</h3>
+                <hr>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label for="FormControlSelect1">Facultad:</label>
+                <select id="facultades" name="facultades" class="form-control" id="facultades"
+                        onchange="listarEspecialidades()">
+                    {% for facultad in facultades %}
+                        <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="especialidades">Especialidades:</label>
+                <select id="especialidades" name="especialidades" class="form-control" id="especialidades"
+                        onchange="listarResultadosPUCP()">
+                </select>
+            </div>
+        </div>
+        <p></p>
+        <div class="row">
+            <div class="col">
+                <div class="form-check px-0 pt-3">
+                    <table class="table">
+                        <thead class="thead" style="color:white; background-color: rgb(1, 84, 174);">
+                        <tr>
+                            <th scope="col">Código</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Seleccionar</th>
+                        </tr>
+                        </thead>
+                        <tbody id="indicadores" name="indicadoress">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% if flag == 1 %}
+            <div class="row" style="background-color: #017ecd; color: #fff; margin: 1%;">
+                <div class="col-md-12">
+                    <p style="margin: 1%;">Se ha editado correctamente</p>
+                </div>
+            </div>
+        {% elif flag == 2 %}
+            <div class="row" style="background-color: #017ecd; color: #fff; margin: 1%;">
+                <div class="col-md-12">
+                    <p style="margin: 1%;">Se ha insertado correctamente</p>
+                </div>
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-md-12" style="text-align: right;">
+                <a class="btn btn-outline-primary" type="button"
+                   href="{% url 'listarRE' pk=resultadoAcreditadora.acreditadora_id %}">Cancelar</a>
+                {% if resultadoAcreditadora.pk == "0" %}
+                    <input type="hidden" name="operacion" value="insertar">
+                {% else %}
+                    <input type="hidden" name="operacion" value="editar">
+                {% endif %}
+                <input type="hidden" name="acreditadora" value="{{ acreditadora.pk }}">
+                <input type="submit" class="btn btn-primary" value="Guardar">
+            </div>
+        </div>
+        <!--<button class="btn btn-primary mb-3" type="submit">Save</button>-->
+    </form>
+{% endblock %}
+
+{#Bloque de Javascript -> JS#}
+{% block extrajs %}
+
+{% endblock %}
