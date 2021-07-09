@@ -23,6 +23,15 @@ def listarEspecialidad(request):
     return render(request, 'gestionarEspecialidad/listarEspecialidad.html', context)
 
 @login_required
+def listarEspecialidadDirector(request):
+    media_path = MEDIA_URL
+    user = User.objects.get(pk=request.user.pk)
+    context = {
+        'ListaEspecialidad': Especialidad.objects.filter(responsable=user.pk),
+    }
+    return render(request, 'gestionarEspecialidad/listarEspecialidadDirector.html',context)
+
+@login_required
 def listarEspecialidadxCurso(request, id_especialidad):
     print("==================================")
     print(id_especialidad)
