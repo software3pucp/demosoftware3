@@ -5,6 +5,8 @@ from django.core import serializers
 from openpyxl import Workbook,load_workbook,styles
 import os
 from django.conf import settings
+from django.db.models import Count
+from openpyxl.styles import PatternFill, Alignment, Font, Border, Side
 # Create your views here.
 from demosoftware3.settings import MEDIA_URL
 from gestionarEvaluacion.models import RespuestaEvaluacion
@@ -61,6 +63,8 @@ def evaluar(request,pk):
     cantidad = len(listaNombres)
     listaConjunta = zip(listaNombres, listaDocumentos)
     listaArchivos = set(listaConjunta)
+    semestre = Semestre.objects.get(pk=request.GET['sem'])
+    print(str(semestre.pk)+ ' '+str(semestre.nombreCodigo))
     context = {
         'media_path': media_path,
         'listaAlumno': listaAlumno,
@@ -74,6 +78,7 @@ def evaluar(request,pk):
         'cantidad': cantidad,
         'users': User.objects.all(),
         'listaAux': listaArchivos,
+        'semestre':semestre
     }
     return render(request, 'gestionarEvaluacion/baseEvaluacion/base.html',context)
 
@@ -269,45 +274,97 @@ def eliminarEvidencia(request):
 
 
 def exportarMedicion(request):
-    horarioSeleccionado = request.POST['cboHorario']
-    indicadorSeleccionado = Indicador.objects.get(pk=request.POST['cboIndicador'])
-    resultadoAsociado = ResultadoPUCP.objects.get(pk=indicadorSeleccionado.resultado.pk)
-    curso= Horario.objects.get(id=horarioSeleccionado).curso.curso
 
     #Apertura de template.xlsx
     filename = os.path.join(settings.BASE_DIR, 'gestionarEvaluacion', 'Resource', 'template.xlsx')
     wb = load_workbook(filename)
     ws= wb.active
-    #
-    # #CABECERAS
-    # ws['E3'] = f'MEDICIÓN DEL CURSO -  {curso.nombre.upper()}'
-    # ws['D5'] = curso.nombre.upper()
-    # ws['G5'] = Horario.objects.get(id=horarioSeleccionado).codigo
-    # ws['D7'] = User.objects.get(id = Horario.objects.get(id=horarioSeleccionado).responsable).first_name
-    # ws['E15']= ws['E24'] =  f'{indicadorSeleccionado.codigo}\n{indicadorSeleccionado.descripcion}'
-    # ws['E14']= ws['E23'] =  f'{resultadoAsociado.codigo} - {resultadoAsociado.descripcion}'
-    #
-    # #Impresion de Puntajes
-    # rows = RespuestaEvaluacion.objects.filter(horario_id=horarioSeleccionado,estado="1")
-    # i = 0
-    # for row in rows:
-    #     ws[f'B{25 + i}'] = i + 1
-    #     ws[f'C{25 + i}'] = row.codigoAlumno
-    #     ws[f'D{25 + i}'] = row.nombreAlumno
-    #     ws[f'E{25 + i}'] = row.valorNota if row.valorNota != None else 0
-    #     i+=1
-    #
-    # #Resultados
-    # niveles = Nivel.objects.filter(especialidad_id=curso.especialidad_id, estado='1').order_by('-valor')
-    # valorMax = niveles[0].valor
-    # ws['E18'] = i
-    # if i>0:
-    #     ws['E16'] = f'=SUMA(E25:H{25+i-1})/{i}'
-    #     ws['E17'] = f'=SUMA(E25:H{25 + i - 1})/{i}/{valorMax}*100%'
-    #
-    #
-    # #Establecer el nombre del archivo
-    nombre_archivo = "Reporte.xlsx"
+
+    horario = Horario.objects.get(pk=request.POST['cboHorario'])
+    try:
+        plan = PlanMedicionCurso.objects.get(pk=horario.curso.pk)
+        indicadores_plan = PlanMedicionCurso.indicador.through.objects.filter(planmedicioncurso_id=plan.pk)
+        indicadores = []
+        for indicador in indicadores_plan:
+            indicadores.append(Indicador.objects.get(pk=indicador.indicador_id))
+        colIndicadores = []
+        for i in range(len(indicadores)):
+            if i==0:
+                colIndicadores.append('E')
+            else:
+                colIndicadores.append(chr(ord(colIndicadores[i-1])+1))
+        curso = Curso.objects.get(pk=plan.curso_id)
+        semestre = Semestre.objects.get(pk=plan.semestre_id)
+
+        #CABECERAS
+        ws['E3'] = f'MEDICIÓN DEL CURSO -  {curso.nombre.upper()}'
+        ws['D5'] = curso.nombre.upper()
+        ws['G5'] = horario.codigo
+        ws['D7'] = User.objects.get(id = horario.responsable.pk).first_name
+        ws['K5'] = semestre.nombreCodigo
+
+
+        #IMPRESORAS DE PUNTAJES
+
+        alumnos = RespuestaEvaluacion.objects.filter(horario_id=request.POST['cboHorario'],estado='1').values('codigoAlumno').annotate(total=Count('codigoAlumno'))
+
+        i=0
+        for alumno in alumnos:
+            ws[f'B{25 + i}'] = i + 1
+            ws[f'C{25 + i}'] = alumno['codigoAlumno']
+            nombreAlumno = RespuestaEvaluacion.objects.filter(horario_id=request.POST['cboHorario'],
+                                                              estado='1',
+                                                              codigoAlumno=alumno['codigoAlumno']
+                                                             )[0].nombreAlumno
+            ws[f'D{25 + i}'] = nombreAlumno
+            i+=1
+
+        for i in range(len(indicadores)):
+            #CABECERA DE INDICADOR
+            ws[f'{colIndicadores[i]}15'] = ws[f'{colIndicadores[i]}24'] = f'{indicadores[i].codigo}\n{indicadores[i].descripcion}'
+            suma = 0
+            n=0
+            j=0
+            for alumno in alumnos:
+                valorNota = RespuestaEvaluacion.objects.filter(horario_id=request.POST['cboHorario'],
+                                                           estado='1',
+                                                           indicador_id= indicadores[i].pk,
+                                                           codigoAlumno=alumno['codigoAlumno'])[0].valorNota
+                if(valorNota != None):
+                    suma = suma + valorNota
+                    n= n+1
+                else:
+                    valorNota = 0
+                ws[f'{colIndicadores[i]}{25 + j}'] = valorNota
+                j=j+1
+            #Resultados
+            niveles = Nivel.objects.filter(especialidad_id=curso.especialidad_id, estado='1').order_by('-valor')
+            valorMax = niveles[0].valor
+            ws[f'{colIndicadores[i]}18'] = n
+            ws[f'{colIndicadores[i]}16'] = suma/n if n>0 else 0
+            ws[f'{colIndicadores[i]}17'] = suma/n/valorMax if n>0 else 0
+
+        #=======================================NO BORRAR - NO BORRAR====================================
+        # ws.merge_cells('O15:Q15')
+        # ws['O15'].font = Font(bold="True")
+        # ws['O15'].fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
+        # ws['O15'] = "CAGASTES"
+        # currentCell = ws['O15']
+        # currentCell.alignment = Alignment(horizontal='center',vertical='center')
+        # currentCell.border = Border(left=Side(border_style='medium'),
+        #                             right=Side(border_style='medium'),
+        #                             top=Side(border_style='medium'),
+        #                             bottom=Side(border_style='medium'))
+        # ws.row_dimensions[16].height = 70
+        # ws.column_dimensions['S'].width = 70
+        #thin : borde simple
+        # =======================================NO BORRAR - NO BORRAR====================================
+
+        # #Establecer el nombre del archivo
+    except:
+        print("ERROR en generacion de reporte")
+
+    nombre_archivo = f'Medicion-{horario.codigo}.xlsx'
 
     #Definir el tipo de respuesta que se va a dar
     response= HttpResponse(content_type="application/ms-excel")

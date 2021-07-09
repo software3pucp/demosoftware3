@@ -79,6 +79,7 @@
                         <div class="col-12 mb-3">
                             <div class="d-flex flex-row align-items-center">
                                 <div class="mr-2">
+                                    <input id="semestre" name="semestre" type="hidden" value="{{ semestre.pk }}">
                                     <label for="cboHorario">Horario:</label>
                                     {% if listaHorario %}
                                         <select class="custom-select custom-select-sm mb-3" id="cboHorario"
