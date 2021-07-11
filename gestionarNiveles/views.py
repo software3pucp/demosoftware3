@@ -14,6 +14,24 @@ def niveles(request):
     especialidades = []
     facultades = []
 
+    if (request.user.rol_actual == "Asistente de acreditación"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=2)
+        especialidades = Especialidad.objects.filter(responsable=usuario.pk)
+        context = {
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarNiveles/nivelesCE.html', context)
+
+    if (request.user.rol_actual == "Auditor"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=3)
+        especialidades = Especialidad.objects.filter(responsable=usuario.pk)
+        context = {
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarNiveles/nivelesCE.html', context)
+
     if (request.user.rol_actual == "Coordinador de facultad"):
         usuario = request.user
         grupo = Group.objects.get(pk=4)

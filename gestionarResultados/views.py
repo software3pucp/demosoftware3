@@ -100,6 +100,24 @@ def editarResultado(request, pk):
 
 @login_required
 def planDeResultado(request):
+    if (request.user.rol_actual == "Asistente de acreditación"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=2)
+        especialidades = Especialidad.objects.filter(responsable=usuario.pk, estado='1')
+        context = {
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarResultados/planDeResultadosCE.html', context)
+
+    if (request.user.rol_actual == "Auditor"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=3)
+        especialidades = Especialidad.objects.filter(responsable=usuario.pk, estado='1')
+        context = {
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarResultados/planDeResultadosCE.html', context)
+
     if (request.user.rol_actual == "Coordinador de facultad"):
         usuario = request.user
         grupo = Group.objects.get(pk=4)

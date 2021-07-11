@@ -74,6 +74,26 @@ def enviarCursoHorario(request, pk):
 
     semestre = Semestre.objects.get(pk=pk)
 
+    if (request.user.rol_actual == "Asistente de acreditación"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=2)
+        especialidades = Especialidad.objects.filter(responsable=usuario.pk)
+        context = {
+            "semestreSeleccionado": semestre,
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarSemestre/semestre/semestreDetalleCE.html', context)
+
+    if (request.user.rol_actual == "Auditor"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=3)
+        especialidades = Especialidad.objects.filter(responsable=usuario.pk)
+        context = {
+            "semestreSeleccionado": semestre,
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarSemestre/semestre/semestreDetalleCE.html', context)
+
     if (request.user.rol_actual == "Coordinador de facultad"):
         usuario = request.user
         grupo = Group.objects.get(pk=4)
