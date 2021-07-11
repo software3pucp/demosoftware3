@@ -23,9 +23,13 @@ def listarFacultad(request):
         media_path = MEDIA_URL
         context = {
             'ListaFacultad':facultades,
+            'ListaFacultad': Facultad.objects.filter(estado=Facultad.ESTADOS[1][0]),
+            'ListaFacultadInactivos': Facultad.objects.filter(estado=Facultad.ESTADOS[2][0]),
+            'ListaEstados': Facultad.ESTADOS[1:],
             'media_path': media_path,
+            'estado': '1'
         }
-        return render(request, 'gestionarFacultad/listarFacultadCoordinador.html', context)
+        return render(request, 'gestionarFacultad/listarFacultadCF.html', context)
 
 
     media_path = MEDIA_URL

@@ -13,15 +13,15 @@
 
     {#AQUI COLOQUEN EL CÓDIGO#}
     <div class="container-fluid content-row mt-3">
-    <div class="card mb-3 bg-card-gradient mr-4">
-        <div class="card-body ">
-            <div class="row justify-content-between align-items-center">
-                <div class="col-12">
-                    <h5 class="mb-2 mb-md-0 text-white">Especialidades</h5>
+        <div class="card mb-3 bg-card-gradient mr-4">
+            <div class="card-body ">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-12">
+                        <h5 class="mb-2 mb-md-0 text-white">Especialidades</h5>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
         <div class="row mt-4">
             {% for especialidad in ListaEspecialidad %}
                 <div class="col-sm-12 col-md-6 col-lg-4 especialidadesActivas">
@@ -30,10 +30,10 @@
                             <div class="card-img-top imgbox" style="height: 15rem">
                                 <a href="{% url 'listarEspecialidadxCurso' id_especialidad=especialidad.pk %}">
                                     {% if especialidad.foto.name %}
-                                            <img class="" src="{{ media_path }}{{ especialidad.foto.name }}/">
-                                        {% else %}
-                                            <img class="" src="{% static 'img/illustrations/4.png' %}">
-                                        {% endif %}
+                                        <img class="" src="{{ media_path }}{{ especialidad.foto.name }}/">
+                                    {% else %}
+                                        <img class="" src="{% static 'img/illustrations/4.png' %}">
+                                    {% endif %}
                                 </a>
                             </div>
                             <div class="specifies card-body p-1">
@@ -44,7 +44,7 @@
                                         <a class="float-right mr-3 pt-2 tooltip-inner arrow" data-toggle="tooltip">
                                         </a>
                                         <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip">
-                                            <div class="fas fa-pen"  style="visibility: hidden"></div>
+                                            <div class="fas fa-pen" style="visibility: hidden"></div>
                                         </a>
                                     </div>
                                 </div>
