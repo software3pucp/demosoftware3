@@ -258,12 +258,12 @@
                                     <div class="card-header">
                                         <h5 class="mb-0">Usuario</h5>
                                     </div>
-                                    <div class="card-body bg-ligh py-0" hidden>
+                                    <div class="card-body bg-ligh py-0">
                                         <div class="form-group">
                                             <label for="">Roles Asignados</label>
                                             <select id="choices-multiple-remove-button"
                                                     name="choices-multiple-remove-button"
-                                                    placeholder="Roles" multiple disabled>
+                                                    placeholder="" multiple disabled>
                                                 {% for x,y in roles %}
                                                     <option value={{ x }} selected>{{ y }}</option>
                                                 {% endfor %}
