@@ -41,19 +41,10 @@
                                 <hr class="divider">
                                 <div class="row">
                                     <div class="col">
-                                        <a class="float-right mr-3 pt-2 tooltip-inner arrow" data-toggle="tooltip"
-                                           data-placement="top"
-                                           title="Desactivar"
-                                           href="{% url 'eliminarEspecialidad2' id_especialidad=especialidad.pk %}"
-                                           role="link">
-                                            <div class="fas fa-power-off"></div>
+                                        <a class="float-right mr-3 pt-2 tooltip-inner arrow" data-toggle="tooltip">
                                         </a>
-                                        <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip"
-                                           data-placement="top"
-                                           title="Editar"
-                                           href="{% url 'editarEspecialidad' id_especialidad=especialidad.pk %}"
-                                           role="link">
-                                            <div class="fas fa-pen"></div>
+                                        <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip">
+                                            <div class="fas fa-pen"  style="visibility: hidden"></div>
                                         </a>
                                     </div>
                                 </div>
