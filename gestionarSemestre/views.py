@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.core import serializers
+from django.contrib.auth.models import Group
 # Create your views here.
 from datetime import datetime
 
+from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
 from gestionarHorario.models import Horario
 from gestionarPlanMedicion.models import PlanMedicionCurso, PlanMedicion
@@ -51,14 +53,9 @@ def agregarSemestre(request):
 
 @login_required
 def enviarCursoHorario(request, pk):
-    print("Listado de Cursos")
     if request.POST:
         planMedicion = PlanMedicion.objects.filter(estado='1', especialidad_id=request.POST['especialidad']).filter(
             semestre=pk)
-        e = list(planMedicion)
-        for i in range(len(e)):
-            print(e[i].nombre)
-        print(planMedicion)
         try:
             listaCursos = []
             planMedicionCursos = PlanMedicionCurso.objects.filter(estado=1, semestre=pk,
@@ -67,26 +64,36 @@ def enviarCursoHorario(request, pk):
                 curso = Curso.objects.get(pk=planMedicionCurso.curso_id, especialidad_id=request.POST['especialidad'])
                 print(curso.nombre)
                 listaCursos.append(curso)
-                # if curso is not None:
-                #    listaCursos.append(curso)
         except:
             print("No existe plan de medicion asociado!!!")
-        print("#########")
-        print("Cantidad de cursos:")
-        print(len(listaCursos))
+
         for i in range(len(listaCursos)):
             print(listaCursos[i].nombre)
-        print("#########")
         ser_instance = serializers.serialize('json', listaCursos)
-        print(ser_instance)
         return JsonResponse({"cursoLista": ser_instance}, status=200)
+
     semestre = Semestre.objects.get(pk=pk)
-    facultades = Facultad.objects.filter(estado=1)
-    context = {
-        "semestreSeleccionado": semestre,
-        "facultades": facultades,
-    }
-    return render(request, 'gestionarSemestre/semestre/semestreDetalle.html', context)
+
+    if (request.user.rol_actual == "Coordinador de facultad"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=4)
+        facultades = Facultad.objects.filter(responsable=usuario.pk)
+        context = {
+            "semestreSeleccionado": semestre,
+            'facultades': facultades,
+        }
+        return render(request, 'gestionarSemestre/semestre/semestreDetalleCF.html', context)
+
+    if (request.user.rol_actual == "Coordinador de especialidad"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=5)
+        especialidades = Especialidad.objects.filter(responsable=usuario.pk)
+        context = {
+            "semestreSeleccionado": semestre,
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarSemestre/semestre/semestreDetalleCE.html', context)
+
 
 
 @login_required
