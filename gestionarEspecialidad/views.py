@@ -61,12 +61,14 @@ def agregarEspecialidad(request, id_facultad):
             Especialidad.objects.create(nombre=nombre, responsable=id_responsable, facultad=facultad, foto=foto,
                                         estado=request.POST['estado'])
 
-            #Si el usuario no tiene rol de cooordinador de facultad se lo agrego
+            #Si el usuario no tiene rol de cooordinador de especialidad se lo agrego
             user = User.objects.get(pk=id_responsable)
             group = Group.objects.get(name="Coordinador de especialidad")
             userGroup = list(User.groups.through.objects.filter(user_id=id_responsable,group_id=group.pk))
             if len(userGroup) == 0:
                 group.user_set.add(user)
+                user.n_Roles = user.n_Roles + 1
+                user.save()
             return redirect('listarFacultadxEsp',id_facultad)
 
     context = {
@@ -93,6 +95,8 @@ def editarEspecialidad(request, id_especialidad):
         especialidades = list(Especialidad.objects.filter(responsable=responsable.pk))
         if len(especialidades) == 1:
             group.user_set.remove(responsable)
+            responsable.n_Roles = responsable.n_Roles - 1
+            responsable.save()
 
         nuevo_nombre = request.POST["name"]
         nuevo_responsable = request.POST["responsable"]
@@ -108,6 +112,8 @@ def editarEspecialidad(request, id_especialidad):
         userGroup = list(User.groups.through.objects.filter(user_id=nuevo_responsable, group_id=group.pk))
         if len(userGroup) == 0:
             group.user_set.add(user)
+            user.n_Roles = user.n_Roles + 1
+            user.save()
 
         return redirect('listarFacultadxEsp', id_facultad)
 
