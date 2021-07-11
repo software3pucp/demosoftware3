@@ -34,6 +34,8 @@ def registrarAsistente(request):
     userGroup = list(User.groups.through.objects.filter(user_id=user.pk, group_id=group.pk))
     if len(userGroup) == 0:  # Verificamos si el usuario tiene el rol
         group.user_set.add(user)  # sino se le asigna el rol al usuario
+        user.n_Roles = user.n_Roles + 1
+        user.save()
 
     registro = Asistente.objects.filter(user_id=user.pk, especialidad_id=especialidadpk)
     if (registro.__len__() == 0):
@@ -64,6 +66,8 @@ def eliminarAsistente(request):
     registros = list(Asistente.objects.filter(user_id=asistentepk))
     if len(registros) == 1:
         group.user_set.remove(usuario)
+        usuario.n_Roles = usuario.n_Roles - 1
+        usuario.save()
 
     asistente.delete()
     return JsonResponse({}, status=200)
