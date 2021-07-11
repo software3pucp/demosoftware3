@@ -408,7 +408,7 @@ def listarCursoMedicion(request):
     print(ser_instance)
     return JsonResponse({"cursoLista": ser_instance}, status=200)
 
-def algoritmoSacarPorcentajes:
+def algoritmoSacarPorcentajes():
     esp = 5
     ciclo = "2020-2"
     # objeto semetre, niveles y especialidad
