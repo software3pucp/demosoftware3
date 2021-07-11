@@ -47,7 +47,7 @@
     "fields": {
       "password": "pbkdf2_sha256$216000$GVNjJSaPbZHL$RxlI8L9l+fKz67VR8vj/rWESDblC986h6kBZDYgzn2I=",
       "last_login": null,
-      "is_superuser": false,
+      "is_superuser": true,
       "username": "admin@apolo.pe",
       "first_name": "Administrador",
       "last_name": "",
@@ -57,9 +57,9 @@
       "date_joined": "2021-06-09T04:35:29.555Z",
       "code": "00000000",
       "photo": "",
-      "n_Roles": "1",
+      "n_Roles": "3",
       "groups": [
-        1
+        1,4,5
       ],
       "user_permissions": []
     }
@@ -80,10 +80,8 @@
       "date_joined": "2021-06-10T16:36:18.552Z",
       "code": "00000000",
       "photo": "",
-      "n_Roles": "1",
-      "groups": [
-        2
-      ],
+      "n_Roles": "0",
+      "groups": [],
       "user_permissions": []
     }
   },
@@ -103,10 +101,8 @@
       "date_joined": "2021-06-10T16:37:43.170Z",
       "code": "00000000",
       "photo": "",
-      "n_Roles": "1",
-      "groups": [
-        3
-      ],
+      "n_Roles": "0",
+      "groups": [],
       "user_permissions": []
     }
   },
@@ -126,10 +122,8 @@
       "date_joined": "2021-06-10T16:40:38.542Z",
       "code": "00000000",
       "photo": "",
-      "n_Roles": "1",
-      "groups": [
-        5
-      ],
+      "n_Roles": "0",
+      "groups": [],
       "user_permissions": []
     }
   },
@@ -149,10 +143,8 @@
       "date_joined": "2021-06-10T16:43:21.207Z",
       "code": "00000000",
       "photo": "",
-      "n_Roles": "1",
-      "groups": [
-        4
-      ],
+      "n_Roles": "0",
+      "groups": [],
       "user_permissions": []
     }
   },
@@ -172,10 +164,8 @@
       "date_joined": "2021-06-10T16:49:29.558Z",
       "code": "00000000",
       "photo": "",
-      "n_Roles": "1",
-      "groups": [
-        6
-      ],
+      "n_Roles": "0",
+      "groups": [],
       "user_permissions": []
     }
   },
