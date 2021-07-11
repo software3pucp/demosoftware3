@@ -407,3 +407,57 @@ def listarCursoMedicion(request):
     ser_instance = serializers.serialize('json', listaCursos)
     print(ser_instance)
     return JsonResponse({"cursoLista": ser_instance}, status=200)
+
+def algoritmoSacarPorcentajes:
+    esp = 5
+    ciclo = "2020-2"
+    # objeto semetre, niveles y especialidad
+    semAux = Semestre.objects.get(nombreCodigo=ciclo)
+    niveles = Nivel.objects.filter(especialidad_id=esp, estado='1').order_by('-valor')
+    planSemestre = PlanMedicion.semestre.through.objects.filter(semestre_id=semAux.pk)
+
+    # inicializando data
+    valorMax = niveles[0].valor
+    planCal = None
+
+    for p in planSemestre:
+        estado = [1, 2]
+        planesMedi = PlanMedicion.objects.filter(pk=p.planmedicion_id, estado__in=estado, especialidad_id=esp)
+        if planesMedi:
+            planCal = planesMedi[0]
+            break
+
+    if planCal:
+        planRes = PlanResultados.objects.get(pk=planCal.planResultados.pk)
+        resultados = ResultadoPUCP.objects.filter(planResultado_id=planRes.pk, estado=1)
+        for r in resultados:
+            print(r.codigo, r.descripcion)
+            indicadores = Indicador.objects.filter(resultado_id=r.pk, estado=1)
+            for i in indicadores:
+                print(i.codigo, i.descripcion)
+                plMedCur = PlanMedicionCurso.objects.filter(planMedicion_id=planCal.pk, semestre_id=semAux.pk, estado=1)
+                n = 0
+                for pl in plMedCur:
+                    planMedCurInt = PlanMedicionCurso.indicador.through.objects.filter(indicador_id=i.pk,
+                                                                                       planmedicioncurso_id=pl.pk)
+                    if planMedCurInt:
+                        n += 1
+                        horarios = Horario.objects.filter(curso_id=pl.pk, estado=1)
+                        cantAlum = 0
+                        acumNota = 0
+                        for h in horarios:
+                            alumnosEva = RespuestaEvaluacion.objects.filter(horario_id=h.pk,
+                                                                            estado='1',
+                                                                            indicador_id=i.pk)
+                            for alum in alumnosEva:
+                                valorNota = alum.valorNota
+                                if valorNota:
+                                    cantAlum += 1
+                                    acumNota += valorNota
+
+                        cursoAsig = Curso.objects.get(pk=pl.curso.pk)
+                        valorPorcentaje = acumNota / cantAlum / valorMax if cantAlum > 0 else 0
+                        print(cursoAsig.nombre, valorPorcentaje)
+    else:
+        print("No salio nada")
+        print("==============================")
