@@ -120,32 +120,38 @@
                                 <td class="align-middle">{{ user.code }}</td>
                                 <td class="align-middle">{{ user.email }}</td>
                                 <td class="align-middle">
+                                    {% if request.user.pk == user.pk %}
+                                        <a
+                                    {%  else %}
+                                        <a href="{% url 'activateUser' pk=user.id %}"
+                                    {% endif %}
                                     {% if user.is_active %}
-                                        <a href="{% url 'activateUser' pk=user.id %}" class="btn btn-primary mr-1 mb-1"
+                                           class="btn btn-primary mr-1 mb-1"
                                            type="button">
                                             <span class="fas fa-power-off mr-1" style="color: white;"
                                                   data-fa-transform="shrink-3"></span>Activo
-                                        </a>
                                     {% else %}
-                                        <a href="{% url 'activateUser' pk=user.id %}"
-                                           class="btn btn-falcon-primary btn-sm mr-2  text-body align-right">
-                                            <i class="fa fa-power-off" aria-hidden="true"></i> Inactivo</a>
+                                            class="btn btn-falcon-primary btn-sm mr-2  text-body align-right">
+                                            <i class="fa fa-power-off" aria-hidden="true"></i> Inactivo
                                     {% endif %}
+                                        </a>
                                 </td>
                                 <td class="align-middle">
-                                    {% if user.is_superuser %}
+                                    {% if request.user.pk == user.pk %}
+                                        <a
+                                    {%  else %}
                                         <a href="{% url 'adminUser' pk=user.id %}"
+                                    {% endif %}
+                                    {% if user.is_superuser %}
                                            class="btn btn-success mr-1 mb-1" type="button">
                                             <span class="fas fa-power-off mr-1" style="color: white;"
                                                   data-fa-transform="shrink-3"></span>Quitar Rol
-                                        </a>
                                     {% else %}
-                                        <a href="{% url 'adminUser' pk=user.id %}"
                                            class="btn btn-secondary mr-1 mb-1" type="button">
                                             <span class="fas fa-power-off mr-1" style="color: white;"
                                                   data-fa-transform="shrink-3"></span>Dar Rol
-                                        </a>
                                     {% endif %}
+                                        </a>
                                 </td>
 
                             </tr>
