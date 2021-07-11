@@ -32,6 +32,15 @@ def crearResultado(request, id_plan):
 
 @login_required
 def Resultados(request, id_plan):
+    if (request.user.rol_actual == "Coordinador de especialidad"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=5)
+        especialidades = Especialidad.objects.filter(responsable=usuario.pk, estado='1')
+        context = {
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarResultados/listarResultadosCE.html', context)
+
     plan = PlanResultados.objects.get(pk=id_plan)
     especialidad = plan.especialidad
     context = {
