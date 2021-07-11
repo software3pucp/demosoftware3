@@ -5,17 +5,33 @@ from django.contrib.auth.decorators import login_required
 from gestionarEspecialidad.models import Especialidad
 from gestionarFacultad.models import Facultad
 from gestionarNiveles.models import Nivel
+from django.contrib.auth.models import Group
 
 
 
 @login_required
 def niveles(request):
-    facultades = Facultad.objects.filter(estado='1')
+    especialidades = []
+    facultades = []
 
-    context = {
-        'facultades': facultades,
-    }
-    return render(request, 'gestionarNiveles/niveles.html', context)
+    if (request.user.rol_actual == "Coordinador de facultad"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=4)
+        facultades = Facultad.objects.filter(responsable=usuario.pk)
+        context = {
+            'facultades': facultades,
+        }
+        return render(request, 'gestionarNiveles/nivelesCF.html', context)
+
+    if (request.user.rol_actual == "Coordinador de especialidad"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=5)
+        especialidades = Especialidad.objects.filter(responsable=usuario.pk)
+        context = {
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarNiveles/nivelesCE.html', context)
+
 
 
 def obtenerEspecialidades(request):
