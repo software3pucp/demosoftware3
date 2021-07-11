@@ -182,6 +182,8 @@ def crearAjax(request):
             userGroup = list(User.groups.through.objects.filter(user_id=request.POST["responsablePk"], group_id=group.pk))
             if len(userGroup) ==0:
                 group.user_set.add(user)
+                user.n_Roles = user.n_Roles + 1
+                user.save()
 
             hor = Horario.objects.latest('id')
             horario = Horario.objects.filter(pk=hor.pk)
@@ -201,6 +203,8 @@ def crearAjax(request):
             horarios = list(Horario.objects.filter(responsable=responsable.pk))
             if len(horarios) == 1:
                 group.user_set.remove(responsable)
+                responsable.n_Roles = responsable.n_Roles - 1
+                responsable.save()
 
             hor.codigo = request.POST["codigo"]
             hor.responsable_id = request.POST["responsablePk"]
@@ -211,6 +215,8 @@ def crearAjax(request):
             userGroup = list(User.groups.through.objects.filter(user_id=request.POST["responsablePk"], group_id=group.pk))
             if len(userGroup) == 0:
                 group.user_set.add(user)
+                user.n_Roles = user.n_Roles + 1
+                user.save()
 
             horario = Horario.objects.filter(pk=request.POST["horarioPk"])
             data = serializers.serialize("json", horario)
