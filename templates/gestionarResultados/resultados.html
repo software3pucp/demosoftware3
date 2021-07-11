@@ -24,9 +24,11 @@
                         </div>
                     </div>
                     <hr style="background-color: #0154ae;">
+                    {% if plan.estado == '1' %}
                     <div style="margin: 1%;">
                         <span class="btn btn-primary" onclick="redirectCrearResultado()">Crear</span>
                     </div>
+                    {% endif %}
                     <div id="listadoResultados"></div>
 
                 </div>
@@ -138,8 +140,12 @@
                         }
 
                         data += (
-                            '                        <button class="btn btn-falcon-primary mr-1 my-1" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')">Editar</button>' +
-                            '                        <button class="btn btn-falcon-danger mr-1 my-1" onclick="resultadosEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')"><span class="fa fa-times"></span> Eliminar</button>' +
+                            '                        <button class="btn btn-falcon-primary mr-1 my-1" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')">{% if plan.estado == '1'%}Editar{% else %}Ver Detalle{% endif %}</button>' +
+                            {% if plan.estado == '1' %}
+                                                        '                        <button class="btn btn-falcon-danger mr-1 my-1" onclick="resultadosEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')"><span class="fa fa-times"></span> Eliminar</button>' +
+                            {% endif %}
+
+
                             '                    </div>' +
                             '                </div>' +
                             '        </div>' )

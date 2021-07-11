@@ -7,7 +7,7 @@ from rest_framework.utils import json
 from gestionarEspecialidad.models import Especialidad
 from gestionarIndicadores.models import Indicador
 from gestionarNiveles.models import Nivel
-from gestionarResultados.models import ResultadoPUCP
+from gestionarResultados.models import ResultadoPUCP, PlanResultados
 from gestionarRubrica.models import Rubrica
 from django.contrib.auth.decorators import login_required
 
@@ -38,6 +38,8 @@ def editarIndicador(request, pk):
                 desc_nivel = rub.descripcion
                 nivelLista2[nivel.valor - 1][1] = desc_nivel
 
+    resutado = ResultadoPUCP.objects.get(pk=id_resultado)
+    plan = PlanResultados.objects.get(pk=resutado.planResultado_id)
     if request.POST:
         indicador = Indicador.objects.get(pk=pk)
         indicador.codigo = request.POST['codigo']
@@ -53,6 +55,7 @@ def editarIndicador(request, pk):
             'rubrica': rubrica,
             'hay_niveles': hay_niveles,
             'mensaje_aviso': mensaje_aviso,
+            'plan':plan
         }
         return redirect('editarResultado', pk=id_resultado)
 
@@ -63,6 +66,7 @@ def editarIndicador(request, pk):
         'nivelLista': nivelLista2,
         'hay_niveles': hay_niveles,
         'mensaje_aviso': mensaje_aviso,
+        'plan':plan
     }
     return render(request, 'gestionarIndicadores/editarIndicador.html', context)
 

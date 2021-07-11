@@ -34,7 +34,7 @@
                         <div class="col-md-10">
                             <div class="form-group">
                                 <input name="codigo" class="form-control" id="codigo" type="text"
-                                       value="{{ indicador.codigo }}">
+                                       value="{{ indicador.codigo }}" {% if plan.estado == '2' %}disabled{% endif %}>
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                         <div class="col-md-10">
                             <div class="form-group">
                                     <textarea id="descripcion" name="descripcion" class="form-control"
-                                              aria-label="With textarea" rows="4">{{ indicador.descripcion }}</textarea>
+                                              aria-label="With textarea" rows="4" {% if plan.estado == '2' %}disabled{% endif %}>{{ indicador.descripcion }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                                                     <textarea name="desc_nivel{{ item.0.pk }}"
                                                               id="desc_nivel{{ item.0.pk }}"
                                                               class="form-control"
-                                                              rows="3">{{ item.1 }}</textarea>
+                                                              rows="3" {% if plan.estado == '2' %}disabled{% endif %}>{{ item.1 }}</textarea>
                                     </div>
                                 </td>
                             </tr>
@@ -109,6 +109,7 @@
                         </tbody>
                     </table>
                 </div>
+            {% if plan.estado == '1' %}
                 <div class="d-inline-flex  flex-row justify-content-end">
                     <div class="d-flex p-2">
                         <a class="btn btn-outline-primary" type="button"
@@ -119,6 +120,7 @@
                         <input type="submit" class="btn btn-primary" value="Guardar">
                     </div>
                 </div>
+            {% endif %}
             </div>
         </div>
     </form>

@@ -54,7 +54,7 @@
                         <div class="col-md-10 mb-3">
                             <div class="form-group">
                                 <input name="codigo" class="form-control" id="codigo" type="text"
-                                       value="{{ resultado.codigo }}">
+                                       value="{{ resultado.codigo }}" {% if plan.estado == '2' %} disabled{%  endif %}>
                             </div>
                         </div>
                     </div>
@@ -67,16 +67,18 @@
                         <div class="col-md-10">
                             <div class="form-group ">
                                     <textarea name="descripcion" id="descripcion" class="form-control"
-                                              aria-label="With textarea" rows="4">{{ resultado.descripcion }}</textarea>
+                                              aria-label="With textarea" rows="4" {% if plan.estado == '2' %} disabled{%  endif %} >{{ resultado.descripcion }}</textarea>
                             </div>
                         </div>
                     </div>
                 </div>
+            {% if plan.estado == '1' %}
                 <div class="col-md-12 d-flex justify-content-end mt-3">
                     <a class="btn btn-outline-primary m-1" type="button"
                        href="{% url 'resultados' id_plan=plan.pk %}">Cancelar</a>
                     <input type="submit" class="btn btn-primary m-1" value="Guardar">
                 </div>
+            {%  endif %}
             </div>
         </form>
         <div class="row-12">
@@ -85,10 +87,12 @@
             </div>
             <hr style="background-color: #0154ae;">
             <div class="col-12">
+            {% if plan.estado == '1' %}
                 <div class="btn btn-falcon-primary mb-2" href="#agregarIndicadorNuevo" data-toggle="modal"
                      role="button">
                     <span class="fa fa-plus"></span>
                 </div>
+            {%  endif %}
                 <div class="dashboard-data-table">
                     <table class="table table-sm table-dashboard fs--1 data-table border-bottom"
                            data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
@@ -110,14 +114,16 @@
                                     <div class="row">
                                         <div class="col">
                                             <a href="{% url 'editarIndicador' pk=indicador.pk %}"
-                                               class="badge badge rounded-capsule badge-soft-info">Editar</a>
+                                               class="badge badge rounded-capsule badge-soft-info">{% if plan.estado == '1' %}Editar{% else %}Ver detalle{% endif %}</a>
                                         </div>
+                                        {% if plan.estado == '1' %}
                                         <div class="col">
                                             <button class="badge badge rounded-capsule badge-soft-danger"
                                                     onclick="indicadoresEliminar('{{ indicador.codigo }}',{{ indicador.pk }} )">
                                                     Eliminar
                                             </button>
                                         </div>
+                                        {%  endif %}
                                     </div>
                                 </td>
                             </tr>
