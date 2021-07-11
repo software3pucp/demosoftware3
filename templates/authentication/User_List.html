@@ -91,6 +91,7 @@
                             <th class="align-middle sort pr-7">Código</th>
                             <th class="align-middle sort" style="min-width: 12.5rem;">Correo</th>
                             <th class="align-middle text-left no-sort">Estado</th>
+                            <th class="align-middle text-left no-sort">Administrador</th>
                         </tr>
                         </thead>
                         <tbody id="orders">
@@ -129,6 +130,21 @@
                                         <a href="{% url 'activateUser' pk=user.id %}"
                                            class="btn btn-falcon-primary btn-sm mr-2  text-body align-right">
                                             <i class="fa fa-power-off" aria-hidden="true"></i> Inactivo</a>
+                                    {% endif %}
+                                </td>
+                                <td class="align-middle">
+                                    {% if user.is_superuser %}
+                                        <a href="{% url 'adminUser' pk=user.id %}"
+                                           class="btn btn-success mr-1 mb-1" type="button">
+                                            <span class="fas fa-power-off mr-1" style="color: white;"
+                                                  data-fa-transform="shrink-3"></span>Quitar Rol
+                                        </a>
+                                    {% else %}
+                                        <a href="{% url 'adminUser' pk=user.id %}"
+                                           class="btn btn-secondary mr-1 mb-1" type="button">
+                                            <span class="fas fa-power-off mr-1" style="color: white;"
+                                                  data-fa-transform="shrink-3"></span>Dar Rol
+                                        </a>
                                     {% endif %}
                                 </td>
 

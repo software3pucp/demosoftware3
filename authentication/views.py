@@ -69,15 +69,15 @@ def Register(request):
                                         email=request.POST['card-correo'], password=request.POST['card-password'],
                                         photo=photo, is_active=True)
         p=request.POST['card-password']
-        roles = request.POST.getlist('choices-multiple-remove-button')
-        i = 0
-        for val in roles:
-            i += 1
-            group = Group.objects.get(id=val)
-            group.user_set.add(user)
-        if (i==1):
-            user.n_Roles = '1'
-            user.save()
+        # roles = request.POST.getlist('choices-multiple-remove-button')
+        # i = 0
+        # for val in roles:
+        #     i += 1
+        #     group = Group.objects.get(id=val)
+        #     group.user_set.add(user)
+        # if (i==1):
+        #     user.n_Roles = '1'
+        #     user.save()
         EnviarCorreoBienvenida(request, user, p)
         return redirect(Show)
     return render(request, 'authentication/User_Add.html', context)
@@ -125,20 +125,20 @@ def Edit(request, pk):
             user = authenticate(request, username=current_user, password=current_contra)
             login(request, user)
 
-        if request.POST.getlist('choices-multiple-remove-button'):
-            if (not user.groups is None):
-                user.groups.clear()
-            roles = request.POST.getlist('choices-multiple-remove-button')
-            for val in roles:
-                i += 1
-                group = Group.objects.get(id=val)
-                group.user_set.add(user)
-            if (i==1):
-                user.n_Roles = '1'
-                user.save()
-            else:
-                user.n_Roles = None
-                user.save()
+        # if request.POST.getlist('choices-multiple-remove-button'):
+        #     if (not user.groups is None):
+        #         user.groups.clear()
+        #     roles = request.POST.getlist('choices-multiple-remove-button')
+        #     for val in roles:
+        #         i += 1
+        #         group = Group.objects.get(id=val)
+        #         group.user_set.add(user)
+        #     if (i==1):
+        #         user.n_Roles = '1'
+        #         user.save()
+        #     else:
+        #         user.n_Roles = None
+        #         user.save()
         return redirect(Show)
 
     context = {
@@ -157,6 +157,21 @@ def Activate(request, pk):
         user.is_active = False
     else:
         user.is_active = True
+    user.save()
+    return redirect(Show)
+
+def Admin(request, pk):
+    user = User.objects.get(pk=pk)
+    if user.is_superuser:
+        user.is_superuser = False
+        group = Group.objects.get(id=1)
+        group.user_set.remove(user)
+
+    else:
+        user.is_superuser = True
+        group = Group.objects.get(id=1)
+        group.user_set.add(user)
+
     user.save()
     return redirect(Show)
 
