@@ -165,12 +165,16 @@ def Admin(request, pk):
     if user.is_superuser:
         user.is_superuser = False
         group = Group.objects.get(id=1)
+        user.n_Roles = user.n_Roles - 1
+        user.save()
         group.user_set.remove(user)
 
     else:
         user.is_superuser = True
         group = Group.objects.get(id=1)
         group.user_set.add(user)
+        user.n_Roles = user.n_Roles + 1
+        user.save()
 
     user.save()
     return redirect(Show)
