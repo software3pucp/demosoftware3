@@ -129,8 +129,14 @@ def crearPlanResultado(request, id_especialidad):
     if request.POST:
         codigo = request.POST['codigo']
         nombre = request.POST['nombre']
+        planDeResultado = PlanResultados.objects.filter(estado='1')
+        if planDeResultado:
+            planDeResultado = planDeResultado[0]
+            planDeResultado.estado = '2'
+            planDeResultado.save()
+            
         nuevoPlanResultado = PlanResultados.objects.create(codigo=codigo, descripcion=nombre, especialidad=especialidad,
-                                                           estado='2')
+                                                           estado='1')
         return redirect('planDeResultado')
 
     context = {

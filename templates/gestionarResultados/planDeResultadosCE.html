@@ -212,22 +212,22 @@
                                 ' data-placement="top" title="Editar plan de Resultado" ' +
                                 'onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">' +
                                 '<span class="fa fa-pen"></span>' + '</div>');
-                        } else {
+                        }
+                        else {
                             data += (
                                 '<div class="btn btn-falcon-primary mr-2" onclick="redirectVerPlan(' + instance[i]["pk"] + ')">Ver Plan de Resultado' +
-                                '<span class="fa fa-eye ml-2 "></span></div>' +
+                                '<span class="fa fa-eye ml-2 "></span></div>' 
 
-                                '<div class="btn btn-falcon-default my-1 mr-2" data-toggle="tooltip"' +
-                                ' data-placement="top" title="Editar plan de Resultado" ' +
-                                'onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">' +
-                                '<span class="fa fa-pen "</span>' + '</div>');
+                               );
+                        }
+                        if (instance[i]["fields"].estado == '1'){
+                            data += (
+                                '<button class="btn btn-falcon-danger my-1 mr-2" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
+                                '<span class="fa fa-times"></span></button>'
+                            )
                         }
 
-                        data += (
-                            '<button class="btn btn-falcon-danger my-1 mr-2" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
-                            '<span class="fa fa-times"></span></button>'
-                        )
-                        if (instance[i]["fields"].estado == '1') {
+{% comment %}                        if (instance[i]["fields"].estado == '1') {
                             data += (
                                 '<button class="btn btn-falcon-default my-1" onclick="desactivarPlan(' + instance[i]["pk"] + ')">Desactivar</button>'
                             );
@@ -235,7 +235,7 @@
                             data += (
                                 '<button class="btn btn-falcon-success my-1" onclick="activarPlan(' + instance[i]["pk"] + ')">Activar</button>'
                             );
-                        }
+                        }{% endcomment %}
                         data += (
                             '</div>' +
                             '</div>' +
