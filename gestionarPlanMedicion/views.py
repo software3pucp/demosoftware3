@@ -240,6 +240,8 @@ def crearAjax(request):
 
 
 def historico(request):
+    especialidades = []
+    facultades = []
 
     if request.POST:
         if request.POST['operacion'] == 'terminar':
@@ -253,12 +255,25 @@ def historico(request):
             mejora = PlanMejora.objects.get(planMedicion_id=request.POST['planMedicion'],estado=1)
             return redirect('planMejora',pk=mejora.pk)
 
-    facultades = Facultad.objects.filter(estado='1')
-    context = {
-        'facultades' : facultades,
-    }
+    if (request.user.rol_actual == "Coordinador de facultad"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=4)
+        facultades = Facultad.objects.filter(responsable=usuario.pk)
+        context = {
+            'facultades': facultades,
+        }
+        return render(request, 'gestionarPlanMedicion/listarMedicionesCF.html', context)
 
-    return render(request, 'gestionarPlanMedicion/listarMediciones.html', context)
+    if (request.user.rol_actual == "Coordinador de especialidad"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=5)
+        especialidades = Especialidad.objects.filter(responsable=usuario.pk)
+        context = {
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarPlanMedicion/listarMedicionesCE.html', context)
+
+
 
 def crearHistorico(request, id_especialidad):
     try:

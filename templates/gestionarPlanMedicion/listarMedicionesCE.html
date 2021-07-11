@@ -1,0 +1,219 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+    <style>
+        #Titulo {
+            color: #0154ae;
+        }
+
+    </style>
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+    <div class="card mb-3 bg-card-gradient">
+        <div class="card-body ">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-12">
+                    <h5 class="mb-2 mb-md-0 text-white">Histórico Plan de Medición</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="col">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-6 pl-4 pr-4">
+                        <div class="row">
+                            <label for="cboEspecialidad">Especialidad:</label>
+                        </div>
+                        <div class="row">
+                            <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad" name="cboEspecialidad"
+                                    onchange="listarHistorico()">
+                                {% for especialidad in especialidades %}
+                                    <option value={{ especialidad.pk }}>{{ especialidad.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-lg-10 px-0 pl-3" id="tituloEspecialidadMediciones"></div>
+                    <div class="col-sm-12 col-lg-2 float-right text-right">
+                        {% if user.rol_actual != "Docente" %}
+                            <span class="btn btn-primary" onclick="redirectCrearHistorico()">Crear</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div id="listadoMediciones"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Eliminar Medicion -->
+
+    <div class="modal fade" id="eliminarMedicion" tabindex="-1" role="dialog" aria-labelledby="eliminarMedicionLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarMedicionLabel"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                    <button id="btnEliminarMedicion" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+
+        var pkEliminar;
+
+        $(document).ready(function () {
+            listarHistorico();
+        });
+
+        function redirectCrearHistorico() {
+            var pk_especialidad = $("#cboEspecialidad").val();
+            document.location.href = "../../gestionarPlanMedicion/crearHistorico/" + pk_especialidad;
+        }
+
+        function redirectEditarHistorico(id_historico) {
+
+            document.location.href = "../../gestionarPlanMedicion/editarHistorico/" + id_historico;
+        }
+
+        $("#btnEliminarMedicion").on('click', function () {
+            eliminarMedicion(pkEliminar);
+            $("#eliminarMedicion").modal('hide');
+        });
+
+        function historicoEliminar(codigoMedicion, pk) {
+            console.log(codigoMedicion)
+            console.log(pk)
+
+            data = '<h5 class="modal-title" id="eliminarMedicionLabel">Se eliminará la medicion ' + codigoMedicion + '</h5>';
+            $("#eliminarMedicionLabel").html(data);
+            $("#eliminarMedicion").modal('show');
+            pkEliminar = pk;
+
+            console.log(pkEliminar);
+        };
+
+
+        function eliminarMedicion(historicoPk) {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'eliminarMedicion' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    historicoPk: historicoPk,
+                },
+                success: function (response) {
+                    listarHistorico();
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+
+        function listarHistorico() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'listarHistorico'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    especialidad: $("#cboEspecialidad").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response['historicos']);
+                    var i = 0;
+                    var numero = instance.length;
+                    var data = '';
+                    var data2 = '';
+                    for (i = 0; i < numero; i++) {
+                        data += (
+                            '<div class="card my-3 overflow-hidden" style="min-width: 12rem">' +
+                            '<div class="bg-holder bg-card"' + 'style="background-image:url(' + '{% static '/img/illustrations/corner-3.png' %}' + ');">' + '</div>' +
+                            '<div class="card-body position-relative">' +
+                            '<h5>' + instance[i]["fields"].codigo +
+                            '<div class="my-2">' + '<span>' + instance[i]["fields"].nombre + '<span>' + '</div> <div class = "d-flex">' +
+                            '<a ' +
+                            'data-placement="top"' +
+                            'href="../../gestionarResultadosMediciones/resultados/' + instance[i]["pk"] + '"' +
+                            'role="link">' +
+                            '<button class="btn btn-falcon-primary mr-1 mb-1" type="button">' +
+                            '<span class="fas fa-chart-bar mr-1" data-fa-transform="shrink-3"></span>Dashboard' +
+                            '</button>' +
+                            '</a>'
+                        );
+                        {% if user.rol_actual == 'Docente' %}
+                            data += (
+
+                                '                       <button class="btn btn-falcon-primary mr-1 mb-1" onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">Visualizar</button>' +
+                                '                   </div>' +
+                                '               </div>' +
+                                '           </div>'
+                        {% else %}
+                            data += (
+
+                                ' <button class="btn btn-falcon-primary mr-1 mb-1" onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">Editar' +
+                                '</button>')
+
+                            if (instance[i]["fields"].estado == '1') {
+                                data += (
+                                    '                         <form action="{% url 'historico' %}" method="post">' +
+                                    '                           {% csrf_token %}' +
+                                    '                           <input type="hidden" name="operacion" value="terminar">' +
+                                    '                           <input type="hidden" name="planMedicion" value="' + instance[i]["pk"] + '">' +
+                                    '                           <button type="submit" class="btn btn-falcon-primary mr-1 mb-1 ">Terminar</button>' +
+                                    '                        </form>')
+                            } else {
+                                data += (
+
+                                    '                        <form action="{% url 'historico' %}" method="post">' +
+                                    '                           {% csrf_token %}' +
+                                    '                           <input type="hidden" name="operacion" value="ver plan">' +
+                                    '                           <input type="hidden" name="planMedicion" value="' + instance[i]["pk"] + '">' +
+                                    '                           <button class="btn btn-falcon-primary mr-1 mb-1">Ver Plan Mejora</button>' +
+                                    '                        </form>')
+                            }
+                            data += (
+                                '                        <button class="btn btn-falcon-danger mb-1 mr-2" data-toggle="tooltip"' +
+                                ' data-placement="top" title="Eliminar plan de Medición" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
+                                '<span class="fa fa-times"></span></button>' +
+                                '                    </div>' +
+                                '                </div>' +
+                                '        </div>' + '</div>')
+                        {% endif %}
+                    }
+
+                    data2 = ('<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>');
+                    $("#tituloEspecialidadMediciones").html(data2);
+                    $("#listadoMediciones").html(data);
+                }
+                ,
+
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+    </script>
+{% endblock %}
