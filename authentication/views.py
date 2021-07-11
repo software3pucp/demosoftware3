@@ -194,7 +194,6 @@ def select_rol(request):
     context = {
         'roles': list(user.groups.values_list())
     }
-
     if (len(lista)==1):
         pk = lista[0][0]
         name = lista[0][1]
@@ -209,7 +208,7 @@ def select_rol(request):
         elif (pk==4):
             return redirect('listarSemestre')
         elif (pk==5):
-            return redirect('listarFacultad')
+            return redirect('listarEspecialidadDirector')
         elif (pk==6):
             return redirect('listarSemestreDocente')
         else:
