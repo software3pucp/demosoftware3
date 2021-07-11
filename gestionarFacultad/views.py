@@ -55,6 +55,8 @@ def agregarFacultad(request):
             userGroup = list(User.groups.through.objects.filter(user_id=id_responsable,group_id=group.pk))
             if len(userGroup) == 0:
                 group.user_set.add(user)
+                user.n_Roles = user.n_Roles + 1
+                user.save()
 
             return redirect(listarFacultad)
         else:
@@ -98,6 +100,8 @@ def editarFacultad(request, id_facultad):
         facultades = list(Facultad.objects.filter(responsable=responsable.pk))
         if len(facultades) == 1:
             group.user_set.remove(responsable)
+            responsable.n_Roles = responsable.n_Roles - 1
+            responsable.save()
 
         #Asociar nuevo responsable con facultad
         nuevo_nombre = request.POST["name"]
@@ -114,7 +118,8 @@ def editarFacultad(request, id_facultad):
         userGroup = list(User.groups.through.objects.filter(user_id=nuevo_responsable, group_id=group.pk))
         if len(userGroup) == 0:
             group.user_set.add(user)
-
+            user.n_Roles = user.n_Roles + 1
+            user.save()
         return redirect('listarFacultad')
 
     context = {
