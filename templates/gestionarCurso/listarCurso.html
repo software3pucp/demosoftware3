@@ -46,8 +46,8 @@
                                     <img class="" src="{% static 'img/illustrations/3.png' %}">
                                 </div>
                                 <div class="specifies card-body p-1">
-                                    <h5 class="card-title ml-2">{{ curso.nombre }}</h5>
-                                    {% if request.user.rol_actual == 'Coordinador de especialidad' %}
+                                    {% if request.user.rol_actual != 'Coordinador de facultad' %}
+                                        <h5 class="card-title ml-2">{{ curso.nombre }}</h5>
                                         <hr class="divider">
                                         <div class="row">
                                             <div class="col">
@@ -67,6 +67,18 @@
                                                 </a>
                                             </div>
                                         </div>
+                                    {% else %}
+                                        <h5 class="card-title ml-2">{{ curso.nombre }}</h5>
+                                        <hr class="divider">
+                                        <div class="row">
+                                            <div class="col">
+                                                <a class="float-right mr-3 pt-2 tooltip-inner arrow" data-toggle="tooltip">
+                                                </a>
+                                                <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip">
+                                                    <div class="fas fa-pen" style="visibility: hidden"></div>
+                                                </a>
+                                            </div>
+                                        </div>
                                     {% endif %}
                                 </div>
                             </div>
@@ -83,68 +95,80 @@
                                     </a>
                                 </div>
                                 <div class="specifies card-body p-1">
-                                    <h5 class="card-title ml-2">{{ curso.nombre }}</h5>
-                                    <hr class="divider">
-                                    {% if request.user.rol_actual == 'Coordinador de especialidad' %}
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip"
-                                                 data-placement="top"
-                                                 title="Eliminar">
-                                                <i class="fas fa-trash" data-toggle="modal" data-target="#exampleModal"
-                                                   style="color: rgba(1, 126, 205, 1);"></i>
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Eliminar
-                                                                    Curso</h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                        aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                ¿Desea eliminar {{ curso.nombre }}?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                        data-dismiss="modal">Cancelar
-                                                                </button>
-                                                                <a type="button" class="btn btn-primary"
-                                                                   href="{% url 'eliminarCurso' id_curso=curso.pk %}">
-                                                                    Eliminar
-                                                                </a>
+                                    {% if request.user.rol_actual != 'Coordinador de facultad' %}
+                                        <h5 class="card-title ml-2">{{ curso.nombre }}</h5>
+                                        <hr class="divider">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip"
+                                                     data-placement="top"
+                                                     title="Eliminar">
+                                                    <i class="fas fa-trash" data-toggle="modal" data-target="#exampleModal"
+                                                       style="color: rgba(1, 126, 205, 1);"></i>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Eliminar
+                                                                        Curso</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal"
+                                                                            aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    ¿Desea eliminar {{ curso.nombre }}?
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                            data-dismiss="modal">Cancelar
+                                                                    </button>
+                                                                    <a type="button" class="btn btn-primary"
+                                                                       href="{% url 'eliminarCurso' id_curso=curso.pk %}">
+                                                                        Eliminar
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <a class="float-right mr-3 pt-2 tooltip-inner arrow" data-toggle="tooltip"
+                                                   data-placement="top"
+                                                   title="Activar"
+                                                   href="{% url 'eliminarCurso2' id_curso=curso.pk %}"
+                                                   role="link">
+                                                    <div class="fas fa-power-off iconColorNBorder"></div>
+                                                </a>
+                                                <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip"
+                                                   data-placement="top"
+                                                   title="Editar"
+                                                   href="{% url 'editarCurso'  id_curso=curso.pk %}"
+                                                   role="link">
+                                                    <div class="fas fa-pen iconColorNBorder"></div>
+                                                </a>
                                             </div>
-                                            <a class="float-right mr-3 pt-2 tooltip-inner arrow" data-toggle="tooltip"
-                                               data-placement="top"
-                                               title="Activar"
-                                               href="{% url 'eliminarCurso2' id_curso=curso.pk %}"
-                                               role="link">
-                                                <div class="fas fa-power-off iconColorNBorder"></div>
-                                            </a>
-                                            <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip"
-                                               data-placement="top"
-                                               title="Editar"
-                                               href="{% url 'editarCurso'  id_curso=curso.pk %}"
-                                               role="link">
-                                                <div class="fas fa-pen iconColorNBorder"></div>
-                                            </a>
                                         </div>
-                                    </div>
+                                    {% else %}
+                                        <h5 class="card-title ml-2">{{ curso.nombre }}</h5>
+                                        <hr class="divider">
+                                        <div class="row">
+                                            <div class="col">
+                                                <a class="float-right mr-3 pt-2 tooltip-inner arrow" data-toggle="tooltip">
+                                                </a>
+                                                <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip">
+                                                    <div class="fas fa-pen" style="visibility: hidden"></div>
+                                                </a>
+                                            </div>
+                                        </div>
                                     {% endif %}
                                 </div>
                             </div>
                         </div>
                     </div>
                 {% endfor %}
-                {% if request.user.rol_actual == 'Coordinador de especialidad' %}
+                {% if request.user.rol_actual != 'Coordinador de facultad' %}
                 <div class="col-sm-12 col-md-6 col-lg-4">
                     <div class="card-group service-work">
                         <button type="submit" class="recent-work card mr-4 mb-4 align-items-center"

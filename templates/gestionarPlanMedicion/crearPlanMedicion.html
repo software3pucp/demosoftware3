@@ -248,15 +248,18 @@
                     <div class="row d-flex justify-content-start">
                         <div class="col-12 pl-5">
                             <label class="text-white" for="name">Código:</label>
-                            <input id="codigoSelec" name="name" class="form-control p-3" id="name" type="text"
-                                   placeholder="Ingrese el código del horario" required/>
+                            {% if request.user.rol_actual != 'Coordinador de facultad' %}
+                                <input id="codigoSelec" name="name" class="form-control p-3" id="name" type="text" placeholder="Ingrese el código del horario" required/>
+                            {% else %}
+                                <input id="codigoSelec" name="name" class="form-control p-3" id="name" type="text" placeholder="Ingrese el código del horario" required disabled/>
+                            {% endif %}
                         </div>
                     </div>
                     <br>
                     <div class="row d-flex justify-content-start">
                         <div class="col-12 pl-5">
                             <label class="text-white" for="responsable">Seleccione responsable:</label>
-                            <select id="responsableSelec" name="responsable" class="form-control selectpicker text-black" id="responsable">
+                                <select id="responsableSelec" name="responsable" class="form-control selectpicker text-black" id="responsable">
                                 {% for responsable in ListaUsuarios %}
                                     <option value={{ responsable.pk }}>{{ responsable.first_name }} {{ responsable.last_name }}</option>
                                 {% endfor %}
@@ -410,16 +413,14 @@
                     console.log(data);
                     $('#codigoSelec').val(data);
                     $('#responsableSelec').val(instance[0]["fields"].responsable);
-                    $('#textoModal').text("Editar Horario");
+                    {% if request.user.rol_actual != 'Coordinador de facultad' %}
+                        $('#textoModal').text("Editar Horario");
+                    {% else %}
+                        $('#textoModal').text("Información de Horario");
+                    {% endif %}
                     $('#botonModal').text("Editar");
                     $('#botonModal').click(editarHorario(pk));
                     $('#botonModal').attr('onclick', 'editarHorario("'+pk+'")');
-                    {#$("#horCod").remove();#}
-                    {#$("#horDescrip").remove();#}
-                    {#data = '<h5 id="horCod" class="text-white">Codigo: ' + response["resp"] + '</h5>';#}
-                    {#$("#horCodField").append(data);#}
-                    {#data = '<p id="horDescrip">' + response["resp"] + '</p>';#}
-                    {#$("#horDescripField").append(data);#}
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);

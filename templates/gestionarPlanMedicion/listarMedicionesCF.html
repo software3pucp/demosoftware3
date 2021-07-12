@@ -55,7 +55,7 @@
                 <div class="row">
                     <div class="col-sm-12 col-lg-10 px-0 pl-3" id="tituloEspecialidadMediciones"></div>
                     <div class="col-sm-12 col-lg-2 float-right text-right">
-                        {% if user.rol_actual != "Docente" %}
+                        {% if user.rol_actual != "Docente" and request.user.rol_actual != 'Coordinador de facultad' %}
                             <span class="btn btn-primary" onclick="redirectCrearHistorico()">Crear</span>
                         {% endif %}
                     </div>
