@@ -1,3 +1,5 @@
+import random
+
 from django.shortcuts import render
 from django.http.response import HttpResponse
 from django.http import JsonResponse
@@ -317,11 +319,43 @@ def exportarMedicion(request):
                                                               codigoAlumno=alumno['codigoAlumno']
                                                              )[0].nombreAlumno
             ws[f'D{25 + i}'] = nombreAlumno
+
+            celdaEstilo = ws[f'B{25 + i}']
+            celdaEstilo.border = Border(right=Side(border_style='thin'), left=Side(border_style='thin'),
+                                        top=Side(border_style='thin'), bottom=Side(border_style='thin'))
+            celdaEstilo.alignment = Alignment(horizontal='center', vertical='center', wrapText=True)
+
+            celdaEstilo = ws[f'C{25 + i}']
+            celdaEstilo.border = Border(right=Side(border_style='thin'), left=Side(border_style='thin'),
+                                        top=Side(border_style='thin'), bottom=Side(border_style='thin'))
+            celdaEstilo = ws[f'D{25 + i}']
+            celdaEstilo.border = Border(right=Side(border_style='thin'), left=Side(border_style='thin'),
+                                        top=Side(border_style='thin'), bottom=Side(border_style='thin'))
+
             i+=1
+
+        r = lambda: random.randint(0, 255)
+        colorRandom="%02X%02X%02X" % (r(),r(),r())
+
+        while colorRandom<"71c46c":
+            r = lambda: random.randint(0, 255)
+            colorRandom = "%02X%02X%02X" % (r(), r(), r())
 
         for i in range(len(indicadores)):
             #CABECERA DE INDICADOR
             ws[f'{colIndicadores[i]}15'] = ws[f'{colIndicadores[i]}24'] = f'{indicadores[i].codigo}\n{indicadores[i].descripcion}'
+            indicadorEstilo = ws[f'{colIndicadores[i]}15']
+            indicadorEstilo.font = Font(name='Calibri', size=11, bold="True")
+            indicadorEstilo.alignment = Alignment(horizontal='center', vertical='center', wrapText=True)
+            indicadorEstilo.fill=PatternFill(start_color=colorRandom, end_color=colorRandom, fill_type="solid")
+            indicadorEstilo.border=Border(right=Side(border_style='medium'),left=Side(border_style='medium'),top=Side(border_style='medium'), bottom=Side(border_style='medium'))
+
+            indicadorEstilo = ws[f'{colIndicadores[i]}24']
+            indicadorEstilo.font = Font(name='Calibri', size=11, bold="True")
+            indicadorEstilo.alignment = Alignment(horizontal='center', vertical='center', wrapText=True)
+            indicadorEstilo.fill = PatternFill(start_color=colorRandom, end_color=colorRandom, fill_type="solid")
+            indicadorEstilo.border = Border(right=Side(border_style='medium'), left=Side(border_style='medium'),
+                                            top=Side(border_style='medium'), bottom=Side(border_style='medium'))
             suma = 0
             n=0
             j=0
@@ -336,6 +370,13 @@ def exportarMedicion(request):
                 else:
                     valorNota = 0
                 ws[f'{colIndicadores[i]}{25 + j}'] = valorNota
+
+                notaEstilo = ws[f'{colIndicadores[i]}{25 + j}']
+                notaEstilo.font = Font(name='Calibri', size=11, bold=False)
+                notaEstilo.alignment = Alignment(horizontal='center', vertical='center', wrapText=True)
+                notaEstilo.border = Border(right=Side(border_style='thin'), left=Side(border_style='thin'),
+                                                top=Side(border_style='thin'), bottom=Side(border_style='thin'))
+
                 j=j+1
             #Resultados
             niveles = Nivel.objects.filter(especialidad_id=curso.especialidad_id, estado='1').order_by('-valor')
@@ -344,7 +385,24 @@ def exportarMedicion(request):
             ws[f'{colIndicadores[i]}16'] = suma/n if n>0 else 0
             ws[f'{colIndicadores[i]}17'] = suma/n/valorMax if n>0 else 0
 
-        #=======================================NO BORRAR - NO BORRAR====================================
+            celdaEstilo=ws[f'{colIndicadores[i]}18']
+            celdaEstilo.border = Border(right=Side(border_style='thin'), left=Side(border_style='thin'),
+                                            top=Side(border_style='thin'), bottom=Side(border_style='thin'))
+
+            celdaEstilo = ws[f'{colIndicadores[i]}16']
+            celdaEstilo.border = Border(right=Side(border_style='thin'), left=Side(border_style='thin'),
+                                        top=Side(border_style='thin'), bottom=Side(border_style='thin'))
+            celdaEstilo.number_format = '0.00'
+
+            celdaEstilo = ws[f'{colIndicadores[i]}17']
+            celdaEstilo.border = Border(right=Side(border_style='thin'), left=Side(border_style='thin'),
+                                        top=Side(border_style='thin'), bottom=Side(border_style='thin'))
+            celdaEstilo.number_format = '0.00%'
+
+
+
+
+    #=======================================NO BORRAR - NO BORRAR====================================
         # ws.merge_cells('O15:Q15')
         # ws['O15'].font = Font(bold="True")
         # ws['O15'].fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
