@@ -36,8 +36,22 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-sm-12 col-lg-6 pl-4 pr-4">
+                        <div class="row">
+                            <label for="cboSemestre">Semestre:</label>
+                        </div>
+                        <div class="row">
+                            <select class="custom-select custom-select-sm mb-3" id="cboSemestre"
+                                    name="cboSemestre">
+                                {% for semestre in semestres %}
+                                    <option value={{ semestre.pk }}>{{ semestre.nombreCodigo }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 

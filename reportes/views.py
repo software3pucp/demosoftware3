@@ -7,12 +7,14 @@ from gestionarEspecialidad.models import Asistente, Auditor, Especialidad
 from django.contrib.auth.models import Group
 
 from gestionarFacultad.models import Facultad
+from gestionarSemestre.models import Semestre
 
 
 @login_required
 def reportes(request):
     especialidades = []
     facultades = []
+    semestres = Semestre.objects.filter()
 
     if (request.user.rol_actual == "Asistente de acreditación"):
         usuario = request.user
@@ -21,6 +23,7 @@ def reportes(request):
         for item in items:
             especialidades.append(item.especialidad)
         context = {
+            'semestres':semestres,
             'especialidades': especialidades,
         }
         return render(request, 'reportes/reportesCE.html', context)
@@ -32,6 +35,7 @@ def reportes(request):
         for item in items:
             especialidades.append(item.especialidad)
         context = {
+            'semestres': semestres,
             'especialidades': especialidades,
         }
         return render(request, 'reportes/reportesCE.html', context)
@@ -41,6 +45,7 @@ def reportes(request):
         grupo = Group.objects.get(pk=4)
         facultades = Facultad.objects.filter(responsable=usuario.pk)
         context = {
+            'semestres': semestres,
             'facultades': facultades,
         }
         return render(request, 'reportes/reportesCF.html', context)
@@ -50,6 +55,7 @@ def reportes(request):
         grupo = Group.objects.get(pk=5)
         especialidades = Especialidad.objects.filter(responsable=usuario.pk)
         context = {
+            'semestres': semestres,
             'especialidades': especialidades,
         }
         return render(request, 'reportes/reportesCE.html', context)

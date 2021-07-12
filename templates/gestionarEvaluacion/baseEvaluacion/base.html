@@ -576,8 +576,6 @@
                 fd.append('indicador', $("#cboIndicador").val());
                 fd.append('plan', '{{ planMedicionCurso.pk }}');
 
-                var screen = $('#cover-spin')
-                configureLoadingScreen(screen)
 
                 $.ajax({
                     type: 'POST',
