@@ -228,7 +228,6 @@ def generarReportes(request):
             filename = os.path.join(settings.BASE_DIR, 'reportes', 'Resources', 'template2.xlsx')
             wb = load_workbook(filename)
             ws = wb.active
-            filaInicio=8
             semAux = Semestre.objects.get(pk=ciclo)
             especialidad = Especialidad.objects.get(pk=esp)
             try:
@@ -245,21 +244,18 @@ def generarReportes(request):
                         break
 
                 if planCal:
-                    # print(planCal.codigo, planCal.nombre)
-                    # print("***************************************************")
                     planRes = PlanResultados.objects.get(pk=planCal.planResultados.pk)
-                    # print(planRes)
-                    # print("/////////////////////////////////")
                     resultados = ResultadoPUCP.objects.filter(planResultado_id=planRes.pk, estado=1)
+                    filaInicio = 8
                     for r in resultados:
                         print(r.codigo, r.descripcion)
-                        # print("/////////////////////////////")
                         indicadores = Indicador.objects.filter(resultado_id=r.pk, estado=1)
-                        flag=0
+                        totalCursosValidos=0
                         for i in indicadores:
                             print(i.codigo, i.descripcion)
                             plMedCur = PlanMedicionCurso.objects.filter(planMedicion_id=planCal.pk, semestre_id=semAux.pk,
                                                                         estado=1)
+                            cursosValidos = 0
                             n = 0
                             for pl in plMedCur:
                                 planMedCurInt = PlanMedicionCurso.indicador.through.objects.filter(indicador_id=i.pk,
@@ -279,26 +275,25 @@ def generarReportes(request):
                                                 cantAlum += 1
                                                 acumNota += valorNota
 
-                                        # print("Horario", h.codigo)
-                                        # print("Cant de alumnos en horario", len(alumnosEva))
                                     print(pl.curso_id)
                                     cursoAsig = Curso.objects.get(pk=pl.curso_id)
                                     valorPorcentaje = acumNota / cantAlum / valorMax if cantAlum > 0 else 0
                                     print(cursoAsig.nombre, valorPorcentaje)
                                     if horarios:
-                                        ws[f'D{filaInicio}']=cursoAsig.nombre
-                                        ws[f'E{filaInicio}']=valorPorcentaje
-                                        flag=1
+                                        cursosValidos += 1
+                                        ws[f'D{filaInicio+totalCursosValidos+cursosValidos-1}']=cursoAsig.nombre
+                                        ws[f'E{filaInicio+totalCursosValidos+cursosValidos-1}']=valorPorcentaje
 
-                                if flag==1:
-                                    ws[f'C{filaInicio}']=f'({i.codigo}) {i.descripcion}'
-                        if flag==1:
+
+                            if cursosValidos>0:
+                                ws.merge_cells(f'C{filaInicio+totalCursosValidos}:C{filaInicio+totalCursosValidos+cursosValidos-1}')
+                                ws[f'C{filaInicio+totalCursosValidos}'] = f'({i.codigo}) {i.descripcion}'
+                                totalCursosValidos+=cursosValidos
+
+                        if totalCursosValidos>0:
+                            ws.merge_cells(f'B{filaInicio}:B{filaInicio + totalCursosValidos - 1}')
                             ws[f'B{filaInicio}']=r.codigo
-                            filaInicio += 1
-
-                            # print("cantidad de cursos:",n)
-
-                        # print("**********************************")
+                            filaInicio += totalCursosValidos
                 else:
                     print("No existe plan de medición asociado al ciclo")
             except:
