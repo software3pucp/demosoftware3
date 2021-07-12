@@ -225,8 +225,14 @@ def generarReportes(request):
             return response
         elif '_resultados' in request.POST:
             print("resultados")
+            filename = os.path.join(settings.BASE_DIR, 'reportes', 'Resources', 'template2.xlsx')
+            wb = load_workbook(filename)
+            ws = wb.active
+            filaInicio=8
+            semAux = Semestre.objects.get(pk=ciclo)
+            especialidad = Especialidad.objects.get(pk=esp)
             try:
-                semAux = Semestre.objects.get(pk=ciclo)
+
                 niveles = Nivel.objects.filter(especialidad_id=esp, estado='1').order_by('-valor')
                 valorMax = niveles[0].valor
                 planSemestre = PlanMedicion.semestre.through.objects.filter(semestre_id=semAux.pk)
@@ -249,6 +255,7 @@ def generarReportes(request):
                         print(r.codigo, r.descripcion)
                         # print("/////////////////////////////")
                         indicadores = Indicador.objects.filter(resultado_id=r.pk, estado=1)
+                        flag=0
                         for i in indicadores:
                             print(i.codigo, i.descripcion)
                             plMedCur = PlanMedicionCurso.objects.filter(planMedicion_id=planCal.pk, semestre_id=semAux.pk,
@@ -276,9 +283,18 @@ def generarReportes(request):
                                         # print("Cant de alumnos en horario", len(alumnosEva))
                                     print(pl.curso_id)
                                     cursoAsig = Curso.objects.get(pk=pl.curso_id)
-                                    promedio = acumNota / cantAlum if cantAlum > 0 else 0
                                     valorPorcentaje = acumNota / cantAlum / valorMax if cantAlum > 0 else 0
                                     print(cursoAsig.nombre, valorPorcentaje)
+                                    if horarios:
+                                        ws[f'D{filaInicio}']=cursoAsig.nombre
+                                        ws[f'E{filaInicio}']=valorPorcentaje
+                                        flag=1
+
+                                if flag==1:
+                                    ws[f'C{filaInicio}']=f'({i.codigo}) {i.descripcion}'
+                        if flag==1:
+                            ws[f'B{filaInicio}']=r.codigo
+                            filaInicio += 1
 
                             # print("cantidad de cursos:",n)
 
@@ -287,4 +303,10 @@ def generarReportes(request):
                     print("No existe plan de medición asociado al ciclo")
             except:
                 print("Hubo un error")
-            return render(request, 'reportes/reportesCE.html')
+            nom_arch = f'Reporte {especialidad.nombre}-{semAux.nombreCodigo}.xlsx'
+            # Definir el tipo de respuesta que se va a dar
+            response = HttpResponse(content_type="application/ms-excel")
+            contenido = "attachment; filename = {0}".format(nom_arch)
+            response["Content-Disposition"] = contenido
+            wb.save(response)
+            return response
