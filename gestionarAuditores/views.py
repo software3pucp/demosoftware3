@@ -15,11 +15,22 @@ def auditores(request):
         usuario = request.user
         grupo = Group.objects.get(name="Coordinador de especialidad")
         especialidades = Especialidad.objects.filter(responsable=usuario.pk)
-    context = {
-        'ListaUsuarios': User.objects.all(),
-        'especialidades': especialidades,
-    }
-    return render(request, 'gestionarAuditores/auditores.html', context)
+        context = {
+            'ListaUsuarios': User.objects.all(),
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarAuditores/auditores.html', context)
+
+    if (request.user.rol_actual == "Asistente de acreditación"):
+        usuario = request.user
+        items = Auditor.objects.filter(user_id=usuario.pk)
+        for item in items:
+            especialidades.append(item.especialidad)
+        context = {
+            'ListaUsuarios': User.objects.all(),
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarAuditores/auditores.html', context)
 
 
 def registrarAuditor(request):
@@ -36,7 +47,7 @@ def registrarAuditor(request):
         user.n_Roles = user.n_Roles + 1
         user.save()
 
-    registro = Auditor.objects.filter(user_id=user.pk,especialidad_id=especialidadpk)
+    registro = Auditor.objects.filter(user_id=user.pk, especialidad_id=especialidadpk)
     if (registro.__len__() == 0):
         Auditor.objects.create(user=user, especialidad=especialidad)
     else:

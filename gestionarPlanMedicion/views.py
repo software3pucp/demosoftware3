@@ -264,8 +264,10 @@ def historico(request):
 
     if (request.user.rol_actual == "Asistente de acreditación"):
         usuario = request.user
-        grupo = Group.objects.get(pk=2)
-        especialidades = Especialidad.objects.filter(responsable=usuario.pk)
+        especialidades = []
+        items = Asistente.objects.filter(user_id=usuario.pk)
+        for item in items:
+            especialidades.append(item.especialidad)
         context = {
             'especialidades': especialidades,
         }
@@ -273,8 +275,10 @@ def historico(request):
 
     if (request.user.rol_actual == "Auditor"):
         usuario = request.user
-        grupo = Group.objects.get(pk=3)
-        especialidades = Especialidad.objects.filter(responsable=usuario.pk)
+        especialidades = []
+        items = Auditor.objects.filter(user_id=usuario.pk)
+        for item in items:
+            especialidades.append(item.especialidad)
         context = {
             'especialidades': especialidades,
         }

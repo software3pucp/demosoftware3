@@ -223,11 +223,11 @@ def select_rol(request):
         elif (pk==2):
             return redirect('listarFacultad')
         elif (pk==3):
-            return redirect('listarEspecialidadDirector')
+            return redirect('listarEspecialidad')
         elif (pk==4):
-            return redirect('listarSemestre')
+            return redirect('listarFacultad')
         elif (pk==5):
-            return redirect('listarEspecialidadDirector')
+            return redirect('listarEspecialidad')
         elif (pk==6):
             return redirect('listarSemestreDocente')
         else:

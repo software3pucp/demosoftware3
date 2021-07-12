@@ -60,7 +60,7 @@
 
                 {% if request.user.rol_actual == 'Auditor' %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{% url 'listarEspecialidad' %}">
                         <div class="d-flex align-items-center">
                         <span class="nav-link-icon">
                             <span class="fas fa-home"></span>
@@ -147,13 +147,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{% url 'objetivos' %}">
                         <div class="d-flex align-items-center">
                         <span class="nav-link-icon">
                             <span class="fas fa-cube"></span>
                         </span>
                             <span class="nav-link-text">
-                            Objetivos
+                             Objetivos educacionales
                         </span>
                         </div>
                     </a>
@@ -253,7 +253,7 @@
                 {% if request.user.rol_actual == 'Asistente de acreditación' %}
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'listarEspecialidadDirector' %}">
+                    <a class="nav-link" href="{% url 'listarEspecialidad' %}">
                         <div class="d-flex align-items-center">
                         <span class="nav-link-icon">
                             <span class="fas fa-home"></span>
@@ -367,18 +367,6 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'historico' %}">
-                        <div class="d-flex align-items-center">
-                        <span class="nav-link-icon">
-                            <span class="fas fa-chart-pie"></span>
-                        </span>
-                            <span class="nav-link-text">
-                            Plan de Medición
-                        </span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="{% url 'historial' %}">
                         <div class="d-flex align-items-center">
                         <span class="nav-link-icon">
@@ -394,7 +382,7 @@
 
                 {% if request.user.rol_actual == 'Coordinador de especialidad' %}
                  <li class="nav-item">
-                    <a class="nav-link" href="{% url 'listarEspecialidadDirector' %}">
+                    <a class="nav-link" href="{% url 'listarEspecialidad' %}">
                         <div class="d-flex align-items-center">
                         <span class="nav-link-icon">
                             <span class="fas fa-home"></span>

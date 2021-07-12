@@ -5,7 +5,7 @@ from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
 from django.db.models import Q
 # Create your views here.
-from gestionarEspecialidad.models import Especialidad
+from gestionarEspecialidad.models import Especialidad, Auditor, Asistente
 from gestionarFacultad.models import Facultad
 from gestionarIndicadores.models import Indicador
 from gestionarResultados.models import ResultadoPUCP, PlanResultados
@@ -102,8 +102,10 @@ def editarResultado(request, pk):
 def planDeResultado(request):
     if (request.user.rol_actual == "Asistente de acreditación"):
         usuario = request.user
-        grupo = Group.objects.get(pk=2)
-        especialidades = Especialidad.objects.filter(responsable=usuario.pk, estado='1')
+        especialidades = []
+        items = Asistente.objects.filter(user_id=usuario.pk)
+        for item in items:
+            especialidades.append(item.especialidad)
         context = {
             'especialidades': especialidades,
         }
@@ -111,8 +113,10 @@ def planDeResultado(request):
 
     if (request.user.rol_actual == "Auditor"):
         usuario = request.user
-        grupo = Group.objects.get(pk=3)
-        especialidades = Especialidad.objects.filter(responsable=usuario.pk, estado='1')
+        especialidades = []
+        items = Auditor.objects.filter(user_id=usuario.pk)
+        for item in items:
+            especialidades.append(item.especialidad)
         context = {
             'especialidades': especialidades,
         }

@@ -1,6 +1,6 @@
 import gestionarEspecialidad
 from demosoftware3.settings import MEDIA_URL
-from gestionarEspecialidad.models import Especialidad
+from gestionarEspecialidad.models import Especialidad, Asistente, Auditor
 from gestionarFacultad.models import Facultad
 from gestionarCurso.models import Curso
 from django.shortcuts import render, redirect
@@ -10,26 +10,49 @@ from django.contrib.auth.models import Group
 # Create your views here.
 from gestionarFacultad.views import listarFacultadxEsp, listarFacultad
 
+
 @login_required
 def listarEspecialidad(request):
     media_path = MEDIA_URL
-    context = {
-        'ListaEspecialidad': Especialidad.objects.filter(estado=Facultad.ESTADOS[1][0]),
-        'ListaFacultad': Facultad.objects.all(),
-        'media_path': media_path,
-        'ListaEstados': Especialidad.ESTADOS[1:],
-        'estado': '1',
-    }
-    return render(request, 'gestionarEspecialidad/listarEspecialidad.html', context)
+    if (request.user.rol_actual == "Coordinador de especialidad"):
+        usuario = request.user
+        especialidades = Especialidad.objects.filter(responsable=usuario.pk)
+        context = {
+            'ListaEspecialidad': especialidades,
+            'media_path': media_path,
+            'ListaEstados': Especialidad.ESTADOS[1:],
+            'estado': '1',
+        }
+        return render(request, 'gestionarEspecialidad/listarEspecialidadCE.html', context)
 
-@login_required
-def listarEspecialidadDirector(request):
-    media_path = MEDIA_URL
-    user = User.objects.get(pk=request.user.pk)
-    context = {
-        'ListaEspecialidad': Especialidad.objects.filter(responsable=user.pk),
-    }
-    return render(request, 'gestionarEspecialidad/listarEspecialidadDirector.html',context)
+    if (request.user.rol_actual == "Asistente de acreditación"):
+        usuario = request.user
+        especialidades=[]
+        items = Asistente.objects.filter(user_id=usuario.pk)
+        for item in items:
+            especialidades.append(item.especialidad)
+        context = {
+            'ListaEspecialidad': especialidades,
+            'media_path': media_path,
+            'ListaEstados': Especialidad.ESTADOS[1:],
+            'estado': '1',
+        }
+        return render(request, 'gestionarEspecialidad/listarEspecialidadCE.html', context)
+
+    if (request.user.rol_actual == "Auditor"):
+        usuario = request.user
+        especialidades=[]
+        items = Auditor.objects.filter(user_id=usuario.pk)
+        for item in items:
+            especialidades.append(item.especialidad)
+        context = {
+            'ListaEspecialidad': especialidades,
+            'media_path': media_path,
+            'ListaEstados': Especialidad.ESTADOS[1:],
+            'estado': '1',
+        }
+        return render(request, 'gestionarEspecialidad/listarEspecialidadCE.html', context)
+
 
 @login_required
 def listarEspecialidadxCurso(request, id_especialidad):
@@ -45,9 +68,10 @@ def listarEspecialidadxCurso(request, id_especialidad):
         'id_facultad': Especialidad.objects.get(pk=id_especialidad).facultad.pk,
         'media_path': media_path,
         'ListaEstados': Especialidad.ESTADOS[1:],
-        'estado':'1'
+        'estado': '1'
     }
     return render(request, 'gestionarCurso/listarCurso.html', context)
+
 
 @login_required
 def agregarEspecialidad(request, id_facultad):
@@ -61,15 +85,15 @@ def agregarEspecialidad(request, id_facultad):
             Especialidad.objects.create(nombre=nombre, responsable=id_responsable, facultad=facultad, foto=foto,
                                         estado=request.POST['estado'])
 
-            #Si el usuario no tiene rol de cooordinador de especialidad se lo agrego
+            # Si el usuario no tiene rol de cooordinador de especialidad se lo agrego
             user = User.objects.get(pk=id_responsable)
             group = Group.objects.get(name="Coordinador de especialidad")
-            userGroup = list(User.groups.through.objects.filter(user_id=id_responsable,group_id=group.pk))
+            userGroup = list(User.groups.through.objects.filter(user_id=id_responsable, group_id=group.pk))
             if len(userGroup) == 0:
                 group.user_set.add(user)
                 user.n_Roles = user.n_Roles + 1
                 user.save()
-            return redirect('listarFacultadxEsp',id_facultad)
+            return redirect('listarFacultadxEsp', id_facultad)
 
     context = {
         'ListaUsuarios': User.objects.all(),
@@ -79,6 +103,7 @@ def agregarEspecialidad(request, id_facultad):
         'estado': request.POST["estado"]
     }
     return render(request, 'gestionarEspecialidad/agregarEspecialidad.html', context)
+
 
 @login_required
 def editarEspecialidad(request, id_especialidad):
@@ -107,7 +132,7 @@ def editarEspecialidad(request, id_especialidad):
         especialidad.responsable = nuevo_responsable
         especialidad.save()
 
-        #Agregar rol de coordinador de especialidad a nuevo responsable si no lo tiene
+        # Agregar rol de coordinador de especialidad a nuevo responsable si no lo tiene
         user = User.objects.get(pk=nuevo_responsable)
         userGroup = list(User.groups.through.objects.filter(user_id=nuevo_responsable, group_id=group.pk))
         if len(userGroup) == 0:
@@ -125,12 +150,14 @@ def editarEspecialidad(request, id_especialidad):
     }
     return render(request, 'gestionarEspecialidad/editarEspecialidad.html', context)
 
+
 @login_required
 def eliminarEspecialidad(request, id_especialidad):
     especialidad = Especialidad.objects.get(pk=id_especialidad)
     fakuPK = especialidad.facultad.pk
     especialidad.delete()
     return redirect('listarFacultadxEsp', fakuPK)
+
 
 @login_required
 def eliminarEspecialidad2(request, id_especialidad):
@@ -145,4 +172,3 @@ def eliminarEspecialidad2(request, id_especialidad):
         especialidad.estado = Especialidad.ESTADOS[2][0]
     especialidad.save()
     return redirect('listarFacultadxEsp', id_facultad)
-

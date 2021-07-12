@@ -5,7 +5,7 @@ from django.contrib.auth.models import Group
 # Create your views here.
 from datetime import datetime
 
-from gestionarEspecialidad.models import Especialidad
+from gestionarEspecialidad.models import Especialidad, Auditor, Asistente
 from gestionarFacultad.models import Facultad
 from gestionarHorario.models import Horario
 from gestionarPlanMedicion.models import PlanMedicionCurso, PlanMedicion
@@ -76,8 +76,10 @@ def enviarCursoHorario(request, pk):
 
     if (request.user.rol_actual == "Asistente de acreditación"):
         usuario = request.user
-        grupo = Group.objects.get(pk=2)
-        especialidades = Especialidad.objects.filter(responsable=usuario.pk)
+        especialidades = []
+        items = Asistente.objects.filter(user_id=usuario.pk)
+        for item in items:
+            especialidades.append(item.especialidad)
         context = {
             "semestreSeleccionado": semestre,
             'especialidades': especialidades,
@@ -86,8 +88,10 @@ def enviarCursoHorario(request, pk):
 
     if (request.user.rol_actual == "Auditor"):
         usuario = request.user
-        grupo = Group.objects.get(pk=3)
-        especialidades = Especialidad.objects.filter(responsable=usuario.pk)
+        especialidades = []
+        items = Auditor.objects.filter(user_id=usuario.pk)
+        for item in items:
+            especialidades.append(item.especialidad)
         context = {
             "semestreSeleccionado": semestre,
             'especialidades': especialidades,
