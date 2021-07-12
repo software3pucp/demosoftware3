@@ -206,13 +206,13 @@
                                 '                       <button class="btn btn-falcon-primary mr-1 mb-1" onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">Visualizar</button>' +
                                 '                   </div>' +
                                 '               </div>' +
-                                '           </div>'
+                                '           </div>');
                         {% else %}
+                            {% if request.user.rol_actual != 'Coordinador de facultad' %}
                             data += (
 
                                 ' <button class="btn btn-falcon-primary mr-1 mb-1" onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">Editar' +
-                                '</button>')
-
+                                '</button>');
                             if (instance[i]["fields"].estado == '1') {
                                 data += (
                                     '                         <form action="{% url 'historico' %}" method="post">' +
@@ -231,6 +231,7 @@
                                     '                           <button class="btn btn-falcon-primary mr-1 mb-1">Ver Plan Mejora</button>' +
                                     '                        </form>')
                             }
+
                             data += (
                                 '                        <button class="btn btn-falcon-danger mb-1 mr-2" data-toggle="tooltip"' +
                                 ' data-placement="top" title="Eliminar plan de Medición" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
@@ -238,6 +239,13 @@
                                 '                    </div>' +
                                 '                </div>' +
                                 '        </div>' + '</div>')
+                            {% else %}
+                                data += (
+                                '                       <button class="btn btn-falcon-primary mr-1 mb-1" onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">Visualizar</button>' +
+                                '                   </div>' +
+                                '               </div>' +
+                                '           </div>');
+                            {% endif %}
                         {% endif %}
                     }
 

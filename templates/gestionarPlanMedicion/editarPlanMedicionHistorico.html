@@ -41,12 +41,11 @@
                     </div>
                     <div class="col-md-10">
                         <div class="form-group">
-                            {% if user.rol_actual == 'Docente' %}
+                            {% if user.rol_actual == 'Docente' or user.rol_actual == 'Coordinador de facultad' %}
                                 <input name="codigo" class="form-control" id="codigo" type="text"
                                        value="{{ historico.codigo }}" disabled>
                             {% else %}
-                                <input name="codigo" class="form-control" id="codigo" type="text"
-                                       value="{{ historico.codigo }}">
+                                    <input name="codigo" class="form-control" id="codigo" type="text" value="{{ historico.codigo }}">
                             {%  endif %}
                         </div>
                     </div>
@@ -59,7 +58,7 @@
                     </div>
                     <div class="col-md-10">
                         <div class="form-group">
-                            {% if user.rol_actual == 'Docente' %}
+                            {% if user.rol_actual == 'Docente' or user.rol_actual == 'Coordinador de facultad' %}
                             <input name="nombre" class="form-control" id="nombre" type="text"
                                    value="{{ historico.nombre }}" disabled>
                             {% else %}
@@ -76,7 +75,7 @@
                         Informacion actualizada correctamente
                     </div>
                 </div>
-                {% if user.rol_actual != 'Docente' %}
+                {% if user.rol_actual != 'Docente' and user.rol_actual != 'Coordinador de facultad' %}
                 <a class="btn btn-outline-primary m-1" type="button"
                    href="{% url 'historico' %}">Cancelar</a>
                 <button class="btn btn-primary m-1" onclick="editarNombre()">Guardar
@@ -118,7 +117,7 @@
             </div>
             <hr style="background-color: #0154ae;">
 
-            {% if user.rol_actual != 'Docente' %}
+            {% if user.rol_actual != 'Docente' and user.rol_actual != 'Coordinador de facultad' %}
             <div class="d-flex flex-row align-items-center">
                 <div class="mr-1">
                     <select class="custom-select custom-select-sm mb-3" id="cboSemestre" name="cboSemestre">
@@ -143,7 +142,7 @@
                     <div class="card m-1">
                         <div class="card-body" style="padding: 1rem">
                             <div class="row">
-                                {% if user.rol_actual != 'Docente' %}
+                                {% if user.rol_actual != 'Docente' and user.rol_actual != 'Coordinador de facultad' %}
                                 <div class="col-md-8 p-0 d-flex justify-content-center">
                                     <form action="{% url 'listarPlanMedicion' %}" method="post">
                                         {% csrf_token %}

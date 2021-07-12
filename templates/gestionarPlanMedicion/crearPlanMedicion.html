@@ -52,7 +52,11 @@
                 <div class="col-md-12">
                     <div class="form-group mt-2">
                         <label for="exampleFormControlSelect1">Curso</label>
-                        <select id="cursos" name="curso" class="form-control" id="exampleFormControlSelect1">
+                        {% if request.user.rol_actual == 'Coordinador de facultad' %}
+                            <select id="cursos" name="curso" class="form-control" id="exampleFormControlSelect1" disabled>
+                        {% else %}
+                            <select id="cursos" name="curso" class="form-control" id="exampleFormControlSelect1">
+                        {% endif %}
                             {% if insert %}
                                 {% for curso in listaCursos %}
                                     <option value={{ curso.pk }}>{{ curso.nombre }}</option>
@@ -69,11 +73,12 @@
                 <div class="col">
                     <div class="row d-flex justify-content-between">
                         <label for="exampleFormControlSelect2">Horarios</label>
-                        <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button" href="#informacionHorario" data-toggle="modal"onclick="limpiarModal()">
-                            <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
-                        </button>
+                        {% if request.user.rol_actual != 'Coordinador de facultad' %}
+                            <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button" href="#informacionHorario" data-toggle="modal"onclick="limpiarModal()">
+                                <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
+                            </button>
+                        {% endif %}
                     </div>
-
                 </div>
                 <br>
                 <div id="horariosSelec" class="row d-flex">
@@ -82,17 +87,26 @@
                             <div class="card m-1">
                                 <div class="card-body" style="padding: 1rem">
                                     <div class="row">
-                                        <div class="col-md-8 p-0 d-flex justify-content-center">
-                                            <a id="textoHorarioCard{{horario.pk}}" class="btn p-0 " href="#informacionHorario"
-                                               data-toggle="modal"
-                                               onclick='mostrarHorario("{{ horario.pk }}")'>{{ horario.codigo }}</a>
-                                        </div>
-                                        <div class="col-md-4 p-0 d-flex justify-content-center"
-                                             style="border-left: 1px solid">
-                                            <a class="btn p-0" onclick='quitarHorario("{{ horario.pk }}")' href="#!">
-                                                <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
-                                            </a>
-                                        </div>
+                                        {% if request.user.rol_actual != 'Coordinador de facultad' %}
+                                            <div class="col-md-8 p-0 d-flex justify-content-center">
+                                                <a id="textoHorarioCard{{horario.pk}}" class="btn p-0 " href="#informacionHorario"
+                                                   data-toggle="modal"
+                                                   onclick='mostrarHorario("{{ horario.pk }}")'>{{ horario.codigo }}</a>
+                                            </div>
+
+                                            <div class="col-md-4 p-0 d-flex justify-content-center"
+                                                 style="border-left: 1px solid">
+                                                <a class="btn p-0" onclick='quitarHorario("{{ horario.pk }}")' href="#!">
+                                                    <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
+                                                </a>
+                                            </div>
+                                        {% else %}
+                                            <div class="col-md-12 p-0 d-flex justify-content-center">
+                                                <a id="textoHorarioCard{{horario.pk}}" class="btn p-0 " href="#informacionHorario"
+                                                   data-toggle="modal"
+                                                   onclick='mostrarHorario("{{ horario.pk }}")'>{{ horario.codigo }}</a>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -120,12 +134,14 @@
                 <div class="col">
                     <div class="row d-flex justify-content-between pt-4">
                         <label for="exampleFormControlSelect4">Indicadores</label>
-                        <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button" onclick="agregarIndicador()">
-                            <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
-                        </button>
+                        {% if request.user.rol_actual != 'Coordinador de facultad' %}
+                            <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button" onclick="agregarIndicador()">
+                                <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
+                            </button>
+                        {% endif %}
                     </div>
                 </div>
-
+                {% if request.user.rol_actual != 'Coordinador de facultad' %}
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-12">
                         <select name="horarios" class="form-control" id="indicador">
@@ -136,6 +152,7 @@
                         </select>
                     </div>
                 </div>
+                {% endif %}
                 <br>
                 <div id="indicadoresSelec" class="row d-flex">
                     {% for indicador in indicadoresSelec %}
@@ -143,17 +160,25 @@
                             <div class="card m-1">
                                 <div class="card-body" style="padding: 1rem">
                                     <div class="row">
-                                        <div class="col-md-8 p-0 d-flex justify-content-center">
-                                            <a class="btn p-0 " href="#informacionIndicador"
-                                               data-toggle="modal"
-                                               onclick='mostrarIndicador("{{ indicador.pk }}")'>{{ indicador.codigo }}</a>
-                                        </div>
-                                        <div class="col-md-4 p-0 d-flex justify-content-center"
-                                             style="border-left: 1px solid">
-                                            <a class="btn p-0" onclick='quitarIndicador("{{ indicador.pk }}")'>
-                                                <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
-                                            </a>
-                                        </div>
+                                        {% if request.user.rol_actual == 'Coordinador de facultad' %}
+                                            <div class="col-md-12 p-0 d-flex justify-content-center">
+                                                <a class="btn p-0 " href="#informacionIndicador"
+                                                   data-toggle="modal"
+                                                   onclick='mostrarIndicador("{{ indicador.pk }}")'>{{ indicador.codigo }}</a>
+                                            </div>
+                                        {% else %}
+                                            <div class="col-md-8 p-0 d-flex justify-content-center">
+                                                <a class="btn p-0 " href="#informacionIndicador"
+                                                   data-toggle="modal"
+                                                   onclick='mostrarIndicador("{{ indicador.pk }}")'>{{ indicador.codigo }}</a>
+                                            </div>
+                                            <div class="col-md-4 p-0 d-flex justify-content-center"
+                                                 style="border-left: 1px solid">
+                                                <a class="btn p-0" onclick='quitarIndicador("{{ indicador.pk }}")'>
+                                                    <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
+                                                </a>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

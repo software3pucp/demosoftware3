@@ -10,7 +10,7 @@
     <form action="{% url 'editarIndicador' pk=indicador.pk %}" method="post">
         {% csrf_token %}
         <div class="container-fluid">
-            <div class="card p-5">
+            <div class="card p-5 mb-3">
                 <div class="row d-flex justify-content-center ">
                     <div class="col-10">
                         <h4 style="font-family: Montserrat">Datos del Indicador</h4>
@@ -33,8 +33,11 @@
                         </div>
                         <div class="col-md-10">
                             <div class="form-group">
-                                <input name="codigo" class="form-control" id="codigo" type="text"
-                                       value="{{ indicador.codigo }}">
+                                {% if request.user.rol_actual == 'Coordinador de facultad' %}
+                                    <input name="codigo" class="form-control" id="codigo" type="text" value="{{ indicador.codigo }}" disabled>
+                                {% else %}
+                                    <input name="codigo" class="form-control" id="codigo" type="text" value="{{ indicador.codigo }}">
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -46,8 +49,11 @@
                         </div>
                         <div class="col-md-10">
                             <div class="form-group">
-                                    <textarea id="descripcion" name="descripcion" class="form-control"
-                                              aria-label="With textarea" rows="4">{{ indicador.descripcion }}</textarea>
+                                {% if request.user.rol_actual == 'Coordinador de facultad' %}
+                                    <textarea id="descripcion" name="descripcion" class="form-control" aria-label="With textarea" rows="4" disabled>{{ indicador.descripcion }}</textarea>
+                                {% else %}
+                                    <textarea id="descripcion" name="descripcion" class="form-control" aria-label="With textarea" rows="4">{{ indicador.descripcion }}</textarea>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -98,10 +104,11 @@
                                 <th class="align-middle">{{ item.0.nombre }}</th>
                                 <td class="align-middle">
                                     <div class="input-group">
-                                                    <textarea name="desc_nivel{{ item.0.pk }}"
-                                                              id="desc_nivel{{ item.0.pk }}"
-                                                              class="form-control"
-                                                              rows="3">{{ item.1 }}</textarea>
+                                        {% if request.user.rol_actual == 'Coordinador de facultad' %}
+                                            <textarea name="desc_nivel{{ item.0.pk }}" id="desc_nivel{{ item.0.pk }}" class="form-control" rows="3" disabled>{{ item.1 }}</textarea>
+                                        {% else %}
+                                            <textarea name="desc_nivel{{ item.0.pk }}" id="desc_nivel{{ item.0.pk }}" class="form-control" rows="3">{{ item.1 }}</textarea>
+                                        {% endif %}
                                     </div>
                                 </td>
                             </tr>
@@ -109,16 +116,18 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="d-inline-flex  flex-row justify-content-end">
-                    <div class="d-flex p-2">
-                        <a class="btn btn-outline-primary" type="button"
-                           href="{% url 'editarResultado' pk=id_resultado %}">Cancelar
-                        </a>
+                {% if request.user.rol_actual != 'Coordinador de facultad' %}
+                    <div class="d-inline-flex  flex-row justify-content-end">
+                        <div class="d-flex p-2">
+                            <a class="btn btn-outline-primary" type="button"
+                               href="{% url 'editarResultado' pk=id_resultado %}">Cancelar
+                            </a>
+                        </div>
+                        <div class="d-flex p-2">
+                            <input type="submit" class="btn btn-primary" value="Guardar">
+                        </div>
                     </div>
-                    <div class="d-flex p-2">
-                        <input type="submit" class="btn btn-primary" value="Guardar">
-                    </div>
-                </div>
+                {% endif %}
             </div>
         </div>
     </form>

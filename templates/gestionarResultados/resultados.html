@@ -24,11 +24,12 @@
                         </div>
                     </div>
                     <hr style="background-color: #0154ae;">
-                    <div style="margin: 1%;">
-                        <span class="btn btn-primary" onclick="redirectCrearResultado()">Crear</span>
-                    </div>
+                    {% if request.user.rol_actual != 'Coordinador de facultad' %}
+                        <div style="margin: 1%;">
+                            <span class="btn btn-primary" onclick="redirectCrearResultado()">Crear</span>
+                        </div>
+                    {% endif %}
                     <div id="listadoResultados"></div>
-
                 </div>
             </div>
         </div>
@@ -138,8 +139,7 @@
                         }
 
                         data += (
-                            '                        <button class="btn btn-falcon-primary mr-1 my-1" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')">Editar</button>' +
-                            '                        <button class="btn btn-falcon-danger mr-1 my-1" onclick="resultadosEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')"><span class="fa fa-times"></span> Eliminar</button>' +
+                            '                        <button class="btn btn-falcon-primary mr-1 my-1" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')">Ver Detalle</button>' +
                             '                    </div>' +
                             '                </div>' +
                             '        </div>' )

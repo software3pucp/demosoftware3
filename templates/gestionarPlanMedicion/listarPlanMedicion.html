@@ -251,53 +251,68 @@
                             <div class="curso col-md-4 equal">
                                 <div class="d-flex justify-content-center">
                                     <div class="product card">
-                                        {% if user.rol_actual != 'Docente' %}
-                                        <div class="card-img-top imgbox" style="height: 15rem">
-                                            <a href="#">
-                                                <img class="" src="{% static 'img/illustrations/3.png' %}">
-                                            </a>
-                                        </div>
-                                        <div class="specifies">
-                                            <h5 class="card-title ml-2" style="text-align: left">{{ plan.curso.nombre}}</h5>
-                                            <hr>
-                                            <div class="row d-flex justify-content-end">
-                                                <form id="editar" class="p-2" action="{% url 'crearPlanMedicion' pk=plan.pk %}" method="post">
-                                                    {% csrf_token %}
-                                                    <input type="hidden" name="operacion" value="entrada">
-                                                    <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
-                                                    <input type="hidden" name="semestre" value="{{ semestre.pk }}">
-                                                    <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
-                                                    <button type="submit" class="btn btn-falcon-primary nav-link icon-indicator" style="text-align: center;">
-                                                        <span class="fas fa-pen iconSize iconColoNBorder"></span>
-                                                    </button>
-                                                </form>
-                                                <form id="desactivar" class="p-2 pr-3" action="{% url 'listarPlanMedicion' %}" method="post">
-                                                    {% csrf_token %}
-                                                    <input type="hidden" name="operacion" value="estado">
-                                                    <input type="hidden" name="planCurso" value="{{ plan.pk }}">
-                                                    <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
-                                                    <input type="hidden" name="semestre" value="{{ semestre.pk }}">
-                                                    <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
-                                                    <input type="hidden" name="estado" value="1">
-                                                    <button type="submit" class="btn btn-falcon-primary nav-link icon-indicator" style="text-align: center;">
-                                                        <span class="fas fa-power-off iconSize iconColorNBorder"></span>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        {% else %}
-                                            <div class="card-img-top imgbox" style="height: 12rem">
+                                        {% if user.rol_actual != 'Docente' and user.rol_actual != 'Coordinador de facultad' %}
+                                            <div class="card-img-top imgbox" style="height: 15rem">
                                                 <a href="#">
                                                     <img class="" src="{% static 'img/illustrations/3.png' %}">
                                                 </a>
                                             </div>
-                                            <h5 class="card-title ml-2" style="text-align: left; color: rgba(1, 126, 205, 1);">{{ plan.curso.nombre }}</h5>
+                                            <div class="specifies">
+                                                <h5 class="card-title ml-2" style="text-align: left">{{ plan.curso.nombre}}</h5>
+                                                <hr>
+                                                <div class="row d-flex justify-content-end">
+                                                    <form id="editar" class="p-2" action="{% url 'crearPlanMedicion' pk=plan.pk %}" method="post">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="operacion" value="entrada">
+                                                        <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
+                                                        <input type="hidden" name="semestre" value="{{ semestre.pk }}">
+                                                        <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
+                                                        <button type="submit" class="btn btn-falcon-primary nav-link icon-indicator" style="text-align: center;">
+                                                            <span class="fas fa-pen iconSize iconColoNBorder"></span>
+                                                        </button>
+                                                    </form>
+                                                    <form id="desactivar" class="p-2 pr-3" action="{% url 'listarPlanMedicion' %}" method="post">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="operacion" value="estado">
+                                                        <input type="hidden" name="planCurso" value="{{ plan.pk }}">
+                                                        <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
+                                                        <input type="hidden" name="semestre" value="{{ semestre.pk }}">
+                                                        <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
+                                                        <input type="hidden" name="estado" value="1">
+                                                        <button type="submit" class="btn btn-falcon-primary nav-link icon-indicator" style="text-align: center;">
+                                                            <span class="fas fa-power-off iconSize iconColorNBorder"></span>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <div class="card-img-top imgbox" style="height: 15rem">
+                                                <a href="#">
+                                                    <img class="" src="{% static 'img/illustrations/3.png' %}">
+                                                </a>
+                                            </div>
+                                            <div class="specifies">
+                                                <h5 class="card-title ml-2" style="text-align: left">{{ plan.curso.nombre}}</h5>
+                                                <hr>
+                                                <div class="row d-flex justify-content-end">
+                                                    <form id="editar" class="p-2" action="{% url 'crearPlanMedicion' pk=plan.pk %}" method="post">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="operacion" value="entrada">
+                                                        <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
+                                                        <input type="hidden" name="semestre" value="{{ semestre.pk }}">
+                                                        <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
+                                                        <button type="submit" class="btn btn-falcon-primary nav-link icon-indicator" style="text-align: center;">
+                                                            <span class="fas fa-eye iconSize iconColoNBorder"></span>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         {% endif %}
                                     </div>
                                 </div>
                             </div>
                         {% endfor %}
-                        {% if user.rol_actual != 'Docente' %}
+                        {% if user.rol_actual != 'Docente' and user.rol_actual != 'Coordinador de facultad' %}
                         <div id="nuevo" class="col-md-4 equal">
                             <div class="d-flex justify-content-center">
                                 <form class="product recent-work card" action="{% url 'crearPlanMedicion' pk='0' %}"
