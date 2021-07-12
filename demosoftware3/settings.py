@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'gestionarObjetivosEducacionales',
     'gestionarAsistentes',
     'gestionarAuditores',
+    'reportes',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

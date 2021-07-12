@@ -40,6 +40,7 @@ urlpatterns = [
                   path('gestionarPlanMejora/', include('gestionarPlanMejora.urls')),
                   path('gestionarAsistentes/', include('gestionarAsistentes.urls')),
                   path('gestionarAuditores/', include('gestionarAuditores.urls')),
+                  path('reportes/', include('reportes.urls')),
                   path('gestionarObjetivosEducacionales/', include('gestionarObjetivosEducacionales.urls')),
                   path('accounts/', include('allauth.urls'))
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

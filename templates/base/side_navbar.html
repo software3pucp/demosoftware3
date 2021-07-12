@@ -135,7 +135,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{% url 'reportes' %}">
                         <div class="d-flex align-items-center">
                         <span class="nav-link-icon">
                             <span class="fas fa-file-alt"></span>
@@ -223,7 +223,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{% url 'reportes' %}">
                         <div class="d-flex align-items-center">
                         <span class="nav-link-icon">
                             <span class="fas fa-file-alt"></span>
@@ -345,6 +345,18 @@
                         </span>
                             <span class="nav-link-text">
                             Objetivos educacionales
+                        </span>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'reportes' %}">
+                        <div class="d-flex align-items-center">
+                        <span class="nav-link-icon">
+                            <span class="fas fa-file-alt"></span>
+                        </span>
+                            <span class="nav-link-text">
+                            Reportes
                         </span>
                         </div>
                     </a>
@@ -493,6 +505,19 @@
                         </div>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'reportes' %}">
+                        <div class="d-flex align-items-center">
+                        <span class="nav-link-icon">
+                            <span class="fas fa-file-alt"></span>
+                        </span>
+                            <span class="nav-link-text">
+                            Reportes
+                        </span>
+                        </div>
+                    </a>
+                </li>
+
                 {% endif %}
 
             {% if request.user.n_Roles != '1' %}
