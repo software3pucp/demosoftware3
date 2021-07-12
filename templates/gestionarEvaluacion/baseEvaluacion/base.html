@@ -13,8 +13,9 @@
             position: relative;
             overflow: hidden;
         }
+
         button:disabled,
-        button[disabled]{
+        button[disabled] {
             border: 1px solid #999999;
             background-color: #cccccc;
             color: #666666;
@@ -35,36 +36,50 @@
             cursor: inherit;
             display: block;
         }
+
         #cover-spin {
-            position:fixed;
-            width:100%;
-            left:0;right:0;top:0;bottom:0;
-            background-color: rgba(255,255,255,0.7);
-            z-index:9999;
-            display:none;
+            position: fixed;
+            width: 100%;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            z-index: 9999;
+            display: none;
         }
 
         @-webkit-keyframes spin {
-            from {-webkit-transform:rotate(0deg);}
-            to {-webkit-transform:rotate(360deg);}
+            from {
+                -webkit-transform: rotate(0deg);
+            }
+            to {
+                -webkit-transform: rotate(360deg);
+            }
         }
 
         @keyframes spin {
-            from {transform:rotate(0deg);}
-            to {transform:rotate(360deg);}
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         #cover-spin::after {
-            content:'';
-            display:block;
-            position:absolute;
-            left:48%;top:40%;
-            width:40px;height:40px;
-            border-style:solid;
-            border-color:black;
-            border-top-color:transparent;
+            content: '';
+            display: block;
+            position: absolute;
+            left: 48%;
+            top: 40%;
+            width: 40px;
+            height: 40px;
+            border-style: solid;
+            border-color: black;
+            border-top-color: transparent;
             border-width: 4px;
-            border-radius:50%;
+            border-radius: 50%;
             -webkit-animation: spin .8s linear infinite;
             animation: spin .8s linear infinite;
         }
@@ -82,7 +97,9 @@
         <div class="nav-bar nav-bar-center">
             <div class="nav-bar-item px-3 px-sm-4">Curso</div>
             <div class="nav-bar-item px-3 px-sm-4 active">Evaluacion</div>
-            <div class="nav-bar-item px-3 px-sm-4">Persona</div>
+            {% if request.user.rol_actual == "Coordinador de especialidad" or request.user.rol_actual == "Asistente de acreditación" %}
+                <div class="nav-bar-item px-3 px-sm-4">Persona</div>
+            {% endif %}
         </div>
         <div class="tab-contents">
             <div id="tabHistorico" class="tab-content">
@@ -423,7 +440,7 @@
             </div>
         </div>
     </div>
-     <!-- Modal Eliminar Evidencia -->
+    <!-- Modal Eliminar Evidencia -->
     <div class="modal fade" id="eliminarEvidencia" tabindex="-1" role="dialog" aria-labelledby="eliminarEvidenciaLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -500,7 +517,7 @@
             console.log("cargado");
         });
 
-         $("#btnEliminarEvidencia").on('click', function () {
+        $("#btnEliminarEvidencia").on('click', function () {
             eliminarEvidencia(pkEliminarE);
             $("#eliminarEvidencia").modal('hide');
         });
@@ -519,7 +536,7 @@
             pkEliminarE = pk;
         };
 
-         function eliminarEvidencia(evidenciapk) {
+        function eliminarEvidencia(evidenciapk) {
             $.ajax({
                 type: 'POST',
                 url: "{% url 'eliminarEvidencia' %}",
@@ -867,52 +884,52 @@
                             }
                             if (instance[i]["fields"].evidencia == '0') {
                                 data += ('</th>' +
-                                '<th>' +
-                                '<div class="row justify-content-between">' +
-                                ' <div class="col">' +
-                                '<button class="badge badge-pill badge-primary" onclick="mostrarModal(' + instance[i]["pk"] + ')">Subir Evidencia</button>' +
-                                '</div>' +
-                                '<div class="col">' +
-                                '<button class="badge badge-pill badge-secondary" onclick="evaluarEditar(\'' + instance[i]["fields"].nombreAlumno + '\',' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ')">Editar</button>' +
-                                '</div>' +
-                                '<div class="col">' +
-                                '<a class="badge badge-pill badge-primary" href="' + {{ media_path }} +instance[i]["fields"].archivo + '" download>' +
-                                '<i class="fa fa-download"></i>  Descargar</a>' +
-                                '</div>'+
-                                '<div class="col">' +
-                                '<button class="badge badge-pill badge-warning"  disabled onclick="evidenciasEliminar(\'' + instance[i]["fields"].archivo + '\',' + instance[i]["pk"] + ')">Eliminar Evidencia</button>' +
-                                '</div>' +
-                                '<div class="col">' +
-                                '<button class="badge badge-pill badge-danger" onclick="evaluarEliminar(' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ',)">Eliminar</button>' +
-                                '</div>' +
-                                ' </div>' +
-                                '</th>' +
-                                '</tr>' +
-                                '   </th>');
-                            }else{
+                                    '<th>' +
+                                    '<div class="row justify-content-between">' +
+                                    ' <div class="col">' +
+                                    '<button class="badge badge-pill badge-primary" onclick="mostrarModal(' + instance[i]["pk"] + ')">Subir Evidencia</button>' +
+                                    '</div>' +
+                                    '<div class="col">' +
+                                    '<button class="badge badge-pill badge-secondary" onclick="evaluarEditar(\'' + instance[i]["fields"].nombreAlumno + '\',' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ')">Editar</button>' +
+                                    '</div>' +
+                                    '<div class="col">' +
+                                    '<a class="badge badge-pill badge-primary" href="' + {{ media_path }} +instance[i]["fields"].archivo + '" download>' +
+                                    '<i class="fa fa-download"></i>  Descargar</a>' +
+                                    '</div>' +
+                                    '<div class="col">' +
+                                    '<button class="badge badge-pill badge-warning"  disabled onclick="evidenciasEliminar(\'' + instance[i]["fields"].archivo + '\',' + instance[i]["pk"] + ')">Eliminar Evidencia</button>' +
+                                    '</div>' +
+                                    '<div class="col">' +
+                                    '<button class="badge badge-pill badge-danger" onclick="evaluarEliminar(' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ',)">Eliminar</button>' +
+                                    '</div>' +
+                                    ' </div>' +
+                                    '</th>' +
+                                    '</tr>' +
+                                    '   </th>');
+                            } else {
                                 data += ('</th>' +
-                                '<th>' +
-                                '<div class="row justify-content-between">' +
-                                ' <div class="col">' +
-                                '<button class="badge badge-pill badge-primary" onclick="mostrarModal(' + instance[i]["pk"] + ')">Subir Evidencia</button>' +
-                                '</div>' +
-                                '<div class="col">' +
-                                '<button class="badge badge-pill badge-secondary" onclick="evaluarEditar(\'' + instance[i]["fields"].nombreAlumno + '\',' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ')">Editar</button>' +
-                                '</div>' +
-                                '<div class="col">' +
-                                '<a class="badge badge-pill badge-primary" href="' + {{ media_path }} +instance[i]["fields"].archivo + '" download>' +
-                                '<i class="fa fa-download"></i>  Descargar</a>' +
-                                '</div>'+
-                                '<div class="col">' +
-                                '<button class="badge badge-pill badge-warning"   onclick="evidenciasEliminar(\'' + instance[i]["fields"].archivo + '\',' + instance[i]["pk"] + ')">Eliminar Evidencia</button>' +
-                                '</div>' +
-                                '<div class="col">' +
-                                '<button class="badge badge-pill badge-danger" onclick="evaluarEliminar(' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ',)">Eliminar</button>' +
-                                '</div>' +
-                                ' </div>' +
-                                '</th>' +
-                                '</tr>' +
-                                '   </th>');
+                                    '<th>' +
+                                    '<div class="row justify-content-between">' +
+                                    ' <div class="col">' +
+                                    '<button class="badge badge-pill badge-primary" onclick="mostrarModal(' + instance[i]["pk"] + ')">Subir Evidencia</button>' +
+                                    '</div>' +
+                                    '<div class="col">' +
+                                    '<button class="badge badge-pill badge-secondary" onclick="evaluarEditar(\'' + instance[i]["fields"].nombreAlumno + '\',' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ')">Editar</button>' +
+                                    '</div>' +
+                                    '<div class="col">' +
+                                    '<a class="badge badge-pill badge-primary" href="' + {{ media_path }} +instance[i]["fields"].archivo + '" download>' +
+                                    '<i class="fa fa-download"></i>  Descargar</a>' +
+                                    '</div>' +
+                                    '<div class="col">' +
+                                    '<button class="badge badge-pill badge-warning"   onclick="evidenciasEliminar(\'' + instance[i]["fields"].archivo + '\',' + instance[i]["pk"] + ')">Eliminar Evidencia</button>' +
+                                    '</div>' +
+                                    '<div class="col">' +
+                                    '<button class="badge badge-pill badge-danger" onclick="evaluarEliminar(' + instance[i]["fields"].codigoAlumno + ',' + instance[i]["pk"] + ',)">Eliminar</button>' +
+                                    '</div>' +
+                                    ' </div>' +
+                                    '</th>' +
+                                    '</tr>' +
+                                    '   </th>');
 
                             }
 
@@ -932,7 +949,8 @@
                     $("#estado").html(estado);
 
 
-                    if ({{ planMedicion.estado }}=='2')
+                    if ({{ planMedicion.estado }}=='2'
+                )
                     {
                         $("input[type=radio]").attr('disabled', true);
                         $("#dashboard-actions").attr('hidden', true);
