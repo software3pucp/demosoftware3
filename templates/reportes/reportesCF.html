@@ -19,8 +19,9 @@
             </div>
         </div>
     </div>
-
-    <div class="card">
+    <form action="{% url 'generarReportes' %}" method="post">
+        {% csrf_token %}
+            <div class="card">
         <div class="card-body">
             <div class="col">
                 <div class="row">
@@ -63,18 +64,14 @@
 
                 </div>
                 <div class="col" style="text-align: center">
-                    <a href="#" class="btn btn-primary mr-2 mb-1" type="button">
-                                    <span class="fas fa-plus mr-1"
-                                          data-fa-transform="shrink-3"></span><span>Rúbricas</span>
-                    </a>
-                    <a href="#" data-toggle="modal" data-target="#importarUsuarios"
-                       class="btn btn-primary mb-1 " type="button">
-                        <span class="fas fa-plus mr-1"></span><span>Resultado Medición</span>
-                    </a>
+                    <input class="btn btn-primary mr-2 mb-1"  type="submit" value="Rúbricas" name="_rubricas">
+                    <input class="btn btn-primary mr-2 mb-1"  type="submit" value="Resultados" name="_resultados">
                 </div>
             </div>
         </div>
     </div>
+    </form>
+
 
 
 
