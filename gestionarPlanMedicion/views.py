@@ -355,16 +355,30 @@ def eliminarMedicion(request):
     return JsonResponse({}, status=200)
 
 def editarHistorico(request,pk):
+
+    historico = PlanMedicion.objects.get(pk=pk)
+    especialidad = Especialidad.objects.get(pk=historico.especialidad_id)
+
     listaSemestre0 = (Semestre.objects.filter())
-    listaSemestre =reversed(listaSemestre0)
+    listaSem = []
+
+    for sem in listaSemestre0:
+        planSemestre = PlanMedicion.semestre.through.objects.filter(semestre_id=sem.pk)
+        invalido = False
+        for plan in planSemestre:
+            planEsp = list(PlanMedicion.objects.filter(pk=plan.planmedicion_id,especialidad_id=especialidad.pk))
+            if (len(planEsp)==1):
+                invalido = True
+                break
+        if(not invalido):
+            listaSem.append(sem)
+    listaSemestre =reversed(listaSem)
     hay_semestres=False
     if (len(listaSemestre0)>0):
         hay_semestres = True
 
-    historico = PlanMedicion.objects.get(pk=pk)
     manySemestre = historico.semestre.all()
     semestresSeleccionados = reversed(manySemestre)
-    especialidad = Especialidad.objects.get(pk=historico.especialidad_id)
     context = {
         'listaSemestre': listaSemestre,
         'historico': historico,
