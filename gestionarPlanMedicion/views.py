@@ -391,6 +391,10 @@ def editarHistorico(request,pk):
 def agregarSemestrePlan(request):
     historico = PlanMedicion.objects.get(pk=request.POST['historicoPK'])
     semestre = Semestre.objects.get(pk=request.POST['semestrePk'])
+    #Validar que semestre selecionado no este en plan de medicion
+    planSemestre = PlanMedicion.semestre.through.objects.filter(semestre_id=semestre.pk,planmedicion_id=historico.pk)
+    if planSemestre:
+        return JsonResponse({"resp":"Semestre seleccionado ya está asociado al plan de medición"},status=500)
     historico.semestre.add(semestre)
     ser_instance = serializers.serialize('json', [semestre, ])
     # print(historico.semestre.all().count())
