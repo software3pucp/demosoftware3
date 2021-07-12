@@ -10,6 +10,11 @@
             height: 200px;
             position: relative;
         }
+
+        .botoncito:focus{
+            color: #3083F1;
+            outline: none;
+        }
     </style>
 {% endblock %}
 
@@ -19,10 +24,16 @@
     <div class="card mb-3 bg-card-gradient">
         <div class="card-body ">
             <div class="row justify-content-between align-items-center">
-                <div class="col-12">
+                <div class="col-9">
                     <h2 class="mb-2 mb-md-0 text-white">Dashboard</h2>
-                    <p class="text-white">Información del plan de medición <b>{{ plan.nombre }}</b> de la especialidad
-                        de <b>{{ plan.especialidad.nombre }}</b> .</p>
+                </div>
+{#                <div class="col-3">#}
+{#                    <button class="btn btn-primary" style="float: right;" onclick="descargarPDF()"> Descargar PDF</button>#}
+{#                </div>#}
+            </div>
+            <div class="row justify-content-between align-items-center">
+                                <div class="col-12">
+                    <p class="text-white">Información del plan de medición <b>{{ plan.nombre }}</b> de la especialidad de <b>{{ plan.especialidad.nombre }}</b> .</p>
                 </div>
             </div>
         </div>
@@ -89,7 +100,10 @@
                         <tbody>
                         {% for indicador, progreso in progreIndicadores %}
                             <tr>
-                                <td>{{ indicador.codigo }}</td>
+                                <td>
+                                    {{ indicador.codigo }}
+                                    <a tabindex="0" class="botoncito fas fa-info-circle" data-toggle="popover" data-trigger="focus" title="Descripción" data-content="{{ indicador.descripcion }}"> </a>
+                                </td>
                                 <td>
                                     <div class="progress">
                                         {% if progreso < 50 %}
@@ -251,7 +265,10 @@
                         <tbody>
                         {% for resultado,progreso in progreResultados %}
                             <tr>
-                                <td>{{ resultado.codigo }}</td>
+                                <td>
+                                    {{ resultado.codigo }}
+                                    <a tabindex="0" class="botoncito fas fa-info-circle" data-toggle="popover" data-trigger="focus" title="Descripción" data-content="{{ resultado.descripcion }}"></a>
+                                </td>
                                 <td>
                                     <div class="progress">
                                         {% if progreso < 50 %}
@@ -411,8 +428,8 @@
                         label: 'Porcentaje de alumnos en nivel 3 y 4',
                         fill: false,
                         lineTension: 0,
-                        backgroundColor: generateRandomColor(),
-                        borderColor: generateRandomColor(),
+                        backgroundColor: '#5B9BD5',
+                        borderColor: '#5B9BD5',
                         data: datos
                     };
                     //Push Dataset
@@ -457,15 +474,15 @@
                     //DataSet Superior
                     const dataSetSuperior = {
                         label: 'Niveles Superiores',
-                        backgroundColor: generateRandomColor(),
-                        borderColor: generateRandomColor(),
+                        backgroundColor: '#70AD47',
+                        borderColor: '#70AD47',
                         data: datosSuperior
                     };
                     //DataSet Inferior
                     const dataSetInferior = {
                         label: 'Niveles Inferiores',
-                        backgroundColor: generateRandomColor(),
-                        borderColor: generateRandomColor(),
+                        backgroundColor: '#EE7320',
+                        borderColor: '#EE7320',
                         data: datosInferior
                     };
 
@@ -558,17 +575,29 @@
                 scales: {
                     x: {
                         stacked: true,
+                        title: {
+                            display: true,
+                            text: 'Indicadores',
+                        }
                     },
                     y: {
                         min: 0,
                         max: 100,
-                        stacked: true
+                        stacked: true,
+                        title: {
+                            display: true,
+                            text: 'Porcentaje',
+                        },
                     }
                 }
             }
         };
 
         var grafiquito2 = new Chart("myChart2", config2);
+
+        function descargarPDF() {
+
+        }
 
 
     </script>
