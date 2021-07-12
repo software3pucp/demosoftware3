@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.core import serializers
 # Create your views here.
+from gestionarCurso.models import Curso
 from gestionarEspecialidad.models import Asistente, Auditor, Especialidad
 from django.contrib.auth.models import Group
 
@@ -213,7 +214,7 @@ def generarReportes(request):
                             if filaInicio > 8:
                                 wsAux.merge_cells(f'B8:B{filaInicio - 1}')
             except:
-                print("Semestre no tiene evaluación")
+                print("El ciclo no está siendo medido ")
 
             nom_arch = f'Rubrica {especialidad.nombre}-{semestre.nombreCodigo}.xlsx'
             # Definir el tipo de respuesta que se va a dar
@@ -224,4 +225,66 @@ def generarReportes(request):
             return response
         elif '_resultados' in request.POST:
             print("resultados")
-    return render(request, 'reportes/reportesCE.html')
+            try:
+                semAux = Semestre.objects.get(pk=ciclo)
+                niveles = Nivel.objects.filter(especialidad_id=esp, estado='1').order_by('-valor')
+                valorMax = niveles[0].valor
+                planSemestre = PlanMedicion.semestre.through.objects.filter(semestre_id=semAux.pk)
+                planCal = None
+                for p in planSemestre:
+                    estado = [1, 2]
+                    planesMedi = PlanMedicion.objects.filter(pk=p.planmedicion_id, estado__in=estado, especialidad_id=esp)
+                    if planesMedi:
+                        planCal = planesMedi[0]
+                        break
+
+                if planCal:
+                    # print(planCal.codigo, planCal.nombre)
+                    # print("***************************************************")
+                    planRes = PlanResultados.objects.get(pk=planCal.planResultados.pk)
+                    # print(planRes)
+                    # print("/////////////////////////////////")
+                    resultados = ResultadoPUCP.objects.filter(planResultado_id=planRes.pk, estado=1)
+                    for r in resultados:
+                        print(r.codigo, r.descripcion)
+                        # print("/////////////////////////////")
+                        indicadores = Indicador.objects.filter(resultado_id=r.pk, estado=1)
+                        for i in indicadores:
+                            print(i.codigo, i.descripcion)
+                            plMedCur = PlanMedicionCurso.objects.filter(planMedicion_id=planCal.pk, semestre_id=semAux.pk,
+                                                                        estado=1)
+                            n = 0
+                            for pl in plMedCur:
+                                planMedCurInt = PlanMedicionCurso.indicador.through.objects.filter(indicador_id=i.pk,
+                                                                                                   planmedicioncurso_id=pl.pk)
+                                if planMedCurInt:
+                                    n += 1
+                                    horarios = Horario.objects.filter(curso_id=pl.pk, estado=1)
+                                    cantAlum = 0
+                                    acumNota = 0
+                                    for h in horarios:
+                                        alumnosEva = RespuestaEvaluacion.objects.filter(horario_id=h.pk,
+                                                                                        estado='1',
+                                                                                        indicador_id=i.pk)
+                                        for alum in alumnosEva:
+                                            valorNota = alum.valorNota
+                                            if valorNota:
+                                                cantAlum += 1
+                                                acumNota += valorNota
+
+                                        # print("Horario", h.codigo)
+                                        # print("Cant de alumnos en horario", len(alumnosEva))
+                                    print(pl.curso_id)
+                                    cursoAsig = Curso.objects.get(pk=pl.curso_id)
+                                    promedio = acumNota / cantAlum if cantAlum > 0 else 0
+                                    valorPorcentaje = acumNota / cantAlum / valorMax if cantAlum > 0 else 0
+                                    print(cursoAsig.nombre, valorPorcentaje)
+
+                            # print("cantidad de cursos:",n)
+
+                        # print("**********************************")
+                else:
+                    print("No existe plan de medición asociado al ciclo")
+            except:
+                print("Hubo un error")
+            return render(request, 'reportes/reportesCE.html')
