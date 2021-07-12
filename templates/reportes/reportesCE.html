@@ -22,6 +22,9 @@
 
     <div class="card">
         <div class="card-body">
+            <div class="row ml-1">
+
+            </div>
             <div class="col">
                 <div class="row">
                     <div class="col-sm-12 col-lg-6 pl-4 pr-4">
@@ -29,7 +32,8 @@
                             <label for="cboEspecialidad">Facultad:</label>
                         </div>
                         <div class="row">
-                            <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad" name="cboEspecialidad">
+                            <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
+                                    name="cboEspecialidad">
                                 {% for especialidad in especialidades %}
                                     <option value={{ especialidad.pk }}>{{ especialidad.nombre }}</option>
                                 {% endfor %}
@@ -50,6 +54,17 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="col" style="text-align: center">
+                <a href="#" class="btn btn-primary mr-2 mb-1"  type="button">
+                                    <span class="fas fa-plus mr-1"
+                                          data-fa-transform="shrink-3"></span><span>Rúbricas</span>
+                </a>
+                <a href="#" data-toggle="modal" data-target="#importarUsuarios"
+                   class="btn btn-primary mb-1 " type="button">
+                    <span class="fas fa-plus mr-1"></span><span>Resultado Medición</span>
+                </a>
             </div>
 
         </div>
