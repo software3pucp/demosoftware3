@@ -1,6 +1,4 @@
 from django.db import models
-
-# Create your models here.
 from gestionarEspecialidad.models import Especialidad
 from gestionarIndicadores.models import Indicador
 from gestionarNiveles.models import Nivel
