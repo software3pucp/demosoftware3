@@ -40,6 +40,48 @@ def Resultados(request, id_plan):
     }
     return render(request, 'gestionarResultados/resultados.html', context)
 
+def resultadosActivos(request):
+
+    if (request.user.rol_actual == "Asistente de acreditación"):
+        usuario = request.user
+        especialidades = []
+        items = Asistente.objects.filter(user_id=usuario.pk)
+        for item in items:
+            especialidades.append(item.especialidad)
+        context = {
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarResultados/resultadosActivosCE.html', context)
+
+    if (request.user.rol_actual == "Auditor"):
+        usuario = request.user
+        especialidades = []
+        items = Auditor.objects.filter(user_id=usuario.pk)
+        for item in items:
+            especialidades.append(item.especialidad)
+        context = {
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarResultados/resultadosActivosCE.html', context)
+
+    if (request.user.rol_actual == "Coordinador de facultad"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=4)
+        facultades = Facultad.objects.filter(responsable=usuario.pk, estado='1')
+        context = {
+            'facultades': facultades,
+        }
+        return render(request, 'gestionarResultados/resultadosActivosCF.html', context)
+
+    if (request.user.rol_actual == "Coordinador de especialidad"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=5)
+        especialidades = Especialidad.objects.filter(responsable=usuario.pk, estado='1')
+        context = {
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarResultados/resultadosActivosCE.html', context)
+
 
 def eliminarResultado(request):
     resultadoPk = request.POST['resultadopk']
@@ -57,8 +99,9 @@ def obtenerEspecialidades(request):
 
 
 def listarResultados(request):
-    planpk = request.POST['planpk']
-    resultados = ResultadoPUCP.objects.filter(planResultado_id=planpk, estado=1)
+    especialidadpk = request.POST['especialidad']
+    plan = PlanResultados.objects.filter(especialidad_id=especialidadpk, estado=1)
+    resultados = ResultadoPUCP.objects.filter(planResultado_id=plan.pk, estado=1)
     listaResultados = []
     lista2 = []
     for result in resultados:

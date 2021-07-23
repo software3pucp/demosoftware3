@@ -8,28 +8,63 @@
 {#Bloque de extra body -> HTML#}
 {% block body %}
 
+    <div class="card mb-3 bg-card-gradient">
+        <div class="card-body ">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-12">
+                    <h5 class="mb-2 mb-md-0 text-white">Resultados de estudiante</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <div class="col-12">
-                    <div class="row d-flex justify-content-center ">
-                        <div class="col-10">
-                            <h4>Resultados del estudiante</h4>
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6 pl-4 pr-4">
+                            <div class="row">
+                                <label for="cboFacultad">Facultad:</label>
+                            </div>
+                            <div class="row">
+                                <select class="custom-select custom-select-sm mb-3" id="cboFacultad" name="cboFacultad"
+                                        onchange="obtenerEspecialidades()">
+                                    {% for facultad in facultades %}
+                                        <option value={{ facultad.pk }}>{{ facultad.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-2 ">
-                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'planDeResultado' %}">
-                                <div class="fas fa-reply mt-1 mr-2"></div>
-                                <h5>Volver</h5>
-                            </a>
+                        <div class="col-sm-12 col-lg-6 pl-4 pr-4">
+                            <div class="row">
+                                <label for="cboEspecialidad">Especialidad:</label>
+                            </div>
+                            <div class="row">
+                                <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
+                                        name="cboEspecialidad"
+                                        onchange="listarResultados()">
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <hr style="background-color: #0154ae;">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-10 px-0" id="tituloEspecialidadMediciones"></div>
 
-                    {% if request.user.rol_actual != 'Coordinador de facultad' %}
-                        <div style="margin: 1%;">
-                            <span class="btn btn-primary" onclick="redirectCrearResultado()">Crear</span>
-                        </div>
-                    {% endif %}
+                            <div class="col-12 ">
+                                <div class="d-flex justify-content-end">
+                                    <span class="btn btn-primary mr-1">
+                                    Nueva versión
+                                    </span>
+                                    <span class="btn btn-primary mr-1">
+                                    Históricos
+                                    </span>
+                                    <span class="btn btn-primary" onclick="redirectCrearResultado()">Crear</span>
+                                </div>
+                            </div>
+
+                    </div>
                     <div id="listadoResultados"></div>
                 </div>
             </div>
@@ -64,16 +99,44 @@
         var pkEliminar;
 
         $(document).ready(function () {
-            listarResultados();
+            obtenerEspecialidades();
         });
 
-        function redirectCrearResultado() {
-            document.location.href = "../../gestionarResultados/crear/" + {{ plan.pk }};
-        }
+
+        {% comment %} function redirectCrearResultado() {
+             document.location.href = "../../gestionarResultados/crear/" + {{ plan.pk }};
+         }{% endcomment %}
 
         function redirectEditarResultado(id_resultado) {
 
             document.location.href = "../../gestionarResultados/editar/" + id_resultado;
+        }
+
+        function obtenerEspecialidades() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'obtenerEspecialidades' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    facultad: $("#cboFacultad").val(),
+                },
+                success: function (response) {
+                    var instance = JSON.parse(response["resp"]);
+
+                    $(".especialidad").remove();
+                    for (var i = 0; i < instance.length; i++) {
+                        data = '<option class="especialidad" onclick="listarPlanes()" value=' +
+                            instance[i]["pk"] + '>' +
+                            instance[i]["fields"].nombre + '</option>';
+                        $("#cboEspecialidad").append(data);
+                    }
+
+                    listarPlanes();
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                },
+            });
         }
 
         $("#btnEliminarResultado").on('click', function () {
@@ -116,7 +179,7 @@
                 url: "{% url 'listarResultados'%}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
-                    planpk: {{ plan.pk }},
+                    especialidad: $("#cboEspecialidad").val(),
                 },
                 success: function (response) {
                     var instance = JSON.parse(response['resultados']);
@@ -125,25 +188,25 @@
                     var i = 0;
                     var numero = instance.length;
                     var data = '';
-                    var data2 ='';
+                    var data2 = '';
                     for (i = 0; i < numero; i++) {
                         data += (
                             '<div class="card my-3 overflow-hidden" style="min-width: 12rem">' +
                             '<div class="bg-holder bg-card"' + 'style="background-image:url(' + '{% static '/img/illustrations/corner-2.png' %}' + ');">' + '</div>' +
                             '<div class="card-body position-relative">' +
-                            '<h5>' + instance[i]["fields"].codigo  + '</h5>' + '<div class="my-1">' + instance[i]["fields"].descripcion + '</div>'
-                            );
-                        if (instance2[i]==false){
-                            data +=(
-                                '<div class="alert alert-warning" role="alert">Nota: El resultado no tiene indicadores asociados.'+
-                        '                                Dar click en editar si desea asociar indicadores.</div>')
+                            '<h5>' + instance[i]["fields"].codigo + '</h5>' + '<div class="my-1">' + instance[i]["fields"].descripcion + '</div>'
+                        );
+                        if (instance2[i] == false) {
+                            data += (
+                                '<div class="alert alert-warning" role="alert">Nota: El resultado no tiene indicadores asociados.' +
+                                '                                Dar click en editar si desea asociar indicadores.</div>')
                         }
 
                         data += (
                             '                        <button class="btn btn-falcon-primary mr-1 my-1" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')">Ver Detalle</button>' +
                             '                    </div>' +
                             '                </div>' +
-                            '        </div>' )
+                            '        </div>')
                     }
                     data2 = '<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>';
                     $("#tituloEspecialidadResultados").html(data2);

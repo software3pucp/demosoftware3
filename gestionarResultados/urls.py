@@ -18,6 +18,7 @@ urlpatterns = [
     # Resultados
     path('crear/<id_plan>', views.crearResultado, name="crearResultado"),
     path('resultados/<id_plan>', views.Resultados, name="resultados"),
+    path('resultadosActivos/', views.resultadosActivos, name="resultadosActivos"),
     path('listarResultados/', views.listarResultados, name='listarResultados'),
     path('editar/<pk>', views.editarResultado, name="editarResultado"),
     path('eliminar/', views.eliminarResultado, name="eliminarResultado"),
