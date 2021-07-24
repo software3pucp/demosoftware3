@@ -7,6 +7,7 @@ from gestionarFacultad.models import Facultad
 from gestionarNiveles.models import Nivel
 from django.contrib.auth.models import Group
 
+from gestionarResultados.models import PlanResultados
 
 
 @login_required
@@ -66,7 +67,8 @@ def obtenerEspecialidades(request):
 
 def listarNiveles(request):
     id_especialidad = request.POST['especialidadpk']
-    niveles = Nivel.objects.filter(especialidad_id=id_especialidad, estado='1').order_by('valor')
+    plan = PlanResultados.objects.get(estado='1', especialidad_id=id_especialidad)
+    niveles = Nivel.objects.filter(especialidad_id=id_especialidad, estado='1',plaResultado_id=plan.pk).order_by('valor')
     ser_instance = serializers.serialize('json', niveles)
     return JsonResponse({"niveles": ser_instance}, status=200)
 
@@ -97,8 +99,10 @@ def crearNivel(request):
     except:
         print("Error al buscar la especialidad")
 
+    plan = PlanResultados.objects.get(estado='1',especialidad_id=id_especialidad)
+
     nombre = request.POST['nombreNivel']
     valor = request.POST['valorNivel']
-    nivel = Nivel.objects.create(nombre=nombre, valor=valor, especialidad=especialidad)
+    nivel = Nivel.objects.create(nombre=nombre, valor=valor, especialidad=especialidad,plaResultado_id=plan.pk)
     ser_instance = serializers.serialize('json', [nivel, ])
     return JsonResponse({"nuevoNivel": ser_instance}, status=200)

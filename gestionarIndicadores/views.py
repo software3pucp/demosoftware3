@@ -16,8 +16,9 @@ from django.contrib.auth.decorators import login_required
 def editarIndicador(request, pk):
     indicador = Indicador.objects.get(pk=pk)
     especialidadpk = obtenerEspecialidadIndicador(indicador)
+    planPk = obtenerPlanResultados(indicador)
     id_resultado = indicador.resultado_id
-    nivelLista = Nivel.objects.filter(estado='1', especialidad_id=especialidadpk).order_by('valor')
+    nivelLista = Nivel.objects.filter(estado='1', especialidad_id=especialidadpk,plaResultado_id=planPk).order_by('valor')
     rubrica = Rubrica.objects.filter(indicador_id=pk)
     nivelLista2 = []
     hay_niveles = False
@@ -72,6 +73,12 @@ def obtenerEspecialidadIndicador(indicador):
     resultado = ResultadoPUCP.objects.get(pk=id_resultado)
     especialidad = resultado.planResultado.especialidad
     return especialidad.pk
+
+def obtenerPlanResultados(indicador):
+    id_resultado = indicador.resultado_id;
+    resultado = ResultadoPUCP.objects.get(pk=id_resultado)
+    return resultado.planResultado_id
+
 
 
 @login_required
