@@ -214,7 +214,7 @@ def editarResultado(request, pk):
 
 
 @login_required
-def planDeResultado(request):
+def planDeResultado(request, pk):
     if (request.user.rol_actual == "Asistente de acreditación"):
         usuario = request.user
         especialidades = []
@@ -249,7 +249,7 @@ def planDeResultado(request):
     if (request.user.rol_actual == "Coordinador de especialidad"):
         usuario = request.user
         grupo = Group.objects.get(pk=5)
-        especialidades = Especialidad.objects.filter(responsable=usuario.pk, estado='1')
+        especialidades = Especialidad.objects.filter(responsable=usuario.pk, estado='1', pk=pk)
         context = {
             'especialidades': especialidades,
         }

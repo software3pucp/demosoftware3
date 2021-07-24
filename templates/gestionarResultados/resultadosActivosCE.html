@@ -51,7 +51,7 @@
                                             Nueva versión
                                         </span>
                                     </a>
-                                    <a class="btn btn-primary mr-1"  href="{%  url 'planDeResultado' %}">
+                                    <a id="btnHistoricos" class="btn btn-primary mr-1">
                                     Históricos
                                     </a>
                                     <span class="btn btn-primary" onclick="crearResultado()">Crear</span>
@@ -257,5 +257,12 @@
             var pk_especialidad = $("#cboEspecialidad").val();
             document.location.href = "../../gestionarResultados/crearPlanResultado/" + pk_especialidad;
         });
+
+        $("#btnHistoricos").on('click', function (e) {
+            e.preventDefault();
+            var pk_especialidad = $("#cboEspecialidad").val();
+            document.location.href = "../../gestionarResultados/planDeResultado/" + pk_especialidad;
+        });
+
     </script>
 {% endblock %}
