@@ -26,9 +26,7 @@
                     <hr style="background-color: #0154ae;">
 
                     {% if request.user.rol_actual != 'Coordinador de facultad' %}
-                        <div style="margin: 1%;">
-                            <span class="btn btn-primary" onclick="redirectCrearResultado()">Crear</span>
-                        </div>
+
                     {% endif %}
                     <div id="listadoResultados"></div>
                 </div>

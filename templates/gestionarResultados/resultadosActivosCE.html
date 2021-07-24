@@ -248,6 +248,10 @@
                 }
             });
         }
-
+        $("#btnNuevoCero").on('click', function (e) {
+            e.preventDefault();
+            var pk_especialidad = $("#cboEspecialidad").val();
+            document.location.href = "../../gestionarResultados/crearPlanResultado/" + pk_especialidad;
+        });
     </script>
 {% endblock %}

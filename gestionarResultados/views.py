@@ -37,7 +37,7 @@ def crearResultado(request, id_plan):
         codigo = request.POST['codigo']
         descripcion = request.POST['descripcion']
         ResultadoPUCP.objects.create(codigo=codigo, descripcion=descripcion, planResultado=plan)
-        return redirect('resultados', id_plan=id_plan)
+        return redirect('resultadosActivos')
 
     context = {
         'plan': plan,
@@ -171,7 +171,7 @@ def editarResultado(request, pk):
         resultado.codigo = request.POST['codigo']
         resultado.descripcion = request.POST['descripcion']
         resultado.save()
-        return redirect('resultados', id_plan=plan.pk)
+        return redirect('resultadosActivos')
 
     listaIndicares = Indicador.objects.filter(resultado_id=pk, estado=1)
     context = {
@@ -233,11 +233,16 @@ def crearPlanResultado(request, id_especialidad):
         print("Error al buscar la especialidad")
 
     if request.POST:
+        plAux = PlanResultados.objects.filter(estado=1, especialidad=especialidad)
+        if plAux:
+            for p in plAux:
+                p.estado = '2'
+                p.save()
         codigo = request.POST['codigo']
         nombre = request.POST['nombre']
         nuevoPlanResultado = PlanResultados.objects.create(codigo=codigo, descripcion=nombre, especialidad=especialidad,
-                                                           estado='2')
-        return redirect('planDeResultado')
+                                                           estado='1')
+        return redirect('resultadosActivos')
 
     context = {
         'especialidad': especialidad,
