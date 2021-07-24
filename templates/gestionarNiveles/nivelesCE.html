@@ -42,10 +42,9 @@
                     <div class="col-sm-12 col-lg-10 px-0 pl-3" id="tituloEspecialidadNiveles"></div>
                     <hr style="background-color: #0154ae;">
                 </div>
-                <div class="btn btn-falcon-primary mb-2" href="#agregarNivel" data-toggle="modal"
-                     role="button">
+                <button class="btn btn-falcon-primary mb-2" onclick="validacion()">
                     <span class="fa fa-plus"></span>
-                </div>
+                </button>
                 <div class="dashboard-data-table">
                     <table class="table table-sm fs--1 border-bottom"
                            data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
@@ -151,6 +150,23 @@
         </div>
     </div>
 
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-light" id="tituloError">
+                    <h5 class="modal-title label-primary" id="errorModalLabel">¡Éxito!</h5>
+                </div>
+                <div class="modal-body bg-light" id="mensajeError">
+                    <p>Se ha enviado un mensaje a su correo para reestablecer la contraseña</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-sm" type="button" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {#Aquí coloco el JS particular de la web#}
@@ -173,6 +189,31 @@
             eliminarNivel(pkEliminarN);
             $("#eliminarNivel").modal('hide');
         });
+
+        function validacion(){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'validarNiveles' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    especialidad: $('#cboEspecialidad').val(),
+                },
+                success: function (response) {
+                    if (response.tipo == "1") {
+                        $('#tituloError').empty()
+                        $('#tituloError').append(`<h5 class="modal-title label-primary" id="errorModalLabel"><b><i>Alerta</i></b></h5>`)
+                        $('#mensajeError').empty()
+                        $('#mensajeError').append(`<p>Seleccione <b><i>Nueva versión</i></b> para crear una nueva versión de resultados del estudiante</p>`)
+                        $("#successModal").modal({backdrop: 'static', keyboard: false, show: true});
+                    } else if (response.tipo == "3"){
+                        $("#agregarNivel").modal({backdrop: 'static', keyboard: false, show: true});
+                    }
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
 
         function nivelesEliminar(codigoNivel, pk) {
             data = '<h5 class="modal-title" id="eliminarNivelLabel">Se eliminará el nivel: ' + codigoNivel + '</h5>';
@@ -213,7 +254,8 @@
                 success: function (response) {
                     var instance = JSON.parse(response['niveles']);
                     console.log(instance);
-
+                    $("#tituloEspecialidadNiveles").empty()
+                    $("#tablaNiveles").empty()
                     var i = 0;
                     var j = 1;
                     var numero = instance.length;
@@ -235,8 +277,8 @@
                         )
                     }
                     data2 = '<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>';
-                    $("#tituloEspecialidadNiveles").html(data2);
-                    $("#tablaNiveles").html(data);
+                    $("#tituloEspecialidadNiveles").append(data2);
+                    $("#tablaNiveles").append(data);
                 },
                 error: function (response) {
                     console.log('Ocurrio un error')

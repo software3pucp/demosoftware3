@@ -29,7 +29,7 @@ urlpatterns = [
                   path('gestionarAcreditadoras/', include('gestionarAcreditadoras.urls')),
                   path('gestionarREAcreditadoras/', include('gestionarREAcreditadoras.urls')),
                   path('gestionarSemestre/', include('gestionarSemestre.urls')),
-                  path('gestionarNiveles/', include('gestionarNiveles.urls')),
+                  path('niveles/', include('gestionarNiveles.urls')),
                   path('gestionarResultados/', include('gestionarResultados.urls')),
                   path('gestionarResultadosMediciones/', include('gestionarResultadosMediciones.urls')),
                   path('gestionarEvaluacion/', include('gestionarEvaluacion.urls')),

@@ -33,6 +33,8 @@ class Especialidad(models.Model):
         ('2', 'Inactivo'),
     ]
     estado = models.CharField(max_length=2, choices=ESTADOS, default=None, null=True, blank=True)
+    codigo = models.CharField(max_length=4,null=True,blank=True,default='')
+    versiones = models.IntegerField(max_length=10000,default=0,null=True,blank=True)
 
 class Asistente(models.Model):
     especialidad = models.ForeignKey(Especialidad, on_delete=models.CASCADE)
