@@ -169,6 +169,7 @@
         }
 
         function listarPlanes() {
+            console.log($("#cboEspecialidad").val())
             $.ajax({
                 type: 'POST',
                 url: "{% url 'listarPlanResultado'%}",

@@ -13,6 +13,21 @@ from django.contrib.auth.decorators import login_required
 
 from gestionarSemestre.models import Semestre
 
+@login_required
+def validarCrear(request):
+    id_plan = int(request.POST['idPlan'])
+    if request.POST:
+        if id_plan == -1:
+            print(id_plan)
+             #Si no existe plan de resultados se debe mostrar mensaje informativo
+            return JsonResponse({'tipo':'1'},status=200)
+        else:
+            #TODO
+            # Si el plan de resultados ya tiene asociado planes de medicion
+            # Se debe mostar mensaje informativo
+            return JsonResponse({'tipo':'3'},status =200)
+
+
 
 @login_required
 def crearResultado(request, id_plan):
@@ -100,8 +115,13 @@ def obtenerEspecialidades(request):
 
 def listarResultados(request):
     especialidadpk = request.POST['especialidad']
+    idPlan = -1
     plan = PlanResultados.objects.filter(especialidad_id=especialidadpk, estado=1)
-    resultados = ResultadoPUCP.objects.filter(planResultado_id=plan.pk, estado=1)
+    resultados = []
+    lista2= []
+    if (plan):
+        idPlan = plan[0].pk
+        resultados = ResultadoPUCP.objects.filter(planResultado_id=idPlan, estado=1)
     listaResultados = []
     lista2 = []
     for result in resultados:
@@ -118,7 +138,7 @@ def listarResultados(request):
     ser_instance = serializers.serialize('json', resultados)
     ser_instance2 = json.dumps(lista2)
     # ser_instance2 = serializers.serialize('json', listaResultados)
-    return JsonResponse({"resultados": ser_instance, "tiene_niveles": ser_instance2}, status=200)
+    return JsonResponse({"resultados": ser_instance, "tiene_niveles": ser_instance2,"idPlan":idPlan}, status=200)
 
 
 @login_required

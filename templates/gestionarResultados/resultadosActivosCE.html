@@ -7,7 +7,7 @@
 
 {#Bloque de extra body -> HTML#}
 {% block body %}
-
+    <input id="idPlan" name="idPlan" type="hidden">
     <div class="card mb-3 bg-card-gradient">
         <div class="card-body ">
             <div class="row justify-content-between align-items-center">
@@ -31,7 +31,7 @@
                             <div class="row">
                                 <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
                                         name="cboEspecialidad"
-                                        onchange="listarPlanes()">
+                                        onchange="listarResultados()">
                                     {% for especialidad in especialidades %}
                                         <option value={{ especialidad.pk }}>{{ especialidad.nombre }}</option>
                                     {% endfor %}
@@ -51,7 +51,7 @@
                                     <span class="btn btn-primary mr-1" >
                                     Históricos
                                     </span>
-                                    <span class="btn btn-primary" onclick="redirectCrearResultado()">Crear</span>
+                                    <span class="btn btn-primary" onclick="crearResultado()">Crear</span>
                                 </div>
                             </div>
                         {% endif %}
@@ -82,6 +82,23 @@
         </div>
     </div>
 
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-light" id="tituloError">
+                    <h5 class="modal-title label-primary" id="errorModalLabel">¡Éxito!</h5>
+                </div>
+                <div class="modal-body bg-light" id="mensajeError">
+                    <p>Se ha enviado un mensaje a su correo para reestablecer la contraseña</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-sm" type="button" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 {% endblock %}
 
@@ -93,6 +110,31 @@
         $(document).ready(function () {
             listarResultados();
         });
+
+        function crearResultado(){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'validarCrear' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    idPlan: $('#idPlan').val(),
+                },
+                success: function (response) {
+                    if (response.tipo == "1") {
+                        $('#tituloError').empty()
+                        $('#tituloError').append(`<h5 class="modal-title label-primary" id="errorModalLabel"><b><i>Alerta</i></b></h5>`)
+                        $('#mensajeError').empty()
+                        $('#mensajeError').append(`<p>Seleccione <b><i>Nueva versión</i></b> para crear una nueva versión de resultados del estudiante</p>`)
+                        $("#successModal").modal({backdrop: 'static', keyboard: false, show: true});
+                    } else if (response.tipo == "3"){
+                        document.location.href = "../../gestionarResultados/crear/" +$('#idPlan').val() ;
+                    }
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
 
         {% comment %} function redirectCrearResultado() {
              document.location.href = "../../gestionarResultados/crear/" + {{ plan.pk }};
@@ -148,6 +190,8 @@
                 success: function (response) {
                     var instance = JSON.parse(response['resultados']);
                     var instance2 = JSON.parse(response['tiene_niveles']);
+                    let id = JSON.parse(response['idPlan'])
+                    $('#idPlan').val(id)
                     console.log(instance);
                     var i = 0;
                     var numero = instance.length;
