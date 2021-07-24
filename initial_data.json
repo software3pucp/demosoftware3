@@ -197,7 +197,8 @@
       "responsable": "1",
       "facultad": 10,
       "foto": "",
-      "estado": "1"
+      "estado": "1",
+      "codigo": "INF"
     }
   },
   {
@@ -208,7 +209,8 @@
       "responsable": "1",
       "facultad": 10,
       "foto": "",
-      "estado": "1"
+      "estado": "1",
+      "codigo": "IND"
     }
   },
   {
@@ -219,7 +221,8 @@
       "responsable": "1",
       "facultad": 10,
       "foto": "",
-      "estado": "1"
+      "estado": "1",
+      "codigo": "CIV"
     }
   },
   {
@@ -230,7 +233,8 @@
       "responsable": "1",
       "facultad": 11,
       "foto": "",
-      "estado": "1"
+      "estado": "1",
+      "codigo": "ARQ"
     }
   },
   {
