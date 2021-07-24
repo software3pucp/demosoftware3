@@ -147,6 +147,12 @@ def agregarAlumno(request):
     niveles = Nivel.objects.filter(estado="1")
     plan = PlanMedicionCurso.objects.get(pk=request.POST["plan"])
     listaIndicador = plan.indicador.all()
+    alumnosEncontrados = RespuestaEvaluacion.objects.filter(codigoAlumno=request.POST["codigoAlumno"],
+                                                     horario_id=request.POST["horario"],planMedicion_id=request.POST["plan"])
+    if(len(alumnosEncontrados)>0):
+        nombreActual= alumnosEncontrados[0].nombreAlumno
+        return JsonResponse({"Insertado": True, "nombreActual":nombreActual},status=200)
+
     for indicador in listaIndicador:
         print(indicador.pk)
         nuevoAlumno = RespuestaEvaluacion.objects.create(nombreAlumno=request.POST["nombreAlumno"],
@@ -156,7 +162,7 @@ def agregarAlumno(request):
                                                      planMedicion_id=request.POST["plan"])
     ser_instance = serializers.serialize('json', [nuevoAlumno,])
     ser_instance2 = serializers.serialize('json', list(niveles), fields=('id', 'nombre', 'valor', 'estado'))
-    return JsonResponse({"nuevoAlumno": ser_instance,"niveles": ser_instance2 }, status=200)
+    return JsonResponse({}, status=200)
 
 def guardarPuntuacion(request):
     alumno = RespuestaEvaluacion.objects.get(pk=request.POST["idAlumno"])

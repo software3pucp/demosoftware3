@@ -458,6 +458,35 @@
         </div>
     </div>
 
+    <!-- Modal Actualizar Alumno ya insertado -->
+    <div class="modal fade" id="actualizaNombre" tabindex="-1" role="dialog" aria-labelledby="actualizaNombreLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="mb-2" id="encabezadoNombreNuevo"></div>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    <div class="col">
+                        <div class="row">
+                            <div class="mb-2" id="nombreNuevo"></div>
+                        </div>
+                        <div class="row d-flex justify-content-around mt-1">
+                            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Conservar nombre
+                                actual
+                            </button>
+                            <button id="btnactualizaNombre" class="btn btn-primary btn-sm" type="button">Actualizar al
+                                nombre nuevo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {#Aquí coloco el JS particular de la web#}
@@ -471,6 +500,9 @@
         let pkEliminar;
         var pkEliminarE;
         let pkSubirEvidencia;
+        let nombreIngresado;
+        let codigoIngresado;
+        let nombreActual;
 
         function redirectEvidencia() {
             var pk_horario = $("#cboHorario").val();
@@ -797,6 +829,8 @@
 
 
         function agregarAlumno() {
+            nombreIngresado = $("#nombreAlumno").val(),
+            codigoIngresado = $("#codigoAlumno").val(),
             $.ajax({
                 type: 'POST',
                 url: "{% url 'agregarAlumno'%}",
@@ -809,7 +843,22 @@
                     plan: {{ planMedicionCurso.pk }}
                 },
                 success: function (response) {
-                    listarAlumno();
+                    if (response["Insertado"]) {
+                        //Mostrar error
+                        nombreActual = response["nombreActual"];
+                        $("#agregarAlumno").modal('hide');
+                        $("#encabezadoNombreNuevo").html(
+                          '<h6 class="modal-title">Ya existe un alumno con el codigo  <i>'+codigoIngresado +'</i></h6>'
+                        );
+                        $("#nombreNuevo").html(
+                            '<h6>Nombre actual: '+nombreActual+'</h6>'+
+                            '<h6>Nombre ingresado: '+nombreIngresado +'</h6>');
+
+                        $("#actualizaNombre").modal('show');
+                    } else {
+                        console.log("No esta insertado");
+                        listarAlumno();
+                    }
                 },
                 error: function (response) {
                     // alert the error if any error occured
