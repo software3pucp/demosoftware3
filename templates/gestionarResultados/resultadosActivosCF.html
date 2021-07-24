@@ -54,16 +54,9 @@
 
                             <div class="col-12 ">
                                 <div class="d-flex justify-content-end">
-                                    <a href="" data-toggle="modal" data-target="#nuevaVersion"
-                                        type="button">
-                                        <span id="btnNuevaVersion" class="btn btn-primary mr-1">
-                                            Nueva versión
-                                        </span>
-                                    </a>
                                     <span id="btnHistoricos" class="btn btn-primary mr-1">
                                     Históricos
                                     </span>
-                                    <span class="btn btn-primary" onclick="redirectCrearResultado()">Crear</span>
                                 </div>
                             </div>
 
@@ -253,13 +246,17 @@
             document.location.href = "../../gestionarResultados/crearPlanResultado/" + pk_especialidad;
         }
 
-        // function crearNuevo() {
-        //     var fd = new FormData();
-        //
-        //     // Check file selected or not
-        //     fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-        //
-        // };
+        $("#btnNuevoCero").on('click', function (e) {
+            e.preventDefault();
+            var pk_especialidad = $("#cboEspecialidad").val();
+            document.location.href = "../../gestionarResultados/crearPlanResultado/" + pk_especialidad;
+        });
+
+        $("#btnHistoricos").on('click', function (e) {
+            e.preventDefault();
+            var pk_especialidad = $("#cboEspecialidad").val();
+            document.location.href = "../../gestionarResultados/planDeResultado/" + pk_especialidad;
+        });
 
     </script>
 {% endblock %}
