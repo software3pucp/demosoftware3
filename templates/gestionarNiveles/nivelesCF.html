@@ -53,10 +53,10 @@
                     <div class="col-sm-12 col-lg-10 px-0 pl-3" id="tituloEspecialidadNiveles"></div>
                     <hr style="background-color: #0154ae;">
                 </div>
-                <div class="btn btn-falcon-primary mb-2" href="#agregarNivel" data-toggle="modal"
+                {% comment %} <div class="btn btn-falcon-primary mb-2" href="#agregarNivel" data-toggle="modal"
                      role="button">
                     <span class="fa fa-plus"></span>
-                </div>
+                </div>{% endcomment %}
                 <div class="dashboard-data-table">
                     <table class="table table-sm fs--1 border-bottom"
                            data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
@@ -65,12 +65,13 @@
                             <th class="sort pr-1 align-middle">N°</th>
                             <th class="sort pr-1 align-middle">Nombre</th>
                             <th class="sort pr-1 align-middle">Valor</th>
-                            <th class="sort pr-1 align-middle text-right pr-8">Acción</th>
                         </tr>
                         </thead>
                         <tbody id="tablaNiveles">
                         </tbody>
                     </table>
+                </div>
+                <div  class="d-flex justify-content-center" id="mensajeNiveles">
                 </div>
             </div>
         </div>
@@ -255,21 +256,29 @@
                     var j = 1;
                     var numero = instance.length;
                     var data = '';
-                    for (i = 0; i < numero; i++, j++) {
-                        data += (
-                            '        <tr class="btn-reveal-trigger">' +
-                            '            <th class="align-middle">  ' + j + '  </th>' +
-                            '            <th class="align-middle">' + instance[i]["fields"].nombre + '</th>' +
-                            '            <td class="align-middle" >' + instance[i]["fields"].valor + '</td>' +
-                            '            <td class="">' +
-                            '                    <div class="row float-right mr-4">' +
-                            '                        <button class="btn btn-falcon-primary mr-1 mb-1" type="button" onclick="nivelesEditar(\'' + instance[i]["fields"].nombre + '\',\'' + instance[i]["fields"].valor + '\',' + instance[i]["pk"] + ')">Editar</button>' +
-                            '                        <button class="btn btn-falcon-primary mr-1 mb-1" type="button" onclick="nivelesEliminar(\'' + instance[i]["fields"].nombre + '\',' + instance[i]["pk"] + ')">Eliminar</button>' +
-                            '                    </div>' +
-                            '            </td>' +
-                            '        </tr>'
-                        )
+                    var data2 = '';
+                    if (numero == 0) {
+                        $("#mensajeNiveles").empty();
+                        $("#mensajeNiveles").append('<p>No se han registrado niveles para la especialidad</p>');
+                    } else {
+                        $("#mensajeNiveles").empty();
+                        for (i = 0; i < numero; i++, j++) {
+                            data += (
+                                '        <tr class="btn-reveal-trigger">' +
+                                '            <th class="align-middle">  ' + j + '  </th>' +
+                                '            <th class="align-middle">' + instance[i]["fields"].nombre + '</th>' +
+                                '            <td class="align-middle" >' + instance[i]["fields"].valor + '</td>' +
+                                {% comment %}'            <td class="">' +
+                                '                    <div class="row float-right mr-4">' +
+                                '                        <button class="btn btn-falcon-primary mr-1 mb-1" type="button" onclick="nivelesEditar(\'' + instance[i]["fields"].nombre + '\',\'' + instance[i]["fields"].valor + '\',' + instance[i]["pk"] + ')">Editar</button>' +
+                                '                        <button class="btn btn-falcon-primary mr-1 mb-1" type="button" onclick="nivelesEliminar(\'' + instance[i]["fields"].nombre + '\',' + instance[i]["pk"] + ')">Eliminar</button>' +
+                                '                    </div>' +
+                                '            </td>' +{% endcomment %}
+                                '        </tr>'
+                            )
+                        }
                     }
+
 
                     data2 = '<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>';
                     $("#tituloEspecialidadNiveles").html(data2);
@@ -415,8 +424,6 @@
                 }
             });
         }
-
-
 
 
     </script>
