@@ -25,7 +25,7 @@
                         </span> </a>
           {% endif %}
 
-          <a class="btn btn-falcon-primary mr-1" href="{% url 'planDeResultado' %}">
+          <a id="btnHistoricos" class="btn btn-falcon-primary mr-1" >
             Históricos
           </a>
 
@@ -302,6 +302,17 @@
                 }
             });
         }
+        $("#btnNuevoCero").on('click', function (e) {
+            e.preventDefault();
+            var pk_especialidad = $("#cboEspecialidad").val();
+            document.location.href = "../../gestionarResultados/crearPlanResultado/" + pk_especialidad;
+        });
+
+        $("#btnHistoricos").on('click', function (e) {
+            e.preventDefault();
+            var pk_especialidad = $("#cboEspecialidad").val();
+            document.location.href = "../../gestionarResultados/planDeResultado/" + pk_especialidad;
+        });
 
     </script>
 {% endblock %}

@@ -112,3 +112,41 @@ def agregarDescipcionNivel(indicardorpk, nivelpk, desc):
         ind = Indicador.objects.get(pk=indicardorpk)
         Rubrica.objects.create(especialidad=esp, nivel=niv, indicador=ind, descripcion=desc)
 
+
+@login_required
+def verIndicador(request, pk):
+    indicador = Indicador.objects.get(pk=pk)
+    especialidadpk = obtenerEspecialidadIndicador(indicador)
+    id_resultado = indicador.resultado_id
+    nivelLista = Nivel.objects.filter(estado='1', especialidad_id=especialidadpk).order_by('valor')
+    rubrica = Rubrica.objects.filter(indicador_id=pk)
+    nivelLista2 = []
+    hay_niveles = False
+    mensaje_aviso = ''
+    if (len(nivelLista) > 0):
+        hay_niveles = True
+    else:
+        mensaje_aviso = "Aun no se han registrado niveles de desempeño en la +\
+                     especialidad! Por favor registar niveles de desempeño"
+
+    for nivel in nivelLista:  # Creamos una lista de registros- registo (nivel, descripcion)
+        registro = [nivel, '']  # incialmente la descripción esta vacía
+        nivelLista2.append(registro)
+
+    for nivel in nivelLista:
+        for rub in rubrica:  # se verifica en la rúbrica si ya existen descripciones para un determinado nivel
+            if nivel.pk == rub.nivel_id:
+                desc_nivel = rub.descripcion
+                nivelLista2[nivel.valor - 1][1] = desc_nivel
+
+
+    context = {
+        'rubrica': rubrica,
+        'indicador': indicador,
+        'id_resultado': id_resultado,
+        'nivelLista': nivelLista2,
+        'hay_niveles': hay_niveles,
+        'mensaje_aviso': mensaje_aviso,
+    }
+    return render(request, 'gestionarIndicadores/verIndicador.html', context)
+

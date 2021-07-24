@@ -26,11 +26,8 @@
             <div class="col">
                 <div class="row">
                     <div class="col-sm-12 col-lg-6 pl-4 pr-4">
-                        <div class="row">
-                            <label for="cboEspecialidad">Especialidad:</label>
-                        </div>
-                        <div class="row">
-                            <div class="col-10 ">
+                        <div class="row align-content-end">
+                            <div class="col-10" hidden>
                                 <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad" name="cboEspecialidad"
                                         onchange="listarPlanes()" disabled>
                                     {% for especialidad in especialidades %}
@@ -38,17 +35,18 @@
                                     {% endfor %}
                                 </select>
                             </div>
-                            <div class="col-2 ">
-                                <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'resultadosActivos' %}">
-                                    <div class="fas fa-reply mt-1 mr-2"></div>
-                                    <h5>Volver</h5>
-                                </a>
-                            </div>
+
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-lg-10 px-0" id="tituloEspecialidadMediciones"></div>
+                   <div class="col">
+                                <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'resultadosActivos' %}">
+                                    <div class="fas fa-reply mt-1 mr-2"></div>
+                                    <h5>Volver</h5>
+                                </a>
+                            </div>
                 </div>
                 <div id="listadoMediciones"></div>
             </div>
@@ -190,56 +188,60 @@
                     var data = '';
                     var data2 = '';
                     for (i = 0; i < numero; i++) {
+
+                        var botones ='';
+                         if (instance[i]["fields"].estado == '1') {
+                            botones=  '<button class="btn btn-falcon-danger my-1 mr-2" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
+                            '<span class="fa fa-times"></span></button>'+
+                                '<div class="btn btn-falcon-primary my-1 mr-2" onclick="redirectVerPlan(' + instance[i]["pk"] + ')">'+
+                                '<span class="fa fa-eye"></span></div>' +
+                                '<div class="btn btn-falcon-default my-1 mr-2" data-toggle="tooltip"' +
+                                ' data-placement="top" title="Editar plan de Resultado" ' +
+                                'onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">' +
+                                '<span class="fa fa-pen"></span>' + '</div>';
+                        } else {
+                            botones= '<button class="btn btn-falcon-danger my-1 mr-2" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
+                            '<span class="fa fa-times"></span></button>'+
+                                '<div class="btn btn-falcon-primary my-1 mr-2" onclick="redirectVerPlan(' + instance[i]["pk"] + ')">'+
+                                '<span class="fa fa-eye"></span></div>' +
+
+                                '<div class="btn btn-falcon-default my-1 mr-2" data-toggle="tooltip"' +
+                                ' data-placement="top" title="Editar plan de Resultado" ' +
+                                'onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">' +
+                                '<span class="fa fa-pen"></span>' + '</div>';
+                        }
+
+
                         data += (
                             '<div class="card my-3 overflow-hidden" style="min-width: 12rem">' +
                             '<div class="bg-holder bg-card"' + 'style="background-image:url(' + '{% static '/img/illustrations/corner-3.png' %}' + ');">' + '</div>' +
                             '<div class="card-body position-relative">' +
-                            '<h5>' + instance[i]["fields"].codigo
+                            '<div class="row justify-content-around"><div class="col"><h5>' + instance[i]["fields"].codigo
                         );
                         if (instance[i]["fields"].estado == '1') {
                             data += (
-                                '<span class="badge badge-soft-success rounded-capsule ml-2 mt-1">ACTIVO</span></h5>'
+                                '<span class="badge badge-soft-success rounded-capsule ml-2 mt-1">ACTIVO</span></h5></div>' +
+                                '<div class="d-flex flex-row-reverse">'+botones+'</div>' +
+                                '</div>'
                             );
                         } else {
                             data += (
-                                '<span class="badge badge-soft-secondary rounded-capsule ml-2 mt-1">INACTIVO</span></h5>'
+                                '<span class="badge badge-soft-secondary rounded-capsule ml-2 mt-1">INACTIVO</span></h5></div>' +
+                                '<div class="d-flex flex-row-reverse">'+botones+'</div>' +
+                                '</div>'
                             );
                         }
 
                         data += (
                             '<div class="my-1">' + instance[i]["fields"].descripcion + '</div>');
 
-                        if (instance[i]["fields"].estado == '1') {
-                            data += (
-                                '<div class="btn btn-falcon-primary mr-2" onclick="redirectVerPlan(' + instance[i]["pk"] + ')">Ver Plan de Resultado' +
-                                '<span class="fa fa-eye ml-2"></span></div>' +
 
-                                '<div class="btn btn-falcon-default my-1 mr-2" data-toggle="tooltip"' +
-                                ' data-placement="top" title="Editar plan de Resultado" ' +
-                                'onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">' +
-                                '<span class="fa fa-pen"></span>' + '</div>');
+
+                        if (instance[i]["fields"].estado == '1') {
+
                         } else {
                             data += (
-                                '<div class="btn btn-falcon-primary mr-2" onclick="redirectVerPlan(' + instance[i]["pk"] + ')">Ver Plan de Resultado' +
-                                '<span class="fa fa-eye ml-2 "></span></div>' +
-
-                                '<div class="btn btn-falcon-default my-1 mr-2" data-toggle="tooltip"' +
-                                ' data-placement="top" title="Editar plan de Resultado" ' +
-                                'onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">' +
-                                '<span class="fa fa-pen "</span>' + '</div>');
-                        }
-
-                        data += (
-                            '<button class="btn btn-falcon-danger my-1 mr-2" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
-                            '<span class="fa fa-times"></span></button>'
-                        )
-                        if (instance[i]["fields"].estado == '1') {
-                            data += (
-                                '<button class="btn btn-falcon-default my-1" onclick="desactivarPlan(' + instance[i]["pk"] + ')">Desactivar</button>'
-                            );
-                        } else {
-                            data += (
-                                '<button class="btn btn-falcon-success my-1" onclick="activarPlan(' + instance[i]["pk"] + ')">Activar</button>'
+                                '<button class="btn btn-falcon-success my-1" onclick="activarPlan(' + instance[i]["pk"] + ')"><span class="fa fa-power-off"> </span></button>'
                             );
                         }
                         data += (
@@ -251,7 +253,7 @@
                     }
 
 
-                    data2 = ('<h5 class="ml-3 mt-2">Planes de Resultado de ' + $("#cboEspecialidad option:selected").text() + '</h5>');
+                    data2 = ('<h5 class="ml-3 mt-2">Historial de ' + $("#cboEspecialidad option:selected").text() + '</h5>');
                     $("#tituloEspecialidadMediciones").html(data2);
                     $("#listadoMediciones").html(data);
 
