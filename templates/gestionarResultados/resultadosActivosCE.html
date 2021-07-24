@@ -176,6 +176,23 @@
            document.location.href = "../../gestionarResultados/duplicar/"
         });
 
+        $("#btnNuevoCero").on('click', function () {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'crearPlanResultado' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    especialidad: $("#cboEspecialidad").val(),
+                },
+                success: function (response) {
+                    listarResultados();
+                },
+                error: function (response) {
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        });
+
         function resultadosEliminar(codigoResultado, pk) {
             console.log(codigoResultado)
             console.log(pk)

@@ -281,23 +281,25 @@ def planDeResultado(request):
 
 
 
-def crearPlanResultado(request, id_especialidad):
-    try:
-        especialidad = Especialidad.objects.get(pk=id_especialidad)
-    except:
-        print("Error al buscar la especialidad")
+def crearPlanResultado(request):
 
     if request.POST:
-        codigo = request.POST['codigo']
-        nombre = request.POST['nombre']
-        nuevoPlanResultado = PlanResultados.objects.create(codigo=codigo, descripcion=nombre, especialidad=especialidad,
-                                                           estado='2')
-        return redirect('planDeResultado')
+        id_especialidad = request.POST['especialidad']
+        especialidad = Especialidad.objects.get(pk=id_especialidad)
+        plan = PlanResultados.objects.filter(especialidad_id=id_especialidad,estado='1')
+        if plan:
+            plan = plan[0]
+            plan.estado = '2'
+            plan.save()
+        codigo = f'PR-{especialidad.codigo}-{especialidad.versiones + 1}'
+        nombre = f'Programa de {especialidad.nombre} - Version {especialidad.versiones + 1}'
+        nuevoPlan = PlanResultados.objects.create(codigo=codigo, descripcion=nombre, especialidad=especialidad,
+                                                           estado='1')
+        especialidad.versiones = especialidad.versiones + 1
+        especialidad.save()
 
-    context = {
-        'especialidad': especialidad,
-    }
-    return render(request, 'gestionarResultados/crearPlanDeResultado.html', context)
+        return redirect('resultadosActivos')
+     
 
 
 def listarPlanResultado(request):
