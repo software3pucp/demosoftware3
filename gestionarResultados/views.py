@@ -107,6 +107,7 @@ def duplicarPlan(request):
     plan = PlanResultados.objects.get(pk=planPk)
     _plan = PlanResultados.objects.get(pk=plan.pk)
     _plan.pk = None
+    _plan.descripcion = "Copia"
     _plan.save()
     # Desactivando plan de resultados seleccionado
     plan.estado = '2'

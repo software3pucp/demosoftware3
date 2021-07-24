@@ -110,3 +110,17 @@ def crearNivel(request):
     nivel = Nivel.objects.create(nombre=nombre, valor=valor, especialidad=especialidad,plaResultado_id=plan.pk)
     ser_instance = serializers.serialize('json', [nivel, ])
     return JsonResponse({"nuevoNivel": ser_instance}, status=200)
+
+
+def validarNiveles(request):
+    if request.POST:
+        especialidad_id = int(request.POST['especialidad'])
+        plan = PlanResultados.objects.filter(estado='1',especialidad_id=especialidad_id)
+        if not plan:
+             #Si no existe plan de resultados se debe mostrar mensaje informativo
+            return JsonResponse({'tipo':'1'},status=200)
+        else:
+            #TODO
+            # Si el plan de resultados ya tiene asociado planes de medicion
+            # Se debe mostar mensaje informativo
+            return JsonResponse({'tipo':'3'},status =200)

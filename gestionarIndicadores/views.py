@@ -111,3 +111,4 @@ def agregarDescipcionNivel(indicardorpk, nivelpk, desc):
         niv = Nivel.objects.get(pk=nivelpk)
         ind = Indicador.objects.get(pk=indicardorpk)
         Rubrica.objects.create(especialidad=esp, nivel=niv, indicador=ind, descripcion=desc)
+
