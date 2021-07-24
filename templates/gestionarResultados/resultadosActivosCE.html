@@ -114,7 +114,7 @@
                             class="font-weight-light" aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-footer">
-                    <button id="btnEditarActual" class="btn btn-primary btn-sm" type="button">Usar un historico</button>
+                    <button id="btnDuplicar" class="btn btn-primary btn-sm" type="button">Usar un historico</button>
                     <button id="btnNuevoCero" class="btn btn-primary btn-sm" type="button">Empezar de 0</button>
                     <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
                 </div>
@@ -170,6 +170,10 @@
         $("#btnEliminarResultado").on('click', function () {
             eliminarResultado(pkEliminar);
             $("#eliminarResultado").modal('hide');
+        });
+
+        $("#btnDuplicar").on('click', function () {
+           document.location.href = "../../gestionarResultados/duplicar/"
         });
 
         function resultadosEliminar(codigoResultado, pk) {

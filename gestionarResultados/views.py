@@ -97,6 +97,37 @@ def resultadosActivos(request):
         }
         return render(request, 'gestionarResultados/resultadosActivosCE.html', context)
 
+def duplicarPlan(request):
+
+    planPk = 1
+    # Duplicado de plan de resultados
+    plan = PlanResultados.objects.get(pk=planPk)
+    _plan = PlanResultados.objects.get(pk=plan.pk)
+    _plan.pk = None
+    _plan.save()
+    plan.estado = '2'
+    plan.save()
+    resultados = ResultadoPUCP.objects.filter(planResultado_id=planPk,estado ='1')
+    for resultado in resultados:
+        #Duplicado del resultado actual
+        _resultado = ResultadoPUCP.objects.get(pk=resultado.pk)
+        _resultado.pk = None
+        _resultado.planResultado_id = _plan.pk
+        _resultado.save()
+        indicadores = Indicador.objects.filter(resultado_id=resultado.pk,estado='1')
+        for indicador in indicadores:
+            _indicador = Indicador.objects.get(pk=indicador.pk)
+            _indicador.pk = None
+            _indicador.resultado_id = _resultado.pk
+            print("=================================================================")
+            print(indicador.pk,"" ,_indicador.pk)
+            print(indicador.codigo,"" ,_indicador.codigo)
+            print(indicador.descripcion,"" ,_indicador.descripcion)
+            print(indicador.resultado_id,"" ,_indicador.resultado_id)
+            _indicador.save()
+
+
+    return redirect('resultadosActivos')
 
 def eliminarResultado(request):
     resultadoPk = request.POST['resultadopk']
