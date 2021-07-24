@@ -45,9 +45,12 @@
                         {% if request.user.rol_actual != 'Coordinador de facultad' %}
                             <div class="col-12 ">
                                 <div class="d-flex justify-content-end">
-                                    <span class="btn btn-primary mr-1">
-                                    Nueva versión
-                                    </span>
+                                    <a href="" data-toggle="modal" data-target="#nuevaVersion"
+                                        type="button">
+                                        <span id="btnNuevaVersion" class="btn btn-primary mr-1">
+                                            Nueva versión
+                                        </span>
+                                    </a>
                                     <a class="btn btn-primary mr-1"  href="{%  url 'planDeResultado' %}">
                                     Históricos
                                     </a>
@@ -99,6 +102,25 @@
         </div>
     </div>
 
+    <!-- Modal Nueva Version -->
+
+    <div class="modal fade" id="nuevaVersion" tabindex="-1" role="dialog" aria-labelledby="nuevaVersioLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="nuevaVersioLabel"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnEditarActual" class="btn btn-primary btn-sm" type="button">Usar un historico</button>
+                    <button id="btnNuevoCero" class="btn btn-primary btn-sm" type="button">Empezar de 0</button>
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 

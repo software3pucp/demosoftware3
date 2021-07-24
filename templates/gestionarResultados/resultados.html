@@ -113,7 +113,7 @@
         function listarResultados() {
             $.ajax({
                 type: 'POST',
-                url: "{% url 'listarResultados'%}",
+                url: "{% url 'listarResultadosHistoricos'%}",
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     planpk: {{ plan.pk }},

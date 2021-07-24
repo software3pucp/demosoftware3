@@ -140,6 +140,27 @@ def listarResultados(request):
     # ser_instance2 = serializers.serialize('json', listaResultados)
     return JsonResponse({"resultados": ser_instance, "tiene_niveles": ser_instance2,"idPlan":idPlan}, status=200)
 
+def listarResultadosHistoricos(request):
+    planpk = request.POST['planpk']
+    resultados = ResultadoPUCP.objects.filter(planResultado_id=planpk, estado=1)
+    listaResultados = []
+    lista2 = []
+    for result in resultados:
+        tiene_indicadores = False
+        indicadores = Indicador.objects.filter(resultado_id=result.pk, estado='1')
+        if (len(indicadores) > 0):
+            tiene_indicadores = True
+        else:
+            tiene_indicadores = False
+        registro = [result, tiene_indicadores]
+        listaResultados.append(registro)
+        lista2.append(tiene_indicadores)
+
+    ser_instance = serializers.serialize('json', resultados)
+    ser_instance2 = json.dumps(lista2)
+    # ser_instance2 = serializers.serialize('json', listaResultados)
+    return JsonResponse({"resultados": ser_instance, "tiene_niveles": ser_instance2}, status=200)
+
 
 @login_required
 def editarResultado(request, pk):

@@ -54,10 +54,13 @@
 
                             <div class="col-12 ">
                                 <div class="d-flex justify-content-end">
-                                    <span class="btn btn-primary mr-1">
-                                    Nueva versión
-                                    </span>
-                                    <span class="btn btn-primary mr-1">
+                                    <a href="" data-toggle="modal" data-target="#nuevaVersion"
+                                        type="button">
+                                        <span id="btnNuevaVersion" class="btn btn-primary mr-1">
+                                            Nueva versión
+                                        </span>
+                                    </a>
+                                    <span id="btnHistoricos" class="btn btn-primary mr-1">
                                     Históricos
                                     </span>
                                     <span class="btn btn-primary" onclick="redirectCrearResultado()">Crear</span>
@@ -85,6 +88,25 @@
                 <div class="modal-footer">
                     <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
                     <button id="btnEliminarResultado" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Nueva Version -->
+
+    <div class="modal fade" id="nuevaVersion" tabindex="-1" role="dialog" aria-labelledby="nuevaVersioLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="nuevaVersioLabel"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnEditarActual" class="btn btn-primary btn-sm" type="button">Usar un historico</button>
+                    <button id="btnNuevoCero" class="btn btn-primary btn-sm" type="button">Empezar de 0</button>
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -218,6 +240,26 @@
                 }
             });
         }
+
+        $("#btnNuevoCero").on('click', function (e) {
+            e.preventDefault();
+            crearNuevo();
+            $("#nuevaVersion").modal('hide')
+
+        });
+
+        function redirectCrearPlanResultado() {
+            var pk_especialidad = $("#cboEspecialidad").val();
+            document.location.href = "../../gestionarResultados/crearPlanResultado/" + pk_especialidad;
+        }
+
+        // function crearNuevo() {
+        //     var fd = new FormData();
+        //
+        //     // Check file selected or not
+        //     fd.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        //
+        // };
 
     </script>
 {% endblock %}

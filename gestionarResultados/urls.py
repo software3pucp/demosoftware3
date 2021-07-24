@@ -20,6 +20,7 @@ urlpatterns = [
     path('resultados/<id_plan>', views.Resultados, name="resultados"),
     path('resultadosActivos/', views.resultadosActivos, name="resultadosActivos"),
     path('listarResultados/', views.listarResultados, name='listarResultados'),
+    path('listarResultadosHistoricos/', views.listarResultadosHistoricos, name='listarResultadosHistoricos'),
     path('editar/<pk>', views.editarResultado, name="editarResultado"),
     path('eliminar/', views.eliminarResultado, name="eliminarResultado"),
     path('validarCrear/',views.validarCrear,name="validarCrear")
