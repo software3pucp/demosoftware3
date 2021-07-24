@@ -343,3 +343,15 @@ def eliminarPlanResultado(request):
     plan.save()
     # plan.delete()
     return JsonResponse({}, status=200)
+
+@login_required
+def visualizarResultado(request, pk):
+    resultado = ResultadoPUCP.objects.get(pk=pk)
+    plan = resultado.planResultado
+    listaIndicares = Indicador.objects.filter(resultado_id=pk, estado=1)
+    context = {
+        'listaIndicadores': listaIndicares,
+        'resultado': resultado,
+        'plan':plan,
+    }
+    return render(request, 'gestionarResultados/visualizarResultado.html', context)
