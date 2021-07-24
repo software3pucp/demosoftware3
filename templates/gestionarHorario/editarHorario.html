@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="exampleFormControlSelect1">Seleccione responsable(s)</label>
+                        <label for="exampleFormControlSelect1">Seleccione responsable:</label>
                         <select name="responsable" class="form-control" id="exampleFormControlSelect1">
                             {% for responsable in ListaUsuarios %}
                                 {% if id_responsable|add:"0" == responsable.pk %}

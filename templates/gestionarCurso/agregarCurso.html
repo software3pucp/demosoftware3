@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div class="form-group mt-2">
-                        <label for="exampleFormControlSelect1">Seleccione responsable(s)</label>
+                        <label for="exampleFormControlSelect1">Seleccione responsable:</label>
                         <select name="responsable" class="form-control" id="exampleFormControlSelect1">
                             {% for responsable in ListaUsuarios %}
                                 <option value={{ responsable.pk }}>{{ responsable.first_name }} {{ responsable.last_name }}</option>
