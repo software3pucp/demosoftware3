@@ -27,7 +27,7 @@ def listarEspecialidad(request):
 
     if (request.user.rol_actual == "Asistente de acreditación"):
         usuario = request.user
-        especialidades=[]
+        especialidades = []
         items = Asistente.objects.filter(user_id=usuario.pk)
         for item in items:
             especialidades.append(item.especialidad)
@@ -41,7 +41,7 @@ def listarEspecialidad(request):
 
     if (request.user.rol_actual == "Auditor"):
         usuario = request.user
-        especialidades=[]
+        especialidades = []
         items = Auditor.objects.filter(user_id=usuario.pk)
         for item in items:
             especialidades.append(item.especialidad)
@@ -78,12 +78,13 @@ def agregarEspecialidad(request, id_facultad):
     media_path = MEDIA_URL
     if request.POST:
         if ('name' in request.POST):
+            codigo = request.POST['codigo']
             nombre = request.POST['name']
             id_responsable = request.POST['responsable']
             foto = request.FILES['photo']
             facultad = Facultad.objects.get(pk=id_facultad)
             Especialidad.objects.create(nombre=nombre, responsable=id_responsable, facultad=facultad, foto=foto,
-                                        estado=request.POST['estado'])
+                                        estado=request.POST['estado'], codigo=codigo)
 
             # Si el usuario no tiene rol de cooordinador de especialidad se lo agrego
             user = User.objects.get(pk=id_responsable)
@@ -125,11 +126,14 @@ def editarEspecialidad(request, id_especialidad):
 
         nuevo_nombre = request.POST["name"]
         nuevo_responsable = request.POST["responsable"]
+        nuevo_codigo = request.POST['codigo']
         if request.FILES.get('photo'):
             nueva_foto = request.FILES["photo"]
             especialidad.foto = nueva_foto
+
         especialidad.nombre = nuevo_nombre
         especialidad.responsable = nuevo_responsable
+        especialidad.codigo = nuevo_codigo
         especialidad.save()
 
         # Agregar rol de coordinador de especialidad a nuevo responsable si no lo tiene
