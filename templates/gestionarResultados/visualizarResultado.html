@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-2 ">
                             <a class="d-flex flex-row justify-content-end mt-2"
-                               href="{% url 'resultadosActivos' %}">
+                               href="{% url 'resultados' id_plan=plan.pk %}">
                                 <div class="fas fa-reply mt-1 mr-2"></div>
                                 <h5>Volver</h5>
                             </a>
@@ -53,11 +53,7 @@
                         </div>
                         <div class="col-md-10 mb-3">
                             <div class="form-group">
-                                {% if request.user.rol_actual == 'Coordinador de facultad' %}
-                                    <input name="codigo" class="form-control" id="codigo" type="text" value="{{ resultado.codigo }}" disabled>
-                                {% else %}
-                                    <input name="codigo" class="form-control" id="codigo" type="text" value="{{ resultado.codigo }}">
-                                {% endif %}
+                                <input name="codigo" class="form-control" id="codigo" type="text" value="{{ resultado.codigo }}" disabled>
                             </div>
                         </div>
                     </div>
@@ -69,20 +65,14 @@
                         </div>
                         <div class="col-md-10">
                             <div class="form-group ">
-                                {% if request.user.rol_actual == 'Coordinador de facultad' %}
-                                    <textarea name="descripcion" id="descripcion" class="form-control" aria-label="With textarea" rows="4" disabled>{{ resultado.descripcion }}</textarea>
-                                {% else %}
-                                    <textarea name="descripcion" id="descripcion" class="form-control" aria-label="With textarea" rows="4">{{ resultado.descripcion }}</textarea>
-                                {% endif %}
+                                <textarea name="descripcion" id="descripcion" class="form-control" aria-label="With textarea" rows="4" disabled>{{ resultado.descripcion }}</textarea>
                             </div>
                         </div>
                     </div>
                 </div>
                 {% if request.user.rol_actual != 'Coordinador de facultad' %}
                     <div class="col-md-12 d-flex justify-content-end mt-3">
-                        <a class="btn btn-outline-primary m-1" type="button"
-                           href="{% url 'resultadosActivos' %}">Cancelar</a>
-                        <input type="submit" class="btn btn-primary m-1" value="Guardar">
+
                     </div>
                 {% endif %}
             </div>
@@ -94,10 +84,7 @@
             <hr style="background-color: #0154ae;">
             <div class="col-12">
                 {% if request.user.rol_actual != 'Coordinador de facultad' %}
-                    <div class="btn btn-falcon-primary mb-2" href="#agregarIndicadorNuevo" data-toggle="modal"
-                         role="button">
-                        <span class="fa fa-plus"></span>
-                    </div>
+
                 {% endif %}
                 <div class="dashboard-data-table">
                     <table class="table table-sm table-dashboard fs--1 data-table border-bottom"
@@ -129,14 +116,8 @@
                                     <td class="align-middle text-right fs-0">
                                         <div class="row">
                                             <div class="col">
-                                                <a href="{% url 'editarIndicador' pk=indicador.pk %}"
-                                                   class="badge badge rounded-capsule badge-soft-info">Editar</a>
-                                            </div>
-                                            <div class="col">
-                                                <button class="badge badge rounded-capsule badge-soft-danger"
-                                                        onclick="indicadoresEliminar('{{ indicador.codigo }}',{{ indicador.pk }} )">
-                                                        Eliminar
-                                                </button>
+                                                <a href="{% url 'verIndicador' pk=indicador.pk %}"
+                                                   class="badge badge rounded-capsule badge-soft-info">Ver rubrica</a>
                                             </div>
                                         </div>
                                     </td>

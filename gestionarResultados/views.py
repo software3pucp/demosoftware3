@@ -39,7 +39,7 @@ def crearResultado(request, id_plan):
         codigo = request.POST['codigo']
         descripcion = request.POST['descripcion']
         ResultadoPUCP.objects.create(codigo=codigo, descripcion=descripcion, planResultado=plan)
-        return redirect('resultados', id_plan=id_plan)
+        return redirect('resultadosActivos')
 
     context = {
         'plan': plan,
@@ -226,7 +226,7 @@ def editarResultado(request, pk):
         resultado.codigo = request.POST['codigo']
         resultado.descripcion = request.POST['descripcion']
         resultado.save()
-        return redirect('resultados', id_plan=plan.pk)
+        return redirect('resultadosActivos')
 
     listaIndicares = Indicador.objects.filter(resultado_id=pk, estado=1)
     context = {
@@ -238,7 +238,7 @@ def editarResultado(request, pk):
 
 
 @login_required
-def planDeResultado(request):
+def planDeResultado(request, pk):
     if (request.user.rol_actual == "Asistente de acreditación"):
         usuario = request.user
         especialidades = []
@@ -273,7 +273,7 @@ def planDeResultado(request):
     if (request.user.rol_actual == "Coordinador de especialidad"):
         usuario = request.user
         grupo = Group.objects.get(pk=5)
-        especialidades = Especialidad.objects.filter(responsable=usuario.pk, estado='1')
+        especialidades = Especialidad.objects.filter(responsable=usuario.pk, estado='1', pk=pk)
         context = {
             'especialidades': especialidades,
         }
@@ -300,6 +300,7 @@ def crearPlanResultado(request):
 
         return redirect('resultadosActivos')
      
+
 
 
 def listarPlanResultado(request):
@@ -364,3 +365,15 @@ def eliminarPlanResultado(request):
     plan.save()
     # plan.delete()
     return JsonResponse({}, status=200)
+
+@login_required
+def visualizarResultado(request, pk):
+    resultado = ResultadoPUCP.objects.get(pk=pk)
+    plan = resultado.planResultado
+    listaIndicares = Indicador.objects.filter(resultado_id=pk, estado=1)
+    context = {
+        'listaIndicadores': listaIndicares,
+        'resultado': resultado,
+        'plan':plan,
+    }
+    return render(request, 'gestionarResultados/visualizarResultado.html', context)

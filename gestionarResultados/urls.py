@@ -6,8 +6,9 @@ urlpatterns = [
     # path( url hijo, backend, nombre de la variable)
 
     # Plan de resultados
-    path('planDeResultado/', views.planDeResultado, name="planDeResultado"),
+
     path('crearPlanResultado/', views.crearPlanResultado, name="crearPlanResultado"),
+    path('planDeResultado/<pk>', views.planDeResultado, name="planDeResultado"),
     path('listarPlanResultado/', views.listarPlanResultado, name="listarPlanResultado"),
     path('editarPlanDeResultado/<pk>', views.editarPlanDeResultado, name="editarPlanDeResultado"),
     path('eliminarPlanResultado/', views.eliminarPlanResultado, name="eliminarPlanResultado"),
@@ -24,5 +25,6 @@ urlpatterns = [
     path('editar/<pk>', views.editarResultado, name="editarResultado"),
     path('eliminar/', views.eliminarResultado, name="eliminarResultado"),
     path('validarCrear/',views.validarCrear,name="validarCrear"),
-    path('duplicar/',views.duplicarPlan,name="duplicarPlan")
+    path('duplicar/',views.duplicarPlan,name="duplicarPlan"),
+    path('visualizarResultado/<pk>', views.visualizarResultado, name="visualizarResultado"),
 ]

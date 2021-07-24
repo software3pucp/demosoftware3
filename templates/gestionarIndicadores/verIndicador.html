@@ -1,0 +1,139 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{#Bloque de extra style -> css#}
+{% block extrastyle %}
+{% endblock %}
+
+{#Bloque de extra body -> HTML#}
+{% block body %}
+    <form action="{% url 'editarIndicador' pk=indicador.pk %}" method="post">
+        {% csrf_token %}
+        <div class="container-fluid">
+            <div class="card p-5 mb-3">
+                <div class="row d-flex justify-content-center ">
+                    <div class="col-10">
+                        <h4 style="font-family: Montserrat">Datos del Indicador</h4>
+                    </div>
+                    <div class="col-2 text-right">
+                        <a class="d-flex flex-row justify-content-end mt-2 "
+                           href="{% url 'visualizarResultado' pk=id_resultado %}">
+                            <div class="fas fa-reply mt-1 mr-2"></div>
+                            <h5>Volver</h5>
+                        </a>
+                    </div>
+                </div>
+                <hr style="background-color: #0154ae;">
+                <div class="form-group m-2">
+                    <div class="row p-1">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="codigo">Código:</label>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <input name="codigo" class="form-control" id="codigo" type="text" value="{{ indicador.codigo }}" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="descripcion">Descripción:</label>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <textarea id="descripcion" name="descripcion" class="form-control" aria-label="With textarea" rows="4" disabled>{{ indicador.descripcion }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center ">
+                    <div class="col-12">
+                        <h4 style="font-family: Montserrat"> Rúbrica del Indicador</h4>
+                    </div>
+                </div>
+                <hr style="background-color: #0154ae;">
+
+                <div class="dashboard-data-table">
+                    <table class="table table-sm table-dashboard fs--1 data-table border-bottom"
+                           data-options='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"columnDefs":[{"targets":[0,6],"orderable":false}],"language":{"info":"_START_ to _END_ Items of _TOTAL_ — <a href=\"#!\" class=\"font-weight-semi-bold\"> view all <span class=\"fas fa-angle-right\" data-fa-transform=\"down-1\"></span> </a>"},"buttons":["copy","excel"]}'>
+                        <thead class="bg-200 text-900">
+                        <tr>
+                            <th class="sort pr-1 align-middle">N°</th>
+                            <th class="sort pr-1 align-middle">Nombre</th>
+                            <th class="sort pr-1 align-middle">Descripción</th>
+                        </tr>
+                        </thead>
+                        <tbody id="purchases">
+                        {% for item in nivelLista %}
+                            <tr class="btn-reveal-trigger">
+                                <th class="align-middle">{{ forloop.counter }} </th>
+                                <th class="align-middle">{{ item.0.nombre }}</th>
+                                <td class="align-middle">
+                                    <div class="input-group">
+                                        <textarea name="desc_nivel{{ item.0.pk }}" id="desc_nivel{{ item.0.pk }}" class="form-control" rows="3" disabled>{{ item.1 }}</textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% if not hay_niveles %}
+                <div>
+                    <label for="descripcion">Este Indicador no registra una rubrica</label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block extrajs %}
+    <script src="{% static 'lib/flatpickr/flatpickr.min.js' %}"></script>
+    <script src="{% static 'lib/jquery-validation/jquery.validate.min.js' %}"></script>
+
+    <script>
+
+
+        function agregarDescripcion(nivel) {
+            console.log(nivel)
+            console.log({{ indicador.pk }})
+            console.log($("#desc_nivel" + nivel).val())
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'agregarDescipcionNivel' %}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    nivelpk: nivel,
+                    indicadorpk: {{ indicador.pk }},
+                    desc_nivel: $("#desc_nivel" + nivel).val(),
+                },
+
+                success: function (response) {
+                    $("#desc_nivel" + nivel).prop("disabled", true)
+                    $("#desc_nivel" + nivel).val($("#desc_nivel" + nivel).val())
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+    </script>
+
+    {% if not hay_niveles %}
+        <script>
+            $(document).ready(function () {
+                $("#errorModal").modal({backdrop: 'static', keyboard: false, show: true});
+            });
+        </script>
+    {% endif %}
+
+
+{% endblock %}

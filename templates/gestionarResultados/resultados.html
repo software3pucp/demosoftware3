@@ -17,7 +17,7 @@
                             <h4>Resultados del estudiante</h4>
                         </div>
                         <div class="col-2 ">
-                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'planDeResultado' %}">
+                            <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'planDeResultado' pk=especialidad.pk %}">
                                 <div class="fas fa-reply mt-1 mr-2"></div>
                                 <h5>Volver</h5>
                             </a>
@@ -26,9 +26,7 @@
                     <hr style="background-color: #0154ae;">
 
                     {% if request.user.rol_actual != 'Coordinador de facultad' %}
-                        <div style="margin: 1%;">
-                            <span class="btn btn-primary" onclick="redirectCrearResultado()">Crear</span>
-                        </div>
+
                     {% endif %}
                     <div id="listadoResultados"></div>
                 </div>
@@ -71,9 +69,9 @@
             document.location.href = "../../gestionarResultados/crear/" + {{ plan.pk }};
         }
 
-        function redirectEditarResultado(id_resultado) {
+        function redirectVerResultado(id_resultado) {
 
-            document.location.href = "../../gestionarResultados/editar/" + id_resultado;
+            document.location.href = "../../gestionarResultados/visualizarResultado/" + id_resultado;
         }
 
         $("#btnEliminarResultado").on('click', function () {
@@ -140,7 +138,7 @@
                         }
 
                         data += (
-                            '                        <button class="btn btn-falcon-primary mr-1 my-1" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')">Ver Detalle</button>' +
+                            '                        <button class="btn btn-falcon-primary mr-1 my-1" onclick="redirectVerResultado(' + instance[i]["pk"] + ')">Ver Detalle</button>' +
                             '                    </div>' +
                             '                </div>' +
                             '        </div>' )

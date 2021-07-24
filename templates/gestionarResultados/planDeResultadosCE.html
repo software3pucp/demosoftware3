@@ -30,20 +30,25 @@
                             <label for="cboEspecialidad">Especialidad:</label>
                         </div>
                         <div class="row">
-                            <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad" name="cboEspecialidad"
-                                    onchange="listarPlanes()">
-                                {% for especialidad in especialidades %}
-                                    <option value={{ especialidad.pk }}>{{ especialidad.nombre }}</option>
-                                {% endfor %}
-                            </select>
+                            <div class="col-10 ">
+                                <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad" name="cboEspecialidad"
+                                        onchange="listarPlanes()" disabled>
+                                    {% for especialidad in especialidades %}
+                                        <option value={{ especialidad.pk }}>{{ especialidad.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-2 ">
+                                <a class="d-flex flex-row justify-content-end mt-2" href="{% url 'resultadosActivos' %}">
+                                    <div class="fas fa-reply mt-1 mr-2"></div>
+                                    <h5>Volver</h5>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-lg-10 px-0" id="tituloEspecialidadMediciones"></div>
-                    <div class="col-sm-12 col-lg-2 float-right text-right">
-                        <span class="btn btn-primary" onclick="redirectCrearPlanResultado()">Crear</span>
-                    </div>
                 </div>
                 <div id="listadoMediciones"></div>
             </div>
