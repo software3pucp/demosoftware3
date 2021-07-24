@@ -12,9 +12,9 @@
 {% block body %}
 
     {#AQUI COLOQUEN EL CÓDIGO#}
-    <div class="container-fluid content-row mt-3">
-        <form action="{% url 'agregarEspecialidad' id_facultad=id_facultad%}" method="post">
-            {% csrf_token %}
+
+    <form action="{% url 'agregarEspecialidad' id_facultad=id_facultad %}" method="post">
+        {% csrf_token %}
         <div class="row" style="margin-right: 0.8rem">
             <div class="col-sm-12 col-lg-6 ">
                 <select disabled="true" class="form-control" id="facultadFormControl">
@@ -47,10 +47,10 @@
                             <div class="card-img-top imgbox" style="height: 15rem">
                                 <a href="{% url 'listarEspecialidadxCurso' id_especialidad=especialidad.pk %}">
                                     {% if especialidad.foto.name %}
-                                            <img class="" src="{{ media_path }}{{ especialidad.foto.name }}/">
-                                        {% else %}
-                                            <img class="" src="{% static 'img/illustrations/4.png' %}">
-                                        {% endif %}
+                                        <img class="" src="{{ media_path }}{{ especialidad.foto.name }}/">
+                                    {% else %}
+                                        <img class="" src="{% static 'img/illustrations/4.png' %}">
+                                    {% endif %}
                                 </a>
                             </div>
                             <div class="specifies card-body p-1">
@@ -86,10 +86,10 @@
                             <div class="card-img-top imgbox" style="height: 15rem">
                                 <a href="{% url 'listarEspecialidadxCurso' id_especialidad=especialidad.pk %}">
                                     {% if especialidad.foto.name %}
-                                            <img class="" src="{{ media_path }}{{ especialidad.foto.name }}/">
-                                        {% else %}
-                                            <img class="" src="{% static 'img/illustrations/4.png' %}">
-                                        {% endif %}
+                                        <img class="" src="{{ media_path }}{{ especialidad.foto.name }}/">
+                                    {% else %}
+                                        <img class="" src="{% static 'img/illustrations/4.png' %}">
+                                    {% endif %}
                                 </a>
                             </div>
                             <div class="specifies card-body p-1">
@@ -97,40 +97,40 @@
                                 <hr class="divider">
                                 <div class="row">
                                     <div class="col">
-{#                                        <div class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip"#}
-{#                                             data-placement="top"#}
-{#                                             title="Eliminar">#}
-{#                                            <i class="fas fa-trash" data-toggle="modal" data-target="#exampleModal"#}
-{#                                               style="color: rgba(1, 126, 205, 1);"></i>#}
-{#                                            <!-- Modal -->#}
-{#                                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"#}
-{#                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">#}
-{#                                                <div class="modal-dialog" role="document">#}
-{#                                                    <div class="modal-content">#}
-{#                                                        <div class="modal-header">#}
-{#                                                            <h5 class="modal-title" id="exampleModalLabel">Eliminar#}
-{#                                                                Especialidad</h5>#}
-{#                                                            <button type="button" class="close" data-dismiss="modal"#}
-{#                                                                    aria-label="Close">#}
-{#                                                                <span aria-hidden="true">&times;</span>#}
-{#                                                            </button>#}
-{#                                                        </div>#}
-{#                                                        <div class="modal-body">#}
-{#                                                            ¿Desea eliminar {{ especialidad.nombre }}?#}
-{#                                                        </div>#}
-{#                                                        <div class="modal-footer">#}
-{#                                                            <button type="button" class="btn btn-secondary"#}
-{#                                                                    data-dismiss="modal">Cancelar#}
-{#                                                            </button>#}
-{#                                                            <a type="button" class="btn btn-primary"#}
-{#                                                                    href="{% url 'eliminarEspecialidad' id_especialidad=especialidad.pk %}">#}
-{#                                                                Eliminar#}
-{#                                                            </a>#}
-{#                                                        </div>#}
-{#                                                    </div>#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                        </div>#}
+                                        {#                                        <div class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip"#}
+                                        {#                                             data-placement="top"#}
+                                        {#                                             title="Eliminar">#}
+                                        {#                                            <i class="fas fa-trash" data-toggle="modal" data-target="#exampleModal"#}
+                                        {#                                               style="color: rgba(1, 126, 205, 1);"></i>#}
+                                        {#                                            <!-- Modal -->#}
+                                        {#                                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"#}
+                                        {#                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">#}
+                                        {#                                                <div class="modal-dialog" role="document">#}
+                                        {#                                                    <div class="modal-content">#}
+                                        {#                                                        <div class="modal-header">#}
+                                        {#                                                            <h5 class="modal-title" id="exampleModalLabel">Eliminar#}
+                                        {#                                                                Especialidad</h5>#}
+                                        {#                                                            <button type="button" class="close" data-dismiss="modal"#}
+                                        {#                                                                    aria-label="Close">#}
+                                        {#                                                                <span aria-hidden="true">&times;</span>#}
+                                        {#                                                            </button>#}
+                                        {#                                                        </div>#}
+                                        {#                                                        <div class="modal-body">#}
+                                        {#                                                            ¿Desea eliminar {{ especialidad.nombre }}?#}
+                                        {#                                                        </div>#}
+                                        {#                                                        <div class="modal-footer">#}
+                                        {#                                                            <button type="button" class="btn btn-secondary"#}
+                                        {#                                                                    data-dismiss="modal">Cancelar#}
+                                        {#                                                            </button>#}
+                                        {#                                                            <a type="button" class="btn btn-primary"#}
+                                        {#                                                                    href="{% url 'eliminarEspecialidad' id_especialidad=especialidad.pk %}">#}
+                                        {#                                                                Eliminar#}
+                                        {#                                                            </a>#}
+                                        {#                                                        </div>#}
+                                        {#                                                    </div>#}
+                                        {#                                                </div>#}
+                                        {#                                            </div>#}
+                                        {#                                        </div>#}
                                         <a class="float-right mr-3 pt-2 tooltip-inner arrow" data-toggle="tooltip"
                                            data-placement="top"
                                            title="Activar"
@@ -153,27 +153,27 @@
                 </div>
             {% endfor %}
             {% if user.rol_actual == 'Coordinador de facultad' %}
-            <div class="col-sm-12 col-md-6 col-lg-4 btnAgregar">
-                <div class="card-group service-work">
-                    <button type="submit" class="recent-work card mr-4 mb-4" style="height: 16rem">
-                        <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
-                            <div class="mt-4" style="text-align: center;">
-                                <span class="fas fa-plus fa-9x" style="text-align: center"></span>
+                <div class="col-sm-12 col-md-6 col-lg-4 btnAgregar">
+                    <div class="card-group service-work">
+                        <button type="submit" class="recent-work card mr-4 mb-4" style="height: 16rem">
+                            <div class="nav-link icon-indicator" role="button" style="height: 200px; width: 100%;">
+                                <div class="mt-4" style="text-align: center;">
+                                    <span class="fas fa-plus fa-9x" style="text-align: center"></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="recent-work-vertical-ruk card-img-overlay">
-                            <div class="service-work-content">
-                                <h5 class="card-title" style="text-align: center; margin-top: 11.4rem">Agregar
-                                    Especialidad</h5>
+                            <div class="recent-work-vertical-ruk card-img-overlay">
+                                <div class="service-work-content">
+                                    <h5 class="card-title" style="text-align: center; margin-top: 11.4rem">Agregar
+                                        Especialidad</h5>
+                                </div>
                             </div>
-                        </div>
-                    </button>
+                        </button>
+                    </div>
                 </div>
-            </div>
             {% endif %}
         </div>
-        </form>
-    </div>
+    </form>
+
 {% endblock %}
 
 {% block extrajs %}
@@ -181,14 +181,14 @@
 
         $(document).ready(function () {
             if ("{{estado}}" == 1) {
-                    $('.especialidadesActivas').show();
-                    $('.especialidadesInactivos').hide();
-                    $('.btnAgregar').show();
-                } else {
-                    $('.especialidadesActivas').hide();
-                    $('.especialidadesInactivos').show();
-                    $('.btnAgregar').hide()
-                }
+                $('.especialidadesActivas').show();
+                $('.especialidadesInactivos').hide();
+                $('.btnAgregar').show();
+            } else {
+                $('.especialidadesActivas').hide();
+                $('.especialidadesInactivos').show();
+                $('.btnAgregar').hide()
+            }
 
             $("#estado").val({{ estado }});
         });

@@ -26,26 +26,33 @@
         </div>
     </div>
     {#AQUI COLOQUEN EL CÓDIGO#}
-    <div class="container-fluid content-row">
-        <div class="row" style="margin-right: 0.8rem">
-            <div class="col-9">
-                <div>
 
+    <div class="card">
+        <div class="card-body">
+            <div class="row" style="margin-right: 0.8rem">
+                <div class="col-9">
+                    <div>
+
+                    </div>
+                </div>
+                <div class="col-3">
+                    <select id="estado" name="estado" class="form-control" id="ControlSelect2"
+                            onchange="listarAcreditadoras()">
+                        {% for estado in ListaEstados %}
+                            <option value={{ estado.0 }}>{{ estado.1 }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
-            <div class="col-3">
-                <select id="estado" name="estado" class="form-control" id="ControlSelect2" onchange="listarAcreditadoras()">
-                    {% for estado in ListaEstados %}
-                        <option value={{ estado.0 }}>{{ estado.1 }}</option>
-                    {% endfor %}
-                </select>
-            </div>
         </div>
-        {% if request.user.rol_actual == 'Coordinador de especialidad' %}
+    </div>
+
+    {% if request.user.rol_actual == 'Coordinador de especialidad' %}
         <div id="acreditadoras" class="row mt-4">
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <div class="card-group service-work">
-                    <a class="recent-work card mr-4 mb-4" href="{% url 'crearAcreditadoras' pk="0" %}" style="height: 16rem">
+                    <a class="recent-work card mr-4 mb-4" href="{% url 'crearAcreditadoras' pk="0" %}"
+                       style="height: 16rem">
                         <div class="nav-link icon-indicator" role="button">
                             <div class="mt-4" style="text-align: center;">
                                 <span class="fas fa-plus fa-9x" style="text-align: center"></span>
@@ -53,15 +60,16 @@
                         </div>
                         <div class="recent-work-vertical-ruk card-img-overlay">
                             <div class="service-work-content">
-                                <h5 class="card-title" style="text-align: center; margin-top: 11.4rem">Agregar Acreditadora</h5>
+                                <h5 class="card-title" style="text-align: center; margin-top: 11.4rem">Agregar
+                                    Acreditadora</h5>
                             </div>
                         </div>
                     </a>
                 </div>
             </div>
         </div>
-        {% endif %}
-    </div>
+    {% endif %}
+
 {% endblock %}
 
 {% block extrajs %}
@@ -86,38 +94,38 @@
                     console.log(instance);
                     console.log(instance.length)
                     $(".acreditadora").remove();
-                    for(var i=0; i<instance.length; i++){
+                    for (var i = 0; i < instance.length; i++) {
                         data = '<div class="acreditadora col-sm-12 col-md-6 col-lg-4">' +
                             '   <div class="card-group">' +
                             '       <div class="product card mr-4 mb-4" style="height: 16rem">' +
                             '           <div class="card-img-top imgbox" style="height: 15rem">' +
-                            '               <a href="/gestionarREAcreditadoras/listar/'+instance[instance.length-i-1]["pk"]+'">' +
-                            '                   <img class="" src="{{ media_path }}'+instance[instance.length-i-1]["fields"].foto+'/">' +
+                            '               <a href="/gestionarREAcreditadoras/listar/' + instance[instance.length - i - 1]["pk"] + '">' +
+                            '                   <img class="" src="{{ media_path }}' + instance[instance.length - i - 1]["fields"].foto + '/">' +
                             '               </a>' +
                             '           </div>' +
                             '           <div class="specifies card-body p-1">' +
-                            '               <h5 class="card-title ml-2">'+instance[instance.length-i-1]["fields"].nombre+'</h5>' +
+                            '               <h5 class="card-title ml-2">' + instance[instance.length - i - 1]["fields"].nombre + '</h5>' +
                             '               <hr class="divider">' +
                             '               <div class="row">' +
                             '                   <div class="col">' +
-                            '                   <form style="" action="/gestionarAcreditadoras/listar/" method="post">'+
-                            '                       {% csrf_token %}'+
-                            '                       <input type="hidden" name="operacion" value="desactivar">'+
-                            '                       <input type="hidden" name="pk" value="'+instance[instance.length-i-1]["pk"]+'">'+
+                            '                   <form style="" action="/gestionarAcreditadoras/listar/" method="post">' +
+                            '                       {% csrf_token %}' +
+                            '                       <input type="hidden" name="operacion" value="desactivar">' +
+                            '                       <input type="hidden" name="pk" value="' + instance[instance.length - i - 1]["pk"] + '">' +
                             '                       <button type="submit" class="float-right mr-2 pt-2 tooltip-inner arrow" data-toggle="tooltip" ' +
                             '                       data-placement="top" title="Eliminar">' +
                             '                           <div class="fas fa-power-off"></div>' +
                             '                       </button>' +
                             '                       <a class="float-right mr-3 tooltip-inner arrow" data-toggle="tooltip" ' +
                             '                       data-placement="top" title="Editar" ' +
-                            '                       href="/gestionarAcreditadoras/crear/'+instance[instance.length-i-1]["pk"]+'">' +
+                            '                       href="/gestionarAcreditadoras/crear/' + instance[instance.length - i - 1]["pk"] + '">' +
                             '                           <div class="fas fa-pen"></div>' +
                             '                       </a>' +
                             '                   </div>' +
                             '               </div>' +
                             '           </div>' +
                             '       </div>' +
-                            '   </div>'+
+                            '   </div>' +
                             '</div>';
                         $("#acreditadoras").prepend(data);
                     }
