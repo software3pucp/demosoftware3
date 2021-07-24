@@ -67,9 +67,13 @@ def obtenerEspecialidades(request):
 
 def listarNiveles(request):
     id_especialidad = request.POST['especialidadpk']
-    plan = PlanResultados.objects.get(estado='1', especialidad_id=id_especialidad)
-    niveles = Nivel.objects.filter(especialidad_id=id_especialidad, estado='1',plaResultado_id=plan.pk).order_by('valor')
-    ser_instance = serializers.serialize('json', niveles)
+    print(id_especialidad)
+    try:
+        plan = PlanResultados.objects.get(estado='1', especialidad_id=id_especialidad)
+        niveles = Nivel.objects.filter(especialidad_id=id_especialidad, estado='1',plaResultado_id=plan.pk).order_by('valor')
+        ser_instance = serializers.serialize('json', niveles)
+    except:
+        ser_instance = serializers.serialize('json', [])
     return JsonResponse({"niveles": ser_instance}, status=200)
 
 @login_required

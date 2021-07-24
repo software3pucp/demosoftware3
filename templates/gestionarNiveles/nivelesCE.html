@@ -213,7 +213,8 @@
                 success: function (response) {
                     var instance = JSON.parse(response['niveles']);
                     console.log(instance);
-
+                    $("#tituloEspecialidadNiveles").empty()
+                    $("#tablaNiveles").empty()
                     var i = 0;
                     var j = 1;
                     var numero = instance.length;
@@ -235,8 +236,8 @@
                         )
                     }
                     data2 = '<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>';
-                    $("#tituloEspecialidadNiveles").html(data2);
-                    $("#tablaNiveles").html(data);
+                    $("#tituloEspecialidadNiveles").append(data2);
+                    $("#tablaNiveles").append(data);
                 },
                 error: function (response) {
                     console.log('Ocurrio un error')
