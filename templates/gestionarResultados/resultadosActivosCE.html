@@ -7,118 +7,150 @@
 
 {#Bloque de extra body -> HTML#}
 {% block body %}
-    <input id="idPlan" name="idPlan" type="hidden">
-    <div class="card mb-3 bg-card-gradient">
-        <div class="card-body ">
-            <div class="row justify-content-between align-items-center">
-                <div class="col-12">
-                    <h5 class="mb-2 mb-md-0 text-white">Resultados de estudiante</h5>
-                </div>
-            </div>
+  <input id="idPlan" name="idPlan" type="hidden">
+  <div class="card mb-3 bg-card-gradient">
+    <div class="card-body ">
+      <div class="row justify-content-between align-items-center">
+        <div class="col">
+          <h5 class="mb-2 mb-md-0 text-white">Resultados del estudiante</h5>
         </div>
+        <div class="col">
+          {% if request.user.rol_actual == 'Coordinador de especialidad' %}
+            <div class="col-12 ">
+            <div class="d-flex justify-content-end">
+            <a href="" data-toggle="modal" data-target="#nuevaVersion"
+               type="button">
+                      <span id="btnNuevaVersion" class="btn btn-falcon-success mr-1">
+                                                        Nueva versión
+                        </span> </a>
+          {% endif %}
+
+          <a class="btn btn-falcon-primary mr-1" href="{% url 'planDeResultado' %}">
+            Históricos
+          </a>
+
+          </div>
+          </div>
+        </div>
+    </div>
+    </div>
     </div>
 
 
-    <div class="card">
-        <div class="card-body">
-            <div class="d-flex justify-content-center">
-                <div class="col-12">
-                    <div class="row">
-                        <div class="col-sm-12 col-lg-6 pl-4 pr-4">
-                            <div class="row">
-                                <label for="cboEspecialidad">Especialidad:</label>
-                            </div>
-                            <div class="row">
-                                <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
-                                        name="cboEspecialidad"
-                                        onchange="listarResultados()">
-                                    {% for especialidad in especialidades %}
-                                        <option value={{ especialidad.pk }}>{{ especialidad.nombre }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12 col-lg-10 px-0" id="tituloEspecialidadMediciones"></div>
-
-                        {% if request.user.rol_actual != 'Coordinador de facultad' %}
-                            <div class="col-12 ">
-                                <div class="d-flex justify-content-end">
-                                    <a href="" data-toggle="modal" data-target="#nuevaVersion"
-                                        type="button">
-                                        <span id="btnNuevaVersion" class="btn btn-primary mr-1">
-                                            Nueva versión
-                                        </span>
-                                    </a>
-                                    <a class="btn btn-primary mr-1"  href="{%  url 'planDeResultado' %}">
-                                    Históricos
-                                    </a>
-                                    <span class="btn btn-primary" onclick="crearResultado()">Crear</span>
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    <div id="listadoResultados"></div>
-                </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex justify-content-center">
+        <div class="col-12">
+          <div class="row">
+            <div class="col-sm-12 col-lg-6 pl-4 pr-4">
+              <div class="row">
+                <label for="cboEspecialidad">Especialidad:</label>
+              </div>
+              <div class="row">
+                <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
+                        name="cboEspecialidad"
+                        onchange="listarResultados()">
+                  {% for especialidad in especialidades %}
+                    <option value={{ especialidad.pk }}>{{ especialidad.nombre }}</option>
+                  {% endfor %}
+                </select>
+              </div>
             </div>
-        </div>
-    </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 col-lg-10 px-0" id="tituloEspecialidadMediciones"></div>
 
-    <!-- Modal Eliminar Resultado -->
 
-    <div class="modal fade" id="eliminarResultado" tabindex="-1" role="dialog" aria-labelledby="eliminarResultadoLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="eliminarResultadoLabel"></h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
-                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+            {% if request.user.rol_actual == 'Coordinador de especialidad' %}
+              <div class="col-12 ">
+                <div class="d-flex justify-content-end">
+                  <span class="btn btn-primary" onclick="crearResultado()">Crear Resultado</span>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
-                    <button id="btnEliminarResultado" class="btn btn-primary btn-sm" type="button">Confirmar</button>
-                </div>
-            </div>
-        </div>
-    </div>
+              </div>
+            {% endif %}
+          </div>
 
-    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-light" id="tituloError">
-                    <h5 class="modal-title label-primary" id="errorModalLabel">¡Éxito!</h5>
-                </div>
-                <div class="modal-body bg-light" id="mensajeError">
-                    <p>Se ha enviado un mensaje a su correo para reestablecer la contraseña</p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary btn-sm" type="button" data-dismiss="modal">Aceptar</button>
-                </div>
-            </div>
+          <div id="listadoResultados"></div>
         </div>
+      </div>
     </div>
+  </div>
+
+  <!-- Modal Eliminar Resultado -->
+
+  <div class="modal fade" id="eliminarResultado" tabindex="-1" role="dialog" aria-labelledby="eliminarResultadoLabel"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="eliminarResultadoLabel"></h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+              class="font-weight-light" aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+          <button id="btnEliminarResultado" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-soft-danger" id="tituloError">
+          <h5 class="modal-title label-primary" id="errorModalLabel"></h5>
+        </div>
+        <div class="modal-body bg-light" id="mensajeError">
+          <p></p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary btn-sm" type="button" data-dismiss="modal">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
     <!-- Modal Nueva Version -->
 
-    <div class="modal fade" id="nuevaVersion" tabindex="-1" role="dialog" aria-labelledby="nuevaVersioLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="nuevaVersioLabel"></h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
-                            class="font-weight-light" aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-footer">
-                    <button id="btnDuplicar" class="btn btn-primary btn-sm" type="button">Usar un historico</button>
-                    <button id="btnNuevoCero" class="btn btn-primary btn-sm" type="button">Empezar de 0</button>
-                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
-                </div>
+  <div class="modal fade" id="nuevaVersion" tabindex="-1" role="dialog" aria-labelledby="nuevaVersioLabel"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="nuevaVersioLabel">Crear un nuevo Programa de Resultados</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+              class="font-weight-light" aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md">
+              <img class="img-fluid z-depth-1" src="{% static '/img/illustrations/crear.jpg' %}">
             </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              ¿Está seguro que desea crear un nuevo Programa de Resultados?
+              <hr>
+              <ul>
+                <li>Para crear un nuevo programa a partir de una versión anterior, seleccione <strong>Copiar version
+                  anterior</strong>.
+                </li>
+                <li>Si desea crear un Programa de Resultados vacío, seleccione <strong>Crear Nuevo</strong>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row justify-content-around">
+            <div class="col">
+              <button id="btnDuplicar" class="btn btn-primary btn-sm" type="button">Copiar version anterior</button>
+              <button id="btnNuevoCero" class="btn btn-primary btn-sm" type="button">Crear Nuevo</button>
+              <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+            </div>
+          </div>
         </div>
     </div>
 
@@ -144,9 +176,9 @@
                 success: function (response) {
                     if (response.tipo == "1") {
                         $('#tituloError').empty()
-                        $('#tituloError').append(`<h5 class="modal-title label-primary" id="errorModalLabel"><b><i>Alerta</i></b></h5>`)
+                        $('#tituloError').append(`<h5 class="modal-title label-primary" id="errorModalLabel"><b>Alerta</b></h5>`)
                         $('#mensajeError').empty()
-                        $('#mensajeError').append(`<p>Seleccione <b><i>Nueva versión</i></b> para crear una nueva versión de resultados del estudiante</p>`)
+                        $('#mensajeError').append(`<p>Seleccione <b>Nueva versión</b> para crear una nueva versión de resultados del estudiante</p>`)
                         $("#successModal").modal({backdrop: 'static', keyboard: false, show: true});
                     } else if (response.tipo == "3"){
                         document.location.href = "../../gestionarResultados/crear/" +$('#idPlan').val() ;
@@ -185,6 +217,7 @@
                     especialidad: $("#cboEspecialidad").val(),
                 },
                 success: function (response) {
+                    $("#nuevaVersion").modal('hide');
                     listarResultados();
                 },
                 error: function (response) {
