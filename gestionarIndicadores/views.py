@@ -123,7 +123,7 @@ def verIndicador(request, pk):
     planPk = obtenerPlanResultados(indicador)
     plan = PlanResultados.objects.get(pk = planPk)
     id_resultado = indicador.resultado_id
-    nivelLista = Nivel.objects.filter(estado='1', especialidad_id=especialidadpk).order_by('valor')
+    nivelLista = Nivel.objects.filter(estado='1', especialidad_id=especialidadpk,plaResultado_id=planPk).order_by('valor')
     rubrica = Rubrica.objects.filter(indicador_id=pk)
     nivelLista2 = []
     hay_niveles = False
