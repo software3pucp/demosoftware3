@@ -26,5 +26,6 @@ urlpatterns = [
     path('eliminar/', views.eliminarResultado, name="eliminarResultado"),
     path('validarCrear/',views.validarCrear,name="validarCrear"),
     path('duplicar/<pk>',views.duplicarPlan,name="duplicarPlan"),
+    path('copiarPlan/<pk>',views.copiarPlan,name="copiarPlan"),
     path('visualizarResultado/<pk>', views.visualizarResultado, name="visualizarResultado"),
 ]

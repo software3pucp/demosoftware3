@@ -153,6 +153,10 @@
             });
         }
 
+        function duplicar(pk){
+            document.location.href = "../../gestionarResultados/copiarPlan/" + pk;
+        }
+
         function desactivarPlan(pk) {
             $.ajax({
                 type: 'POST',
@@ -191,16 +195,12 @@
 
                         var botones ='';
                          if (instance[i]["fields"].estado == '1') {
-                            botones= '<button class="btn btn-falcon-danger my-1 mr-2" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
-                            '<span class="fa fa-times"></span></button>'+
-                                '<div class="btn btn-falcon-primary my-1 mr-2" onclick="redirectVerPlan(' + instance[i]["pk"] + ')">'+
-                                '<span class="fa fa-eye"></span></div>';
+                            botones= '<button class="btn btn-falcon-primary my-1 mr-2" onclick="duplicar(' + instance[i]["pk"]+ ')">' +
+                            '<span class="fa fa-copy"></span> Copiar</button>'
+
                         } else {
-                            botones= '<button class="btn btn-falcon-success my-1" onclick="activarPlan(' + instance[i]["pk"] + ')"><span class="fa fa-power-off"> </span></button>' +
-                                '<button class="btn btn-falcon-danger my-1 mr-2" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
-                                '<span class="fa fa-times"></span></button>'+
-                                '<div class="btn btn-falcon-primary my-1 mr-2" onclick="redirectVerPlan(' + instance[i]["pk"] + ')">'+
-                                '<span class="fa fa-eye"></span></div>';
+                            botones= '<button class="btn btn-falcon-primary my-1 mr-2" onclick="duplicar(' + instance[i]["pk"] + ')">' +
+                            '<span class="fa fa-copy"></span> Copiar</button>'
                         }
 
 

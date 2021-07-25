@@ -133,58 +133,67 @@ def duplicarPlan(request,pk):
         }
         return render(request, 'gestionarResultados/duplicarPlan.html', context)
 
+def copiarPlan(request,pk):
+    planPk = pk
+    plan = PlanResultados.objects.get(pk=planPk)
+    id_especialidad = plan.especialidad_id
+    especialidad = Especialidad.objects.get(pk=id_especialidad)
 
-    # planPk = 1
-    #
-    # # Duplicado del plan de resultados seleccionado
-    # plan = PlanResultados.objects.get(pk=planPk)
-    # _plan = PlanResultados.objects.get(pk=plan.pk)
-    # _plan.pk = None
-    # _plan.descripcion = "Copia"
-    # _plan.save()
-    # # Desactivando plan de resultados seleccionado
-    # plan.estado = '2'
-    # plan.save()
-    #
-    # # Duplicado de niveles del plan de resultados seleccionado
-    # niveles = Nivel.objects.filter(plaResultado_id=plan.pk,estado='1')
-    # for nivel in niveles:
-    #     _nivel = Nivel.objects.get(pk=nivel.pk)
-    #     _nivel.pk = None
-    #     _nivel.plaResultado_id  =_plan.pk
-    #     _nivel.save()
-    # _niveles = Nivel.objects.filter(plaResultado_id=_plan.pk)
-    #
-    # resultados = ResultadoPUCP.objects.filter(planResultado_id=planPk,estado ='1')
-    # for resultado in resultados:
-    #     #Duplicado del resultado actual
-    #     _resultado = ResultadoPUCP.objects.get(pk=resultado.pk)
-    #     _resultado.pk = None
-    #     _resultado.planResultado_id = _plan.pk
-    #     _resultado.save()
-    #     indicadores = Indicador.objects.filter(resultado_id=resultado.pk,estado='1')
-    #     for indicador in indicadores:
-    #         #Duplicado del indicador actual
-    #         _indicador = Indicador.objects.get(pk=indicador.pk)
-    #         _indicador.pk = None
-    #         _indicador.resultado_id = _resultado.pk
-    #         _indicador.save()
-    #         for i in range(len(niveles)):
-    #             try:
-    #                 rubrica = Rubrica.objects.get(nivel_id=niveles[i].pk,indicador_id=indicador.pk)
-    #                 _rubrica = Rubrica.objects.get(pk=rubrica.pk)
-    #                 _rubrica.pk = None
-    #                 _rubrica.nivel_id=_niveles[i].pk
-    #                 _rubrica.indicador_id=_indicador.pk
-    #                 _rubrica.save()
-    #             except:
-    #                 print("Nivel no tiene asociado una rúbrica")
-    #
-    #
-    #
-    #
-    #
-    # return redirect('resultadosActivos')
+    # Desactivando plan de resultados seleccionado
+    plan = PlanResultados.objects.filter(especialidad_id=id_especialidad, estado='1')
+    if plan:
+        plan = plan[0]
+        plan.estado = '2'
+        plan.save()
+
+    # Duplicado del plan de resultados seleccionado
+    _plan = PlanResultados.objects.get(pk=plan.pk)
+    _plan.pk = None
+    _plan.codigo=f'PR-{especialidad.codigo}-{especialidad.versiones + 1}'
+    _plan.descripcion = f'Programa de {especialidad.nombre} - Version {especialidad.versiones + 1}'
+    _plan.estado = '1'
+    _plan.save()
+
+    especialidad.versiones = especialidad.versiones + 1
+    especialidad.save()
+
+
+
+    # Duplicado de niveles del plan de resultados seleccionado
+    niveles = Nivel.objects.filter(plaResultado_id=plan.pk,estado='1')
+    for nivel in niveles:
+        _nivel = Nivel.objects.get(pk=nivel.pk)
+        _nivel.pk = None
+        _nivel.plaResultado_id  =_plan.pk
+        _nivel.save()
+    _niveles = Nivel.objects.filter(plaResultado_id=_plan.pk)
+
+    resultados = ResultadoPUCP.objects.filter(planResultado_id=planPk,estado ='1')
+    for resultado in resultados:
+        #Duplicado del resultado actual
+        _resultado = ResultadoPUCP.objects.get(pk=resultado.pk)
+        _resultado.pk = None
+        _resultado.planResultado_id = _plan.pk
+        _resultado.save()
+        indicadores = Indicador.objects.filter(resultado_id=resultado.pk,estado='1')
+        for indicador in indicadores:
+            #Duplicado del indicador actual
+            _indicador = Indicador.objects.get(pk=indicador.pk)
+            _indicador.pk = None
+            _indicador.resultado_id = _resultado.pk
+            _indicador.save()
+            for i in range(len(niveles)):
+                try:
+                    rubrica = Rubrica.objects.get(nivel_id=niveles[i].pk,indicador_id=indicador.pk)
+                    _rubrica = Rubrica.objects.get(pk=rubrica.pk)
+                    _rubrica.pk = None
+                    _rubrica.nivel_id=_niveles[i].pk
+                    _rubrica.indicador_id=_indicador.pk
+                    _rubrica.save()
+                except:
+                    print("Nivel no tiene asociado una rúbrica")
+
+    return redirect('resultadosActivos')
 
 def eliminarResultado(request):
     resultadoPk = request.POST['resultadopk']
