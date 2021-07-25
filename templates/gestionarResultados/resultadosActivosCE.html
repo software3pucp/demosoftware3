@@ -15,7 +15,7 @@
           <h5 class="mb-2 mb-md-0 text-white">Resultados del estudiante</h5>
         </div>
         <div class="col">
-          {% if request.user.rol_actual == 'Coordinador de especialidad' %}
+
             <div class="col-12 ">
             <div class="d-flex justify-content-end">
             <a href="" data-toggle="modal" data-target="#nuevaVersion"
@@ -23,7 +23,7 @@
                       <span id="btnNuevaVersion" class="btn btn-falcon-success mr-1">
                                                         Nueva versión
                         </span> </a>
-          {% endif %}
+
 
           <a id="btnHistoricos" class="btn btn-falcon-primary mr-1" >
             Históricos
@@ -61,13 +61,13 @@
             <div class="col-sm-12 col-lg-10 px-0" id="tituloEspecialidadMediciones"></div>
 
 
-            {% if request.user.rol_actual == 'Coordinador de especialidad' %}
+
               <div class="col-12 ">
                 <div class="d-flex justify-content-end">
                   <span class="btn btn-primary" onclick="crearResultado()">Crear Resultado</span>
                 </div>
               </div>
-            {% endif %}
+
           </div>
 
           <div id="listadoResultados"></div>
