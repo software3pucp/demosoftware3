@@ -11,15 +11,15 @@
         <div class="card-body ">
             <div class="row justify-content-between align-items-center">
                 <div class="col-12">
-                    <h5 class="mb-2 mb-md-0 text-white">{{plan.descripcion}}</h5>
+                    <h5 class="mb-2 mb-md-0 text-white">{{ plan.descripcion }}</h5>
                 </div>
             </div>
         </div>
     </div>
-    <form action="{% url 'editarIndicador' pk=indicador.pk %}" method="post">
-        {% csrf_token %}
-        <div class="container-fluid">
-            <div class="card p-5 mb-3">
+    <div class="card p-5 mb-3">
+        <form action="{% url 'editarIndicador' pk=indicador.pk %}" method="post">
+            {% csrf_token %}
+            <div class="container-fluid">
                 <div class="row d-flex justify-content-center ">
                     <div class="col-10">
                         <h4 style="font-family: Montserrat">Datos del Indicador</h4>
@@ -42,7 +42,8 @@
                         </div>
                         <div class="col-md-10">
                             <div class="form-group">
-                                <input name="codigo" class="form-control" id="codigo" type="text" value="{{ indicador.codigo }}" disabled>
+                                <input name="codigo" class="form-control" id="codigo" type="text"
+                                       value="{{ indicador.codigo }}" disabled>
                             </div>
                         </div>
                     </div>
@@ -54,7 +55,9 @@
                         </div>
                         <div class="col-md-10">
                             <div class="form-group">
-                                <textarea id="descripcion" name="descripcion" class="form-control" aria-label="With textarea" rows="4" disabled>{{ indicador.descripcion }}</textarea>
+                                <textarea id="descripcion" name="descripcion" class="form-control"
+                                          aria-label="With textarea" rows="4"
+                                          disabled>{{ indicador.descripcion }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -83,7 +86,8 @@
                                 <th class="align-middle">{{ item.0.nombre }}</th>
                                 <td class="align-middle">
                                     <div class="input-group">
-                                        <textarea name="desc_nivel{{ item.0.pk }}" id="desc_nivel{{ item.0.pk }}" class="form-control" rows="3" disabled>{{ item.1 }}</textarea>
+                                        <textarea name="desc_nivel{{ item.0.pk }}" id="desc_nivel{{ item.0.pk }}"
+                                                  class="form-control" rows="3" disabled>{{ item.1 }}</textarea>
                                     </div>
                                 </td>
                             </tr>
@@ -92,14 +96,13 @@
                     </table>
                 </div>
                 {% if not hay_niveles %}
-                <div>
-                    <label for="descripcion">Este Indicador no registra una rubrica</label>
-                </div>
+                    <div>
+                        <label for="descripcion">Este Indicador no registra una rubrica</label>
+                    </div>
                 {% endif %}
             </div>
-        </div>
-    </form>
-
+        </form>
+    </div>
 {% endblock %}
 
 {% block extrajs %}

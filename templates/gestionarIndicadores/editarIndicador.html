@@ -11,15 +11,16 @@
         <div class="card-body ">
             <div class="row justify-content-between align-items-center">
                 <div class="col-12">
-                    <h5 class="mb-2 mb-md-0 text-white">{{plan.descripcion}}</h5>
+                    <h5 class="mb-2 mb-md-0 text-white">{{ plan.descripcion }}</h5>
                 </div>
             </div>
         </div>
     </div>
-    <form action="{% url 'editarIndicador' pk=indicador.pk %}" method="post">
-        {% csrf_token %}
-        <div class="container-fluid">
-            <div class="card p-5 mb-3">
+    <div class="card p-5 ">
+        <form action="{% url 'editarIndicador' pk=indicador.pk %}" method="post">
+            {% csrf_token %}
+            <div class="container-fluid">
+
                 <div class="row d-flex justify-content-center ">
                     <div class="col-10">
                         <h4 style="font-family: Montserrat">Datos del Indicador</h4>
@@ -43,9 +44,11 @@
                         <div class="col-md-10">
                             <div class="form-group">
                                 {% if request.user.rol_actual == 'Coordinador de facultad' %}
-                                    <input name="codigo" class="form-control" id="codigo" type="text" value="{{ indicador.codigo }}" disabled>
+                                    <input name="codigo" class="form-control" id="codigo" type="text"
+                                           value="{{ indicador.codigo }}" disabled>
                                 {% else %}
-                                    <input name="codigo" class="form-control" id="codigo" type="text" value="{{ indicador.codigo }}">
+                                    <input name="codigo" class="form-control" id="codigo" type="text"
+                                           value="{{ indicador.codigo }}">
                                 {% endif %}
                             </div>
                         </div>
@@ -59,9 +62,12 @@
                         <div class="col-md-10">
                             <div class="form-group">
                                 {% if request.user.rol_actual == 'Coordinador de facultad' %}
-                                    <textarea id="descripcion" name="descripcion" class="form-control" aria-label="With textarea" rows="4" disabled>{{ indicador.descripcion }}</textarea>
+                                    <textarea id="descripcion" name="descripcion" class="form-control"
+                                              aria-label="With textarea" rows="4"
+                                              disabled>{{ indicador.descripcion }}</textarea>
                                 {% else %}
-                                    <textarea id="descripcion" name="descripcion" class="form-control" aria-label="With textarea" rows="4">{{ indicador.descripcion }}</textarea>
+                                    <textarea id="descripcion" name="descripcion" class="form-control"
+                                              aria-label="With textarea" rows="4">{{ indicador.descripcion }}</textarea>
                                 {% endif %}
                             </div>
                         </div>
@@ -114,9 +120,11 @@
                                 <td class="align-middle">
                                     <div class="input-group">
                                         {% if request.user.rol_actual == 'Coordinador de facultad' %}
-                                            <textarea name="desc_nivel{{ item.0.pk }}" id="desc_nivel{{ item.0.pk }}" class="form-control" rows="3" disabled>{{ item.1 }}</textarea>
+                                            <textarea name="desc_nivel{{ item.0.pk }}" id="desc_nivel{{ item.0.pk }}"
+                                                      class="form-control" rows="3" disabled>{{ item.1 }}</textarea>
                                         {% else %}
-                                            <textarea name="desc_nivel{{ item.0.pk }}" id="desc_nivel{{ item.0.pk }}" class="form-control" rows="3">{{ item.1 }}</textarea>
+                                            <textarea name="desc_nivel{{ item.0.pk }}" id="desc_nivel{{ item.0.pk }}"
+                                                      class="form-control" rows="3">{{ item.1 }}</textarea>
                                         {% endif %}
                                     </div>
                                 </td>
@@ -126,7 +134,7 @@
                     </table>
                 </div>
                 {% if request.user.rol_actual != 'Coordinador de facultad' %}
-                    <div class="d-inline-flex  flex-row justify-content-end">
+                    <div class="d-flex justify-content-end">
                         <div class="d-flex p-2">
                             <a class="btn btn-outline-primary" type="button"
                                href="{% url 'editarResultado' pk=id_resultado %}">Cancelar
@@ -138,9 +146,9 @@
                     </div>
                 {% endif %}
             </div>
-        </div>
-    </form>
 
+        </form>
+    </div>
 {% endblock %}
 
 {% block extrajs %}
