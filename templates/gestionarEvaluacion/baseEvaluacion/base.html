@@ -908,7 +908,8 @@
                     horarioSeleccionado: $("#cboHorario").val(),
                     especialidadSeleccionada: {{ cursoSeleccionado.especialidad_id }},
                     filtrado: $("#textBuscar").val(),
-                    indicadorSeleccionado: $("#cboIndicador").val()
+                    indicadorSeleccionado: $("#cboIndicador").val(),
+                    planMedicion:{{ planMedicion.pk }},
                 },
                 success: function (response) {
                     estado = ''

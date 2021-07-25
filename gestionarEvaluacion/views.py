@@ -225,7 +225,8 @@ def muestraRubrica(request):
 def listarAlumno(request):
     filtrado = request.POST["filtrado"]
     especialidad = Especialidad.objects.get(pk=request.POST["especialidadSeleccionada"])
-    niveles = Nivel.objects.filter(estado="1",especialidad_id=especialidad.pk)
+    planMedicion = PlanMedicion.objects.get(pk=request.POST["planMedicion"])
+    niveles = Nivel.objects.filter(plaResultado_id = planMedicion.planResultados_id, estado="1",especialidad_id=especialidad.pk)
     if (filtrado!=""):
         if (filtrado.isnumeric()):
             listaAlumno = reversed(RespuestaEvaluacion.objects.filter(codigoAlumno__contains=filtrado, horario_id = request.POST["horarioSeleccionado"],indicador_id=request.POST["indicadorSeleccionado"], estado=1))
