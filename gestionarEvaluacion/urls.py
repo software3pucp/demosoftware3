@@ -17,4 +17,5 @@ urlpatterns = [
     path('exportarMedicion/',views.exportarMedicion,name='exportarMedicion'),
     path('historial/',views.historial,name='historial'),
     path('listarCursoMedicion/',views.listarCursoMedicion,name='listarCursoMedicion'),
+    path('editarAlumnoNuevo/',views.editarAlumnoNuevo,name='editarAlumnoNuevo'),
 ]

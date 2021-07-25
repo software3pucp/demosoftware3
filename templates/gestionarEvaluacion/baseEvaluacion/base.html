@@ -116,13 +116,12 @@
                                 - {{ cursoSeleccionado.nombre }}</h4>
                         </div>
                         <div class="col-3 text-right">
-                            <a class="d-flex flex-row justify-content-end mt-2 mr-3" href="#">
+                            <a class="d-flex flex-row justify-content-end mt-2 mr-3" href="/gestionarSemestre/enviarCursoHorarioDocente/{{ planMedicionCurso.semestre.pk }}">
                                 <div class="fas fa-reply mt-1 mr-2"></div>
                                 <h5>Volver</h5>
                             </a>
                         </div>
                     </div>
-
                     <hr class="mb-3" style="background-color: #0154ae;">
 
                     <form action="{% url 'exportarMedicion' %}" method="post" enctype="multipart/form-data">
@@ -474,7 +473,13 @@
                             <div class="mb-2" id="nombreNuevo"></div>
                         </div>
                         <div class="row d-flex justify-content-around mt-1">
-
+                            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Conservar nombre
+                                actual
+                            </button>
+                            <button id="btnactualizaNombre" class="btn btn-primary btn-sm"
+                                    type="button" onclick="editarAlumnoNuevo()">Actualizar al
+                                nombre nuevo
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -665,12 +670,14 @@
             });
         }
 
+
         $("#btnEditarAlumno").on('click', function () {
             if ($("#formEditarAlumno").valid()) {
                 editarAlumno(pkEditar);
                 $("#editarAlumno").modal('hide');
             }
         });
+
 
         function evaluarEditar(nombreAlumno, codigoAlumno, pk) {
             var nomb = nombreAlumno.toString();
@@ -717,6 +724,29 @@
                 },
                 success: function (response) {
                     console.log("Se ha editado correctamente!");
+                    listarAlumno();
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response["responseJSON"]["error"]);
+                }
+            });
+        }
+
+        function editarAlumnoNuevo() {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'editarAlumnoNuevo'%}",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    codigoAlumno: codigoIngresado,
+                    horario: $("#cboHorario").val(),
+                    plan: {{ planMedicionCurso.pk }},
+                    nombreAlumno: nombreIngresado,
+                },
+                success: function (response) {
+                    console.log("Se ha editado correctamente!");
+                    $("#actualizaNombre").modal('hide');
                     listarAlumno();
                 },
                 error: function (response) {

@@ -140,6 +140,8 @@ def evaluarDocente(request):
         'users': User.objects.all(),
         'listaAux': listaArchivos,
     }
+    print("-------------++-+-+-+-++--+-+-+-+-++-++++++++++++++++++++++++++++++++++++++-------------------")
+    print(context)
     return render(request, 'gestionarEvaluacion/baseEvaluacion/base.html', context)
 
 def agregarAlumno(request):
@@ -194,14 +196,21 @@ def editarAlumno(request):
         als.save()
     return JsonResponse({}, status=200)
 
+def editarAlumnoNuevo(request):
+    listaA= RespuestaEvaluacion.objects.filter(codigoAlumno= request.POST["codigoAlumno"],
+                                               planMedicion_id=request.POST["plan"],
+                                               horario_id=request.POST["horario"],
+                                               estado=1)
+    listaA.update(nombreAlumno = request.POST["nombreAlumno"])
+    return JsonResponse({}, status=200)
+
 def eliminarAlumno(request):
     horariopk= request.POST['horario']
     print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
     print(horariopk)
     codigo_alumno = RespuestaEvaluacion.objects.filter(pk = request.POST["idAlumno"], horario_id=horariopk)[0].codigoAlumno
     alumnos = RespuestaEvaluacion.objects.filter(codigoAlumno= codigo_alumno, horario_id=horariopk)
-    for alumno in alumnos:
-        alumno.delete()
+    alumnos.update(estado = 0)
     return JsonResponse({}, status=200)
 
 def muestraRubrica(request):
