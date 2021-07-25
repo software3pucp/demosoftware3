@@ -78,17 +78,17 @@
                                 </div>
                                 <div class="col-md-7 d-flex flex-center">
                                     <div class="p-4 p-md-5 flex-grow-1 align-items-center">
-                                        <h3 class="mb-3">Deseo ingresar como: </h3>
-
-
+                                        {% if roles %}
+                                            <h3 class="mb-3">Deseo ingresar como: </h3>
+                                        {% else %}
+                                            <h4 class="mb-3">Aun no ha sido asociado a un programa </h4>
+                                        {% endif %}
                                         <div class="container">
                                             <div class="row">
-
-
                                                 {% for x,y in roles %}
                                                     <label>
                                                         <input type="radio" name="product"
-                                                               class="card-input-element" value="{{ y }}" id="{{ x }}" />
+                                                               class="card-input-element" value="{{ y }}" id="{{ x }}"/>
                                                         <div class="panel panel-default card-input">
                                                             <div class="panel-body">
                                                                 {{ y }}
@@ -96,13 +96,11 @@
                                                         </div>
                                                     </label>
                                                 {% endfor %}
-
                                             </div>
-
                                         </div>
                                         <div class="mt-3">
                                             <button class="btn btn-primary btn-block" onclick="ingresar_rol()">
-                                            <span id="add_to_me"></span></button>
+                                                <span id="add_to_me"></span></button>
                                         </div>
 
                                     </div>
@@ -121,24 +119,24 @@
 {% block extrajs %}
     <script>
 
+        {% if roles %}
+            const button = document.querySelector('button')
+            button.disabled = true
+            document.getElementById("add_to_me").innerHTML = "<span> Selecciona una opción </span>";
+        {% endif %}
+        let valor = 0;
 
-    const button = document.querySelector('button')
-    button.disabled = true
-    document.getElementById("add_to_me").innerHTML = "<span> Selecciona una opción </span>";
+        $(".card-input-element") // select the radio by its id
+            .change(function () { // bind a function to the change event
+                if ($(this).is(":checked")) { // check if the radio is checked
+                    val = $(this).val(); // retrieve the value
+                    button.disabled = false
+                    document.getElementById("add_to_me").innerHTML = "<span>Ingresar como </span>" + val;
+                    valor = $(this).attr('id');
+                    console.log(valor)
 
-    let valor=0;
-
-    $(".card-input-element") // select the radio by its id
-    .change(function(){ // bind a function to the change event
-        if( $(this).is(":checked") ){ // check if the radio is checked
-            val = $(this).val(); // retrieve the value
-            button.disabled = false
-            document.getElementById("add_to_me").innerHTML = "<span>Ingresar como </span>" + val;
-            valor =  $(this).attr('id');
-            console.log(valor)
-
-        }
-    });
+                }
+            });
 
         function ingresar_rol() {
             let valor = $('input[name="product"]:checked').attr('id');
@@ -162,7 +160,7 @@
                             document.location.href = "../../especialidades/listar/";
                         } else {
                             if (valor == 3) {//Auditor
-                                document.location.href ="../../especialidades/listar/";
+                                document.location.href = "../../especialidades/listar/";
                             } else {
                                 if (valor == 4) {//Coordinador de facultad
                                     document.location.href = "../../facultades/listar/";
