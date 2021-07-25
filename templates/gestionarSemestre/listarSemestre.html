@@ -13,11 +13,11 @@
             visibility: hidden;
         }
 
-        .card-title{
+        .card-title {
             text-align: center;
         }
 
-        .card-text{
+        .card-text {
             text-align: center;
         }
 
@@ -138,11 +138,14 @@
                         <p class="card-text">Del {{ semestre.inicio }}</p>
                         <p class="card-text">al {{ semestre.fin }}</p>
                     </div>
-                    <div class="d-flex justify-content-center">
-                        <a class="btn btn-falcon-default btn-sm mr-2  text-body align-left" type="button"
-                           onclick="SemestresEliminar('{{ semestre.nombreCodigo }}', {{ semestre.pk }})"><span
-                                class="fas fa-trash mr-1"></span></a>
-                    </div>
+                    {% if request.user.rol_actual == 'Administrador' %}
+                        <div class="d-flex justify-content-center">
+                            <a class="btn btn-falcon-default btn-sm mr-2  text-body align-left" type="button"
+                               onclick="SemestresEliminar('{{ semestre.nombreCodigo }}', {{ semestre.pk }})"><span
+                                    class="fas fa-trash mr-1"></span></a>
+                        </div>
+                    {% endif %}
+
                 </div>
                 </a>
             </div>
@@ -420,9 +423,9 @@
                     semestrepk: semestrepk,
                 },
                 success: function (response) {
-                    if(response["tieneMediciones"]){
-                         $("#errorEliminar").modal('show');
-                    }else{
+                    if (response["tieneMediciones"]) {
+                        $("#errorEliminar").modal('show');
+                    } else {
                         location.reload();
                     }
                 },
