@@ -14,7 +14,7 @@
         <div class="card-body ">
             <div class="row justify-content-between align-items-center">
                 <div class="col-12">
-                    <h5 class="mb-2 mb-md-0 text-white">Historial de plan de Resultados</h5>
+                    <h5 class="mb-2 mb-md-0 text-white">Historial de Resultados del Estudiante</h5>
                 </div>
             </div>
         </div>
@@ -191,24 +191,16 @@
 
                         var botones ='';
                          if (instance[i]["fields"].estado == '1') {
-                            botones=  '<button class="btn btn-falcon-danger my-1 mr-2" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
-                            '<span class="fa fa-times"></span></button>'+
-                                '<div class="btn btn-falcon-primary my-1 mr-2" onclick="redirectVerPlan(' + instance[i]["pk"] + ')">'+
-                                '<span class="fa fa-eye"></span></div>' +
-                                '<div class="btn btn-falcon-default my-1 mr-2" data-toggle="tooltip"' +
-                                ' data-placement="top" title="Editar plan de Resultado" ' +
-                                'onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">' +
-                                '<span class="fa fa-pen"></span>' + '</div>';
-                        } else {
                             botones= '<button class="btn btn-falcon-danger my-1 mr-2" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
                             '<span class="fa fa-times"></span></button>'+
                                 '<div class="btn btn-falcon-primary my-1 mr-2" onclick="redirectVerPlan(' + instance[i]["pk"] + ')">'+
-                                '<span class="fa fa-eye"></span></div>' +
-
-                                '<div class="btn btn-falcon-default my-1 mr-2" data-toggle="tooltip"' +
-                                ' data-placement="top" title="Editar plan de Resultado" ' +
-                                'onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">' +
-                                '<span class="fa fa-pen"></span>' + '</div>';
+                                '<span class="fa fa-eye"></span></div>';
+                        } else {
+                            botones= '<button class="btn btn-falcon-success my-1" onclick="activarPlan(' + instance[i]["pk"] + ')"><span class="fa fa-power-off"> </span></button>' +
+                                '<button class="btn btn-falcon-danger my-1 mr-2" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
+                                '<span class="fa fa-times"></span></button>'+
+                                '<div class="btn btn-falcon-primary my-1 mr-2" onclick="redirectVerPlan(' + instance[i]["pk"] + ')">'+
+                                '<span class="fa fa-eye"></span></div>';
                         }
 
 
@@ -235,15 +227,6 @@
                         data += (
                             '<div class="my-1">' + instance[i]["fields"].descripcion + '</div>');
 
-
-
-                        if (instance[i]["fields"].estado == '1') {
-
-                        } else {
-                            data += (
-                                '<button class="btn btn-falcon-success my-1" onclick="activarPlan(' + instance[i]["pk"] + ')"><span class="fa fa-power-off"> </span></button>'
-                            );
-                        }
                         data += (
                             '</div>' +
                             '</div>' +
@@ -253,7 +236,7 @@
                     }
 
 
-                    data2 = ('<h5 class="ml-3 mt-2">Historial de ' + $("#cboEspecialidad option:selected").text() + '</h5>');
+                    data2 = ('<h5 class="ml-3 mt-2">' + $("#cboEspecialidad option:selected").text() + '</h5>');
                     $("#tituloEspecialidadMediciones").html(data2);
                     $("#listadoMediciones").html(data);
 
