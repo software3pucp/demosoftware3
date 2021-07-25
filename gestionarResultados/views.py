@@ -25,14 +25,14 @@ def validarCrear(request):
              #Si no existe plan de resultados se debe mostrar mensaje informativo
             return JsonResponse({'tipo':'1'},status=200)
         else:
-            # Si el plan de resultados ya tiene asociado planes de medicion
-            # Se debe mostar mensaje informativo
-            planes = PlanMedicion.objects.filter(planResultados_id=id_plan,estado__in=['1','2'])
-            print(f'planes :{len(planes)}')
-            if planes:
-                return JsonResponse({'tipo': '2'}, status=200)
-            else:
-                return JsonResponse({'tipo':'3'},status =200)
+            # # Si el plan de resultados ya tiene asociado planes de medicion
+            # # Se debe mostar mensaje informativo
+            # planes = PlanMedicion.objects.filter(planResultados_id=id_plan,estado__in=['1','2'])
+            # print(f'planes :{len(planes)}')
+            # if planes:
+            #     return JsonResponse({'tipo': '2'}, status=200)
+            # else:
+            return JsonResponse({'tipo':'3'},status =200)
 
 
 
