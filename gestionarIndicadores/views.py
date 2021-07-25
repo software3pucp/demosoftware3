@@ -7,7 +7,7 @@ from rest_framework.utils import json
 from gestionarEspecialidad.models import Especialidad
 from gestionarIndicadores.models import Indicador
 from gestionarNiveles.models import Nivel
-from gestionarResultados.models import ResultadoPUCP
+from gestionarResultados.models import ResultadoPUCP, PlanResultados
 from gestionarRubrica.models import Rubrica
 from django.contrib.auth.decorators import login_required
 
@@ -17,6 +17,7 @@ def editarIndicador(request, pk):
     indicador = Indicador.objects.get(pk=pk)
     especialidadpk = obtenerEspecialidadIndicador(indicador)
     planPk = obtenerPlanResultados(indicador)
+    plan = PlanResultados.objects.get(pk = planPk)
     id_resultado = indicador.resultado_id
     nivelLista = Nivel.objects.filter(estado='1', especialidad_id=especialidadpk,plaResultado_id=planPk).order_by('valor')
     rubrica = Rubrica.objects.filter(indicador_id=pk)
@@ -54,6 +55,7 @@ def editarIndicador(request, pk):
             'rubrica': rubrica,
             'hay_niveles': hay_niveles,
             'mensaje_aviso': mensaje_aviso,
+            'plan' : plan
         }
         return redirect('editarResultado', pk=id_resultado)
 
@@ -64,6 +66,7 @@ def editarIndicador(request, pk):
         'nivelLista': nivelLista2,
         'hay_niveles': hay_niveles,
         'mensaje_aviso': mensaje_aviso,
+        'plan': plan
     }
     return render(request, 'gestionarIndicadores/editarIndicador.html', context)
 
@@ -117,6 +120,8 @@ def agregarDescipcionNivel(indicardorpk, nivelpk, desc):
 def verIndicador(request, pk):
     indicador = Indicador.objects.get(pk=pk)
     especialidadpk = obtenerEspecialidadIndicador(indicador)
+    planPk = obtenerPlanResultados(indicador)
+    plan = PlanResultados.objects.get(pk = planPk)
     id_resultado = indicador.resultado_id
     nivelLista = Nivel.objects.filter(estado='1', especialidad_id=especialidadpk).order_by('valor')
     rubrica = Rubrica.objects.filter(indicador_id=pk)
@@ -147,6 +152,7 @@ def verIndicador(request, pk):
         'nivelLista': nivelLista2,
         'hay_niveles': hay_niveles,
         'mensaje_aviso': mensaje_aviso,
+        'plan': plan
     }
     return render(request, 'gestionarIndicadores/verIndicador.html', context)
 
