@@ -9,6 +9,7 @@ from gestionarEspecialidad.models import Especialidad, Auditor, Asistente
 from gestionarFacultad.models import Facultad
 from gestionarIndicadores.models import Indicador
 from gestionarNiveles.models import Nivel
+from gestionarPlanMedicion.models import PlanMedicion
 from gestionarResultados.models import ResultadoPUCP, PlanResultados
 from django.contrib.auth.decorators import login_required
 
@@ -19,15 +20,19 @@ from gestionarSemestre.models import Semestre
 def validarCrear(request):
     id_plan = int(request.POST['idPlan'])
     if request.POST:
+        print(id_plan)
         if id_plan == -1:
-            print(id_plan)
              #Si no existe plan de resultados se debe mostrar mensaje informativo
             return JsonResponse({'tipo':'1'},status=200)
         else:
-            #TODO
             # Si el plan de resultados ya tiene asociado planes de medicion
             # Se debe mostar mensaje informativo
-            return JsonResponse({'tipo':'3'},status =200)
+            planes = PlanMedicion.objects.filter(planResultados_id=id_plan,estado__in=['1','2'])
+            print(f'planes :{len(planes)}')
+            if planes:
+                return JsonResponse({'tipo': '2'}, status=200)
+            else:
+                return JsonResponse({'tipo':'3'},status =200)
 
 
 

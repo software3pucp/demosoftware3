@@ -242,7 +242,6 @@
     "pk": 9,
     "fields": {
       "nombre": "Desarrollo de Programas 1",
-      "responsable": "1",
       "especialidad": 5,
       "estado": "1"
     }
@@ -252,7 +251,6 @@
     "pk": 10,
     "fields": {
       "nombre": "Desarrollo de Programas 2",
-      "responsable": "1",
       "especialidad": 5,
       "estado": "1"
     }
@@ -262,7 +260,6 @@
     "pk": 11,
     "fields": {
       "nombre": "Tesis 1",
-      "responsable": "1",
       "especialidad": 5,
       "estado": "1"
     }
@@ -272,7 +269,6 @@
     "pk": 12,
     "fields": {
       "nombre": "Tesis 2",
-      "responsable": "1",
       "especialidad": 5,
       "estado": "1"
     }
@@ -282,7 +278,6 @@
     "pk": 13,
     "fields": {
       "nombre": "Control de Gestión Industrial",
-      "responsable": "1",
       "especialidad": 6,
       "estado": "1"
     }
@@ -292,7 +287,6 @@
     "pk": 14,
     "fields": {
       "nombre": "Investigación Operativa",
-      "responsable": "1",
       "especialidad": 6,
       "estado": "1"
     }
@@ -302,7 +296,6 @@
     "pk": 15,
     "fields": {
       "nombre": "Ingeniería Económica",
-      "responsable": "1",
       "especialidad": 6,
       "estado": "1"
     }
@@ -312,7 +305,6 @@
     "pk": 16,
     "fields": {
       "nombre": "Ingeniería de Transporte",
-      "responsable": "1",
       "especialidad": 7,
       "estado": "1"
     }
@@ -322,7 +314,6 @@
     "pk": 17,
     "fields": {
       "nombre": "Ingeniería Sismorresistente",
-      "responsable": "1",
       "especialidad": 7,
       "estado": "1"
     }
@@ -332,7 +323,6 @@
     "pk": 18,
     "fields": {
       "nombre": "Ingeniería Geotecnica",
-      "responsable": "1",
       "especialidad": 7,
       "estado": "1"
     }
@@ -342,7 +332,6 @@
     "pk": 19,
     "fields": {
       "nombre": "Taller 9",
-      "responsable": "1",
       "especialidad": 8,
       "estado": "1"
     }
@@ -352,7 +341,6 @@
     "pk": 20,
     "fields": {
       "nombre": "Taller 10",
-      "responsable": "1",
       "especialidad": 8,
       "estado": "1"
     }
@@ -362,7 +350,6 @@
     "pk": 21,
     "fields": {
       "nombre": "Seminario PFC - Teoría",
-      "responsable": "1",
       "especialidad": 8,
       "estado": "1"
     }
@@ -372,7 +359,6 @@
     "pk": 22,
     "fields": {
       "nombre": "Seminario PFC - Estructuras y Construcción",
-      "responsable": "1",
       "especialidad": 8,
       "estado": "1"
     }
