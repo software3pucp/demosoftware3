@@ -23,18 +23,10 @@
                     <div class="container-fluid">
                         <div class="row mt-2">
                             <input name="estado" type="hidden" id="estado" value="{{ estado }}">
-                            <label for="name">Nombre</label>
+                            <label for="name">Nombre: </label>
                             <input name="name" class="form-control p-3" id="name" type="text"
                                    placeholder="Ingrese el nombre del curso" required/>
                         </div>
-                    </div>
-                    <div class="form-group mt-2">
-                        <label for="exampleFormControlSelect1">Seleccione responsable:</label>
-                        <select name="responsable" class="form-control" id="exampleFormControlSelect1">
-                            {% for responsable in ListaUsuarios %}
-                                <option value={{ responsable.pk }}>{{ responsable.first_name }} {{ responsable.last_name }}</option>
-                            {% endfor %}
-                        </select>
                     </div>
                 </div>
                 <div class="wrapper">

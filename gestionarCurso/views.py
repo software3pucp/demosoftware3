@@ -41,9 +41,8 @@ def agregarCurso(request, id_especialidad):
     if request.POST:
         if ('name' in request.POST):
             nombre = request.POST['name']
-            id_responsable = request.POST['responsable']
             especialidad = Especialidad.objects.get(pk=id_especialidad)
-            Curso.objects.create(nombre=nombre, responsable=id_responsable, especialidad=especialidad,
+            Curso.objects.create(nombre=nombre, especialidad=especialidad,
                                  estado=request.POST['estado'])
             return redirect('listarEspecialidadxCurso',id_especialidad)
 
@@ -65,16 +64,12 @@ def editarCurso(request, id_curso):
     media_path = MEDIA_URL
     if request.POST:
         nuevo_nombre = request.POST["name"]
-        nuevo_responsable = request.POST["responsable"]
         curso.nombre = nuevo_nombre
-        curso.responsable = nuevo_responsable
         curso.save()
         return redirect('listarEspecialidadxCurso', id_especialidad)
 
     context = {
         'curso': curso,
-        'ListaUsuarios': User.objects.all(),
-        'id_responsable': curso.responsable,
         'estado':estado
     }
     return render(request, 'gestionarCurso/editarCurso.html', context)
