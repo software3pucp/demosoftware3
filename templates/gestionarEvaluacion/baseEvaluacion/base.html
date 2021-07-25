@@ -474,7 +474,7 @@
                             <div class="mb-2" id="nombreNuevo"></div>
                         </div>
                         <div class="row d-flex justify-content-around mt-1">
-                            
+
                         </div>
                     </div>
                 </div>
@@ -746,6 +746,7 @@
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     idAlumno: idAlumno,
+                    horario: $("#cboHorario").val(),
                 },
                 success: function (response) {
                     console.log("Se ha eliminado correctamente!");

@@ -195,10 +195,13 @@ def editarAlumno(request):
     return JsonResponse({}, status=200)
 
 def eliminarAlumno(request):
-    alumno = RespuestaEvaluacion.objects.get(pk = request.POST["idAlumno"])
-    listaA = RespuestaEvaluacion.objects.filter(codigoAlumno=alumno.codigoAlumno, estado=1)
-    for als in listaA:
-        als.delete()
+    horariopk= request.POST['horario']
+    print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+    print(horariopk)
+    codigo_alumno = RespuestaEvaluacion.objects.filter(pk = request.POST["idAlumno"], horario_id=horariopk)[0].codigoAlumno
+    alumnos = RespuestaEvaluacion.objects.filter(codigoAlumno= codigo_alumno, horario_id=horariopk)
+    for alumno in alumnos:
+        alumno.delete()
     return JsonResponse({}, status=200)
 
 def muestraRubrica(request):
@@ -244,12 +247,18 @@ def importarAlumno(request):
     archivo = request.FILES['archivo']
     data = pd.read_csv(archivo, sep="\t",skiprows=6,engine='c',encoding_errors='ignore',encoding='latin-1')
     for index,row in data.iterrows():
-        for indicador in listaIndicador:
-            RespuestaEvaluacion.objects.create(nombreAlumno=row[1],
-                                                           codigoAlumno=row[0],
-                                                           horario_id=request.POST["horariopk"],
-                                                           indicador_id=indicador.pk,
-                                                           planMedicion_id=request.POST["plan"])
+
+        alumnosEncontrados = RespuestaEvaluacion.objects.filter(codigoAlumno=row[0],
+                                                                horario_id=request.POST["horariopk"],
+                                                                planMedicion_id=request.POST["plan"])
+
+        if (len(alumnosEncontrados) == 0):
+            for indicador in listaIndicador:
+                RespuestaEvaluacion.objects.create(nombreAlumno=row[1],
+                                                               codigoAlumno=row[0],
+                                                               horario_id=request.POST["horariopk"],
+                                                               indicador_id=indicador.pk,
+                                                               planMedicion_id=request.POST["plan"])
     return JsonResponse({}, status=200)
 
 def subirEvidencia(request):
