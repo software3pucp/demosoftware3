@@ -31,7 +31,7 @@
         <div class="card-body ">
             <div class="row justify-content-between align-items-center">
                 <div class="col-12">
-                    <h5 class="mb-2 mb-md-0 text-white">{{plan.descripcion}}</h5>
+                    <h5 class="mb-2 mb-md-0 text-white">{{ plan.descripcion }}</h5>
                 </div>
             </div>
         </div>
@@ -64,9 +64,11 @@
                         <div class="col-md-10 mb-3">
                             <div class="form-group">
                                 {% if request.user.rol_actual == 'Coordinador de facultad' %}
-                                    <input name="codigo" class="form-control" id="codigo" type="text" value="{{ resultado.codigo }}" disabled>
+                                    <input name="codigo" class="form-control" id="codigo" type="text"
+                                           value="{{ resultado.codigo }}" disabled>
                                 {% else %}
-                                    <input name="codigo" class="form-control" id="codigo" type="text" value="{{ resultado.codigo }}">
+                                    <input name="codigo" class="form-control" id="codigo" type="text"
+                                           value="{{ resultado.codigo }}">
                                 {% endif %}
                             </div>
                         </div>
@@ -80,9 +82,12 @@
                         <div class="col-md-10">
                             <div class="form-group ">
                                 {% if request.user.rol_actual == 'Coordinador de facultad' %}
-                                    <textarea name="descripcion" id="descripcion" class="form-control" aria-label="With textarea" rows="4" disabled>{{ resultado.descripcion }}</textarea>
+                                    <textarea name="descripcion" id="descripcion" class="form-control"
+                                              aria-label="With textarea" rows="4"
+                                              disabled>{{ resultado.descripcion }}</textarea>
                                 {% else %}
-                                    <textarea name="descripcion" id="descripcion" class="form-control" aria-label="With textarea" rows="4">{{ resultado.descripcion }}</textarea>
+                                    <textarea name="descripcion" id="descripcion" class="form-control"
+                                              aria-label="With textarea" rows="4">{{ resultado.descripcion }}</textarea>
                                 {% endif %}
                             </div>
                         </div>
@@ -117,7 +122,7 @@
                             <th class="sort pr-1 align-middle">N°</th>
                             <th class="sort pr-1 align-middle">Codigo</th>
                             <th class="sort pr-1 align-middle">Descripción</th>
-                            <th class="sort pr-1 align-middle text-center">Acción</th>
+                            <th class="sort pr-1 align-middle text-right pr-8">Acción</th>
                         </tr>
                         </thead>
                         <tbody id="purchases">
@@ -136,19 +141,17 @@
                                         </div>
                                     </td>
                                 {% else %}
-                                    <td class="align-middle text-right fs-0">
-                                        <div class="row">
-                                            <div class="col">
-                                                <a href="{% url 'editarIndicador' pk=indicador.pk %}"
-                                                   class="badge badge rounded-capsule badge-soft-info">Editar</a>
-                                            </div>
-                                            <div class="col">
-                                                <button class="badge badge rounded-capsule badge-soft-danger"
-                                                        onclick="indicadoresEliminar('{{ indicador.codigo }}',{{ indicador.pk }} )">
-                                                        Eliminar
-                                                </button>
-                                            </div>
-                                        </div>
+                                    <td class="">
+                                    <div class="row float-right mr-4">
+                                        <button class="btn btn-falcon-primary mr-2 mb-1 " type="button"><a class="text-decoration-none"
+                                                href="{% url 'editarIndicador' pk=indicador.pk %}">Editar</a></button>
+
+                                        <button class="btn btn-falcon-primary mr-2 mb-1" type="button"
+                                                onclick="indicadoresEliminar('{{ indicador.codigo }}',{{ indicador.pk }} )">
+                                            Eliminar
+                                        </button>
+                                    </div>
+
                                     </td>
                                 {% endif %}
                             </tr>
