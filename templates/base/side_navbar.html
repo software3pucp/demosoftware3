@@ -522,7 +522,7 @@
 
                 {% endif %}
 
-            {% if request.user.n_Roles != '1' %}
+            {% if request.user.n_Roles > 1 %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'selectrol' %}">
                         <div class="d-flex align-items-center">
