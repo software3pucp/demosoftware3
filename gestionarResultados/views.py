@@ -99,59 +99,92 @@ def resultadosActivos(request):
         }
         return render(request, 'gestionarResultados/resultadosActivosCE.html', context)
 
-def duplicarPlan(request):
+def duplicarPlan(request,pk):
 
-    planPk = 1
+    if (request.user.rol_actual == "Asistente de acreditación"):
+        usuario = request.user
+        especialidades = []
+        items = Asistente.objects.filter(user_id=usuario.pk)
+        for item in items:
+            especialidades.append(item.especialidad)
+        context = {
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarResultados/duplicarPlan.html', context)
 
-    # Duplicado del plan de resultados seleccionado
-    plan = PlanResultados.objects.get(pk=planPk)
-    _plan = PlanResultados.objects.get(pk=plan.pk)
-    _plan.pk = None
-    _plan.descripcion = "Copia"
-    _plan.save()
-    # Desactivando plan de resultados seleccionado
-    plan.estado = '2'
-    plan.save()
-
-    # Duplicado de niveles del plan de resultados seleccionado
-    niveles = Nivel.objects.filter(plaResultado_id=plan.pk,estado='1')
-    for nivel in niveles:
-        _nivel = Nivel.objects.get(pk=nivel.pk)
-        _nivel.pk = None
-        _nivel.plaResultado_id  =_plan.pk
-        _nivel.save()
-    _niveles = Nivel.objects.filter(plaResultado_id=_plan.pk)
-
-    resultados = ResultadoPUCP.objects.filter(planResultado_id=planPk,estado ='1')
-    for resultado in resultados:
-        #Duplicado del resultado actual
-        _resultado = ResultadoPUCP.objects.get(pk=resultado.pk)
-        _resultado.pk = None
-        _resultado.planResultado_id = _plan.pk
-        _resultado.save()
-        indicadores = Indicador.objects.filter(resultado_id=resultado.pk,estado='1')
-        for indicador in indicadores:
-            #Duplicado del indicador actual
-            _indicador = Indicador.objects.get(pk=indicador.pk)
-            _indicador.pk = None
-            _indicador.resultado_id = _resultado.pk
-            _indicador.save()
-            for i in range(len(niveles)):
-                try:
-                    rubrica = Rubrica.objects.get(nivel_id=niveles[i].pk,indicador_id=indicador.pk)
-                    _rubrica = Rubrica.objects.get(pk=rubrica.pk)
-                    _rubrica.pk = None
-                    _rubrica.nivel_id=_niveles[i].pk
-                    _rubrica.indicador_id=_indicador.pk
-                    _rubrica.save()
-                except:
-                    print("Nivel no tiene asociado una rúbrica")
+    if (request.user.rol_actual == "Auditor"):
+        usuario = request.user
+        especialidades = []
+        items = Auditor.objects.filter(user_id=usuario.pk)
+        for item in items:
+            especialidades.append(item.especialidad)
+        context = {
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarResultados/duplicarPlan.html', context)
 
 
+    if (request.user.rol_actual == "Coordinador de especialidad"):
+        usuario = request.user
+        grupo = Group.objects.get(pk=5)
+        especialidades = Especialidad.objects.filter(responsable=usuario.pk, estado='1', pk=pk)
+        context = {
+            'especialidades': especialidades,
+        }
+        return render(request, 'gestionarResultados/duplicarPlan.html', context)
 
 
-
-    return redirect('resultadosActivos')
+    # planPk = 1
+    #
+    # # Duplicado del plan de resultados seleccionado
+    # plan = PlanResultados.objects.get(pk=planPk)
+    # _plan = PlanResultados.objects.get(pk=plan.pk)
+    # _plan.pk = None
+    # _plan.descripcion = "Copia"
+    # _plan.save()
+    # # Desactivando plan de resultados seleccionado
+    # plan.estado = '2'
+    # plan.save()
+    #
+    # # Duplicado de niveles del plan de resultados seleccionado
+    # niveles = Nivel.objects.filter(plaResultado_id=plan.pk,estado='1')
+    # for nivel in niveles:
+    #     _nivel = Nivel.objects.get(pk=nivel.pk)
+    #     _nivel.pk = None
+    #     _nivel.plaResultado_id  =_plan.pk
+    #     _nivel.save()
+    # _niveles = Nivel.objects.filter(plaResultado_id=_plan.pk)
+    #
+    # resultados = ResultadoPUCP.objects.filter(planResultado_id=planPk,estado ='1')
+    # for resultado in resultados:
+    #     #Duplicado del resultado actual
+    #     _resultado = ResultadoPUCP.objects.get(pk=resultado.pk)
+    #     _resultado.pk = None
+    #     _resultado.planResultado_id = _plan.pk
+    #     _resultado.save()
+    #     indicadores = Indicador.objects.filter(resultado_id=resultado.pk,estado='1')
+    #     for indicador in indicadores:
+    #         #Duplicado del indicador actual
+    #         _indicador = Indicador.objects.get(pk=indicador.pk)
+    #         _indicador.pk = None
+    #         _indicador.resultado_id = _resultado.pk
+    #         _indicador.save()
+    #         for i in range(len(niveles)):
+    #             try:
+    #                 rubrica = Rubrica.objects.get(nivel_id=niveles[i].pk,indicador_id=indicador.pk)
+    #                 _rubrica = Rubrica.objects.get(pk=rubrica.pk)
+    #                 _rubrica.pk = None
+    #                 _rubrica.nivel_id=_niveles[i].pk
+    #                 _rubrica.indicador_id=_indicador.pk
+    #                 _rubrica.save()
+    #             except:
+    #                 print("Nivel no tiene asociado una rúbrica")
+    #
+    #
+    #
+    #
+    #
+    # return redirect('resultadosActivos')
 
 def eliminarResultado(request):
     resultadoPk = request.POST['resultadopk']

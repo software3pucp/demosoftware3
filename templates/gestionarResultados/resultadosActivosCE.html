@@ -204,8 +204,10 @@
             $("#eliminarResultado").modal('hide');
         });
 
-        $("#btnDuplicar").on('click', function () {
-           document.location.href = "../../gestionarResultados/duplicar/"
+        $("#btnDuplicar").on('click', function (e) {
+            e.preventDefault();
+            var pk_especialidad = $("#cboEspecialidad").val();
+            document.location.href = "../../gestionarResultados/duplicar/" + pk_especialidad;
         });
 
         $("#btnNuevoCero").on('click', function () {
