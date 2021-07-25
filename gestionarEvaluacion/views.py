@@ -196,10 +196,9 @@ def editarAlumno(request):
 
 def eliminarAlumno(request):
     alumno = RespuestaEvaluacion.objects.get(pk = request.POST["idAlumno"])
-    listaA = RespuestaEvaluacion.objects.filter(nombreAlumno=alumno.nombreAlumno, estado=1)
+    listaA = RespuestaEvaluacion.objects.filter(codigoAlumno=alumno.codigoAlumno, estado=1)
     for als in listaA:
-        als.estado = 0
-        als.save()
+        als.delete()
     return JsonResponse({}, status=200)
 
 def muestraRubrica(request):
