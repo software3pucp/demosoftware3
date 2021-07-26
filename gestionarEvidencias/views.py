@@ -16,10 +16,11 @@ def evidenciasxHorario(request, id_curso, id_horario):
 
     tiene_evidencias = False
     # curso = Curso.objects.get(pk=id_curso)
-    plan_medicion_curso = PlanMedicionCurso.objects.get(curso_id=id_curso)
-    semestre = plan_medicion_curso.semestre
-    curso = plan_medicion_curso.curso
     horario = Horario.objects.get(pk=id_horario)
+    plan_medicion_curso = PlanMedicionCurso.objects.get(pk=horario.curso_id)
+    semestre = plan_medicion_curso.semestre
+    curso = Curso.objects.get(pk=plan_medicion_curso.curso_id)
+
     listaEvidencias = EvidenciasxHorario.objects.filter(horario_id=id_horario, estado=1)
     if (len(listaEvidencias) > 0):
         tiene_evidencias = True
