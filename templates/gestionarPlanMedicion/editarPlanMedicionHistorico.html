@@ -208,6 +208,7 @@
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     historicoPK: '{{ historico.pk }}',
                     semestrePk: $("#cboSemestre").val(),
+                    especialidad: '{{ especialidad.pk }}'
                 },
                 success: function (response) {
                     var instance = JSON.parse(response["semestreAgregado"]);

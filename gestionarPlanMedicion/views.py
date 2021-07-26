@@ -364,19 +364,19 @@ def editarHistorico(request,pk):
     especialidad = Especialidad.objects.get(pk=historico.especialidad_id)
 
     listaSemestre0 = (Semestre.objects.filter())
-    listaSem = []
-
-    for sem in listaSemestre0:
-        planSemestre = PlanMedicion.semestre.through.objects.filter(semestre_id=sem.pk)
-        invalido = False
-        for plan in planSemestre:
-            planEsp = list(PlanMedicion.objects.filter(pk=plan.planmedicion_id,especialidad_id=especialidad.pk))
-            if (len(planEsp)==1):
-                invalido = True
-                break
-        if(not invalido):
-            listaSem.append(sem)
-    listaSemestre =reversed(listaSem)
+    # listaSem = []
+    #
+    # for sem in listaSemestre0:
+    #     planSemestre = PlanMedicion.semestre.through.objects.filter(semestre_id=sem.pk)
+    #     invalido = False
+    #     for plan in planSemestre:
+    #         planEsp = list(PlanMedicion.objects.filter(pk=plan.planmedicion_id,especialidad_id=especialidad.pk))
+    #         if (len(planEsp)==1):
+    #             invalido = True
+    #             break
+    #     if(not invalido):
+    #         listaSem.append(sem)
+    listaSemestre =reversed(listaSemestre0)
     hay_semestres=False
     if (len(listaSemestre0)>0):
         hay_semestres = True
@@ -393,12 +393,15 @@ def editarHistorico(request,pk):
     return render(request, 'gestionarPlanMedicion/editarPlanMedicionHistorico.html', context)
 
 def agregarSemestrePlan(request):
+    especialidad = Especialidad.objects.get(pk=request.POST['especialidad'])
     historico = PlanMedicion.objects.get(pk=request.POST['historicoPK'])
     semestre = Semestre.objects.get(pk=request.POST['semestrePk'])
-    #Validar que semestre selecionado no este en plan de medicion
-    planSemestre = PlanMedicion.semestre.through.objects.filter(semestre_id=semestre.pk,planmedicion_id=historico.pk)
-    if planSemestre:
-        return JsonResponse({"resp":"Semestre seleccionado ya está asociado al plan de medición"},status=500)
+    #Validar que semestre selecionado no este en  ningun plan de medicion
+    planes = PlanMedicion.objects.filter(especialidad_id=especialidad.pk,estado__in=["1","2"])
+    for plan in planes:
+        planSemestre = PlanMedicion.semestre.through.objects.filter(semestre_id=semestre.pk,planmedicion_id=plan.pk)
+        if planSemestre:
+            return JsonResponse({"resp":"Semestre seleccionado ya está asociado a un  plan de medición"},status=500)
     historico.semestre.add(semestre)
     ser_instance = serializers.serialize('json', [semestre, ])
     # print(historico.semestre.all().count())
