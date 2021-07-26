@@ -18,150 +18,150 @@
 
 {#Bloque de extra body -> HTML#}
 {% block body %}
-  <input id="idPlan" name="idPlan" type="hidden">
-  <div class="card mb-3 bg-card-gradient">
-    <div class="card-body ">
-      <div class="row justify-content-between align-items-center">
-        <div class="col">
-          <h5 class="mb-2 mb-md-0 text-white">Resultados del estudiante</h5>
-        </div>
-        <div class="col">
+    <input id="idPlan" name="idPlan" type="hidden">
+    <div class="card mb-3 bg-card-gradient">
+        <div class="card-body ">
+            <div class="row justify-content-between align-items-center">
+                <div class="col">
+                    <h5 class="mb-2 mb-md-0 text-white">Resultados del estudiante</h5>
+                </div>
+                <div class="col">
 
-            <div class="col-12 ">
-            <div class="d-flex justify-content-end">
-            <a href="" data-toggle="modal" data-target="#nuevaVersion"
-               type="button">
+                    <div class="col-12 ">
+                        <div class="d-flex justify-content-end">
+                            <a href="" data-toggle="modal" data-target="#nuevaVersion"
+                               type="button">
                       <span id="btnNuevaVersion" class="btn btn-falcon-success mr-1">
                                                         Nueva versión
                         </span> </a>
 
 
-          <a id="btnHistoricos" class="btn btn-falcon-primary mr-1" >
-            Históricos
-          </a>
+                            <a id="btnHistoricos" class="btn btn-falcon-primary mr-1">
+                                Históricos
+                            </a>
 
-          </div>
-          </div>
-        </div>
-    </div>
-    </div>
-    </div>
-
-
-  <div class="card">
-    <div class="card-body">
-      <div class="d-flex justify-content-center">
-        <div class="col-12">
-          <div class="row">
-            <div class="col-sm-12 col-lg-6 pl-4 pr-4">
-              <div class="row">
-                <label for="cboEspecialidad">Especialidad:</label>
-              </div>
-              <div class="row">
-                <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
-                        name="cboEspecialidad"
-                        onchange="listarResultados()">
-                  {% for especialidad in especialidades %}
-                    <option value={{ especialidad.pk }}>{{ especialidad.nombre }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12 col-lg-10 px-0" id="tituloEspecialidadMediciones"></div>
-
-
-
-              <div class="col-12 ">
-                <div class="d-flex justify-content-end">
-                  <span class="btn btn-primary" onclick="crearResultado()">Crear Resultado</span>
+                        </div>
+                    </div>
                 </div>
-              </div>
-
-          </div>
-
-          <div id="listadoResultados"></div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <!-- Modal Eliminar Resultado -->
 
-  <div class="modal fade" id="eliminarResultado" tabindex="-1" role="dialog" aria-labelledby="eliminarResultadoLabel"
-       aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="eliminarResultadoLabel"></h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
-              class="font-weight-light" aria-hidden="true">&times;</span></button>
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6 pl-4 pr-4">
+                            <div class="row">
+                                <label for="cboEspecialidad">Especialidad:</label>
+                            </div>
+                            <div class="row">
+                                <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad"
+                                        name="cboEspecialidad"
+                                        onchange="listarResultados()">
+                                    {% for especialidad in especialidades %}
+                                        <option value={{ especialidad.pk }}>{{ especialidad.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-10 px-0" id="tituloEspecialidadMediciones"></div>
+
+
+                        <div class="col-12 ">
+                            <div class="d-flex justify-content-end">
+                                <span class="btn btn-primary" onclick="crearResultado()">Crear Resultado</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="listadoResultados"></div>
+                </div>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
-          <button id="btnEliminarResultado" class="btn btn-primary btn-sm" type="button">Confirmar</button>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
-       aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header bg-soft-danger" id="tituloError">
-          <h5 class="modal-title label-primary" id="errorModalLabel"></h5>
+    <!-- Modal Eliminar Resultado -->
+
+    <div class="modal fade" id="eliminarResultado" tabindex="-1" role="dialog" aria-labelledby="eliminarResultadoLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarResultadoLabel"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                    <button id="btnEliminarResultado" class="btn btn-primary btn-sm" type="button">Confirmar</button>
+                </div>
+            </div>
         </div>
-        <div class="modal-body bg-light" id="mensajeError">
-          <p></p>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary btn-sm" type="button" data-dismiss="modal">Aceptar</button>
-        </div>
-      </div>
     </div>
-  </div>
+
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-soft-danger" id="tituloError">
+                    <h5 class="modal-title label-primary" id="errorModalLabel"></h5>
+                </div>
+                <div class="modal-body bg-light" id="mensajeError">
+                    <p></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-sm" type="button" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal Nueva Version -->
 
-  <div class="modal fade" id="nuevaVersion" tabindex="-1" role="dialog" aria-labelledby="nuevaVersioLabel"
-       aria-hidden="true">
+    <div class="modal fade" id="nuevaVersion" tabindex="-1" role="dialog" aria-labelledby="nuevaVersioLabel"
+         aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
+    <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="nuevaVersioLabel">Crear un nuevo Programa de Resultados</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
-              class="font-weight-light" aria-hidden="true">&times;</span></button>
+            <h5 class="modal-title" id="nuevaVersioLabel">Crear un nuevo Programa de Resultados</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                    class="font-weight-light" aria-hidden="true">&times;</span></button>
         </div>
         <div class="card-body">
-          <div class="row">
-            <div class="col-md">
-              <img class="img-fluid z-depth-1" src="{% static '/img/illustrations/crear.jpg' %}">
+            <div class="row">
+                <div class="col-md">
+                    <img class="img-fluid z-depth-1" src="{% static '/img/illustrations/crear.jpg' %}">
+                </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              ¿Está seguro que desea crear un nuevo Programa de Resultados?
-              <hr>
-              <ul>
-                <li>Si desea crear un nuevo programa a partir de una versión anterior, seleccione <strong><i>Copiar
-                    </i></strong>.
-                </li>
-                  <li>Si desea crear un  nuevo Programa de Resultados vacío, seleccione <strong><i>Nuevo</i></strong>.
-                </li>
-              </ul>
+            <div class="row">
+                <div class="col">
+                    ¿Está seguro que desea crear un nuevo Programa de Resultados?
+                    <hr>
+                    <ul>
+                        <li>Si desea crear un nuevo programa a partir de una versión anterior, seleccione <strong><i>Copiar
+                        </i></strong>.
+                        </li>
+                        <li>Si desea crear un nuevo Programa de Resultados vacío, seleccione
+                            <strong><i>Nuevo</i></strong>.
+                        </li>
+                    </ul>
+                </div>
             </div>
-          </div>
         </div>
         <div class="modal-footer">
-          <div class="row justify-content-around">
-            <div class="col">
-              <button id="btnDuplicar" class="btn btn-primary btn-sm" type="button">Copiar</button>
-              <button id="btnNuevoCero" class="btn btn-primary btn-sm" type="button">Nuevo</button>
-              <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+            <div class="row justify-content-around">
+                <div class="col">
+                    <button id="btnDuplicar" class="btn btn-primary btn-sm" type="button">Copiar</button>
+                    <button id="btnNuevoCero" class="btn btn-primary btn-sm" type="button">Nuevo</button>
+                    <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                </div>
             </div>
-          </div>
         </div>
     </div>
 
@@ -176,7 +176,7 @@
             listarResultados();
         });
 
-        function crearResultado(){
+        function crearResultado() {
             $.ajax({
                 type: 'POST',
                 url: "{% url 'validarCrear' %}",
@@ -191,14 +191,14 @@
                         $('#mensajeError').empty()
                         $('#mensajeError').append(`<p>No existe un programa de resultados del estudiante. Seleccione <b><i>Nueva versión</i></b> para crear una nuevo programa</p>`)
                         $("#successModal").modal({backdrop: 'static', keyboard: false, show: true});
-                    } else if (response.tipo == "2"){
+                    } else if (response.tipo == "2") {
                         $('#tituloError').empty()
                         $('#tituloError').append(`<h5 class="modal-title label-primary" id="errorModalLabel"><b>Alerta</b></h5>`)
                         $('#mensajeError').empty()
                         $('#mensajeError').append(`<p>El programa actual de resultados del estudiante ya está siendo </p>`)
                         $("#successModal").modal({backdrop: 'static', keyboard: false, show: true});
-                    } else if (response.tipo == "3"){
-                        document.location.href = "../../gestionarResultados/crear/" +$('#idPlan').val() ;
+                    } else if (response.tipo == "3") {
+                        document.location.href = "../../gestionarResultados/crear/" + $('#idPlan').val();
                     }
                 },
                 error: function (response) {
@@ -292,32 +292,39 @@
                     var numero = instance.length;
                     var data = '';
                     var data2 = '';
-                    for (i = 0; i < numero; i++) {
-                        data += (
-                            '<div class="card my-3 overflow-hidden" style="min-width: 12rem">' +
-                            '<div class="bg-holder bg-card"' + 'style="background-image:url(' + '{% static '/img/illustrations/corner-2.png' %}' + ');">' + '</div>' +
-                            '<div class="card-body position-relative">' +
-                            '<div class="row justify-content-around"><div class="col"><h5>' + instance[i]["fields"].codigo + '</h5></div>' +
-                            '<div class="d-flex flex-row-reverse">'+
-                            '<button class="btn btn-falcon-danger my-1 mr-2 tooltip-inner arrow"  data-toggle="tooltip" data-placement="top" title="Eliminar">' + '<div class="fa fa-times"></div></button>'+
-                            '<button class="btn btn-falcon-primary mr-1 my-1 tooltip-inner arrow" data-toggle="tooltip" data-placement="top" title="Editar" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')"><div class="fa fa-pen"></div></button>' +
-                            '</div>'+'</div>' +
-                            '<div class="my-1">' + instance[i]["fields"].descripcion + '</div>'
-                        );
-                        if (instance2[i] == false) {
+                    if (numero == 0) {
+                        data = '<div class="d-flex justify-content-center mt-4">' +
+                            '<h6>No se han registrado resultados del estudiante para esta especialidad</h6>' +
+                            '</div>';
+                        $("#listadoResultados").html(data);
+                    } else {
+                        for (i = 0; i < numero; i++) {
                             data += (
-                                '<div class="alert alert-warning" role="alert">Nota: El resultado no tiene indicadores asociados.' +
-                                '                                Dar click en editar si desea asociar indicadores.</div>')
-                        }
+                                '<div class="card my-3 overflow-hidden" style="min-width: 12rem">' +
+                                '<div class="bg-holder bg-card"' + 'style="background-image:url(' + '{% static '/img/illustrations/corner-2.png' %}' + ');">' + '</div>' +
+                                '<div class="card-body position-relative">' +
+                                '<div class="row justify-content-around"><div class="col"><h5>' + instance[i]["fields"].codigo + '</h5></div>' +
+                                '<div class="d-flex flex-row-reverse">' +
+                                '<button class="btn btn-falcon-danger my-1 mr-2 tooltip-inner arrow"  data-toggle="tooltip" data-placement="top" title="Eliminar">' + '<div class="fa fa-times"></div></button>' +
+                                '<button class="btn btn-falcon-primary mr-1 my-1 tooltip-inner arrow" data-toggle="tooltip" data-placement="top" title="Editar" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')"><div class="fa fa-pen"></div></button>' +
+                                '</div>' + '</div>' +
+                                '<div class="my-1">' + instance[i]["fields"].descripcion + '</div>'
+                            );
+                            if (instance2[i] == false) {
+                                data += (
+                                    '<div class="alert alert-warning" role="alert">Nota: El resultado no tiene indicadores asociados.' +
+                                    '                                Dar click en editar si desea asociar indicadores.</div>')
+                            }
 
-                        data += (
-                            '                    </div>' +
-                            '                </div>' +
-                            '        </div>')
+                            data += (
+                                '                    </div>' +
+                                '                </div>' +
+                                '        </div>')
+                        }
+                        data2 = '<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>';
+                        $("#tituloEspecialidadResultados").html(data2);
+                        $("#listadoResultados").html(data);
                     }
-                    data2 = '<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>';
-                    $("#tituloEspecialidadResultados").html(data2);
-                    $("#listadoResultados").html(data);
                 },
                 error: function (response) {
                     // alert the error if any error occured

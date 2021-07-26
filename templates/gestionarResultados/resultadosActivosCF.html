@@ -52,13 +52,13 @@
                     <div class="row">
                         <div class="col-sm-12 col-lg-10 px-0" id="tituloEspecialidadMediciones"></div>
 
-                            <div class="col-12 ">
-                                <div class="d-flex justify-content-end">
+                        <div class="col-12 ">
+                            <div class="d-flex justify-content-end">
                                     <span id="btnHistoricos" class="btn btn-primary mr-1">
                                     Históricos
                                     </span>
-                                </div>
                             </div>
+                        </div>
 
                     </div>
                     <div id="listadoResultados"></div>
@@ -204,28 +204,35 @@
                     var numero = instance.length;
                     var data = '';
                     var data2 = '';
-                    for (i = 0; i < numero; i++) {
-                        data += (
-                            '<div class="card my-3 overflow-hidden" style="min-width: 12rem">' +
-                            '<div class="bg-holder bg-card"' + 'style="background-image:url(' + '{% static '/img/illustrations/corner-2.png' %}' + ');">' + '</div>' +
-                            '<div class="card-body position-relative">' +
-                            '<h5>' + instance[i]["fields"].codigo + '</h5>' + '<div class="my-1">' + instance[i]["fields"].descripcion + '</div>'
-                        );
-                        if (instance2[i] == false) {
+                    if (numero == 0) {
+                        data = '<div class="d-flex justify-content-center mt-4">' +
+                            '<h6>No se han registrado resultados del estudiante para esta especialidad</h6>' +
+                            '</div>';
+                        $("#listadoResultados").html(data);
+                    } else {
+                        for (i = 0; i < numero; i++) {
                             data += (
-                                '<div class="alert alert-warning" role="alert">Nota: El resultado no tiene indicadores asociados.' +
-                                '                                Dar click en editar si desea asociar indicadores.</div>')
-                        }
+                                '<div class="card my-3 overflow-hidden" style="min-width: 12rem">' +
+                                '<div class="bg-holder bg-card"' + 'style="background-image:url(' + '{% static '/img/illustrations/corner-2.png' %}' + ');">' + '</div>' +
+                                '<div class="card-body position-relative">' +
+                                '<h5>' + instance[i]["fields"].codigo + '</h5>' + '<div class="my-1">' + instance[i]["fields"].descripcion + '</div>'
+                            );
+                            if (instance2[i] == false) {
+                                data += (
+                                    '<div class="alert alert-warning" role="alert">Nota: El resultado no tiene indicadores asociados.' +
+                                    '                                Dar click en editar si desea asociar indicadores.</div>')
+                            }
 
-                        data += (
-                            '                        <button class="btn btn-falcon-primary mr-1 my-1" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')">Ver Detalle</button>' +
-                            '                    </div>' +
-                            '                </div>' +
-                            '        </div>')
+                            data += (
+                                '                        <button class="btn btn-falcon-primary mr-1 my-1" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')">Ver Detalle</button>' +
+                                '                    </div>' +
+                                '                </div>' +
+                                '        </div>')
+                        }
+                        data2 = '<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>';
+                        $("#tituloEspecialidadResultados").html(data2);
+                        $("#listadoResultados").html(data);
                     }
-                    data2 = '<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>';
-                    $("#tituloEspecialidadResultados").html(data2);
-                    $("#listadoResultados").html(data);
                 },
                 error: function (response) {
                     // alert the error if any error occured
