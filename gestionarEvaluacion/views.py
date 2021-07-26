@@ -29,6 +29,7 @@ import xlrd
 import pandas as pd
 @login_required
 def evaluar(request,pk):
+    print(request.user.rol_actual)
     media_path = MEDIA_URL
     listaAlumno = reversed(RespuestaEvaluacion.objects.filter(estado=1))
     cursoSeleccionado = Curso.objects.get(pk=pk)
@@ -82,10 +83,14 @@ def evaluar(request,pk):
         'listaAux': listaArchivos,
         'semestre':semestre
     }
-    return render(request, 'gestionarEvaluacion/baseEvaluacion/base.html',context)
+    if (request.user.rol_actual == "Docente"):
+        return render(request, 'gestionarEvaluacion/baseEvaluacion/base.html', context)
+    else:
+        return render(request, 'gestionarEvaluacion/baseEvaluacion/visualizarEvaluacion.html', context)
 
 @login_required
 def evaluarDocente(request):
+    print(request.user.rol_actual)
     pk = request.POST['cursoButton']
     media_path = MEDIA_URL
     listaAlumno = reversed(RespuestaEvaluacion.objects.filter(estado=1))
@@ -142,7 +147,10 @@ def evaluarDocente(request):
     }
     print("-------------++-+-+-+-++--+-+-+-+-++-++++++++++++++++++++++++++++++++++++++-------------------")
     print(context)
-    return render(request, 'gestionarEvaluacion/baseEvaluacion/base.html', context)
+    if (request.user.rol_actual == "Docente"):
+        return render(request, 'gestionarEvaluacion/baseEvaluacion/base.html', context)
+    else:
+        return render(request, 'gestionarEvaluacion/baseEvaluacion/visualizarEvaluacion.html', context)
 
 def agregarAlumno(request):
     print(request.POST)
