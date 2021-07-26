@@ -7,7 +7,15 @@
         #Titulo {
             color: #0154ae;
         }
+        .tooltip-inner {
+            background-color: #ffffff;
+            color: rgb(22, 87, 175);
+        }
 
+        .tooltip.bs-tooltip-top .arrow:before {
+            border-top-color: rgb(22, 87, 175);
+        !important;
+        }
     </style>
 {% endblock %}
 
@@ -156,8 +164,8 @@
                             'data-placement="top"' +
                             'href="../../gestionarResultadosMediciones/resultados/' + instance[i]["pk"] + '"' +
                             'role="link">' +
-                            '<button class="btn btn-falcon-primary mr-1 mb-1" type="button">' +
-                            '<span class="fas fa-chart-bar mr-1" data-fa-transform="shrink-3"></span>Dashboard' +
+                            '<button class="btn btn-falcon-primary my-1 mr-2 tooltip-inner arrow" type="button" data-toggle="tooltip" data-placement="top" title="Dashboard">' +
+                            '<span class="fas fa-chart-bar mr-1" data-fa-transform="shrink-3"></span>' +
                             '</button>' +
                             '</a>'
                         );
@@ -169,33 +177,32 @@
                                 '               </div>' +
                                 '           </div>'
                         {% else %}
-                            data += (
 
-                                ' <button class="btn btn-falcon-primary mr-1 mb-1" onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')">Editar' +
-                                '</button>')
 
                             if (instance[i]["fields"].estado == '1') {
-                                data += (
+                                data += ( ' <button class="btn btn-falcon-primary my-1 mr-2 tooltip-inner arrow" data-toggle="tooltip" data-placement="top" title="Editar" onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')"><div class="fa fa-pen"></div>' +
+                                '</button>'+
                                     '                         <form action="{% url 'historico' %}" method="post">' +
                                     '                           {% csrf_token %}' +
                                     '                           <input type="hidden" name="operacion" value="terminar">' +
                                     '                           <input type="hidden" name="planMedicion" value="' + instance[i]["pk"] + '">' +
-                                    '                           <button type="submit" class="btn btn-falcon-primary mr-1 mb-1 ">Terminar</button>' +
-                                    '                        </form>')
+                                    '                           <button type="submit" class="btn btn-falcon-primary my-1 mr-2 "><span class="fa fa-check"></span> Terminar</button>' +
+                                    '                        </form>'+
+                                                '                        <button class="btn btn-falcon-danger mb-1 mr-2 tooltip-inner arrow" data-toggle="tooltip"' +
+                                ' data-placement="top" title="Eliminar" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
+                                '<span class="fa fa-times"></span></button>')
                             } else {
-                                data += (
-
+                                data += ( ' <button class="btn btn-falcon-primary my-1 mr-2 tooltip-inner arrow" data-toggle="tooltip" data-placement="top" title="Editar" onclick="redirectEditarHistorico(' + instance[i]["pk"] + ')"><div class="fa fa-pen"></div>' +
+                                '</button>'+
                                     '                        <form action="{% url 'historico' %}" method="post">' +
                                     '                           {% csrf_token %}' +
                                     '                           <input type="hidden" name="operacion" value="ver plan">' +
                                     '                           <input type="hidden" name="planMedicion" value="' + instance[i]["pk"] + '">' +
-                                    '                           <button class="btn btn-falcon-primary mr-1 mb-1">Ver Plan Mejora</button>' +
+                                    '                           <button class="btn btn-falcon-primary my-1 mr-2"><span class="fa fa-eye"></span> PLan Mejora</button>' +
                                     '                        </form>')
                             }
                             data += (
-                                '                        <button class="btn btn-falcon-danger mb-1 mr-2" data-toggle="tooltip"' +
-                                ' data-placement="top" title="Eliminar plan de Medición" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
-                                '<span class="fa fa-times"></span></button>' +
+
                                 '                    </div>' +
                                 '                </div>' +
                                 '        </div>' + '</div>')
@@ -205,6 +212,8 @@
                     data2 = ('<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>');
                     $("#tituloEspecialidadMediciones").html(data2);
                     $("#listadoMediciones").html(data);
+
+                    $( '.arrow[title]' ).tooltip();
                 }
                 ,
 

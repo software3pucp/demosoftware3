@@ -3,6 +3,17 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
+    <style>
+        .tooltip-inner {
+            background-color: #ffffff;
+            color: rgb(22, 87, 175);
+        }
+
+        .tooltip.bs-tooltip-top .arrow:before {
+            border-top-color: rgb(22, 87, 175);
+        !important;
+        }
+    </style>
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
@@ -215,7 +226,11 @@
                                 '<div class="card my-3 overflow-hidden" style="min-width: 12rem">' +
                                 '<div class="bg-holder bg-card"' + 'style="background-image:url(' + '{% static '/img/illustrations/corner-2.png' %}' + ');">' + '</div>' +
                                 '<div class="card-body position-relative">' +
-                                '<h5>' + instance[i]["fields"].codigo + '</h5>' + '<div class="my-1">' + instance[i]["fields"].descripcion + '</div>'
+                                '<div class="row justify-content-around"><div class="col"><h5>' + instance[i]["fields"].codigo + '</h5></div>' +
+                                '<div class="d-flex flex-row-reverse">' +
+                                '<button class="btn btn-falcon-primary my-1 mr-2 tooltip-inner arrow" data-toggle="tooltip" data-placement="top" title="Ver" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')"><div class="fa fa-eye"></div></button>' +
+                                '</div>' + '</div>' +
+                                '<div class="my-1">' + instance[i]["fields"].descripcion + '</div>'
                             );
                             if (instance2[i] == false) {
                                 data += (
@@ -224,7 +239,7 @@
                             }
 
                             data += (
-                                '                        <button class="btn btn-falcon-primary mr-1 my-1" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')">Ver Detalle</button>' +
+
                                 '                    </div>' +
                                 '                </div>' +
                                 '        </div>')
@@ -232,6 +247,8 @@
                         data2 = '<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>';
                         $("#tituloEspecialidadResultados").html(data2);
                         $("#listadoResultados").html(data);
+
+                        $( '.arrow[title]' ).tooltip();
                     }
                 },
                 error: function (response) {
