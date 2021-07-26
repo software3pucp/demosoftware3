@@ -5,7 +5,7 @@ from django.contrib.auth.models import Group
 # Create your views here.
 from django.core import serializers
 from gestionarCurso.models import Curso
-from gestionarEspecialidad.models import Especialidad
+from gestionarEspecialidad.models import Especialidad, Auditor, Asistente
 from gestionarFacultad.models import Facultad
 from gestionarHorario.models import Horario
 from gestionarIndicadores.models import Indicador
