@@ -324,6 +324,8 @@
                         data2 = '<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>';
                         $("#tituloEspecialidadResultados").html(data2);
                         $("#listadoResultados").html(data);
+
+                        $( '.arrow[title]' ).tooltip();
                     }
                 },
                 error: function (response) {
