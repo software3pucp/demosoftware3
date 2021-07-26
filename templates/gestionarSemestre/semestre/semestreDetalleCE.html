@@ -27,22 +27,32 @@
             </div>
         </div>
     </div>{% endcomment %}
-    <div class="card p-5">
-        <div class="row d-flex ">
-            <div class="col-10">
-                <h4>Semestre {{ semestreSeleccionado.nombreCodigo }}</h4>
-            </div>
-            <div class="col-2">
-                <a class="d-flex flex-row justify-content-start mt-2"
-                   href="{% url 'listarSemestre' %}">
-                    <div class="fas fa-reply mt-1 mr-2"></div>
-                    <h5>Volver</h5>
-                </a>
+    <div class="card mb-3 bg-card-gradient">
+        <div class="card-body ">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-12">
+                    <h5 class="mb-2 mb-md-0 text-white">Semestre {{ semestreSeleccionado.nombreCodigo }}</h5>
+                </div>
             </div>
         </div>
-        <hr style="background-color: #0154ae;">
-        <div class="row d-flex ">
-            <div class="col">
+    </div>
+    <div class="row d-flex justify-content-end ">
+
+
+        <div class="col-10 px-5">
+        </div>
+
+        <div class="col-2">
+            <a href="{% url 'listarSemestre' %}" class="d-flex flex-row justify-content-end mt-2" id="Retroceder">
+                            <div class="fas fa-reply mt-1 mr-2"></div>
+                            <h5 id="Retroceder">Volver</h5>
+                        </a>
+        </div>
+    </div>
+
+    <div class="col-12 mb-3">
+        <div class="d-flex flex-row align-items-center">
+            <div class="mr-2">
                 <label for="cboEspecialidad">Especialidad:</label>
                 <select class="custom-select custom-select-sm mb-3" id="cboEspecialidad" name="cboEspecialidad"
                         onchange="listarCursos()">
@@ -52,20 +62,19 @@
                 </select>
             </div>
         </div>
-        <div class="d-flex ">
-            <div class="card overflow-hidden mb-3 col-12 p-0">
-                <div class="card-header bg-light">
-                    <div class="row justify-content-between align-items-center">
-                        <div class="col-sm-auto">
-                            <h5 class="mb-1 mb-md-0">Cursos con evaluaciones en el ciclo</h5>
-                        </div>
-                    </div>
-                </div>
-                <div id="listaCursos">
+    </div>
+    <div class="card mb-3 bg-light">
+        <div class="card-body ">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-12">
+                    <h5 class="mb-1 mb-md-0">Cursos del Ciclo</h5>
                 </div>
             </div>
         </div>
     </div>
+
+    <div id="listaCursos"></div>
+
 
 {% endblock %}
 

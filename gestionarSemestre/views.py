@@ -54,7 +54,7 @@ def agregarSemestre(request):
 @login_required
 def enviarCursoHorario(request, pk):
     if request.POST:
-        planMedicion = PlanMedicion.objects.filter(estado='1', especialidad_id=request.POST['especialidad']).filter(
+        planMedicion = PlanMedicion.objects.filter(estado__in=['1','2'], especialidad_id=request.POST['especialidad']).filter(
             semestre=pk)
         try:
             listaCursos = []
