@@ -462,31 +462,18 @@
         </div>
     </div>
 
-    <!-- Modal Actualizar Alumno ya insertado -->
-    <div class="modal fade" id="actualizaNombre" tabindex="-1" role="dialog" aria-labelledby="actualizaNombreLabel"
+
+    <div class="modal fade" id="actualizaNombre" tabindex="-1" role="dialog" aria-labelledby="NuevoModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <div class="mb-2" id="encabezadoNombreNuevo"></div>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
-                            class="font-weight-light" aria-hidden="true">&times;</span></button>
+                <div class="modal-header bg-soft-danger" >
+                    <h5 class="modal-title label-primary">Error</h5>
+                </div>
+                <div class="modal-body bg-light" id="encabezadoNombreNuevo">
                 </div>
                 <div class="modal-footer">
-                    <div class="col">
-                        <div class="row">
-                            <div class="mb-2" id="nombreNuevo"></div>
-                        </div>
-                        <div class="row d-flex justify-content-around mt-1">
-                            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Conservar nombre
-                                actual
-                            </button>
-                            <button id="btnactualizaNombre" class="btn btn-primary btn-sm"
-                                    type="button" onclick="editarAlumnoNuevo()">Actualizar al
-                                nombre nuevo
-                            </button>
-                        </div>
-                    </div>
+                    <button class="btn btn-primary btn-sm" type="button" data-dismiss="modal">Aceptar</button>
                 </div>
             </div>
         </div>
@@ -880,11 +867,7 @@
                         $("#agregarAlumno").modal('hide');
                         $("#encabezadoNombreNuevo").html(
                           '<h6 class="modal-title">Ya existe un alumno con el codigo  <i>'+codigoIngresado +'</i></h6>'
-                        );
-                        $("#nombreNuevo").html(
-                            '<h6>Nombre actual: '+nombreActual+'</h6>'+
-                            '<h6>Nombre ingresado: '+nombreIngresado +'</h6>');
-
+                        )
                         $("#actualizaNombre").modal('show');
                     } else {
                         console.log("No esta insertado");
