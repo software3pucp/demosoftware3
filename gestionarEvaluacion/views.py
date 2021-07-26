@@ -83,10 +83,10 @@ def evaluar(request,pk):
         'listaAux': listaArchivos,
         'semestre':semestre
     }
-    if (request.user.rol_actual == "Docente"):
-        return render(request, 'gestionarEvaluacion/baseEvaluacion/base.html', context)
-    else:
-        return render(request, 'gestionarEvaluacion/baseEvaluacion/visualizarEvaluacion.html', context)
+    #if (request.user.rol_actual == "Docente"):
+    #    return render(request, 'gestionarEvaluacion/baseEvaluacion/base.html', context)
+    #else:
+    return render(request, 'gestionarEvaluacion/baseEvaluacion/visualizarEvaluacion.html', context)
 
 @login_required
 def evaluarDocente(request):

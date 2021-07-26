@@ -116,10 +116,17 @@
                                 - {{ cursoSeleccionado.nombre }}</h4>
                         </div>
                         <div class="col-3 text-right">
-                            <a class="d-flex flex-row justify-content-end mt-2 mr-3" href="/gestionarSemestre/enviarCursoHorario/{{ planMedicionCurso.semestre.pk }}">
-                                <div class="fas fa-reply mt-1 mr-2"></div>
-                                <h5>Volver</h5>
-                            </a>
+                            {% if request.user.rol_actual == "Docente" %}
+                                <a class="d-flex flex-row justify-content-end mt-2 mr-3" href="/gestionarEvaluacion/historial">
+                                    <div class="fas fa-reply mt-1 mr-2"></div>
+                                    <h5>Volver</h5>
+                                </a>
+                            {% else %}
+                                <a class="d-flex flex-row justify-content-end mt-2 mr-3" href="/gestionarSemestre/enviarCursoHorario/{{ planMedicionCurso.semestre.pk }}">
+                                    <div class="fas fa-reply mt-1 mr-2"></div>
+                                    <h5>Volver</h5>
+                                </a>
+                            {% endif %}
                         </div>
                     </div>
                     <hr class="mb-3" style="background-color: #0154ae;">
