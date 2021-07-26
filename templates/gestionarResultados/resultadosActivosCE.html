@@ -3,6 +3,17 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
+    <style>
+        .tooltip-inner {
+            background-color: #ffffff;
+            color: rgb(22, 87, 175);
+        }
+
+        .tooltip.bs-tooltip-top .arrow:before {
+            border-top-color: rgb(22, 87, 175);
+        !important;
+        }
+    </style>
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
@@ -288,8 +299,8 @@
                             '<div class="card-body position-relative">' +
                             '<div class="row justify-content-around"><div class="col"><h5>' + instance[i]["fields"].codigo + '</h5></div>' +
                             '<div class="d-flex flex-row-reverse">'+
-                            '<button class="btn btn-falcon-danger my-1 mr-2">' + '<span class="fa fa-times"></span></button>'+
-                            '<button class="btn btn-falcon-primary mr-1 my-1" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')"><span class="fa fa-pen"></span></button>' +
+                            '<button class="btn btn-falcon-danger my-1 mr-2 tooltip-inner arrow"  data-toggle="tooltip" data-placement="top" title="Eliminar">' + '<div class="fa fa-times"></div></button>'+
+                            '<button class="btn btn-falcon-primary mr-1 my-1 tooltip-inner arrow" data-toggle="tooltip" data-placement="top" title="Editar" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')"><div class="fa fa-pen"></div></button>' +
                             '</div>'+'</div>' +
                             '<div class="my-1">' + instance[i]["fields"].descripcion + '</div>'
                         );
