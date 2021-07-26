@@ -47,22 +47,22 @@ def crearActividad(request, id_propuesta):  # quizas sea necesario pasar como pa
             ResponsableMejora.objects.create(actividad=actividad, responsable=user)
         return redirect('editarPropuesta', pk=propuestaMejora.pk)
 
-    if request.POST:
-        if request.POST['operacion'] == 'listEspe':
-            especialidades = Especialidad.objects.filter(facultad_id=request.POST['facultad'], estado='1')
-            data = serializers.serialize("json", especialidades)
-            return JsonResponse({"resp": data}, status=200)
-        elif request.POST['operacion'] == 'listCur':
-            planes = PlanMejora.objects.filter(curso__especialidad_id__exact=request.POST['especialidad'])
-            pks = planes.values_list('curso_id', flat=True)
-            cursos = Curso.objects.filter(pk__in=pks)
-            dataP = serializers.serialize("json", planes)
-            dataC = serializers.serialize("json", cursos)
-            return JsonResponse({"resp": dataP, "resp1": dataC}, status=200)
-        elif request.POST['operacion'] == 'eliminar':
-            planMedicion = PlanMejora.objects.get(pk=request.POST['planPk'])
-            planMedicion.delete()
-            # print(planMedicion)
+    # if request.POST:
+    #     if request.POST['operacion'] == 'listEspe':
+    #         especialidades = Especialidad.objects.filter(facultad_id=request.POST['facultad'], estado='1')
+    #         data = serializers.serialize("json", especialidades)
+    #         return JsonResponse({"resp": data}, status=200)
+    #     elif request.POST['operacion'] == 'listCur':
+    #         planes = PlanMejora.objects.filter(curso__especialidad_id__exact=request.POST['especialidad'])
+    #         pks = planes.values_list('curso_id', flat=True)
+    #         cursos = Curso.objects.filter(pk__in=pks)
+    #         dataP = serializers.serialize("json", planes)
+    #         dataC = serializers.serialize("json", cursos)
+    #         return JsonResponse({"resp": dataP, "resp1": dataC}, status=200)
+    #     elif request.POST['operacion'] == 'eliminar':
+    #         planMedicion = PlanMejora.objects.get(pk=request.POST['planPk'])
+    #         planMedicion.delete()
+    #         # print(planMedicion)
 
     facultades = Facultad.objects.filter()
     especialidades = Especialidad.objects.filter()  # TODO::: Verificar si se usa "Especialidades" en el template gestionarPlanMedicion/listarPlanMedicion
@@ -80,6 +80,9 @@ def crearActividad(request, id_propuesta):  # quizas sea necesario pasar como pa
 def editarActividad(request, pk):
     media_path = MEDIA_URL
     if request.POST:
+        print("=================")
+        print(f'PK : {pk}')
+        print("=================")
         actividad = ActividadMejora.objects.get(pk=pk)
         actividad.codigo = request.POST['codigo']
         # actividad.descripcion = request.POST['descripcion']
@@ -95,7 +98,7 @@ def editarActividad(request, pk):
                 user = User.objects.get(id=val)
                 ResponsableMejora.objects.create(actividad=actividad, responsable=user)
             actividad.save()
-        return redirect('editarPropuesta', pk)  # regresa a la pagina anterior
+        return redirect('editarPropuesta', actividad.propuestaMejora_id)  # regresa a la pagina anterior
 
     actividad = ActividadMejora.objects.get(pk=pk)
     propuestapk = actividad.propuestaMejora_id
