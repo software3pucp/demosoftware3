@@ -3,6 +3,17 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
+    <style>
+        .tooltip-inner {
+            background-color: #ffffff;
+            color: rgb(22, 87, 175);
+        }
+
+        .tooltip.bs-tooltip-top .arrow:before {
+            border-top-color: rgb(22, 87, 175);
+        !important;
+        }
+    </style>
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
@@ -141,7 +152,7 @@
                             '<div class="card-body position-relative">' +
                             '<div class="row justify-content-around"><div class="col"><h5>' + instance[i]["fields"].codigo  + '</h5></div>' +
                             '<div class="d-flex flex-row-reverse">'+
-                            '<button class="btn btn-falcon-primary mr-1 my-1" onclick="redirectVerResultado(' + instance[i]["pk"] + ')"><span class="fa fa-eye"></span></button>' +
+                            '<button class="btn btn-falcon-primary mr-1 my-1 tooltip-inner arrow" data-toggle="tooltip" data-placement="top" title="Ver" onclick="redirectVerResultado(' + instance[i]["pk"] + ')"><span class="fa fa-eye"></span></button>' +
                             '</div>'+'</div>' +
                             '<div class="my-1">' + instance[i]["fields"].descripcion + '</div>'
                             );
@@ -159,6 +170,8 @@
                     data2 = '<h5>' + $("#cboEspecialidad option:selected").text() + '</h5>';
                     $("#tituloEspecialidadResultados").html(data2);
                     $("#listadoResultados").html(data);
+
+                    $( '.arrow[title]' ).tooltip();
                 },
                 error: function (response) {
                     // alert the error if any error occured

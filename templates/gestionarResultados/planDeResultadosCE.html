@@ -3,7 +3,17 @@
 
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
+    <style>
+        .tooltip-inner {
+            background-color: #ffffff;
+            color: rgb(22, 87, 175);
+        }
 
+        .tooltip.bs-tooltip-top .arrow:before {
+            border-top-color: rgb(22, 87, 175);
+        !important;
+        }
+    </style>
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
@@ -191,15 +201,15 @@
 
                         var botones ='';
                          if (instance[i]["fields"].estado == '1') {
-                            botones= '<button class="btn btn-falcon-danger my-1 mr-2" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
+                            botones= '<button class="btn btn-falcon-danger my-1 mr-2 tooltip-inner arrow" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
                             '<span class="fa fa-times"></span></button>'+
-                                '<div class="btn btn-falcon-primary my-1 mr-2" onclick="redirectVerPlan(' + instance[i]["pk"] + ')">'+
+                                '<div class="btn btn-falcon-primary my-1 mr-2 tooltip-inner arrow" data-toggle="tooltip" data-placement="top" title="Ver" onclick="redirectVerPlan(' + instance[i]["pk"] + ')">'+
                                 '<span class="fa fa-eye"></span></div>';
                         } else {
-                            botones= '<button class="btn btn-falcon-success my-1" onclick="activarPlan(' + instance[i]["pk"] + ')"><span class="fa fa-power-off"> </span></button>' +
-                                '<button class="btn btn-falcon-danger my-1 mr-2" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
+                            botones= '<button class="btn btn-falcon-success my-1 mr-2 tooltip-inner arrow" data-toggle="tooltip" data-placement="top" title="Activar" onclick="activarPlan(' + instance[i]["pk"] + ')"><span class="fa fa-power-off"> </span></button>' +
+                                '<button class="btn btn-falcon-danger my-1 mr-2 tooltip-inner arrow" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick="historicoEliminar(\'' + instance[i]["fields"].codigo + '\',' + instance[i]["pk"] + ')">' +
                                 '<span class="fa fa-times"></span></button>'+
-                                '<div class="btn btn-falcon-primary my-1 mr-2" onclick="redirectVerPlan(' + instance[i]["pk"] + ')">'+
+                                '<div class="btn btn-falcon-primary my-1 mr-2 tooltip-inner arrow" data-toggle="tooltip" data-placement="top" title="Ver" onclick="redirectVerPlan(' + instance[i]["pk"] + ')">'+
                                 '<span class="fa fa-eye"></span></div>';
                         }
 
@@ -239,6 +249,8 @@
                     data2 = ('<h5 class="ml-3 mt-2">' + $("#cboEspecialidad option:selected").text() + '</h5>');
                     $("#tituloEspecialidadMediciones").html(data2);
                     $("#listadoMediciones").html(data);
+
+                    $( '.arrow[title]' ).tooltip();
 
                 }
                 ,

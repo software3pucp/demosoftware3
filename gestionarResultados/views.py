@@ -345,7 +345,7 @@ def crearPlanResultado(request):
         especialidad.versiones = especialidad.versiones + 1
         especialidad.save()
 
-        return redirect('resultadosActivos')
+        return JsonResponse({}, status=200)
      
 
 

@@ -122,6 +122,23 @@
         </div>
     </div>
 
+    <div class="modal fade" id="NuevoModal" tabindex="-1" role="dialog" aria-labelledby="NuevoModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-soft-light" >
+                    <h5 class="modal-title label-primary">Exito</h5>
+                </div>
+                <div class="modal-body bg-light">
+                    <p>Se ha creado un nuevo Programa de Resultados del Estudiante exitosamente</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-sm" type="button" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Nueva Version -->
 
     <div class="modal fade" id="nuevaVersion" tabindex="-1" role="dialog" aria-labelledby="nuevaVersioLabel"
@@ -163,6 +180,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    </div>
     </div>
 
 {% endblock %}
@@ -237,6 +256,7 @@
                 },
                 success: function (response) {
                     $("#nuevaVersion").modal('hide');
+                    $("#NuevoModal").modal({backdrop: 'static', keyboard: false, show: true});
                     listarResultados();
                 },
                 error: function (response) {
@@ -249,7 +269,7 @@
             console.log(codigoResultado)
             console.log(pk)
 
-            data = '<h5 class="modal-title" id="eliminarResultadoLabel">¿Deseas elminar ' + codigoResultado + '?</h5>';
+            data = '<h5 class="modal-title" id="eliminarResultadoLabel">¿Deseas eliminar ' + codigoResultado + '?</h5>';
             $("#eliminarResultadoLabel").html(data);
             $("#eliminarResultado").modal('show');
             pkEliminar = pk;
@@ -305,8 +325,8 @@
                                 '<div class="card-body position-relative">' +
                                 '<div class="row justify-content-around"><div class="col"><h5>' + instance[i]["fields"].codigo + '</h5></div>' +
                                 '<div class="d-flex flex-row-reverse">' +
-                                '<button class="btn btn-falcon-danger my-1 mr-2 tooltip-inner arrow"  data-toggle="tooltip" data-placement="top" title="Eliminar">' + '<div class="fa fa-times"></div></button>' +
-                                '<button class="btn btn-falcon-primary mr-1 my-1 tooltip-inner arrow" data-toggle="tooltip" data-placement="top" title="Editar" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')"><div class="fa fa-pen"></div></button>' +
+                                '<button class="btn btn-falcon-danger my-1 mr-2 tooltip-inner arrow"  data-toggle="tooltip" data-placement="top" title="Eliminar" onclick="resultadosEliminar(\''+instance[i]["fields"].codigo +  '\',' + instance[i]["pk"]  + ')"><div class="fa fa-times"></div></button>' +
+                                '<button class="btn btn-falcon-primary my-1 mr-2 tooltip-inner arrow" data-toggle="tooltip" data-placement="top" title="Editar" onclick="redirectEditarResultado(' + instance[i]["pk"] + ')"><div class="fa fa-pen"></div></button>' +
                                 '</div>' + '</div>' +
                                 '<div class="my-1">' + instance[i]["fields"].descripcion + '</div>'
                             );
