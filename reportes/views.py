@@ -111,6 +111,22 @@ def obtenerEspecialidades(request):
     data = serializers.serialize("json", especialidades)
     return JsonResponse({"resp": data}, status=200)
 
+
+def obtenerNiveles(esp,ciclo):
+    semAux = Semestre.objects.get(pk=ciclo)
+    planSemestre = PlanMedicion.semestre.through.objects.filter(semestre_id=semAux.pk)
+    planCal = None
+    for p in planSemestre:
+        estado = [1, 2]
+        planesMedi = PlanMedicion.objects.filter(pk=p.planmedicion_id, estado__in=estado, especialidad_id=esp)
+        if planesMedi:
+            planCal = planesMedi[0]
+            break
+
+    plResultado = PlanResultados.objects.get(pk=planCal.planResultados.pk)
+    return plResultado
+
+
 def generarReportes(request):
     if request.POST:
 
@@ -130,7 +146,8 @@ def generarReportes(request):
                 nivelesX = []
                 nivelesY=[]
                 especialidad = Especialidad.objects.get(pk=esp)
-                niveles = Nivel.objects.filter(especialidad_id=esp,estado='1')
+                plan = obtenerNiveles(esp,ciclo)
+                niveles = Nivel.objects.filter(plaResultado_id=plan.pk,estado='1').order_by('-valor')
                 for n in range(len(niveles)):
                     if n == 0:
                         nivelesX.append('D')
@@ -231,8 +248,8 @@ def generarReportes(request):
             semAux = Semestre.objects.get(pk=ciclo)
             especialidad = Especialidad.objects.get(pk=esp)
             try:
-
-                niveles = Nivel.objects.filter(especialidad_id=esp, estado='1').order_by('-valor')
+                plan = obtenerNiveles(esp,ciclo)
+                niveles = Nivel.objects.filter(plaResultado_id=plan.pk,estado='1').order_by('-valor')
                 valorMax = niveles[0].valor
                 planSemestre = PlanMedicion.semestre.through.objects.filter(semestre_id=semAux.pk)
                 planCal = None

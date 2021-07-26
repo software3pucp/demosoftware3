@@ -4,6 +4,32 @@
 {#Bloque de extra style -> css#}
 {% block extrastyle %}
     <link href="{% static 'lib/select2/select2.min.css' %}" rel="stylesheet">
+    <style>
+        .modal-side {
+            display: inline-block;
+            padding: 24px 32px;
+            border: 0;
+            text-decoration: none;
+            border-radius: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(30px);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            text-transform: uppercase;
+
+        }
+
+        .card:hover .card-title {
+            color: #f9fafd;
+        }
+
+        .card:hover .card-text {
+            color: #f9fafd;
+        }
+    </style>
 {% endblock %}
 
 {#Bloque de extra body -> HTML#}
@@ -22,126 +48,131 @@
         <form action="{% url 'crearPlanMedicion' pk=plan.pk %}" method="post">
         {% csrf_token %}
     {% endif %}
-    <div class="card">
-        <div class="card-body">
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-9">
-                    {% if insert %}
-                        <h3 class="mb-0"> {{ especialidad.nombre }} - Añadir curso a ser evaluado </h3>
+<div class="card">
+    <div class="card-body">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-9">
+                {% if insert %}
+                    <h3 class="mb-0"> {{ especialidad.nombre }} - Añadir curso a ser evaluado </h3>
+                {% else %}
+                    <h3 class="mb-0"> {{ planMedicion.codigo }} {{ planMedicion.nombre }} - Editar curso a ser
+                        evaluado </h3>
+                {% endif %}
+            </div>
+            <div class="col-md-3 text-right">
+                <button class="btn" type="submit" form="cancelar">
+                    <a class="d-flex flex-row justify-content-end mt-2 mr-3">
+                        <div class="fas fa-reply mt-1 mr-2"></div>
+                        <h5>Volver</h5>
+                    </a>
+                </button>
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12">
+                <hr>
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12">
+                <div class="form-group mt-2">
+                    <label for="exampleFormControlSelect1">Curso</label>
+                    {% if request.user.rol_actual == 'Coordinador de facultad' %}
+                        <select id="cursos" name="curso" class="form-control" id="exampleFormControlSelect1" disabled>
                     {% else %}
-                        <h3 class="mb-0"> {{ planMedicion.codigo }} {{ planMedicion.nombre }} - Editar curso a ser evaluado </h3>
+                        <select id="cursos" name="curso" class="form-control" id="exampleFormControlSelect1">
+                    {% endif %}
+                    {% if insert %}
+                        {% for curso in listaCursos %}
+                            <option value={{ curso.pk }}>{{ curso.nombre }}</option>
+                        {% endfor %}
+                    {% else %}
+                        <option value={{ plan.curso.pk }}>{{ plan.curso.nombre }}</option>
+                    {% endif %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        {% if not insert %}
+            <div class="col">
+                <div class="row d-flex justify-content-between">
+                    <label for="exampleFormControlSelect2">Horarios</label>
+                    {% if request.user.rol_actual != 'Coordinador de facultad' %}
+                        <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button" href="#informacionHorario"
+                                data-toggle="modal" onclick="limpiarModal()">
+                            <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
+                        </button>
                     {% endif %}
                 </div>
-                <div class="col-md-3 text-right">
-                    <button class="btn" type="submit" form="cancelar">
-                        <a class="d-flex flex-row justify-content-end mt-2 mr-3">
-                            <div class="fas fa-reply mt-1 mr-2"></div>
-                            <h5>Volver</h5>
-                        </a>
-                    </button>
-                </div>
             </div>
+            <br>
+            <div id="horariosSelec" class="row d-flex">
+                {% for horario in horariosSelec %}
+                    <div id="horario{{ horario.pk }}" class="col-md-3">
+                        <div class="card m-1">
+                            <div class="card-body" style="padding: 1rem">
+                                <div class="row">
+                                    {% if request.user.rol_actual != 'Coordinador de facultad' %}
+                                        <div class="col-md-8 p-0 d-flex justify-content-center">
+                                            <a id="textoHorarioCard{{ horario.pk }}" class="btn p-0 "
+                                               href="#informacionHorario"
+                                               data-toggle="modal"
+                                               onclick='mostrarHorario("{{ horario.pk }}")'>{{ horario.codigo }}</a>
+                                        </div>
 
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-12">
-                    <hr>
-                </div>
+                                        <div class="col-md-4 p-0 d-flex justify-content-center"
+                                             style="border-left: 1px solid">
+                                            <a class="btn p-0" onclick='quitarHorario("{{ horario.pk }}")' href="#!">
+                                                <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
+                                            </a>
+                                        </div>
+                                    {% else %}
+                                        <div class="col-md-12 p-0 d-flex justify-content-center">
+                                            <a id="textoHorarioCard{{ horario.pk }}" class="btn p-0 "
+                                               href="#informacionHorario"
+                                               data-toggle="modal"
+                                               onclick='mostrarHorario("{{ horario.pk }}")'>{{ horario.codigo }}</a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
+        {% endif %}
 
+        {% if insert %}
             <div class="row d-flex justify-content-center">
                 <div class="col-md-12">
                     <div class="form-group mt-2">
-                        <label for="exampleFormControlSelect1">Curso</label>
-                        {% if request.user.rol_actual == 'Coordinador de facultad' %}
-                            <select id="cursos" name="curso" class="form-control" id="exampleFormControlSelect1" disabled>
-                        {% else %}
-                            <select id="cursos" name="curso" class="form-control" id="exampleFormControlSelect1">
-                        {% endif %}
-                            {% if insert %}
-                                {% for curso in listaCursos %}
-                                    <option value={{ curso.pk }}>{{ curso.nombre }}</option>
-                                {% endfor %}
-                            {% else %}
-                                <option value={{ plan.curso.pk }}>{{ plan.curso.nombre }}</option>
-                            {% endif %}
+                        <label for="exampleFormControlSelect1">Estado</label>
+                        <select name="estado" class="form-control" id="exampleFormControlSelect3">
+                            {% for estado in listaEstados %}
+                                <option value={{ estado.0 }}>{{ estado.1 }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
             </div>
+        {% endif %}
 
-            {% if not insert %}
-                <div class="col">
-                    <div class="row d-flex justify-content-between">
-                        <label for="exampleFormControlSelect2">Horarios</label>
-                        {% if request.user.rol_actual != 'Coordinador de facultad' %}
-                            <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button" href="#informacionHorario" data-toggle="modal"onclick="limpiarModal()">
-                                <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
-                            </button>
-                        {% endif %}
-                    </div>
+        {% if not insert %}
+            <div class="col">
+                <div class="row d-flex justify-content-between pt-4">
+                    <label for="exampleFormControlSelect4">Indicadores</label>
+                    {% if request.user.rol_actual != 'Coordinador de facultad' %}
+                        <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button"
+                                onclick="agregarIndicador()">
+                            <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
+                        </button>
+                    {% endif %}
                 </div>
-                <br>
-                <div id="horariosSelec" class="row d-flex">
-                    {% for horario in horariosSelec %}
-                        <div id="horario{{ horario.pk }}" class="col-md-3">
-                            <div class="card m-1">
-                                <div class="card-body" style="padding: 1rem">
-                                    <div class="row">
-                                        {% if request.user.rol_actual != 'Coordinador de facultad' %}
-                                            <div class="col-md-8 p-0 d-flex justify-content-center">
-                                                <a id="textoHorarioCard{{horario.pk}}" class="btn p-0 " href="#informacionHorario"
-                                                   data-toggle="modal"
-                                                   onclick='mostrarHorario("{{ horario.pk }}")'>{{ horario.codigo }}</a>
-                                            </div>
-
-                                            <div class="col-md-4 p-0 d-flex justify-content-center"
-                                                 style="border-left: 1px solid">
-                                                <a class="btn p-0" onclick='quitarHorario("{{ horario.pk }}")' href="#!">
-                                                    <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
-                                                </a>
-                                            </div>
-                                        {% else %}
-                                            <div class="col-md-12 p-0 d-flex justify-content-center">
-                                                <a id="textoHorarioCard{{horario.pk}}" class="btn p-0 " href="#informacionHorario"
-                                                   data-toggle="modal"
-                                                   onclick='mostrarHorario("{{ horario.pk }}")'>{{ horario.codigo }}</a>
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-
-            {% if insert %}
-                <div class="row d-flex justify-content-center">
-                    <div class="col-md-12">
-                        <div class="form-group mt-2">
-                            <label for="exampleFormControlSelect1">Estado</label>
-                            <select name="estado" class="form-control" id="exampleFormControlSelect3">
-                                {% for estado in listaEstados %}
-                                    <option value={{ estado.0 }}>{{ estado.1 }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
-
-            {% if not insert %}
-                <div class="col">
-                    <div class="row d-flex justify-content-between pt-4">
-                        <label for="exampleFormControlSelect4">Indicadores</label>
-                        {% if request.user.rol_actual != 'Coordinador de facultad' %}
-                            <button class="btn btn-falcon-default btn-sm mr-1 mb-2" type="button" onclick="agregarIndicador()">
-                                <span class="fas fa-plus mr-1" data-fa-transform="shrink-3"></span>
-                            </button>
-                        {% endif %}
-                    </div>
-                </div>
-                {% if request.user.rol_actual != 'Coordinador de facultad' %}
+            </div>
+            {% if request.user.rol_actual != 'Coordinador de facultad' %}
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-12">
                         <select name="horarios" class="form-control" id="indicador">
@@ -152,81 +183,81 @@
                         </select>
                     </div>
                 </div>
-                {% endif %}
-                <br>
-                <div id="indicadoresSelec" class="row d-flex">
-                    {% for indicador in indicadoresSelec %}
-                        <div id="indicador{{ indicador.pk }}" class="col-md-3">
-                            <div class="card m-1">
-                                <div class="card-body" style="padding: 1rem">
-                                    <div class="row">
-                                        {% if request.user.rol_actual == 'Coordinador de facultad' %}
-                                            <div class="col-md-12 p-0 d-flex justify-content-center">
-                                                <a class="btn p-0 " href="#informacionIndicador"
-                                                   data-toggle="modal"
-                                                   onclick='mostrarIndicador("{{ indicador.pk }}")'>{{ indicador.codigo }}</a>
-                                            </div>
-                                        {% else %}
-                                            <div class="col-md-8 p-0 d-flex justify-content-center">
-                                                <a class="btn p-0 " href="#informacionIndicador"
-                                                   data-toggle="modal"
-                                                   onclick='mostrarIndicador("{{ indicador.pk }}")'>{{ indicador.codigo }}</a>
-                                            </div>
-                                            <div class="col-md-4 p-0 d-flex justify-content-center"
-                                                 style="border-left: 1px solid">
-                                                <a class="btn p-0" onclick='quitarIndicador("{{ indicador.pk }}")'>
-                                                    <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
-                                                </a>
-                                            </div>
-                                        {% endif %}
-                                    </div>
+            {% endif %}
+            <br>
+            <div id="indicadoresSelec" class="row d-flex">
+                {% for indicador in indicadoresSelec %}
+                    <div id="indicador{{ indicador.pk }}" class="col-md-3">
+                        <div class="card m-1">
+                            <div class="card-body" style="padding: 1rem">
+                                <div class="row">
+                                    {% if request.user.rol_actual == 'Coordinador de facultad' %}
+                                        <div class="col-md-12 p-0 d-flex justify-content-center">
+                                            <a class="btn p-0 " href="#informacionIndicador"
+                                               data-toggle="modal"
+                                               onclick='mostrarIndicador("{{ indicador.pk }}")'>{{ indicador.codigo }}</a>
+                                        </div>
+                                    {% else %}
+                                        <div class="col-md-8 p-0 d-flex justify-content-center">
+                                            <a class="btn p-0 " href="#informacionIndicador"
+                                               data-toggle="modal"
+                                               onclick='mostrarIndicador("{{ indicador.pk }}")'>{{ indicador.codigo }}</a>
+                                        </div>
+                                        <div class="col-md-4 p-0 d-flex justify-content-center"
+                                             style="border-left: 1px solid">
+                                            <a class="btn p-0" onclick='quitarIndicador("{{ indicador.pk }}")'>
+                                                <span class="fas fa-minus mr-1" data-fa-transform="shrink-3"></span>
+                                            </a>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-            <div class="row d-flex justify-content-end pt-5">
-                {% if insert %}
-                    <input type="hidden" name="operacion" value="insertar">
-                    <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
-                    <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
-                    <input type="hidden" name="semestre" value="{{ semestre.pk }}">
-                    <input class="btn btn-primary mr-3 mb-1" type="submit" value="Agregar" name="Agregar">
-                    <button class="btn btn-outline-primary mr-3 mb-1" type="submit" form="cancelar">Cancelar</button>
-                {% else %}
-                    {% if request.user.rol_actual != 'Coordinador de facultad' %}
-                        <form action="{% url 'listarPlanMedicion' %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="operacion" value="entrada">
-                            <input type="hidden" name="planCurso" value="{{ plan.pk }}">
-                            <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
-                            <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
-                            <input type="hidden" name="semestre" value="{{ semestre.pk }}">
-                            <input type="hidden" name="estado" value="1">
-                            <input class="btn btn-primary mr-3 mb-1" type="submit" value="Confirmar">
-                        </form>
-                        <form action="{% url 'listarPlanMedicion' %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="operacion" value="eliminar">
-                            <input type="hidden" name="planCurso" value="{{ plan.pk }}">
-                            <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
-                            <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
-                            <input type="hidden" name="semestre" value="{{ semestre.pk }}">
-                            <input type="hidden" name="estado" value="1">
-                            <input class="btn btn-outline-primary mr-3 mb-1" type="submit" value="Eliminar" name="Eliminar">
-                        </form>
-                    {% endif %}
-                {% endif %}
+                    </div>
+                {% endfor %}
             </div>
-            {% if errorInsert %}
-                <div class="alert alert-danger" role="alert">En este plan de medicion ya se esta evaluando este curso</div>
+        {% endif %}
+        <div class="row d-flex justify-content-end pt-5">
+            {% if insert %}
+                <input type="hidden" name="operacion" value="insertar">
+                <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
+                <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
+                <input type="hidden" name="semestre" value="{{ semestre.pk }}">
+                <input class="btn btn-primary mr-3 mb-1" type="submit" value="Agregar" name="Agregar">
+                <button class="btn btn-outline-primary mr-3 mb-1" type="submit" form="cancelar">Cancelar</button>
+            {% else %}
+                {% if request.user.rol_actual != 'Coordinador de facultad' %}
+                    <form action="{% url 'listarPlanMedicion' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="operacion" value="entrada">
+                        <input type="hidden" name="planCurso" value="{{ plan.pk }}">
+                        <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
+                        <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
+                        <input type="hidden" name="semestre" value="{{ semestre.pk }}">
+                        <input type="hidden" name="estado" value="1">
+                        <input class="btn btn-primary mr-3 mb-1" type="submit" value="Confirmar">
+                    </form>
+                    <form action="{% url 'listarPlanMedicion' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="operacion" value="eliminar">
+                        <input type="hidden" name="planCurso" value="{{ plan.pk }}">
+                        <input type="hidden" name="especialidad" value="{{ especialidad.pk }}">
+                        <input type="hidden" name="planMedicion" value="{{ planMedicion.pk }}">
+                        <input type="hidden" name="semestre" value="{{ semestre.pk }}">
+                        <input type="hidden" name="estado" value="1">
+                        <input class="btn btn-outline-primary mr-3 mb-1" type="submit" value="Eliminar" name="Eliminar">
+                    </form>
+                {% endif %}
             {% endif %}
         </div>
+        {% if errorInsert %}
+            <div class="alert alert-danger" role="alert">En este plan de medicion ya se esta evaluando este curso</div>
+        {% endif %}
     </div>
-    {% if insert %}
-        </form>
-    {% endif %}
+</div>
+{% if insert %}
+    </form>
+{% endif %}
 
     <!--Barras laterales-->
 
@@ -236,8 +267,7 @@
          data-options='{"autoShow":false,"autoShowDelay":10,"showOnce":false}'>
 
         <div class="modal-dialog modal-dialog-vertical" role="document">
-            <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar"
-                 style="background-color: #017ECD;">
+            <div class="modal-content border-0 vh-100 scrollbar perfect-scrollbar modal-side">
 
                 <div class="modal-body">
                     <div class="row d-flex justify-content-center">
@@ -249,9 +279,11 @@
                         <div class="col-12 pl-5">
                             <label class="text-white" for="name">Código:</label>
                             {% if request.user.rol_actual != 'Coordinador de facultad' %}
-                                <input id="codigoSelec" name="name" class="form-control p-3" id="name" type="text" placeholder="Ingrese el código del horario" required/>
+                                <input id="codigoSelec" name="name" class="form-control p-3" id="name" type="text"
+                                       placeholder="Ingrese el código del horario" required/>
                             {% else %}
-                                <input id="codigoSelec" name="name" class="form-control p-3" id="name" type="text" placeholder="Ingrese el código del horario" required disabled/>
+                                <input id="codigoSelec" name="name" class="form-control p-3" id="name" type="text"
+                                       placeholder="Ingrese el código del horario" required disabled/>
                             {% endif %}
                         </div>
                     </div>
@@ -259,9 +291,10 @@
                     <div class="row d-flex justify-content-start">
                         <div class="col-12 pl-5">
                             <label class="text-white" for="responsable">Seleccione responsable:</label>
-                                <select id="responsableSelec" name="responsable" class="form-control selectpicker text-black" id="responsable">
+                            <select id="responsableSelec" name="responsable"
+                                    class="form-control selectpicker text-black" id="responsable">
                                 {% for responsable in ListaUsuarios %}
-                                    <option value={{ responsable.pk }}>{{ responsable.first_name }} {{ responsable.last_name }}</option>
+                                    <option value={{ responsable.pk }} selected>{{ responsable.first_name }} {{ responsable.last_name }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -279,7 +312,7 @@
                             <div class="col-6">
                                 <div class="d-flex justify-content-center mt-3">
                                     <button id="botonModal"
-                                            type="button" class="btn btn-primary" >Agregar
+                                            type="button" class="btn btn-primary">Agregar
                                     </button>
                                 </div>
                             </div>
@@ -363,7 +396,7 @@
             console.log("ready!");
         });
 
-        function limpiarModal(){
+        function limpiarModal() {
             $('#textoModal').text("Crear Horario");
             $('#botonModal').text("Agregar");
             $('#botonModal').attr('onclick', 'agregarHorario()');
@@ -420,7 +453,7 @@
                     {% endif %}
                     $('#botonModal').text("Editar");
                     $('#botonModal').click(editarHorario(pk));
-                    $('#botonModal').attr('onclick', 'editarHorario("'+pk+'")');
+                    $('#botonModal').attr('onclick', 'editarHorario("' + pk + '")');
                 },
                 error: function (response) {
                     alert(response["responseJSON"]["error"]);

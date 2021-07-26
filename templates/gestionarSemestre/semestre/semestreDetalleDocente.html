@@ -21,6 +21,12 @@
 
         }
 
+        button[type="submit"] {
+            display: block;
+            border: none;
+            outline: none;
+        }
+
     </style>
 
 {% endblock %}
@@ -59,12 +65,13 @@
                     <input name="estado" type="hidden" id="estado{{ semestreSeleccionado.pk }}"
                            value="{{ semestreSeleccionado.pk }}">
                     <div class="card-body fs--1 p-0">
-                        <a class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300">
-                            <div class="notification-body">
-                                <button name="cursoButton" type="submit" class="btn mr-1 mb-1"
-                                        value="{{ curso.pk }}">{{ curso.nombre }}</button>
+                        <button name="cursoButton" type="submit"
+                                class="border-bottom-0 bg-200 notification rounded-0 border-x-0 border-300 col-12"
+                                value="{{ curso.pk }}">
+                            <div class="notification-body d-flex justify-content-start">
+                                <h6>{{ curso.nombre }}</h6>
                             </div>
-                        </a>
+                        </button>
                     </div>
                 </form>
             {% endfor %}
