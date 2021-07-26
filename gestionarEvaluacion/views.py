@@ -309,6 +309,8 @@ def exportarMedicion(request):
     horario = Horario.objects.get(pk=request.POST['cboHorario'])
     try:
         plan = PlanMedicionCurso.objects.get(pk=horario.curso.pk)
+        plMedicion = PlanMedicion.objects.get(pk=plan.planMedicion_id)
+        plResultados = PlanResultados.objects.get(pk=plMedicion.planResultados_id)
         indicadores_plan = PlanMedicionCurso.indicador.through.objects.filter(planmedicioncurso_id=plan.pk)
         indicadores = []
         for indicador in indicadores_plan:
@@ -403,7 +405,7 @@ def exportarMedicion(request):
 
                 j=j+1
             #Resultados
-            niveles = Nivel.objects.filter(especialidad_id=curso.especialidad_id, estado='1').order_by('-valor')
+            niveles = Nivel.objects.filter(plaResultado_id=plResultados.pk, estado='1').order_by('-valor')
             valorMax = niveles[0].valor
             ws[f'{colIndicadores[i]}18'] = n
             ws[f'{colIndicadores[i]}16'] = suma/n if n>0 else 0
