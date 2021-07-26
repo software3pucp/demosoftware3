@@ -24,7 +24,7 @@ def resultadosMediciones(request,pk):
     plan = PlanMedicion.objects.get(pk=pk)
     indicadores = Indicador.objects.filter(resultado__planResultado_id=plan.planResultados_id)
     res = ResultadoPUCP.objects.filter(planResultado_id=plan.planResultados_id)
-    niveles = Nivel.objects.filter(especialidad_id=plan.especialidad_id, estado='1')
+    niveles = Nivel.objects.filter(plaResultado_id=plan.planResultados_id, estado='1')
     cantNiv = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=pk, estado='1').values(
         'valorNota').annotate(cant=Count('valorNota')).order_by('valorNota')
 
@@ -142,7 +142,7 @@ def getPorcentajeMedia(request):
         porcentajeMedia = []
         plan = PlanMedicion.objects.get(pk=request.POST['planMedicion'])
         indicadores = Indicador.objects.filter(resultado_id=request.POST['RE'])
-        niveles = Nivel.objects.filter(especialidad_id=plan.especialidad_id, estado='1')
+        niveles = Nivel.objects.filter(plaResultado_id=plan.planResultados_id, estado='1')
         mediana = len(niveles) // 2
         mt = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=plan.pk,
                                                 calificado='1', evidencia='1',
@@ -167,7 +167,7 @@ def getPorcentajeTot(request):
         porcentajeMedia = []
         plan = PlanMedicion.objects.get(pk=request.POST['planMedicion'])
         indicadores = Indicador.objects.filter(resultado_id=request.POST['RE'])
-        niveles = Nivel.objects.filter(especialidad_id=plan.especialidad_id, estado='1')
+        niveles = Nivel.objects.filter(plaResultado_id=plan.planResultados_id, estado='1')
         mediana = len(niveles) // 2
         mt = RespuestaEvaluacion.objects.filter(planMedicion__planMedicion_id=plan.pk,
                                                 calificado='1', evidencia='1',
