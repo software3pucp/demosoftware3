@@ -137,14 +137,16 @@
                         <p class="card-title">{{ semestre.nombreCodigo }}</p>
                         <p class="card-text">Del {{ semestre.inicio }}</p>
                         <p class="card-text">al {{ semestre.fin }}</p>
-                    </div>
-                    {% if request.user.rol_actual == 'Administrador' %}
+                        <br>
+                        {% if request.user.rol_actual == 'Administrador' %}
                         <div class="d-flex justify-content-center">
                             <a class="btn btn-falcon-default btn-sm mr-2  text-body align-left" type="button"
                                onclick="SemestresEliminar('{{ semestre.nombreCodigo }}', {{ semestre.pk }})"><span
                                     class="fas fa-trash mr-1"></span></a>
                         </div>
                     {% endif %}
+                    </div>
+
 
                 </div>
                 </a>
