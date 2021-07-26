@@ -173,6 +173,7 @@
                 data: {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     especialidad: $("#cboEspecialidad").val(),
+                    planMejora: '{{ planmejora.pk }}'
                 },
                 success: function (response) {
                     var instance = JSON.parse(response['propuestas']);

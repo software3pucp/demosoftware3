@@ -183,13 +183,16 @@ def editarPropuesta(request, pk):
         planMejora = PlanMejora.objects.get(pk=id_planmejora)
         id_medicion = planMejora.planMedicion.pk
 
-        return redirect('planMejora', pk=id_medicion)
+        return redirect('planMejora', pk=planMejora.pk)
 
     print('-------------------------------------------------------------------------------------------')
     print(listaActividades)
+    id_planmejora = propuestaMejora.planMejora_id
+    planMejora = PlanMejora.objects.get(pk=id_planmejora)
     context = {
         'listaActividades': listaActividades,
         'propuestaMejora': propuestaMejora,
+        'planMejora': planMejora
     }
     return render(request, 'gestionarPlanMejora/propuestaMejora.html', context)
 
@@ -203,10 +206,10 @@ def eliminarEvidenciaxActividad(request):
 
 
 def planMejora(request, pk):
-    if pk != "0":
-        planMejora = PlanMejora.objects.get(pk=pk)
-        print("SE ESTA RECIBIENDO")
-        print(planMejora.pk)
+
+    planMejora = PlanMejora.objects.get(pk=pk)
+    print("SE ESTA RECIBIENDO")
+    print(planMejora.pk)
     facultades = Facultad.objects.filter(estado='1')
     context = {
         'facultades': facultades,
@@ -240,7 +243,7 @@ def listarPropuestas(request):
     print(idEspecialidad)
     print('-------------------------------------------')
 
-    propuestas = PropuestaMejora.objects.filter(especialidad_id=idEspecialidad, estado='1')
+    propuestas = PropuestaMejora.objects.filter(planMejora_id=request.POST['planMejora'], estado='1')
     listaPropuestas = []
     lista2 = []  # lista para saber si tiene o no actividades de mejorar asociadas
     for propuesta in propuestas:
@@ -324,7 +327,7 @@ def crearPropuesta(request, id_planmejora):
         descripcion = request.POST['descripcion']
         PropuestaMejora.objects.create(codigo=codigo, descripcion=descripcion,
                                        especialidad=especialidad, estado=1, planMejora=planMejora)
-        return redirect('planMejora', pk=planMejora.planMedicion_id)
+        return redirect('planMejora', pk=planMejora.pk)
 
     context = {
         'especialidad': especialidad,
